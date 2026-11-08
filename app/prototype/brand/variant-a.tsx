@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 import {
   EMAIL,
   LOCATION,
@@ -10,27 +12,10 @@ import { IconLamp, IconNetwork, IconPanel, IconTransformer } from "./icons"
 
 const SERVICE_ICONS = [IconLamp, IconNetwork, IconTransformer, IconPanel]
 
-function Mark({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 26 26"
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-      aria-hidden="true"
-    >
-      <path d="M3 23V4M23 23V4" strokeLinecap="round" />
-      <path d="M3 4.5c5 7.2 15 7.2 20 0" strokeLinecap="round" />
-      <circle cx="13" cy="9.2" r="2" fill="#F2A33C" stroke="none" />
-    </svg>
-  )
-}
-
 export function VariantA() {
   return (
     <div
-      className="min-h-screen bg-[#F7F6F1] text-[#111217] selection:bg-[#F2A33C] selection:text-[#111217]"
+      className="min-h-screen bg-[#F7F6F1] text-[#111217] selection:bg-[#E97425] selection:text-[#111217]"
       style={{ fontFamily: "var(--font-poppins)" }}
     >
       <a
@@ -43,11 +28,15 @@ export function VariantA() {
       {/* Header — solid white, per page-tree decision #2 */}
       <header className="sticky top-0 z-40 border-b border-[#DEDDD5] bg-white/95 backdrop-blur">
         <div className="mx-auto flex h-[76px] max-w-[1440px] items-center justify-between px-5 md:px-10">
-          <a href="#top" className="flex items-center gap-2.5">
-            <Mark className="h-[26px] w-[26px] text-[#111217]" />
-            <span className="text-[19px] font-semibold tracking-[-0.03em]">
-              HAY2010
-            </span>
+          <a href="#top" className="flex items-center">
+            <Image
+              src="/brand/hay2010-logo.webp"
+              alt="HAY2010"
+              width={468}
+              height={355}
+              priority
+              className="h-[52px] w-auto"
+            />
           </a>
           <nav
             className="hidden items-center gap-7 lg:flex"
@@ -66,7 +55,7 @@ export function VariantA() {
           <div className="flex items-center gap-3">
             <a
               href="#contact"
-              className="hidden rounded-full bg-[#111217] px-5 py-2.5 text-[12.5px] font-medium text-white transition-colors hover:bg-[#F2A33C] hover:text-[#111217] sm:inline-flex"
+              className="hidden rounded-full bg-[#111217] px-5 py-2.5 text-[12.5px] font-medium text-white transition-colors hover:bg-[#E97425] hover:text-[#111217] sm:inline-flex"
             >
               Nous contacter
             </a>
@@ -98,7 +87,7 @@ export function VariantA() {
 
           <div className="relative mx-auto flex min-h-[640px] max-w-[1440px] flex-col justify-end px-5 pt-28 pb-14 md:px-10 md:pb-20 lg:min-h-[730px]">
             <div className="flex items-center gap-3 text-[10.5px] font-medium tracking-[0.24em] text-white/60 uppercase">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#F2A33C]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#E97425]" />
               Électrification & éclairage public — Rabat
             </div>
             <h1 className="mt-6 max-w-[14ch] text-[clamp(42px,6.4vw,92px)] leading-[0.94] font-light tracking-[-0.035em] text-white">
@@ -113,7 +102,7 @@ export function VariantA() {
             <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
               <a
                 href="#metiers"
-                className="inline-flex items-center gap-2.5 rounded-full bg-white px-6 py-3.5 text-[13px] font-medium text-[#111217] transition-colors hover:bg-[#F2A33C]"
+                className="inline-flex items-center gap-2.5 rounded-full bg-white px-6 py-3.5 text-[13px] font-medium text-[#111217] transition-colors hover:bg-[#E97425]"
               >
                 Découvrir nos métiers
                 <span aria-hidden="true">→</span>
@@ -201,7 +190,7 @@ export function VariantA() {
           <div className="mx-auto max-w-[1440px] px-5 py-20 md:px-10 md:py-24">
             <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
               <div>
-                <p className="text-[10.5px] font-semibold tracking-[0.2em] text-[#F2A33C] uppercase">
+                <p className="text-[10.5px] font-semibold tracking-[0.2em] text-[#E97425] uppercase">
                   02 — Nos métiers
                 </p>
                 <h2 className="mt-4 max-w-[16ch] text-[clamp(30px,4vw,54px)] leading-[1.02] font-light tracking-[-0.03em]">
@@ -223,7 +212,7 @@ export function VariantA() {
                     className="group border-t border-white/15 pt-6"
                   >
                     <div className="flex items-start justify-between">
-                      <Icon className="h-7 w-7 text-[#F2A33C]" />
+                      <Icon className="h-7 w-7 text-[#E97425]" />
                       <span className="text-[10px] tracking-[0.2em] text-white/30">
                         {service.number}
                       </span>
@@ -236,7 +225,7 @@ export function VariantA() {
                     </p>
                     <a
                       href="#metiers"
-                      className="mt-6 inline-flex items-center gap-1.5 text-[11px] tracking-[0.14em] text-white/45 uppercase transition-colors group-hover:text-[#F2A33C]"
+                      className="mt-6 inline-flex items-center gap-1.5 text-[11px] tracking-[0.14em] text-white/45 uppercase transition-colors group-hover:text-[#E97425]"
                     >
                       En savoir plus <span aria-hidden="true">→</span>
                     </a>
@@ -293,7 +282,7 @@ export function VariantA() {
         </section>
 
         {/* Contact */}
-        <section id="contact" className="bg-[#F2A33C] text-[#111217]">
+        <section id="contact" className="bg-[#E97425] text-[#111217]">
           <div className="mx-auto max-w-[1440px] px-5 py-16 md:px-10 md:py-20">
             <div className="grid gap-10 md:grid-cols-12 md:items-end">
               <div className="md:col-span-7">
@@ -359,7 +348,7 @@ export function VariantA() {
                   {[
                     ["Encre", "#111217", "text-white"],
                     ["Papier", "#F7F6F1", "text-[#111217]"],
-                    ["Ambre", "#F2A33C", "text-[#111217]"],
+                    ["Orange", "#E97425", "text-[#111217]"],
                     ["Cuivre", "#9A5A15", "text-white"],
                     ["Gris", "#5E6067", "text-white"],
                   ].map(([name, hex, text]) => (
@@ -379,7 +368,7 @@ export function VariantA() {
                   ))}
                 </div>
                 <p className="mt-3 text-[11px] leading-relaxed text-[#8A887E]">
-                  Monochrome chaud + un seul accent ambre. L’ambre ne porte
+                  Monochrome chaud + un seul accent orange. L’orange ne porte
                   jamais de texte courant.
                 </p>
               </div>
@@ -432,25 +421,27 @@ export function VariantA() {
                 </p>
                 <div className="mt-4 grid gap-2">
                   <div className="flex h-24 items-center justify-center border border-[#D8D7CF] bg-white">
-                    <span className="flex items-center gap-2">
-                      <Mark className="h-6 w-6 text-[#111217]" />
-                      <span className="text-[17px] font-semibold tracking-[-0.03em]">
-                        HAY2010
-                      </span>
-                    </span>
+                    <Image
+                      src="/brand/hay2010-logo.webp"
+                      alt="HAY2010"
+                      width={468}
+                      height={355}
+                      className="h-14 w-auto"
+                    />
                   </div>
                   <div className="flex h-24 items-center justify-center bg-[#111217]">
-                    <span className="flex items-center gap-2 text-white">
-                      <Mark className="h-6 w-6" />
-                      <span className="text-[17px] font-semibold tracking-[-0.03em]">
-                        HAY2010
-                      </span>
-                    </span>
+                    <Image
+                      src="/brand/hay2010-logo-white.webp"
+                      alt="HAY2010 en blanc"
+                      width={468}
+                      height={355}
+                      className="h-14 w-auto"
+                    />
                   </div>
                 </div>
                 <p className="mt-3 text-[11px] leading-relaxed text-[#8A887E]">
-                  Deux poteaux, un câble, un point de lumière. Le symbole se lit
-                  à 16 px.
+                  Logo fourni par HAY2010. Le raster 500 px dépanne ; la version
+                  vectorielle et la déclinaison une couleur restent à produire.
                 </p>
               </div>
 
@@ -512,7 +503,7 @@ export function VariantA() {
                 </p>
                 <ul className="mt-4 space-y-2.5 text-[11.5px] leading-relaxed text-[#5E6067]">
                   <li className="border-t border-[#D8D7CF] pt-2.5">
-                    L’ambre suffit-il comme seul accent ?
+                    L’orange du logo suffit-il comme seul accent ?
                   </li>
                   <li className="border-t border-[#D8D7CF] pt-2.5">
                     Poppins reste-t-il assez distinctif ?
@@ -532,11 +523,14 @@ export function VariantA() {
         <div className="mx-auto max-w-[1440px] px-5 py-14 md:px-10">
           <div className="grid gap-10 md:grid-cols-12">
             <div className="md:col-span-5">
-              <span className="flex items-center gap-2.5">
-                <Mark className="h-6 w-6" />
-                <span className="text-[17px] font-semibold tracking-[-0.03em]">
-                  HAY2010
-                </span>
+              <span className="inline-flex bg-[#F7F6F1] p-2">
+                <Image
+                  src="/brand/hay2010-logo.webp"
+                  alt="HAY2010"
+                  width={468}
+                  height={355}
+                  className="h-12 w-auto"
+                />
               </span>
               <p className="mt-5 max-w-[36ch] text-[12.5px] leading-relaxed text-white/50">
                 Éclairage public, réseaux HTA/BT, postes de transformation et
