@@ -22,29 +22,29 @@ The answer is a chosen direction plus an asset checklist: what we have, what we 
 
 ## Answer
 
-Resolved 2026-11-08 with the owner. Three directions were built on one switchable prototype route (A — Lumière, B — Le Plan, C — Réseau); the owner chose **A — Lumière**. The full system and asset plan are in [`docs/brand/brand-direction.md`](../../../docs/brand/brand-direction.md).
+Resolved 2026-11-08 with the owner. Three directions were built on one switchable prototype route (A — Lumière, B — Le Plan, C — Réseau); the owner chose **A — Lumière** and then supplied the existing HAY2010 logo. The full system and asset plan are in [`docs/brand/brand-direction.md`](../../../docs/brand/brand-direction.md).
 
 ### Chosen direction
 
-- **Name:** A — Lumière. Editorial monochrome, warm amber accent, Poppins, full-bleed documentary photography, thin rules, pill CTAs — the lamalif register, made specific to public lighting.
-- **Logo:** two supports, a sagging cable, one amber light point; wordmark `HAY2010` in Poppins 600. No existing HAY2010 logo was found — the current site uses the Porto Construction demo logo, which must not be reused.
-- **Palette:** ink `#111217`, paper `#F7F6F1`, body `#5E6067`, line `#DEDDD5`, amber `#F2A33C`, copper text `#9A5A15`. Amber is a surface, never small text; copper is the text-safe accent. Light theme only.
-- **Type:** Poppins 300/400/500/600, self-hosted. Display 42–92 px at 300, labels 10.5 px at 0.2 em uppercase.
+- **Name:** A — Lumière. Editorial monochrome, warm orange accent, Poppins, full-bleed documentary photography, thin rules, pill CTAs — the lamalif register, made specific to public lighting.
+- **Logo:** the owner-supplied HAY2010 badge — blue building silhouette, orange arc, red point, white `HAY` / `2010.Sarl` (500 × 500 transparent WebP; artwork 448 × 335; blue `#3E4D9C`, orange `#E97425`, red `#DE212E`). It replaces the proposed “two supports and a cable” mark. Header uses the badge at 52 px; footer uses it on a paper chip or as a one-colour white stencil. It must be vectorised for production, not redesigned.
+- **Palette:** ink `#111217`, paper `#F7F6F1`, body `#5E6067`, line `#DEDDD5`, orange `#E97425`, copper text `#9A5A15`. Orange is aligned to the logo; it is a surface, never text on paper (2.78:1). Copper is the text-safe accent. The logo's blue and red are logo-only. Light theme only.
+- **Type:** Poppins 300/400/500/600, self-hosted. Display 42–92 px at 300, labels 10.5 px at 0.2 em uppercase. The badge lettering is part of the supplied artwork; do not recreate it.
 - **Imagery:** warm-monochrome documentary photography of real sites. No stock, no Porto assets, no people or client marks without written permission. If the hero photo is not ready, launch on a typographic hero — never stock.
 - **Icons:** four custom 1.4 px line icons (lamp, network, transformer, panel) plus eight utility glyphs. No filled set, no icon font.
 - **Motion:** one 22 s Ken Burns on the hero, 700 ms text fade; no parallax; disabled under `prefers-reduced-motion`.
 
 ### Asset checklist (summary)
 
-- **Have:** confirmed company facts, address and email; page tree; domain; Next.js repo; Poppins licence (OFL); this direction and its tokens.
-- **Need:** final logo files and written ownership; hero + section photography with licences; four service icons; favicon/app icon and OG template; approved French copy; ONEE certificate (gated); image-rights register.
-- **Who:** owner approves the logo and supplies the certificate, legacy assets and site access; design/build produces the logo, icons, templates and photo art direction; a commissioned Moroccan industrial/architectural photographer shoots the sites; legal review covers licences, model releases and site authorisations.
-- **Placeholder-only:** the prototype's SVG dusk scene, the gradient photo block, the prototype logo, sample copy, the "portefeuille à documenter" block, every current `hay2010.ma` image and the Porto logo. Staging may tag them "visuel provisoire"; production may not.
+- **Have:** confirmed company facts, address and email; page tree; domain; Next.js repo; Poppins licence (OFL); the supplied logo source raster; stopgap web exports in `public/brand/`; this direction and its tokens.
+- **Need:** logo vector master, one-colour variant, favicon/app icon and social avatar, with written ownership; hero + section photography with licences; four service icons; OG template; approved French copy; ONEE certificate (gated); image-rights register.
+- **Who:** the owner sends the source logo file and confirms ownership, approves the vector redraw and supplies the certificate, legacy assets and site access; a brand designer/illustrator vectorises the badge and draws the variants; design/build produces the templates, icons, exports and photo art direction; a commissioned Moroccan industrial/architectural photographer shoots the sites; legal review covers licences, model releases and site authorisations.
+- **Placeholder-only:** the 500 px raster as a production master (stopgap at ≤52 px only), the temporary one-colour raster, the prototype's SVG dusk scene, the gradient photo block, sample copy, the “portefeuille à documenter” block, every current `hay2010.ma` image and the Porto logo. Staging may tag them “visuel provisoire”; production may not.
 
 ### Critical path and gates
 
-Photography is the critical path, not polish. The plan is a two-visit shoot at 2–3 authorised sites (dusk + daylight), 8–10 frames, 2400 px, RAW + web crops, with model releases and site authorisations. Launch only when: the logo ownership is assigned; every published photo is licensed; no client name/logo appears without permission; the ONEE certificate is filed; no placeholder or stock image remains; and forms stay disabled until CNDP ([#14](https://github.com/mustaphaelou/hay2010website/issues/14)).
+Photography is the critical path, not polish. The plan is a two-visit shoot at 2–3 authorised sites (dusk + daylight), 8–10 frames, 2400 px, RAW + web crops, with model releases and site authorisations. Launch only when: the logo vector and ownership are in place; every published photo is licensed; no client name/logo appears without permission; the ONEE certificate is filed; no placeholder or stock image remains; and forms stay disabled until CNDP ([#14](https://github.com/mustaphaelou/hay2010website/issues/14)).
 
 ### Prototype
 
-The three variants live on branch `prototype/brand-direction` (route `/prototype/brand?variant=a|b|c` (files in `app/prototype/brand`)); the same screenshots are in [`docs/brand/assets/`](../../../docs/brand/assets/). `main` keeps only the decision, not the prototype route.
+The three variants live on branch `prototype/brand-direction` (route `/prototype/brand?variant=a|b|c`, files in `app/prototype/brand`); the same screenshots are in [`docs/brand/assets/`](../../../docs/brand/assets/). The prototype header/footer/specimen were updated to the supplied badge. `main` keeps only the decision and the source assets, not the prototype route.

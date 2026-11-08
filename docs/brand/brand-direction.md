@@ -1,7 +1,8 @@
 # HAY2010 — Brand direction and asset plan
 
 **Status:** resolved 2026-11-08 — ticket [#4](https://github.com/mustaphaelou/hay2010website/issues/4).
-**Chosen direction:** **A — Lumière** (editorial monochrome, warm amber accent, Poppins, documentary photography).
+**Chosen direction:** **A — Lumière** (editorial monochrome, warm accent, Poppins, documentary photography), with the **owner-supplied HAY2010 badge**.
+**Amended 2026-11-08:** the owner supplied the existing logo after the direction was chosen. The proposed mark is withdrawn; the real badge is the brand mark, and the site accent is aligned to its orange. Details in §2.1, §2.2 and §10.
 **Prototype:** branch `prototype/brand-direction`, route `/prototype/brand?variant=a|b|c` (files in `app/prototype/brand`); screenshots in [`docs/brand/assets/`](assets/).
 **Scope:** the website brand only. Stationery, signage, vehicle livery and a full identity manual are out of scope. French only, per the page tree ([#2](https://github.com/mustaphaelou/hay2010website/issues/2)).
 
@@ -9,7 +10,9 @@
 
 ## 1. The decision
 
-Direction A was chosen by the owner on 2026-11-08. It is the closest to the lamalif reference and the strongest fit for a company that sells public lighting: the subject of the brand is light, and the page is organised like a printed portfolio — full-bleed dusk photography, a large light-weight headline, thin rules, generous space, pill CTAs, one amber accent.
+Direction A was chosen by the owner on 2026-11-08. It is the closest to the lamalif reference and the strongest fit for a company that sells public lighting: the subject of the brand is light, and the page is organised like a printed portfolio — full-bleed dusk photography, a large light-weight headline, thin rules, generous space, pill CTAs, one warm accent.
+
+The owner then supplied the existing **HAY2010 badge** (blue building silhouette, orange arc, red point, white `HAY` / `2010.Sarl`). That mark is now the brand; the prototype's proposed “two poles and a cable” mark is withdrawn. The system is unchanged except that the accent moves from the provisional amber `#F2A33C` to the logo's orange `#E97425`, so the site and the badge share the same warm note.
 
 **Why A over the alternatives**
 
@@ -28,24 +31,39 @@ A depends on photography. There is currently no owned HAY2010 photography, and t
 
 1. **La lumière est le sujet.** The photograph carries the brand; the interface stays quiet around it.
 2. **Le vide fait partie du dessin.** Space, rules and a restrained type scale do the work that boxes and shadows usually do.
-3. **Un seul accent.** Amber marks the point of light; it is never a decorative second colour.
+3. **Un seul accent.** Orange marks the point of light; it is never a decorative second colour. The logo's blue and red stay inside the badge.
 4. **La preuve avant la décoration.** Real sites, real work, captioned images. No stock construction theatre, no client logos without permission.
 
 ---
 
 ## 2. Identity system
 
-### 2.1 Logo
+### 2.1 Logo — the supplied badge
 
-**Concept — “deux appuis, un câble, un point de lumière.”** Two vertical supports, a sagging cable between them, one amber point at the centre. It reads as a street-light span and as a network; it survives at favicon size.
+**The mark.** A blue building silhouette with two towers, an orange arc sweeping across it, a red point at the left, and the lettering `HAY` over `2010.Sarl` in white. It is a compact, 4:3 badge designed to work on a white page and on a vehicle/sign.
 
-- **Lockups:** symbol + wordmark (default), symbol alone, wordmark alone, stacked. Wordmark set in Poppins 600, `HAY2010`, tracking `-0.03em`.
-- **Colours:** ink on paper, paper on ink, all-ink mono. The amber dot may be dropped in one-colour reproduction; the mark must still read without it.
-- **Clear space:** at least the height of the symbol on all sides. **Minimum sizes:** symbol 16 px, lockup 96 px wide.
-- **Files to produce:** SVG master, horizontal/stacked/reversed/mono variants, favicon 16/32/48, apple-touch 180, app icon 512, OG template 1200×630.
-- **Ownership:** written assignment of the final artwork to **SOCIETE HAY 2010** before publication. The current `ct-logo*.png` on the site is the **Porto Construction demo logo**, not a HAY2010 asset — do not reuse, redraw or “adapt” it.
-- **Before finalising:** the owner must confirm that no real HAY2010 logo exists in an old file, invoice, vehicle or sign. If one does, evaluate it before replacing it. An OMPIC trademark search is advisable if the logo will be registered; it is not a launch blocker for web use.
-- **Avoid:** lightning bolts, globes, hard-hat/blueprint clichés, gradients, 3D bevels, taglines locked into the mark.
+**What we received (2026-11-08).** A 500 × 500 transparent WebP (artwork bounds 448 × 335, placed with transparent padding). Exact colours sampled from the file:
+
+| Element | Hex |
+|---|---|
+| Blue | `#3E4D9C` |
+| Orange | `#E97425` |
+| Red | `#DE212E` |
+| Lettering | `#FFFFFF` |
+
+The raster is compressed and only 500 px on the long edge. It is usable at the 52 px header size and is a fine reference, but it is not a production master for retina, Open Graph or print.
+
+**Do not redesign it in this project.** The mark has existing equity and appears on the company's site, documents and probably signage. The job here is to **productionise** it: vector redraw, clean edges, exact colours, variants. A redesign is a separate decision that needs the owner's brief.
+
+- **Header:** the badge at 52 px high, with no adjacent wordmark (the name is inside the badge). The header is 76 px high; the badge has 12 px of air above and below. Do not shrink below 44 px on desktop; at that size `2010.Sarl` stops being legible.
+- **Footer:** full-colour badge on a paper `#F7F6F1` chip (8 px padding), or a one-colour white stencil on ink when no chip is wanted. The prototype tests both.
+- **One-colour version:** the white stencil used in the prototype is a raster approximation — the badge becomes white, the lettering/arc/point are cut out so the ink shows through. The final one-colour artwork must be drawn in vector, not auto-traced.
+- **Files to produce:** primary vector (SVG/AI). The supplied composition is the lockup; do not invent a horizontal variant unless the owner asks. Produce: full-colour master, full-colour web exports (1×/2×), one-colour white/ink stencil, favicon, Apple touch icon, app icon, OG/social avatar template, and a monochrome print version.
+- **Favicon:** the full badge at 16/32 px is too dense. Test a crop of the building + arc + `HAY` (without `2010.Sarl`) at 32 px, and a simplified 16 px reduction; do not ship a mush of the full badge.
+- **`.Sarl` in the mark:** the badge includes the legal form. Keep it for v1; a web-only reduction without `.Sarl` would be cleaner at small sizes but changes the existing mark, so it is an owner decision, not a designer shortcut. The legal pages and footer legal line still use `SOCIETE HAY 2010` ([#3](https://github.com/mustaphaelou/hay2010website/issues/3)).
+- **Ownership:** the owner supplied the file, but written confirmation is still needed that **SOCIETE HAY 2010** owns the artwork (or holds a licence from the designer). If a source AI/SVG/EPS/PDF exists, get it — do not redraw from the raster unless the source is lost.
+- **Trademark:** an OMPIC search is advisable if the mark will be registered; it is not a launch blocker for web use.
+- **Never reuse:** the Porto `ct-logo*.png` demo logo, or any “adapted” version of it. It is not a HAY2010 asset.
 
 ### 2.2 Palette
 
@@ -56,20 +74,24 @@ A depends on photography. There is currently no owned HAY2010 photography, and t
 | White | `#FFFFFF` | Header, reversed text, hero text | 18.7:1 on ink |
 | Body | `#5E6067` | Body copy, secondary text | 5.8:1 on paper |
 | Line | `#DEDDD5` | 1 px rules, borders | 13.7:1 against ink (non-text) |
-| Amber | `#F2A33C` | Accent surfaces, the light point, CTA hover, one contact band | Ink on amber 8.98:1 |
-| Copper | `#9A5A15` | Small labels, links on paper, accent text | 5.04:1 on paper |
-| Footer | `#111217` | Footer background | Paper text 15.7:1 |
+| Orange | `#E97425` | Accent surfaces, CTA hover, one contact band, small labels on ink | Ink on orange 6.23:1; orange on paper 2.78:1 — **not text on paper** |
+| Copper | `#9A5A15` | Small labels and links on paper | 5.04:1 on paper |
+| Logo blue | `#3E4D9C` | **Logo only** — not a UI colour | 7.07:1 on paper (reference) |
+| Logo red | `#DE212E` | **Logo only** — the point | — |
 
 Rules:
 
-- Amber is a **surface** colour, not a text colour. Ink on amber is allowed; amber on paper is not (about 1.9:1).
-- Copper is the **text-safe** version of the accent for 10–13 px labels. The amber/copper pair is intentional: light colour for surfaces, deep colour for type.
-- Body copy never sits on photography without a dark overlay that keeps it above 4.5:1.
+- **Orange is the accent**, aligned to the logo's orange. Ink on orange passes AA (6.23:1); white on orange does not (3.0:1) — never put white text on an orange field.
+- Orange on paper is not a text colour (2.78:1). Use copper for small labels and links on paper.
+- Orange is allowed for small labels on ink (about 5.6:1) and for the contact band with ink text.
+- **Blue and red are logo colours only.** Do not introduce a blue link colour, a red error style borrowed from the mark, or a blue band. The logo is a self-contained badge; the page stays ink/paper/orange.
 - Light theme only in v1. Do not ship a dark mode until the image treatment has been tested in it.
 
 ### 2.3 Typography
 
-**Poppins** (SIL Open Font License), self-hosted through `next/font/google`: 300, 400, 500, 600. It is the lamalif baseline and is already familiar to the owner; the brand’s distinctiveness comes from scale, spacing and photography, not from a novelty face.
+**Poppins** (SIL Open Font License), self-hosted through `next/font/google`: 300, 400, 500, 600. It is the lamalif baseline and is already familiar to the owner; the brand's distinctiveness comes from scale, spacing and photography, not from a novelty face.
+
+The badge's lettering is part of the supplied artwork. Do not recreate it in Poppins or “fix” its spacing; set the website type alongside it.
 
 | Role | Size / line-height | Weight | Tracking |
 |---|---|---|---|
@@ -87,11 +109,11 @@ Rules:
 ### 2.4 Layout and components
 
 - 12-column grid, max width 1440 px, page margins 20 px mobile / 40 px desktop.
-- Section rhythm 80–112 px; full-bleed dark and amber bands break the white page.
+- Section rhythm 80–112 px; full-bleed dark and orange bands break the white page.
 - **No cards with shadows.** Content is separated by 1 px rules, space and image crops. Pills are the only fully rounded shape.
-- **Buttons:** primary ink pill (white text, amber hover); secondary 1 px outline pill; text link with a thin underline and an arrow. Focus: 2 px visible ring, 2 px offset.
-- **Header:** solid white, sticky, 76 px, six items maximum, CTA at the far right. This confirms the page-tree decision ([#2](https://github.com/mustaphaelou/hay2010website/issues/2)); no transparent-over-hero variant.
-- **Footer:** ink, four columns, email only, legal line `© 2026 SOCIETE HAY 2010 — Tous droits réservés`. No phone, recruitment email, newsletter or social icons ([#3](https://github.com/mustaphaelou/hay2010website/issues/3)).
+- **Buttons:** primary ink pill (white text, orange hover); secondary 1 px outline pill; text link with a thin underline and an arrow. Focus: 2 px visible ring, 2 px offset.
+- **Header:** solid white, sticky, 76 px, 52 px badge, six items maximum, CTA at the far right. This confirms the page-tree decision ([#2](https://github.com/mustaphaelou/hay2010website/issues/2)); no transparent-over-hero variant.
+- **Footer:** ink, four columns, email only, legal line `© 2026 SOCIETE HAY 2010 — Tous droits réservés`. Logo on a paper chip (or one-colour stencil). No phone, recruitment email, newsletter or social icons ([#3](https://github.com/mustaphaelou/hay2010website/issues/3)).
 - Images: full-bleed hero; 4:3 split blocks; 1 px hairline frames for documents. Always with alt text; captions where the image is evidence.
 
 ### 2.5 Imagery
@@ -107,7 +129,7 @@ This is the heart of A.
 
 ### 2.6 Iconography
 
-- 24 px grid, 1.4 px stroke, round caps and joins, `currentColor`. Four custom service icons (lamp, network, transformer, panel) plus eight utility glyphs (arrow, mail, pin, menu, close, chevron, phone-strike, external).
+- 24 px grid, 1.4 px stroke, round caps and joins, `currentColor`. Four custom service icons (lamp, network, transformer, panel) plus eight utility glyphs (arrow, mail, pin, menu, close, chevron, external, phone-strike).
 - Line icons only; no filled family, no icon font. Inline SVG so they inherit colour and stroke.
 - The four service icons are brand assets and must be drawn once, exported as a set, and reused on home, `/metiers` and the footer.
 
@@ -129,6 +151,8 @@ This is the heart of A.
 | Legal identity, address, email, approved claims | Confirmed | [`docs/company/facts-register.md`](../company/facts-register.md) |
 | Four launch services and French labels | Confirmed | [#2](https://github.com/mustaphaelou/hay2010website/issues/2) |
 | Page tree, nav and homepage order | Confirmed | [#2](https://github.com/mustaphaelou/hay2010website/issues/2) |
+| **HAY2010 logo — source raster** | 500 × 500 transparent WebP, artwork 448 × 335, exact colours sampled | Owner, 2026-11-08; [`assets/hay2010-logo-source.webp`](assets/hay2010-logo-source.webp) |
+| **Logo web exports (stopgap)** | Trimmed full-colour raster + one-colour white approximation in `public/brand/` | Derived from the source; see `public/brand/README.md` |
 | Domain `hay2010.ma` | Owned; DNS delegation broken | [#15](https://github.com/mustaphaelou/hay2010website/issues/15) |
 | Next.js 16 repo, Tailwind 4, shadcn base-maia, Hugeicons | In place | current repo |
 | Poppins licence | OFL, free to self-host | Google Fonts |
@@ -139,14 +163,16 @@ This is the heart of A.
 
 | Asset | Have | Need | Who provides | Gate |
 |---|---|---|---|---|
-| **Logo — master and variants** | Nothing usable; current site uses the Porto demo logo | SVG master, horizontal/stacked/reversed/mono, favicon 16/32/48, apple 180, app 512 | Design/build; owner approves | Written ownership assignment before publication |
+| **Logo — vector master** | 500 px raster; no vector | Manual vector redraw (or the original AI/SVG/EPS/PDF), exact colours, clean edges | Brand designer/illustrator; owner supplies source | Owner approves the redraw; ownership confirmed |
+| **Logo — variants** | Temporary white raster approximation | One-colour white/ink stencil, monochrome print, favicon crop, social avatar | Brand designer; build exports | Approval before publication |
+| **Logo — header/footer exports** | 468 × 355 WebP, usable at 52 px | 1×/2× WebP/AVIF at 44/52/56 px, retina-clean | Build | Vector preferred; do not upscale the raster |
 | **Photography — hero** | Nothing | 1 dusk wide (≥2400 px) + 4:5 mobile crop + 16:9 OG crop | Commissioned photographer; owner arranges access | Licence + site authorization + text-overlay test |
 | **Photography — sections** | Nothing | 4–6 frames: intro, one per service, one detail | Photographer / owner archive | Licence; releases for any person |
 | **Photography — réalisations** | Nothing | 0–5 approved site photos; optional | Owner, with client permission | Written client permission; fallback `Références sur demande` |
 | **Photography — careers** | Nothing | 0–2 team/site frames; optional | Photographer | Model releases |
 | **Service icons** | Nothing | 4 custom line icons, 24 px | Design/build | — |
 | **Utility icons** | Hugeicons installed | 8 glyphs, matched stroke | Build | Verify licence; prefer inline SVG |
-| **Favicon / app icon** | Default Next.js icon | 16/32/48/180/512 | Build from the mark | — |
+| **Favicon / app icon** | Default Next.js icon | 16/32/48/180/512, tested with the badge crop | Build + designer | Vector source; no mush at 16 px |
 | **Open Graph image** | Nothing | 1200×630 template, typographic or photo | Build | Photo licence if used |
 | **Page copy** | Approved facts + sample prototype copy | Final French copy for all launch pages | Build; owner approves | Must follow the facts register; no gated claims |
 | **ONEE agrément block** | Evidence on the ONEE list; certificate pending | Certificate scan and exact scope/dates | Owner | Publish only after the certificate is filed |
@@ -156,8 +182,9 @@ This is the heart of A.
 
 ### 3.3 Who does what
 
-- **Owner:** confirms no legacy logo exists; approves the mark; books/authorises the photo shoot; supplies the ONEE certificate; approves final copy; signs off any client or staff image.
-- **Design/build:** logo and icon set; page templates and tokens; photo brief and art direction; retouching direction; implementation and accessibility checks.
+- **Owner:** sends the logo source file and confirms ownership; approves the vector redraw and whether `.Sarl` stays in the web badge; approves the accent alignment; books/authorises the photo shoot; supplies the ONEE certificate; approves final copy.
+- **Brand designer/illustrator:** vector redraw of the supplied badge, one-colour stencil, favicon reduction, social avatar; no redesign unless separately briefed.
+- **Design/build:** page templates and tokens; logo exports and integration; photo brief and art direction; retouching direction; implementation and accessibility checks.
 - **Photographer:** shoot, colour-grade, deliver RAW + web crops, licence and releases.
 - **Legal review:** release and licence wording; image rights under loi 09-08; site authorisation for infrastructure. Not legal advice — route through [#10](https://github.com/mustaphaelou/hay2010website/issues/10).
 - **Hosting:** image optimisation and CDN per [#7](https://github.com/mustaphaelou/hay2010website/issues/7).
@@ -168,13 +195,14 @@ This is the heart of A.
 
 | Item | Why | Replace with |
 |---|---|---|
+| The supplied 500 px raster as a production master | Too small for retina/OG/print; compressed | Vector redraw, or use the raster only at ≤52 px until the vector exists |
+| The temporary one-colour white raster | Rough stencil, not the final artwork; the arc/point are approximated | Vector one-colour version |
 | The prototype dusk scene (`HeroScene` SVG) | It is a drawn placeholder, not a photograph | Licensed/owned hero photograph, or the typographic hero fallback |
 | The gradient “photo” block in the specimen | Same | A real image or no image |
-| The prototype logo | Proposal only, ownership not assigned | Approved, assigned final artwork |
 | Prototype copy (hero subline, section text) | Sample copy, not reviewed against the register | Approved French copy |
 | “Un portefeuille à documenter” block | Internal placeholder | `Références sur demande.` or approved case studies |
 | Every image currently on `hay2010.ma` | Porto Construction demo assets; rights not established for HAY2010 | New photography or nothing |
-| The Porto `ct-logo*.png` | Third-party demo logo | The new HAY2010 logo |
+| The Porto `ct-logo*.png` | Third-party demo logo | The supplied HAY2010 badge |
 | Any stock construction photo | Repeats the problem A is meant to solve | Owned/commissioned photography |
 
 Staging may show a placeholder with a visible “visuel provisoire” tag. Production may not.
@@ -214,8 +242,8 @@ Staging may show a placeholder with a visible “visuel provisoire” tag. Produ
 
 ## 6. Sequence and launch gates
 
-1. **Now:** owner confirms there is no legacy logo; approves A and the logo concept.
-2. **Week 1:** finalise logo files and ownership; request photo quotes; request site authorisations (lead time is the risk).
+1. **Now:** owner sends the logo source file (AI/SVG/EPS/PDF) if it exists; confirms ownership; approves the vector redraw, the `.Sarl` decision and the orange accent.
+2. **Week 1:** vectorise the badge and produce variants; request photo quotes; request site authorisations (lead time is the risk).
 3. **Week 1–2:** build the tokens and components; start [#13](https://github.com/mustaphaelou/hay2010website/issues/13) with the typographic hero fallback.
 4. **Week 2–3:** shoot; selects and grade; test text overlay on desktop and mobile.
 5. **Week 3–4:** integrate images; write final copy against the facts register; accessibility and performance QA.
@@ -223,7 +251,8 @@ Staging may show a placeholder with a visible “visuel provisoire” tag. Produ
 
 **Launch gates**
 
-- [ ] Logo ownership assigned in writing; no Porto asset remains in the repo or the site.
+- [ ] Logo ownership confirmed in writing; vector master and variants delivered; no Porto asset remains in the repo or the site.
+- [ ] Favicon tested at 16 px; no unreadable badge.
 - [ ] At least the hero image is licensed and tested with the headline; otherwise the typographic hero is approved.
 - [ ] Every published photo has a licence; every identifiable person has a release; every site has an authorisation.
 - [ ] No client name or logo without written permission; réalisations fallback is in place.
@@ -238,11 +267,11 @@ Staging may show a placeholder with a visible “visuel provisoire” tag. Produ
 
 | Ticket | What it receives |
 |---|---|
-| [#13](https://github.com/mustaphaelou/hay2010website/issues/13) homepage prototype | Direction A tokens, section rhythm, hero fallback, pill/button rules |
-| [#5](https://github.com/mustaphaelou/hay2010website/issues/5) content model | Asset fields: image, alt, caption, credit, rights status, focal point, gate |
+| [#13](https://github.com/mustaphaelou/hay2010website/issues/13) homepage prototype | Direction A tokens, 52 px badge in the header, section rhythm, hero fallback, pill/button rules |
+| [#5](https://github.com/mustaphaelou/hay2010website/issues/5) content model | Asset fields: image, alt, caption, credit, rights status, focal point, gate; logo source/derivatives |
 | [#6](https://github.com/mustaphaelou/hay2010website/issues/6) réalisations | Photography only with permissions; otherwise `Références sur demande` |
-| [#10](https://github.com/mustaphaelou/hay2010website/issues/10) legal | Image rights and release wording; photo credits not required on page |
-| [#11](https://github.com/mustaphaelou/hay2010website/issues/11) SEO | OG template, favicon, alt text; do not add `logo` to JSON-LD until ownership is assigned |
+| [#10](https://github.com/mustaphaelou/hay2010website/issues/10) legal | Image rights and release wording; logo ownership; photo credits not required on page |
+| [#11](https://github.com/mustaphaelou/hay2010website/issues/11) SEO | OG template, favicon, alt text; do not add `logo` to JSON-LD until ownership is confirmed |
 | [#7](https://github.com/mustaphaelou/hay2010website/issues/7) hosting | Image sizes, formats, CDN/cache policy |
 | [#15](https://github.com/mustaphaelou/hay2010website/issues/15) DNS | Canonical URL; keep MX records |
 
@@ -250,19 +279,31 @@ Staging may show a placeholder with a visible “visuel provisoire” tag. Produ
 
 ## 8. Owner actions
 
-1. **Check for a legacy logo** — old files, invoices, vehicle, site sign. If one exists, send it before the logo is finalised.
-2. **Approve the logo concept** (or ask for one round of revisions).
-3. **Approve the photo brief and budget**, and nominate the sites; authorisations take longer than the shoot.
-4. **Send the ONEE certificate** so the agrément block can be prepared and gated.
-5. **Confirm the contact position**: email only, no phone, no social, no recruitment mailbox.
-6. **Approve the final French copy** against the facts register.
+1. **Send the logo source file** — AI, SVG, EPS or PDF — and confirm in writing that SOCIETE HAY 2010 owns the artwork. If the designer still holds rights, get an assignment or a broad licence.
+2. **Approve the vector redraw** and decide whether `.Sarl` stays in the web badge (recommended: keep for v1).
+3. **Approve the orange accent** `#E97425`, aligned to the logo. The earlier amber `#F2A33C` is retired; if you prefer it, it is a one-token change, but the logo's orange is the brand's actual orange.
+4. **Approve the photo brief and budget**, and nominate the sites; authorisations take longer than the shoot.
+5. **Send the ONEE certificate** so the agrément block can be prepared and gated.
+6. **Confirm the contact position**: email only, no phone, no social, no recruitment mailbox.
+7. **Approve the final French copy** against the facts register.
 
-**Open question:** the accent is sodium amber `#F2A33C`, not the Porto orange `#FF3A2D`. The current orange has no HAY2010 equity — it belongs to the demo theme — and amber tells the public-lighting story. If the owner wants continuity with the current site instead, the accent token can be swapped, but it should be a conscious brand choice, not an inheritance.
+**Open question:** keep the supplied badge exactly as it is (including `2010.Sarl`), or produce a web-only reduction without `.Sarl` for small sizes? Recommendation: keep the supplied mark for v1; revisit only if the fine text proves illegible at 44–52 px on real screens.
 
 ---
 
 ## 9. Prototype provenance
 
 - All three directions: branch `prototype/brand-direction`, `app/prototype/brand` (`?variant=a|b|c`), plus `docs/brand/assets/` screenshots.
-- The prototype is throwaway: no tests, no persistence, no production copy. `main` keeps only this decision and the screenshots.
 - The winning direction is A. B and C remain on the branch as rejected alternatives and as evidence of the comparison.
+- The prototype was first built with a proposed “two poles/cable/light” mark. After the owner supplied the real badge, the prototype header/footer/specimen were updated to the badge (52 px header, paper chip footer, one-colour specimen). The proposed mark is withdrawn.
+- The supplied source is `docs/brand/assets/hay2010-logo-source.webp`; the stopgap web exports are `public/brand/hay2010-logo.webp` and `hay2010-logo-white.webp`, documented in `public/brand/README.md`.
+- The prototype is throwaway: no tests, no persistence, no production copy. `main` keeps the decision, the source logo, the exports and the screenshots — not the prototype route.
+
+---
+
+## 10. Amendment log
+
+| Date | Change | Reason |
+|---|---|---|
+| 2026-11-08 | Direction A chosen; proposed logo mark specified | Ticket #4 |
+| 2026-11-08 | Supplied HAY2010 badge replaces the proposed mark; accent changes from amber `#F2A33C` to logo orange `#E97425`; logo production (vector/variants/ownership) added to the asset plan | Owner supplied the existing logo after the decision |
