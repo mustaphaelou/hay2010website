@@ -47,4 +47,4 @@ Photography is the critical path, not polish. The plan is a two-visit shoot at 2
 
 ### Prototype
 
-The three variants live on branch `prototype/brand-direction` (route `app/prototype/brand?variant=a|b|c`); the same screenshots are in [`docs/brand/assets/`](../../../docs/brand/assets/). `main` keeps only the decision, not the prototype route.
+The three variants live on branch `prototype/brand-direction` (route `/prototype/brand?variant=a|b|c` (files in `app/prototype/brand`)); the same screenshots are in [`docs/brand/assets/`](../../../docs/brand/assets/). `main` keeps only the decision, not the prototype route.

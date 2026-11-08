@@ -2,7 +2,7 @@
 
 **Status:** resolved 2026-11-08 — ticket [#4](https://github.com/mustaphaelou/hay2010website/issues/4).
 **Chosen direction:** **A — Lumière** (editorial monochrome, warm amber accent, Poppins, documentary photography).
-**Prototype:** branch `prototype/brand-direction`, route `app/prototype/brand?variant=a|b|c`; screenshots in [`docs/brand/assets/`](assets/).
+**Prototype:** branch `prototype/brand-direction`, route `/prototype/brand?variant=a|b|c` (files in `app/prototype/brand`); screenshots in [`docs/brand/assets/`](assets/).
 **Scope:** the website brand only. Stationery, signage, vehicle livery and a full identity manual are out of scope. French only, per the page tree ([#2](https://github.com/mustaphaelou/hay2010website/issues/2)).
 
 ---
