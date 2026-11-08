@@ -30,6 +30,7 @@ A build-ready specification for the HAY2010 French corporate website, adapted fr
 - [Establish the publishable company facts and legal identity](https://github.com/mustaphaelou/hay2010website/issues/3): Official registries confirm **SOCIETE HAY 2010 SARL, RC 87305 (Rabat), ICE 001459327000056, capital 15 000 000 MAD, registered 26/09/2011, active**. RC 517 belongs to a radiée El Kelaâ namesake. Publishable: owner-confirmed address (Local N° 21, Hay El Manzeh, Hay Er-Riad), gérant **name only** (Rahhal Essamlali), "plus de 10 ans d'expérience" (no founding year), ONEE **EE HTA-BT** agrément (certificate pending), and `ste.hay2010@gmail.com` as the only contact. Gated: the 2004 claim, old RC/capital/addresses, generic "entreprise agréée", client names/logos, employee photos, phone/recruitment email/social accounts, and CNDP receipt numbers (no filing found). Full register: [`docs/company/facts-register.md`](../../docs/company/facts-register.md).
 - [Research hosting, domain and deployment options](https://github.com/mustaphaelou/hay2010website/issues/7): Recommends Vercel Pro + repair DNS at HeberjaHiz (remove the dead Cloudflare NS), keep email; Cloudflare Workers/vinext is the beta alternative; the current WordPress site is a placeholder; the split DNS delegation must be fixed first.
 - [Define the page tree, navigation and homepage section order](https://github.com/mustaphaelou/hay2010website/issues/2): Six-item desktop nav with no Accueil link (logo = home) — L'Entreprise, Nos Métiers, Réalisations, Carrières, Médias, Contact; one-page Nos Métiers with four anchored services; flat French slugs; static hero and a homepage ending on a contact CTA; Médias is a gated menu group; no search, newsletter, certifications page or job detail pages at launch.
+- [Choose the brand direction and asset plan](https://github.com/mustaphaelou/hay2010website/issues/4): Direction **A — Lumière** — ink/paper/amber, Poppins, full-bleed documentary photography, thin rules, pill CTAs. No existing HAY2010 logo (the current site uses the Porto demo logo); photography is the critical path, with a two-visit shoot and a typographic hero fallback. Full system and asset checklist: [`docs/brand/brand-direction.md`](../../docs/brand/brand-direction.md).
 
 ## Not yet specified
 
@@ -39,8 +40,8 @@ A build-ready specification for the HAY2010 French corporate website, adapted fr
 - **Careers page copy and current job listings** — waits on the content model and application flow; the single-page structure is decided.
 - **Legal page copy and CNDP receipt numbers** — the identity block is confirmed; copy can proceed without a receipt line. CNDP receipts and form gating still wait on #14, and the address/gérant need RC-extract re-verification before launch.
 - **Retention schedule and data-handling procedures** — waits on the forms, hosting and CNDP decisions.
-- **Component inventory and design tokens** — waits on the brand direction and homepage prototype.
-- **Accessibility and performance acceptance criteria** — waits on the design system and prototype.
+- **Component inventory and design tokens** — the brand system (palette, type, icons, motion) is decided in [#4](https://github.com/mustaphaelou/hay2010website/issues/4); component states and token implementation land with the homepage prototype ([#13](https://github.com/mustaphaelou/hay2010website/issues/13)).
+- **Accessibility and performance acceptance criteria** — contrast, alt-text and reduced-motion rules are set in [#4](https://github.com/mustaphaelou/hay2010website/issues/4); the measurable targets wait on the homepage prototype.
 - **Maintenance, ownership and post-launch support** — waits on hosting and content model.
 
 ## Out of scope
@@ -53,5 +54,5 @@ A build-ready specification for the HAY2010 French corporate website, adapted fr
 - Lamalif-only pages: Concours Madinaty, STARS IN THE PLACE, Lamalif Le Mag.
 - Custom CRM/ERP integration.
 - Full brand identity system beyond the web (stationery, signage, vehicle livery).
-- Photo/video production; this effort covers asset sourcing and selection only.
+- Photo/video production by the build team. Commissioning, art direction, licensing and selection are in scope for #4; video production is out.
 - Legal counsel; legal pages are drafted from research, not legal advice.
