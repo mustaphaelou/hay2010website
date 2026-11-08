@@ -57,7 +57,8 @@ Resolved 2026-11-08 by an evidence session with the owner. The full register, ap
 **What stays out of the site**
 
 - Founding year 2004 or 2011; "créée en 2004"; "depuis 2004"/"depuis 2011".
-- RC 517, the 6M/4.7M/500k capital figures, the old addresses, the IF.
+- RC 517, the 6M/4.7M/500k capital figures, the old addresses.
+- **IF 6580342** — it appears only on a third-party card (Welipro); no DGI document was obtained, and loi 5-96 does not require it in the mentions légales. It stays out unless the owner supplies a DGI document and a reason to publish it.
 - Generic "entreprise agréée" and any certification other than ONEE (until the certificate is filed).
 - The gérant's photo, quote or biography; any `/mot-du-gerant` page.
 - Client names, client logos, employee photos and testimonials — **no written permissions exist** (owner, 2026-11-08). Use **« Références sur demande »**.
