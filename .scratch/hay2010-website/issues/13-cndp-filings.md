@@ -16,6 +16,7 @@ The legal research ([Research Moroccan legal and consent requirements for the si
 - **Transfers abroad:** F-118 for each US processor (Vercel/Cloudflare, GA4, Google Fonts, US email API) after the base processing is approved; check the adequacy list for the EU/EEA, UK, Switzerland and Canada.
 - **Newsletter:** D-940-2025 and prior consent if the newsletter ships.
 - **Controller details:** data-controller contact, rights contact, retention schedule, security measures, recipient categories.
+- **Rights procedure:** named owner, `donnees@` mailbox, identity check, 10-day rectification SLA, and a log.
 - **Local counsel review:** the legal note flags 10 points that need a Moroccan avocat.
 
 Record each filing's form, date, receipt/authorization number, owner and status in the answer. Flag any filing that cannot be completed before launch and the corresponding feature cut (for example, careers form delayed until F-113 is granted).

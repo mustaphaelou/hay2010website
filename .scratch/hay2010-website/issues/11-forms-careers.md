@@ -16,4 +16,7 @@ Decide:
 - Whether to use a form backend (Resend + route handler, Formspree, Cloudflare Worker, other) or mailto.
 - Success/error states and accessibility.
 - Privacy consent and data-retention text on each form; do not copy lamalif's blank CNDP receipt number.
+- Form-level CNDP notice (purpose, recipients, retention, rights, receipt number) and an unticked consent checkbox linking to the privacy policy.
+- Do not collect CNI, photo, health, marital-status or religion data on the application form.
+- CV upload: private storage, access control, malware scan, size/type limits, scheduled deletion.
 - Notification/CRM needs (email only vs spreadsheet/CRM).

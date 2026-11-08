@@ -11,7 +11,7 @@ What are the SEO and metadata rules for the site?
 Decide:
 
 - Title/description patterns per page (lamalif uses "Page | Company").
-- Canonical URLs, sitemap.xml, robots.txt, trailing-slash policy.
+- Canonical host (apex vs `www`), trailing-slash policy, canonical URLs, sitemap.xml and robots.txt, aligned with the hosting redirect map.
 - Open Graph/Twitter images and default share card.
 - JSON-LD: Organization/LocalBusiness/ElectricalContractor, address, area served, services, sameAs social links.
 - French keyword targets for each service (éclairage public, lignes MT, postes de transformation, CFO/CFA, solaire) without keyword stuffing.
