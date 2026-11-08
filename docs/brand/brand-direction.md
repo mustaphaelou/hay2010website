@@ -2,7 +2,7 @@
 
 **Status:** resolved 2026-11-08 — ticket [#4](https://github.com/mustaphaelou/hay2010website/issues/4).
 **Chosen direction:** **A — Lumière** (editorial monochrome, warm accent, Poppins, documentary photography), with the **owner-supplied HAY2010 badge**.
-**Amended 2026-11-08:** the owner supplied the existing logo after the direction was chosen. The proposed mark is withdrawn; the real badge is the brand mark, and the site accent is aligned to its orange. Details in §2.1, §2.2 and §10.
+**Amended 2026-11-08:** the owner supplied the existing logo after the direction was chosen. The proposed mark is withdrawn; the real badge is the brand mark, and the site accent is aligned to its orange. A vector v1 was traced from the supplied raster (see §2.1 and `public/brand/`). Details in §2.1, §2.2 and §10.
 **Prototype:** branch `prototype/brand-direction`, route `/prototype/brand?variant=a|b|c` (files in `app/prototype/brand`); screenshots in [`docs/brand/assets/`](assets/).
 **Scope:** the website brand only. Stationery, signage, vehicle livery and a full identity manual are out of scope. French only, per the page tree ([#2](https://github.com/mustaphaelou/hay2010website/issues/2)).
 
@@ -51,14 +51,14 @@ A depends on photography. There is currently no owned HAY2010 photography, and t
 | Red | `#DE212E` |
 | Lettering | `#FFFFFF` |
 
-The raster is compressed and only 500 px on the long edge. It is usable at the 52 px header size and is a fine reference, but it is not a production master for retina, Open Graph or print.
+The raster is compressed and only 500 px on the long edge. It is the reference. A **vector v1** was traced from it on 2026-11-08 — full-colour, white and ink SVGs in `public/brand/`. It is faithful at 468 px, 52 px and 32 px; it is not print-approved until a designer reviews the curves and lettering at 400 %.
 
-**Do not redesign it in this project.** The mark has existing equity and appears on the company's site, documents and probably signage. The job here is to **productionise** it: vector redraw, clean edges, exact colours, variants. A redesign is a separate decision that needs the owner's brief.
+**Do not redesign it in this project.** The mark has existing equity and appears on the company's site, documents and probably signage. The job here is to **productionise** it: vector redraw, clean edges, exact colours, variants. The vector v1 is that productionised form; the remaining work is review, favicon/app icons, the OG template and a print master. A redesign is a separate decision that needs the owner's brief.
 
 - **Header:** the badge at 52 px high, with no adjacent wordmark (the name is inside the badge). The header is 76 px high; the badge has 12 px of air above and below. Do not shrink below 44 px on desktop; at that size `2010.Sarl` stops being legible.
 - **Footer:** full-colour badge on a paper `#F7F6F1` chip (8 px padding), or a one-colour white stencil on ink when no chip is wanted. The prototype tests both.
-- **One-colour version:** the white stencil used in the prototype is a raster approximation — the badge becomes white, the lettering/arc/point are cut out so the ink shows through. The final one-colour artwork must be drawn in vector, not auto-traced.
-- **Files to produce:** primary vector (SVG/AI). The supplied composition is the lockup; do not invent a horizontal variant unless the owner asks. Produce: full-colour master, full-colour web exports (1×/2×), one-colour white/ink stencil, favicon, Apple touch icon, app icon, OG/social avatar template, and a monochrome print version.
+- **One-colour version:** the white stencil is a traced vector (v1): the badge becomes white and the lettering/arc/point are transparent cut-outs so the background shows through. The same geometry serves as the ink version. Review the fine edges before print.
+- **Files:** the supplied composition is the lockup; do not invent a horizontal variant unless the owner asks. **Produced:** full-colour SVG, one-colour white SVG, one-colour ink SVG, and a trimmed raster fallback. **Remaining:** designer review of the traced curves, favicon crop, Apple touch icon, app icon, OG/social avatar template, and a print master.
 - **Favicon:** the full badge at 16/32 px is too dense. Test a crop of the building + arc + `HAY` (without `2010.Sarl`) at 32 px, and a simplified 16 px reduction; do not ship a mush of the full badge.
 - **`.Sarl` in the mark:** the badge includes the legal form. Keep it for v1; a web-only reduction without `.Sarl` would be cleaner at small sizes but changes the existing mark, so it is an owner decision, not a designer shortcut. The legal pages and footer legal line still use `SOCIETE HAY 2010` ([#3](https://github.com/mustaphaelou/hay2010website/issues/3)).
 - **Ownership:** the owner supplied the file, but written confirmation is still needed that **SOCIETE HAY 2010** owns the artwork (or holds a licence from the designer). If a source AI/SVG/EPS/PDF exists, get it — do not redraw from the raster unless the source is lost.
@@ -151,8 +151,8 @@ This is the heart of A.
 | Legal identity, address, email, approved claims | Confirmed | [`docs/company/facts-register.md`](../company/facts-register.md) |
 | Four launch services and French labels | Confirmed | [#2](https://github.com/mustaphaelou/hay2010website/issues/2) |
 | Page tree, nav and homepage order | Confirmed | [#2](https://github.com/mustaphaelou/hay2010website/issues/2) |
-| **HAY2010 logo — source raster** | 500 × 500 transparent WebP, artwork 448 × 335, exact colours sampled | Owner, 2026-11-08; [`assets/hay2010-logo-source.webp`](assets/hay2010-logo-source.webp) |
-| **Logo web exports (stopgap)** | Trimmed full-colour raster + one-colour white approximation in `public/brand/` | Derived from the source; see `public/brand/README.md` |
+| **HAY2010 logo — source + vector v1** | 500 × 500 transparent WebP, artwork 448 × 335, exact colours sampled; SVG v1 full-colour, white and ink | Owner, 2026-11-08; [`assets/hay2010-logo-source.webp`](assets/hay2010-logo-source.webp); `public/brand/*.svg` |
+| **Logo web exports** | SVGs + trimmed full-colour raster fallback in `public/brand/` | Derived from the source; see `public/brand/README.md` |
 | Domain `hay2010.ma` | Owned; DNS delegation broken | [#15](https://github.com/mustaphaelou/hay2010website/issues/15) |
 | Next.js 16 repo, Tailwind 4, shadcn base-maia, Hugeicons | In place | current repo |
 | Poppins licence | OFL, free to self-host | Google Fonts |
@@ -163,9 +163,9 @@ This is the heart of A.
 
 | Asset | Have | Need | Who provides | Gate |
 |---|---|---|---|---|
-| **Logo — vector master** | 500 px raster; no vector | Manual vector redraw (or the original AI/SVG/EPS/PDF), exact colours, clean edges | Brand designer/illustrator; owner supplies source | Owner approves the redraw; ownership confirmed |
-| **Logo — variants** | Temporary white raster approximation | One-colour white/ink stencil, monochrome print, favicon crop, social avatar | Brand designer; build exports | Approval before publication |
-| **Logo — header/footer exports** | 468 × 355 WebP, usable at 52 px | 1×/2× WebP/AVIF at 44/52/56 px, retina-clean | Build | Vector preferred; do not upscale the raster |
+| **Logo — vector master** | Vector v1 traced from the 500 px raster: full-colour, white, ink | Designer review/cleanup, print master, approval | Brand designer/illustrator; build exports | Owner approves; ownership confirmed |
+| **Logo — variants** | Full-colour, white and ink SVGs | Favicon crop, Apple/app icons, social avatar, monochrome print | Designer; build exports | Approval before publication |
+| **Logo — header/footer exports** | SVGs + 468 × 355 WebP fallback | Test at 44/52/56 px; raster only where SVG is not accepted | Build | Use SVG; do not upscale the raster |
 | **Photography — hero** | Nothing | 1 dusk wide (≥2400 px) + 4:5 mobile crop + 16:9 OG crop | Commissioned photographer; owner arranges access | Licence + site authorization + text-overlay test |
 | **Photography — sections** | Nothing | 4–6 frames: intro, one per service, one detail | Photographer / owner archive | Licence; releases for any person |
 | **Photography — réalisations** | Nothing | 0–5 approved site photos; optional | Owner, with client permission | Written client permission; fallback `Références sur demande` |
@@ -195,8 +195,8 @@ This is the heart of A.
 
 | Item | Why | Replace with |
 |---|---|---|
-| The supplied 500 px raster as a production master | Too small for retina/OG/print; compressed | Vector redraw, or use the raster only at ≤52 px until the vector exists |
-| The temporary one-colour white raster | Rough stencil, not the final artwork; the arc/point are approximated | Vector one-colour version |
+| The 500 px source raster used above 52 px | It is the reference, not the master; compressed | The SVG master; raster only as a fallback at ≤52 px |
+| The traced curves used for print without review | Faithful at web sizes, not print-approved | Designer review/cleanup before print or large format |
 | The prototype dusk scene (`HeroScene` SVG) | It is a drawn placeholder, not a photograph | Licensed/owned hero photograph, or the typographic hero fallback |
 | The gradient “photo” block in the specimen | Same | A real image or no image |
 | Prototype copy (hero subline, section text) | Sample copy, not reviewed against the register | Approved French copy |
@@ -243,7 +243,7 @@ Staging may show a placeholder with a visible “visuel provisoire” tag. Produ
 ## 6. Sequence and launch gates
 
 1. **Now:** owner sends the logo source file (AI/SVG/EPS/PDF) if it exists; confirms ownership; approves the vector redraw, the `.Sarl` decision and the orange accent.
-2. **Week 1:** vectorise the badge and produce variants; request photo quotes; request site authorisations (lead time is the risk).
+2. **Week 1:** review and approve the traced vector; produce favicon/app icons; request photo quotes and site authorisations (lead time is the risk).
 3. **Week 1–2:** build the tokens and components; start [#13](https://github.com/mustaphaelou/hay2010website/issues/13) with the typographic hero fallback.
 4. **Week 2–3:** shoot; selects and grade; test text overlay on desktop and mobile.
 5. **Week 3–4:** integrate images; write final copy against the facts register; accessibility and performance QA.
@@ -279,8 +279,8 @@ Staging may show a placeholder with a visible “visuel provisoire” tag. Produ
 
 ## 8. Owner actions
 
-1. **Send the logo source file** — AI, SVG, EPS or PDF — and confirm in writing that SOCIETE HAY 2010 owns the artwork. If the designer still holds rights, get an assignment or a broad licence.
-2. **Approve the vector redraw** and decide whether `.Sarl` stays in the web badge (recommended: keep for v1).
+1. **Send a higher-resolution original if one exists** — the supplied 500 px file is the reference; otherwise the traced SVG v1 is the working master. Confirm in writing that SOCIETE HAY 2010 owns the artwork; if the designer still holds rights, get an assignment or a broad licence.
+2. **Approve the traced vector v1** (or ask for a designer cleanup) and decide whether `.Sarl` stays in the web badge (recommended: keep for v1).
 3. **Approve the orange accent** `#E97425`, aligned to the logo. The earlier amber `#F2A33C` is retired; if you prefer it, it is a one-token change, but the logo's orange is the brand's actual orange.
 4. **Approve the photo brief and budget**, and nominate the sites; authorisations take longer than the shoot.
 5. **Send the ONEE certificate** so the agrément block can be prepared and gated.
@@ -296,7 +296,7 @@ Staging may show a placeholder with a visible “visuel provisoire” tag. Produ
 - All three directions: branch `prototype/brand-direction`, `app/prototype/brand` (`?variant=a|b|c`), plus `docs/brand/assets/` screenshots.
 - The winning direction is A. B and C remain on the branch as rejected alternatives and as evidence of the comparison.
 - The prototype was first built with a proposed “two poles/cable/light” mark. After the owner supplied the real badge, the prototype header/footer/specimen were updated to the badge (52 px header, paper chip footer, one-colour specimen). The proposed mark is withdrawn.
-- The supplied source is `docs/brand/assets/hay2010-logo-source.webp`; the stopgap web exports are `public/brand/hay2010-logo.webp` and `hay2010-logo-white.webp`, documented in `public/brand/README.md`.
+- The supplied source is `docs/brand/assets/hay2010-logo-source.webp`; the vector v1 (full-colour, white, ink) was traced from it with VTracer on 2026-11-08. Web exports are in `public/brand/`, documented in `public/brand/README.md`.
 - The prototype is throwaway: no tests, no persistence, no production copy. `main` keeps the decision, the source logo, the exports and the screenshots — not the prototype route.
 
 ---
@@ -307,3 +307,4 @@ Staging may show a placeholder with a visible “visuel provisoire” tag. Produ
 |---|---|---|
 | 2026-11-08 | Direction A chosen; proposed logo mark specified | Ticket #4 |
 | 2026-11-08 | Supplied HAY2010 badge replaces the proposed mark; accent changes from amber `#F2A33C` to logo orange `#E97425`; logo production (vector/variants/ownership) added to the asset plan | Owner supplied the existing logo after the decision |
+| 2026-11-08 | Vector v1 traced from the supplied raster (full-colour, white, ink); plan updated from “vector needed” to “review/approve the trace” | Owner has only the 500 px image; no source vector exists |
