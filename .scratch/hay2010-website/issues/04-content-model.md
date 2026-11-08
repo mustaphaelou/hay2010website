@@ -14,6 +14,7 @@ Decide:
 - Which sections change often enough to justify a CMS: news posts, job openings, project references, media gallery, homepage highlights.
 - Who edits the site after launch, how often, and what approval is needed.
 - Whether the site needs a newsletter, site search or a blog at all; if yes, which provider.
+- If actualités/blog is in scope, whether loi 88-13's electronic-press obligations apply (publication director, legal deposit) and who would be named.
 - The content model for services, projects, news posts, job openings and legal pages: fields, relationships, media.
 - A migration path if we start static and add a CMS later.
 

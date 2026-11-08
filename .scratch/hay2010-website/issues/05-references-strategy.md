@@ -16,6 +16,6 @@ Decide:
 - How to present the verified Khemisset contract and any other confirmed work.
 - Whether to include a filterable grid like lamalif's, a simpler case-study list, or a "références sur demande" section.
 - What imagery to use when no site photos exist (illustrative, diagrams, stock, or no image).
-- The legal/permission checklist for client names, logos and photos.
+- The legal/permission checklist: client names and logos need the trademark owner's permission (loi 17-97 arts. 154/201); employee photos need specific written authorization; testimonials need consent; project photos need the photographer/owner's permission.
 
 The answer should define the page format, the minimum number of references needed for launch, and the fallback if permissions do not arrive.

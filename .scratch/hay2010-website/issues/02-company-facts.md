@@ -18,5 +18,7 @@ This ticket is the manual work that must happen before the copy, footer and lega
 - Confirm which certifications/agréments may be claimed, with proof.
 - Confirm canonical contact details: phone, contact email, recruitment email, social accounts.
 - List client references we may name publicly, with written permission.
+- Confirm written authorizations for employee photos, client logos and testimonials; client logos also need the trademark owner's permission.
+- Confirm the data-controller contact and whether any CNDP filing/receipt already exists for the WordPress site.
 
 Record each confirmed fact with its source and date in the answer. Anything not confirmed stays out of the site.
