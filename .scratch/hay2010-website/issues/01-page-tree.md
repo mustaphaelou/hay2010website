@@ -122,6 +122,14 @@ Old `/wp-json/`, `/xmlrpc.php`, `/wp-admin/` are disabled/404 at the edge, not r
 - Homepage sections as separate components: Hero, IntroSplit, ServicesBand, ReferencesTeaser, CareersTeaser, ContactCta.
 - Keep per-page copy, metadata (#11), forms (#12), analytics/consent (#10) and facts (#3) out of this ticket.
 
+### Amendment 2026-11-08 (company facts, #3)
+
+- **Footer column 1:** logo, one-line positioning, `Rabat — Maroc`, `ste.hay2010@gmail.com`. **No phone, no recruitment email and no social icons** — only the email was confirmed. Add any of them later only if #3 is reopened.
+- **`Mot du gérant` is dropped:** the gérant is confirmed for a name-only line (`Gérant : Rahhal Essamlali`), with no photo or quote. Keep `/mot-du-gerant` out of the nav, footer and sitemap.
+- **Carrières:** applications go to `ste.hay2010@gmail.com` until a recruitment mailbox is confirmed; no CV upload before #12/#14.
+- **Réalisations** launches on `Références sur demande`; no client names or logos (no permissions).
+- **Legal pages** use the identity block in [`docs/company/facts-register.md`](../../../docs/company/facts-register.md).
+
 ### Dependencies / handed to other tickets
 
 - #3 — publishable facts, gérant authorization, certifications, contact details, social accounts.
