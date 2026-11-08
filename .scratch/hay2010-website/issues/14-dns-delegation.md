@@ -10,6 +10,8 @@ Who controls hay2010.ma's registrar and DNS, and how do we fix the split delegat
 
 The hosting research found that the `.ma` parent zone delegates hay2010.ma to four nameservers: two Cloudflare (`aaron.ns.cloudflare.com`, `khloe.ns.cloudflare.com`) and two HeberjaHiz (`server116ns1.heberjahiz.com`, `server116ns2.heberjahiz.com`). The Cloudflare authoritative servers refuse the zone; the HeberjaHiz servers answer authoritatively (zone serial `2026091001`, NS `server134ns1/2`, A `159.8.122.144`). Resolvers can therefore intermittently SERVFAIL.
 
+> **Deferred:** this does not block the first deployment. It is required before the public launch on hay2010.ma; see [Plan the public launch and domain cutover](15-public-launch.md).
+
 This ticket is the manual work needed before the hosting decision:
 
 - Identify who controls the NINDO HOST registrar account (registrar per WHOIS; domain created 2021-03-15, expires 2027-03-15).

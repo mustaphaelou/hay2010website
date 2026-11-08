@@ -1,23 +1,23 @@
-# Decide hosting, domain, data residency and cutover plan
+# Decide the first deployment target and staging URL
 
 Type: grilling
 Status: open
-Blocked by: 06, 14
+Blocked by: 06
 
 ## Question
 
-Given the hosting research, where will the site run, where will its data live, who owns the domain/DNS, and what is the cutover plan?
+Given the hosting research, what is the first deployment target and staging URL, with the domain cutover deferred?
 
-The research recommends **Vercel Pro** ($20/month) with DNS kept at HeberjaHiz after removing the dead Cloudflare nameservers; Cloudflare Workers/vinext is the alternative if the Cloudflare zone is accessible and beta is acceptable. Confirm or reject that path.
+**User decision (2026-11-08):** build the website first, deploy it to a temporary URL, and set up `hay2010.ma` later. This ticket chooses the temporary deployment path. The domain switch is handled by [Plan the public launch and domain cutover](15-public-launch.md).
 
 Decide:
 
-- Hosting provider and deployment model (Vercel Pro, Cloudflare Workers/vinext, static export, other), including where form submissions, CVs and analytics data are processed (Morocco, EU, US).
-- Budget: Vercel Pro $20/month vs Cloudflare $0–5/month; who owns the account and billing.
-- Processor list and transfer exposure: Vercel/Cloudflare, email API, analytics, fonts. US processing triggers an F-118 authorization; the EU/EEA, UK, Switzerland and Canada are on the CNDP adequacy list.
-- Staging/preview URL and production domain; `noindex` or password protection for staging.
-- Canonical host (apex vs `www`) and trailing-slash policy, aligned with the redirect map.
-- DNS ownership and access; MX/email preservation. Fix the split Cloudflare/HeberjaHiz delegation before any cutover (see the hosting research). Keep MX, `mail`, `webmail`, `cpanel`, `ftp`, the autodiscover SRV, SPF and DKIM; remove `+a` from SPF after the A record moves; do not enable Cloudflare Email Routing; add DMARC `p=none` after cutover.
-- Redirect map from current hay2010.ma URLs (12 pages, 7 posts, 3 categories).
-- Who deploys, how often, and how rollbacks work.
-- Monitoring/uptime and backup expectations; keep the old host as an email and rollback origin.
+- Platform for the first deployment: Vercel (recommended; `*.vercel.app` preview), Cloudflare Workers (`*.workers.dev`), or another host.
+- Whether Vercel Pro ($20/month) or a free/paid Cloudflare path; who owns the account and billing.
+- Staging URL and access protection (`noindex`, password/Deployment Protection).
+- Whether forms stay disabled or test-only until the CNDP filings and privacy policy are ready. No real contact data or CVs before then.
+- Data residency for preview data; note that Vercel/Cloudflare are US processors and trigger an F-118 authorization before public collection.
+- Deploy workflow (Git push → preview/production), environment variables, rollback.
+- What is explicitly deferred to the public launch: DNS repair, domain cutover, email/SPF preservation, CNDP receipts, final analytics/consent.
+
+The hosting research recommends Vercel Pro for the eventual production site, but the first deployment can use its generated preview URL without touching DNS. Cloudflare Workers/vinext is the beta alternative.

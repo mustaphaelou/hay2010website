@@ -12,7 +12,7 @@ The local files in `.scratch/hay2010-website/` are a mirror. GitHub issues are c
 | 04 | [#5](https://github.com/mustaphaelou/hay2010website/issues/5) | grilling | open | Decide the content model and update workflow |
 | 05 | [#6](https://github.com/mustaphaelou/hay2010website/issues/6) | grilling | open | Define the réalisations and portfolio strategy |
 | 06 | [#7](https://github.com/mustaphaelou/hay2010website/issues/7) | research | closed | Research hosting, domain and deployment options |
-| 07 | [#8](https://github.com/mustaphaelou/hay2010website/issues/8) | grilling | open | Decide hosting, domain, data residency and cutover plan |
+| 07 | [#8](https://github.com/mustaphaelou/hay2010website/issues/8) | grilling | open | Decide the first deployment target and staging URL |
 | 08 | [#9](https://github.com/mustaphaelou/hay2010website/issues/9) | research | closed | Research Moroccan legal and consent requirements for the site |
 | 09 | [#10](https://github.com/mustaphaelou/hay2010website/issues/10) | grilling | open | Decide analytics, consent and legal page content |
 | 10 | [#11](https://github.com/mustaphaelou/hay2010website/issues/11) | grilling | open | Specify SEO, metadata and structured data |
@@ -20,3 +20,4 @@ The local files in `.scratch/hay2010-website/` are a mirror. GitHub issues are c
 | 12 | [#13](https://github.com/mustaphaelou/hay2010website/issues/13) | prototype | open | Produce the homepage prototype |
 | 13 | [#14](https://github.com/mustaphaelou/hay2010website/issues/14) | task | open | Plan the CNDP filings and launch compliance |
 | 14 | [#15](https://github.com/mustaphaelou/hay2010website/issues/15) | task | open | Fix the hay2010.ma DNS delegation and identify account owners |
+| 15 | [#16](https://github.com/mustaphaelou/hay2010website/issues/16) | grilling | open | Plan the public launch and domain cutover |
