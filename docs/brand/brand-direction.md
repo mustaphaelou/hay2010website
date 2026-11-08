@@ -3,6 +3,7 @@
 **Status:** resolved 2026-11-08 — ticket [#4](https://github.com/mustaphaelou/hay2010website/issues/4).
 **Chosen direction:** **A — Lumière** (editorial monochrome, warm accent, Poppins, documentary photography), with the **owner-supplied HAY2010 badge**.
 **Amended 2026-11-08:** the owner supplied the existing logo after the direction was chosen. The proposed mark is withdrawn; the real badge is the brand mark, and the site accent is aligned to its orange. A vector v1 was traced from the supplied raster (see §2.1 and `public/brand/`). Details in §2.1, §2.2 and §10.
+**Approved 2026-11-08:** vector v1, the orange accent `#E97425`, and keeping `2010.Sarl` in the web badge. Written ownership confirmation is still open.
 **Prototype:** branch `prototype/brand-direction`, route `/prototype/brand?variant=a|b|c` (files in `app/prototype/brand`); screenshots in [`docs/brand/assets/`](assets/).
 **Scope:** the website brand only. Stationery, signage, vehicle livery and a full identity manual are out of scope. French only, per the page tree ([#2](https://github.com/mustaphaelou/hay2010website/issues/2)).
 
@@ -163,7 +164,7 @@ This is the heart of A.
 
 | Asset | Have | Need | Who provides | Gate |
 |---|---|---|---|---|
-| **Logo — vector master** | Vector v1 traced from the 500 px raster: full-colour, white, ink | Designer review/cleanup, print master, approval | Brand designer/illustrator; build exports | Owner approves; ownership confirmed |
+| **Logo — vector master** | Vector v1 traced from the 500 px raster: full-colour, white, ink; **approved by the owner 2026-11-08** | Designer review/cleanup, print master | Brand designer/illustrator; build exports | Ownership confirmation still open |
 | **Logo — variants** | Full-colour, white and ink SVGs | Favicon crop, Apple/app icons, social avatar, monochrome print | Designer; build exports | Approval before publication |
 | **Logo — header/footer exports** | SVGs + 468 × 355 WebP fallback | Test at 44/52/56 px; raster only where SVG is not accepted | Build | Use SVG; do not upscale the raster |
 | **Photography — hero** | Nothing | 1 dusk wide (≥2400 px) + 4:5 mobile crop + 16:9 OG crop | Commissioned photographer; owner arranges access | Licence + site authorization + text-overlay test |
@@ -279,15 +280,13 @@ Staging may show a placeholder with a visible “visuel provisoire” tag. Produ
 
 ## 8. Owner actions
 
-1. **Send a higher-resolution original if one exists** — the supplied 500 px file is the reference; otherwise the traced SVG v1 is the working master. Confirm in writing that SOCIETE HAY 2010 owns the artwork; if the designer still holds rights, get an assignment or a broad licence.
-2. **Approve the traced vector v1** (or ask for a designer cleanup) and decide whether `.Sarl` stays in the web badge (recommended: keep for v1).
-3. **Approve the orange accent** `#E97425`, aligned to the logo. The earlier amber `#F2A33C` is retired; if you prefer it, it is a one-token change, but the logo's orange is the brand's actual orange.
+1. **Confirm logo ownership in writing** — that SOCIETE HAY 2010 owns the artwork, or holds a broad licence from the designer. A higher-resolution original is optional; the traced SVG v1 is the working master.
+2. **Vector v1 — approved 2026-11-08.** Keep `2010.Sarl` in the web badge for v1; revisit only if it proves illegible at 44–52 px on real screens.
+3. **Orange accent `#E97425` — approved 2026-11-08.** The earlier amber `#F2A33C` is retired.
 4. **Approve the photo brief and budget**, and nominate the sites; authorisations take longer than the shoot.
 5. **Send the ONEE certificate** so the agrément block can be prepared and gated.
 6. **Confirm the contact position**: email only, no phone, no social, no recruitment mailbox.
 7. **Approve the final French copy** against the facts register.
-
-**Open question:** keep the supplied badge exactly as it is (including `2010.Sarl`), or produce a web-only reduction without `.Sarl` for small sizes? Recommendation: keep the supplied mark for v1; revisit only if the fine text proves illegible at 44–52 px on real screens.
 
 ---
 
@@ -308,3 +307,4 @@ Staging may show a placeholder with a visible “visuel provisoire” tag. Produ
 | 2026-11-08 | Direction A chosen; proposed logo mark specified | Ticket #4 |
 | 2026-11-08 | Supplied HAY2010 badge replaces the proposed mark; accent changes from amber `#F2A33C` to logo orange `#E97425`; logo production (vector/variants/ownership) added to the asset plan | Owner supplied the existing logo after the decision |
 | 2026-11-08 | Vector v1 traced from the supplied raster (full-colour, white, ink); plan updated from “vector needed” to “review/approve the trace” | Owner has only the 500 px image; no source vector exists |
+| 2026-11-08 | Owner approved vector v1, the orange accent `#E97425` and keeping `2010.Sarl`; ownership confirmation remains open | Sign-off after review |

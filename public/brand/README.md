@@ -2,7 +2,7 @@
 
 **Source:** supplied by the owner on 2026-11-08 as a 500 × 500 transparent WebP (`docs/brand/assets/hay2010-logo-source.webp`; artwork bounds 448 × 335). Exact colours: blue `#3E4D9C`, orange `#E97425`, red `#DE212E`, white `#FFFFFF`.
 
-**Vector v1:** traced from the supplied raster with VTracer on 2026-11-08. It is faithful at web sizes and replaces the raster for the header, footer, specimen and favicon work. It is **not print-approved**: review the curves and lettering at 400 % before using it for print or large-format signage.
+**Vector v1:** traced from the supplied raster with VTracer on 2026-11-08. It is faithful at web sizes and replaces the raster for the header, footer, specimen and favicon work. **Approved by the owner on 2026-11-08** for web use. It is **not print-approved**: review the curves and lettering at 400 % before using it for print or large-format signage. Written ownership confirmation is still open.
 
 | File | Use | Status |
 |---|---|---|
