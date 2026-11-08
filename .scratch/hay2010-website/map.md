@@ -10,7 +10,7 @@ A build-ready specification for the HAY2010 French corporate website, adapted fr
 
 - **Domain:** corporate website for HAY2010 SARL, a Rabat electrical contractor working in public lighting, HTA/BT electrification, transformer stations, CFO/CFA and solar.
 - **Reference architecture:** `lamalifgroup.ma`. Teardown: [`docs/research/lamalifgroup-architecture-style.md`](../../docs/research/lamalifgroup-architecture-style.md). Company research: [`docs/research/hay2010-company-activity-and-careers.md`](../../docs/research/hay2010-company-activity-and-careers.md).
-- **Agreed scope:** French only; adapted full corporate site (Accueil, Le Groupe, Réalisations, Carrières, Médias, Contact + legal); drop lamalif-only contest pages; same IA and section patterns, new HAY2010 brand.
+- **Agreed scope:** French only; adapted corporate site with Accueil, L'Entreprise, Nos Métiers, Réalisations, Carrières, Médias, Contact + legal; drop lamalif-only contest pages; same IA and section patterns, new HAY2010 brand. The page tree, navigation and homepage order are decided in [#2](https://github.com/mustaphaelou/hay2010website/issues/2).
 - **Phasing:** build and deploy to a temporary URL first; the `hay2010.ma` DNS/domain cutover is a later public-launch task ([GitHub #16](https://github.com/mustaphaelou/hay2010website/issues/16)), not a blocker for the build.
 - **Content rule:** use verified public research; draft French copy; flag placeholders for missing photos, references and brand assets. Never publish unverified client claims or legal facts.
 - **Existing repo:** Next.js 16.4.3 App Router, React 19, Tailwind 4, shadcn `base-maia`, Hugeicons, TypeScript. Only the template page exists.
@@ -27,13 +27,14 @@ A build-ready specification for the HAY2010 French corporate website, adapted fr
 
 - [Research Moroccan legal and consent requirements for the site](https://github.com/mustaphaelou/hay2010website/issues/9): Law 09-08 requires CNDP filings before launch — F-211/F-214 contact declaration, F-113 recruitment authorization, F-118 for US transfers; D-939-2025 exempts non-profiling analytics from prior consent but conflicts with older guidance; mentions légales need an RC extract; the current sites are not compliance models.
 - [Research hosting, domain and deployment options](https://github.com/mustaphaelou/hay2010website/issues/7): Recommends Vercel Pro + repair DNS at HeberjaHiz (remove the dead Cloudflare NS), keep email; Cloudflare Workers/vinext is the beta alternative; the current WordPress site is a placeholder; the split DNS delegation must be fixed first.
+- [Define the page tree, navigation and homepage section order](https://github.com/mustaphaelou/hay2010website/issues/2): Six-item desktop nav with no Accueil link (logo = home) — L'Entreprise, Nos Métiers, Réalisations, Carrières, Médias, Contact; one-page Nos Métiers with four anchored services; flat French slugs; static hero and a homepage ending on a contact CTA; Médias is a gated menu group; no search, newsletter, certifications page or job detail pages at launch.
 
 ## Not yet specified
 
-- **Inner-page section composition and page copy** — waits on the page tree and the homepage prototype.
-- **Le Groupe subpage copy and the gérant's message** — waits on the confirmed company facts and the page tree.
-- **Médias/actualités seed content and media library** — waits on the content model and available assets.
-- **Careers page copy and current job listings** — waits on the page tree, content model and application flow.
+- **Inner-page section composition and page copy** — waits on the homepage prototype; the page tree is set.
+- **L'Entreprise copy and the gérant's message** — waits on the confirmed company facts; the structure is decided, with Mot du gérant gated.
+- **Médias/actualités seed content and media library** — waits on the content model and available assets; the Médias group is gated until a child is live.
+- **Careers page copy and current job listings** — waits on the content model and application flow; the single-page structure is decided.
 - **Legal page copy and CNDP receipt numbers** — waits on the RC extract and the CNDP filings.
 - **Retention schedule and data-handling procedures** — waits on the forms, hosting and CNDP decisions.
 - **Component inventory and design tokens** — waits on the brand direction and homepage prototype.
