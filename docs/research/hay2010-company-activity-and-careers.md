@@ -3,6 +3,8 @@
 **Last updated:** 2026-11-04
 **Scope guard / disclaimer:** This report covers only **HAY2010 SARL / Société Hay 2010 (Rabat, Morocco)**. It deliberately excludes unrelated entities with similar names (Danish furniture brand HAY apS, Hays plc, Hay Group/Korn Ferry, US hay/farm-supply LLCs). Where a *same-name Moroccan entity* exists that is probably **not** this company (an SARL registered in El Kelaâ des Sraghna in 2004, later "radiée"), it is labeled explicitly as such.
 
+> **Update 2026-11-08 — conflicts resolved.** The registry conflicts in §1.4 are settled in [`docs/company/facts-register.md`](../company/facts-register.md): the active company is **SOCIETE HAY 2010**, **RC 87305** (Tribunal de commerce de Rabat), ICE **001459327000056**, capital **15 000 000 MAD**, registered **26/09/2011**. **RC 517** is the separate, **radiée** El Kelaâ des Sraghna entity; the **2004** founding claim is not defensible; the Ribat Al Fath and Hay El Fath addresses are historical. This report remains the evidence trail for activity, procurement and careers; publishing decisions come from the facts register, not from the open questions below.
+
 ---
 
 ## TL;DR
