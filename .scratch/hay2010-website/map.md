@@ -1,5 +1,7 @@
 # HAY2010 website — wayfinder map
 
+> Canonical tracker: GitHub issue [#1](https://github.com/mustaphaelou/hay2010website/issues/1). This file is a local mirror; the local-to-GitHub mapping is in [`github-issues.md`](github-issues.md).
+
 ## Destination
 
 A build-ready specification for the HAY2010 French corporate website, adapted from `lamalifgroup.ma`'s information architecture and section patterns, plus the decisions needed to start implementation in the existing Next.js 16 repo. The resolved tickets are the spec; this map does not write production code.
@@ -11,7 +13,7 @@ A build-ready specification for the HAY2010 French corporate website, adapted fr
 - **Agreed scope:** French only; adapted full corporate site (Accueil, Le Groupe, Réalisations, Carrières, Médias, Contact + legal); drop lamalif-only contest pages; same IA and section patterns, new HAY2010 brand.
 - **Content rule:** use verified public research; draft French copy; flag placeholders for missing photos, references and brand assets. Never publish unverified client claims or legal facts.
 - **Existing repo:** Next.js 16.4.3 App Router, React 19, Tailwind 4, shadcn `base-maia`, Hugeicons, TypeScript. Only the template page exists.
-- **Tracker:** local markdown in `.scratch/hay2010-website/`. Map is this file; tickets are `issues/NN-*.md`. Blocking is a `Blocked by:` line; a ticket is unblocked when every listed file is `resolved`.
+- **Tracker:** GitHub issues are canonical: map [#1](https://github.com/mustaphaelou/hay2010website/issues/1); tickets are sub-issues labelled `wayfinder:<type>`. This local file is a mirror; local-to-GitHub mapping is in [`github-issues.md`](github-issues.md).
 - **Skills for sessions:** `grilling` + `domain-modeling` for decisions; `prototype` for visual directions; `research` for external facts.
 - **Standing preferences:** decisions over deliverables; one ticket per session (except research); no build work in this map; keep this map index-only.
 - **Known infrastructure risk:** hay2010.ma's DNS delegation is split between Cloudflare and HeberjaHiz; the Cloudflare authoritative servers refuse the zone, so resolvers can intermittently SERVFAIL. Fix the delegation before any hosting cutover. See [Research hosting, domain and deployment options](issues/06-hosting-research.md) and [Fix the hay2010.ma DNS delegation and identify account owners](issues/14-dns-delegation.md).
@@ -22,8 +24,8 @@ A build-ready specification for the HAY2010 French corporate website, adapted fr
 
 <!-- One line per resolved ticket: linked name + one-line gist. Detail stays in the ticket. -->
 
-- [Research Moroccan legal and consent requirements for the site](issues/08-legal-research.md): Law 09-08 requires CNDP filings before launch — F-211/F-214 contact declaration, F-113 recruitment authorization, F-118 for US transfers; D-939-2025 exempts non-profiling analytics from prior consent but conflicts with older guidance; mentions légales need an RC extract; the current sites are not compliance models.
-- [Research hosting, domain and deployment options](issues/06-hosting-research.md): Recommends Vercel Pro + repair DNS at HeberjaHiz (remove the dead Cloudflare NS), keep email; Cloudflare Workers/vinext is the beta alternative; the current WordPress site is a placeholder; the split DNS delegation must be fixed first.
+- [Research Moroccan legal and consent requirements for the site](https://github.com/mustaphaelou/hay2010website/issues/9): Law 09-08 requires CNDP filings before launch — F-211/F-214 contact declaration, F-113 recruitment authorization, F-118 for US transfers; D-939-2025 exempts non-profiling analytics from prior consent but conflicts with older guidance; mentions légales need an RC extract; the current sites are not compliance models.
+- [Research hosting, domain and deployment options](https://github.com/mustaphaelou/hay2010website/issues/7): Recommends Vercel Pro + repair DNS at HeberjaHiz (remove the dead Cloudflare NS), keep email; Cloudflare Workers/vinext is the beta alternative; the current WordPress site is a placeholder; the split DNS delegation must be fixed first.
 
 ## Not yet specified
 
