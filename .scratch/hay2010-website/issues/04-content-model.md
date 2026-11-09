@@ -49,8 +49,10 @@ The legal identity is rendered from code, not stored as editable CMS fields. The
 
 ### Editable content types
 
-- **Globals:** `homepage`, `entreprise`, `metiers`, `realisations`, `carrieres`, `contact`, `legal`.
+- **Globals:** `homepage`, `entreprise`, `metiers`, `realisations`, `actualites`, `mediatheque`, `carrieres`, `contact`, `legal`.
 - **Collections:** `services` (four fixed records), `projects`, `jobs`, `communiques`, `media`, `users`.
+
+`actualites` and `mediatheque` are gated page records: their copy and gallery selection exist, but the routes return 404 until `actualitesLive`/`mediathequeLive` and the rights gate allow them. The Médiathèque is a curated selection from the media library, not the raw library.
 
 The four services are fixed: `eclairage-public`, `reseaux-hta-mt`, `postes-de-transformation`, `cfo-cfa`. The owner edits their copy, bullets, image and related projects. Adding, removing, reordering or ungating a service is a developer change because it touches the navigation, anchors, homepage cards, facts register and sitemap. Solaire stays gated until [#3](https://github.com/mustaphaelou/hay2010website/issues/3) clears it.
 

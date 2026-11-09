@@ -162,6 +162,31 @@ The four service blocks come from the `services` collection. Solaire appears onl
 | `listIntro` | rich text | Optional copy above the project list. |
 | `seo` | group | — |
 
+#### `actualites`
+
+The gated listing page for `communiques`.
+
+| Field | Type | Notes |
+|---|---|---|
+| `hero.label`, `hero.title`, `hero.subtitle` | text / text / textarea | Listing page opener. |
+| `intro.title`, `intro.body` | text / rich text | Short intro above the list. |
+| `seo` | group | Noindex until `actualitesLive` is true; [#11](https://github.com/mustaphaelou/hay2010website/issues/11) patterns. |
+
+The list is the published `communiques` collection. No authors, tags or categories.
+
+#### `mediatheque`
+
+The gated curated gallery.
+
+| Field | Type | Notes |
+|---|---|---|
+| `hero.label`, `hero.title`, `hero.subtitle` | text / text / textarea | Page opener. |
+| `intro.title`, `intro.body` | text / rich text | Short intro. |
+| `gallery` | relationship → media, hasMany, ordered | Curated selection, not the raw library. Captions and alt come from the media record. |
+| `seo` | group | Noindex until `mediathequeLive` is true. |
+
+The owner curates the gallery order. The rights gate filters the items: an uncleared image cannot appear even if it is selected. The page stays hidden until at least one approved photo exists.
+
 #### `carrieres`
 
 | Field | Type | Notes |
@@ -562,6 +587,8 @@ globals/
   Entreprise.ts
   Metiers.ts
   Realisations.ts
+  Actualites.ts
+  Mediatheque.ts
   Carrieres.ts
   Contact.ts
   Legal.ts
@@ -675,6 +702,7 @@ The existing `app/page.tsx` moves into the `(frontend)` route group when the Pay
 - [ ] Publishing a project with a client name but no permission is blocked.
 - [ ] The owner can unpublish a page and cannot permanently delete published content.
 - [ ] The first communiqué cannot publish without `legalReviewed`; the gate hides `/actualites` until it is live.
+- [ ] `/mediatheque` stays 404 until `mediathequeLive` is true and at least one approved photo is curated.
 - [ ] The four service anchors are fixed; Solaire stays hidden until `solaireLive`.
 - [ ] `/realisations` falls back to `Références sur demande` with no published projects.
 - [ ] Revalidation updates the page, homepage, listing and sitemap after publish.
