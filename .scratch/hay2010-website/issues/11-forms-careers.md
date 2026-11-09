@@ -20,3 +20,5 @@ Decide:
 - Do not collect CNI, photo, health, marital-status or religion data on the application form.
 - CV upload: private storage, access control, malware scan, size/type limits, scheduled deletion.
 - Notification/CRM needs (email only vs spreadsheet/CRM).
+
+**Input from #10 (resolved 2026-11-09):** the contact form routes to `contact@hay2010.ma`; the rights contact is `donnees@hay2010.ma`; careers uses `contact@` until #14, then `recrutement@hay2010.ma`. `recrutement@` is **not** published and the page does **not** invite CVs before the F-113 authorization — the email route is a schedule mitigation, not a compliance safe harbour. The exact notices and unticked consent wording are in [`docs/legal/analytics-consent-legal-pages.md`](../../../docs/legal/analytics-consent-legal-pages.md) §4.5. No analytics script is involved.

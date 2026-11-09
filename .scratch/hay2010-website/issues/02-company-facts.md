@@ -93,4 +93,12 @@ Resolved 2026-11-08 by an evidence session with the owner. **Amended 2026-11-09:
 3. Keep the gated list in the register enforced in the content model.
 4. Get the CNDP receipts from #14 before enabling any form or CV upload.
 
+### Amendment 2026-11-09 (mailboxes, #10)
+
+- The owner approved **`contact@hay2010.ma`** (public general contact), **`donnees@hay2010.ma`** (law 09-08 rights contact) and **`recrutement@hay2010.ma`** (careers, public only after #14 covers the F-113).
+- `ste.hay2010@gmail.com` becomes a **private fallback/account recovery**; it is not published.
+- The owner creates the three mailboxes in the HeberjaHiz cPanel; `contact@` and `donnees@` are public-launch gates after a send/receive test. #15 preserves MX/SPF/DKIM.
+- The facts register and the approved copy are amended: footer/contact page/mentions légales/JSON-LD use `contact@`; rights use `donnees@`; careers uses `recrutement@` after #14, `contact@` before.
+- Full decision and legal copy: [`docs/legal/analytics-consent-legal-pages.md`](../../../docs/legal/analytics-consent-legal-pages.md).
+
 The register is the source of truth; this answer is the summary. Anything not confirmed above stays out.

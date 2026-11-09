@@ -1,6 +1,7 @@
 # HAY2010 — Content model and update workflow
 
 **Status:** resolved 2026-11-09 — ticket [#5](https://github.com/mustaphaelou/hay2010website/issues/5).
+**Amended 2026-11-09 (#10):** contact channels are `contact@`, `donnees@` and `recrutement@hay2010.ma` (careers gated by #14); the legal global carries structured CNDP references; the analytics and legal-page decision is [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md).
 **Platform:** **Payload 3** (MIT, self-hosted), embedded in the existing Next.js 16 app, admin at `/admin`.
 **Scope:** the website content model and authoring workflow. Hosting, forms, SEO rules, analytics and visual design stay with their own tickets.
 **Source of truth:** this document plus the schema in code. The facts register remains the source for legal identity and approved claims: [`docs/company/facts-register.md`](../company/facts-register.md).
@@ -56,11 +57,11 @@ Use **Payload 3** as the content management system:
 |---|---|---|
 | Legal identity: legal name, form, RC, ICE, capital, address, gérant line | `lib/company.ts` | One typo in the RC or capital is a legal error. |
 | Approved claims: `Plus de 10 ans d'expérience`, the four services, the ONEE agréments wording | `lib/company.ts` / `lib/claims.ts` | The facts register §2.2 is the only approved wording. |
-| Contact channels: `ste.hay2010@gmail.com`, `Rabat — Maroc` | `lib/company.ts` | Only one channel is confirmed; phone, recruitment email and socials are gated. |
+| Contact channels: `contact@hay2010.ma`, `donnees@hay2010.ma`, `recrutement@hay2010.ma` (gated), `Rabat — Maroc` | `lib/company.ts` | Owner-approved 2026-11-09; the Gmail is a private fallback. Phone and socials remain gated; `recrutement@` is public only after #14. |
 | Navigation, footer, service anchors and their order | `lib/navigation.ts` | The page tree and anchors are fixed by [#2](https://github.com/mustaphaelou/hay2010website/issues/2). |
 | Redirects and 410s | `next.config.ts` / middleware | The WordPress redirect map is code. |
 | SEO defaults, metadata patterns, JSON-LD, sitemap, robots | `lib/seo.ts` | [#11](https://github.com/mustaphaelou/hay2010website/issues/11) owns the rules. |
-| Feature gates | `lib/flags.ts` | `actualitesLive`, `mediathequeLive`, `solaireLive`, `agrementLive`, `mapLive`, `formLive`, `caseStudiesLive`. |
+| Feature gates | `lib/flags.ts` | `actualitesLive`, `mediathequeLive`, `solaireLive`, `agrementLive`, `mapLive`, `formLive`, `caseStudiesLive`, `recrutementMailboxLive`, `analyticsLive`. |
 
 ### Payload-owned (owner-editable)
 
@@ -198,7 +199,7 @@ The owner curates the gallery order. The rights gate filters the items: an uncle
 | `spontaneous.title`, `spontaneous.body` | text / rich text | Spontaneous applications; the email is code-rendered. |
 | `seo` | group | — |
 
-The application email is `ste.hay2010@gmail.com` until a recruitment mailbox is confirmed. No CV upload at launch; that is [#12](https://github.com/mustaphaelou/hay2010website/issues/12) and CNDP-gated.
+The application email is `recrutement@hay2010.ma` when `recrutementMailboxLive` is true, and `contact@hay2010.ma` until then. The flag stays false until [#14](https://github.com/mustaphaelou/hay2010website/issues/14) confirms the F-113 authorization covers the mailbox. No CV upload at launch; that is [#12](https://github.com/mustaphaelou/hay2010website/issues/12) and CNDP-gated. The email notice is in [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) §4.5.
 
 #### `contact`
 
@@ -209,16 +210,18 @@ The application email is `ste.hay2010@gmail.com` until a recruitment mailbox is 
 | `formNotice` | rich text | Shown only when `formLive` is true; until then the form is absent, not broken. |
 | `seo` | group | — |
 
-Code-rendered: address and email. The map is hidden until `mapLive` is true and the owner confirms the address is a public reception point. The contact form waits on [#12](https://github.com/mustaphaelou/hay2010website/issues/12) and [#14](https://github.com/mustaphaelou/hay2010website/issues/14).
+Code-rendered: address and `contact@hay2010.ma`. The Gmail is not shown. The map is hidden until `mapLive` is true and the owner confirms the address is a public reception point. The contact form waits on [#12](https://github.com/mustaphaelou/hay2010website/issues/12) and [#14](https://github.com/mustaphaelou/hay2010website/issues/14); its notice is in [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) §4.5.
 
 #### `legal`
 
 | Field | Type | Notes |
 |---|---|---|
 | `mentionsLegales` | rich text | Prose only; the identity block is injected by the template. |
-| `politiqueConfidentialite` | rich text | Prose only; controller, address, rights, retention and processors are injected or approved with [#10](https://github.com/mustaphaelou/hay2010website/issues/10). |
+| `politiqueConfidentialite` | rich text | Prose only; controller, address, rights, retention and processors are injected or approved with [#10](https://github.com/mustaphaelou/hay2010website/issues/10). Cookies are a section of this page. |
 | `lastReviewed` | date | Displayed as “Dernière mise à jour”. |
-| `cndpReceipt` | text | Developer-only; hidden until [#14](https://github.com/mustaphaelou/hay2010website/issues/14) issues a receipt. Empty means no receipt line. |
+| `cndpReferences` | array `{ scope, number, date }` | Developer-only; empty until [#14](https://github.com/mustaphaelou/hay2010website/issues/14) issues a reference. Only filled entries render; no blank “n° …”. Scopes: `contact`, `careers`, `analytics`, `transfer`. |
+| `legalReviewed` | checkbox | Developer-only; required before public publication. |
+| `legalReviewRef` | text | Counsel/reviewer reference for the one-off review in #10. |
 | `seo` | group | — |
 
 The identity block is rendered from `lib/company.ts`:
@@ -230,10 +233,11 @@ Capital social : 15 000 000 MAD
 Siège social : Local N° 21, Hay El Manzeh, Hay Er-Riad, Rabat — Maroc
 Registre du commerce : RC 87305 — Tribunal de commerce de Rabat
 ICE : 001459327000056
-Contact : ste.hay2010@gmail.com
+Contact : contact@hay2010.ma
+Droits des personnes : donnees@hay2010.ma
 ```
 
-No publication director, no phone, no host line in the mentions légales. The host is named as a processor in the privacy policy only.
+No publication director, no phone, no host line in the mentions légales. The host is named as a processor in the privacy policy only. The exact prose and publication gates are in [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) §4; the legal pages are public-launch gated by #14 and #16.
 
 ### 5.2 Collections
 
@@ -311,11 +315,11 @@ At launch there are **no published projects**. `/realisations` is a credentials-
 | `description` | rich text | — |
 | `responsibilities`, `requirements` | array of text | — |
 | `postedAt`, `closingAt` | date | `closingAt` auto-hides the job. |
-| `applicationEmail` | email, read-only | `ste.hay2010@gmail.com` until a recruitment mailbox is confirmed. |
+| `applicationEmail` | email, read-only | `recrutement@hay2010.ma` when `recrutementMailboxLive` is true; `contact@hay2010.ma` until then. |
 | `featured` | checkbox | Homepage teaser. |
 | `seo` | group | — |
 
-No detail pages at launch: openings render inline on `/carrieres`. No CV upload; applications go by email until [#12](https://github.com/mustaphaelou/hay2010website/issues/12) and the CNDP F-113 authorization clear. The owner creates, publishes and closes openings.
+No detail pages at launch: openings render inline on `/carrieres`. No CV upload; applications go by email until [#12](https://github.com/mustaphaelou/hay2010website/issues/12) and the CNDP F-113 authorization clear. `recrutement@` is not public before that authorization; until then the page uses `contact@` and does not invite CVs. The owner creates, publishes and closes openings.
 
 #### `communiques`
 
@@ -383,7 +387,7 @@ No Porto demo assets, no stock construction photography, no AI-generated people.
 - Newsletter, site search, comments, blog categories/tags/authors/RSS.
 - A free-form page builder or block library.
 - Contact form submissions or CVs — these stay with [#12](https://github.com/mustaphaelou/hay2010website/issues/12) and are not stored in Payload.
-- Analytics, cookie consent and tag manager configuration — [#10](https://github.com/mustaphaelou/hay2010website/issues/10).
+- Analytics, cookie consent and tag manager configuration — decided in [#10](https://github.com/mustaphaelou/hay2010website/issues/10); no analytics script is configured in the CMS.
 - Navigation, footer, redirects, legal identity, approved claims and SEO defaults — code.
 - Testimonials as a separate type — they live inside an approved project until a permission exists.
 - Job detail pages, service child pages, case-study filters, certifications page, multilingual content — later phases.
@@ -516,9 +520,9 @@ Loi 88-13 applies to a “journal électronique” — a publication that is reg
 - No contact-form messages, CVs or applicant data in Payload. Those belong to [#12](https://github.com/mustaphaelou/hay2010website/issues/12), after [#14](https://github.com/mustaphaelou/hay2010website/issues/14).
 - Media may contain people; that is personal data. It is published only with a recorded release, and the release reference is part of the media record.
 - Employee photos need a specific written authorization, not a generic consent.
-- The privacy policy names `SOCIETE HAY 2010` as controller; the CMS is a tool, not the controller.
-- The CNDP receipt line is conditional on `cndpReceipt` and hidden until a real receipt exists. Never copy lamalif’s blank receipt.
-- No analytics or tracking scripts are configured in Payload.
+- The privacy policy names `SOCIETE HAY 2010` as controller (`contact@hay2010.ma`, rights `donnees@hay2010.ma`); the CMS is a tool, not the controller.
+- The CNDP references are structured in `cndpReferences` and render only when a real `scope`/`number`/`date` exists. Never copy lamalif’s blank receipt.
+- No analytics, tag manager or tracking scripts are configured in Payload or the frontend at launch. The #10 decision allows a cookieless Cloudflare Web Analytics beacon after #14’s F-214; it is not a CMS field.
 
 ### 9.3 Permissions
 
@@ -681,7 +685,7 @@ The existing `app/page.tsx` moves into the `(frontend)` route group when the Pay
 |---|---|
 | [#6](https://github.com/mustaphaelou/hay2010website/issues/6) réalisations | `projects` schema, permission fields, the `Références sur demande` fallback, the three-project threshold for detail pages. |
 | [#8](https://github.com/mustaphaelou/hay2010website/issues/8) hosting | Payload runtime, Postgres, object storage, backups, region, cron. |
-| [#10](https://github.com/mustaphaelou/hay2010website/issues/10) legal/analytics | Legal prose fields, identity block, conditional CNDP receipt, no personal data in the CMS. |
+| [#10](https://github.com/mustaphaelou/hay2010website/issues/10) legal/analytics | **Resolved** — [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md): legal prose fields, identity block, `cndpReferences`, `legalReviewed`, no personal data in the CMS, no analytics script at launch. |
 | [#11](https://github.com/mustaphaelou/hay2010website/issues/11) SEO | SEO groups on every page/collection, noindex for drafts/gated, sitemap from published content, JSON-LD from code facts. |
 | [#12](https://github.com/mustaphaelou/hay2010website/issues/12) forms | No form submissions or CVs in Payload; the `formLive` gate; application email. |
 | [#13](https://github.com/mustaphaelou/hay2010website/issues/13) prototype | The field names and copy slots the prototype should exercise. |

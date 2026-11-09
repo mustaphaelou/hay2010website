@@ -1,11 +1,12 @@
 # HAY2010 — Publishable company facts and legal identity
 
-**Status:** resolved 2026-11-08.
+**Status:** resolved 2026-11-08; amended 2026-11-09 for the mailboxes.
 **Amended 2026-11-09:** the ONEE entry now lists the two current agréments, re-verified live on 2026-11-09; the réalisations fallback, reference cards and permission campaign are defined in [`docs/content/realisations-strategy.md`](../content/realisations-strategy.md) (ticket [#6](https://github.com/mustaphaelou/hay2010website/issues/6)).
-**Owner decisions:** confirmed in session on 2026-11-08 (recorded in §10).
+**Amended 2026-11-09 (#10):** the owner approved three domain mailboxes — **`contact@hay2010.ma`** (public general contact), **`donnees@hay2010.ma`** (law 09-08 rights contact) and **`recrutement@hay2010.ma`** (careers, not public before #14). `ste.hay2010@gmail.com` becomes a private fallback and account-recovery inbox, never a published channel. The addresses are **C** only after creation and a send/receive test; see [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) §6.
+**Owner decisions:** confirmed in session on 2026-11-08, with the mailbox amendment on 2026-11-09 (both recorded in §10).
 **Purpose:** the single source of truth for copy, footer, legal pages and structured data. If a fact is not in §2, it does not go on the site.
 
-> **One-line rule:** publish only the identity block, the four launch services, the email, the owner-confirmed address, the gérant's name and the ONEE agréments (once both certificates are filed). Everything else stays gated.
+> **One-line rule:** publish only the identity block, the four launch services, the contact mailboxes, the owner-confirmed address, the gérant's name and the ONEE agréments (once both certificates are filed). Everything else stays gated.
 
 ---
 
@@ -36,7 +37,7 @@ Anything not listed in §2 is **G** by default. The register is deliberately nar
 | Capital social | **15 000 000 MAD** | **O** | OMPIC fiche (2026-11-08); Ministry of Justice RC search (2026-11-08); Charika (2026-11-08) | Mentions légales |
 | Registered address (siège social) | **Local N° 21, Hay El Manzeh, Hay Er-Riad, Rabat — Maroc** | **C** | Owner confirmation (2026-11-08); Charika card (2026-11-08); consistent with the 11/03/2026 seat-transfer event. RC extract still outstanding. | Mentions légales; footer contact block; JSON-LD `address`; contact page |
 | Gérant | **Rahhal Essamlali — Gérant** | **C** | Owner confirmation (2026-11-08); LinkedIn job-poster self-declaration (2025/2026). RC extract still outstanding. **Name and title only; no photo, no quote.** | L'Entreprise (direction line). **Never** on `/mot-du-gerant` or in a testimonial block. |
-| Public contact email | **ste.hay2010@gmail.com** | **C** | Owner confirmation (2026-11-08); Charika card (2026-11-08) | Footer; contact page; mentions légales; privacy policy; JSON-LD `email` |
+| Public contact email | **contact@hay2010.ma** | **C** — owner-approved 2026-11-09; mailbox pending creation/test | Owner confirmation (2026-11-09); the legacy Gmail `ste.hay2010@gmail.com` remains a private fallback. Publish only after the send/receive test. | Footer; contact page; mentions légales; privacy policy; JSON-LD `email` |
 | Website | **https://hay2010.ma** | **C** | Project domain; DNS work is [#15](https://github.com/mustaphaelou/hay2010website/issues/15) | Canonical URL, metadata, JSON-LD `url` |
 | Base | **Rabat — Maroc** | **C** | Registered seat; public procurement region (Rabat-Salé-Kénitra); owner confirmation of the address | Contact page, footer, JSON-LD `address`; "Interventions au Maroc" only after the owner confirms national coverage |
 
@@ -60,9 +61,11 @@ Logo and brand assets are gated by [#4](https://github.com/mustaphaelou/hay2010w
 
 | Channel | Value | Status | Note |
 |---|---|---|---|
-| Email | **ste.hay2010@gmail.com** | **C** | The only confirmed public channel (owner, 2026-11-08) |
+| Public general email | **contact@hay2010.ma** | **C** — owner-approved 2026-11-09; mailbox pending | The public contact once created and tested. Replaces the Gmail in the footer, contact page, mentions légales, policy and JSON-LD. |
+| Data-protection email | **donnees@hay2010.ma** | **C** — owner-approved 2026-11-09; mailbox pending | Law 09-08 rights contact; published in the policy and form notices after creation/test. Public-launch gate. |
+| Recruitment email | **recrutement@hay2010.ma** | **C** — owner-approved 2026-11-09; mailbox pending; public use gated by #14 | Create now and use on staging. Publish on `/carrieres` only after the F-113 authorization covers the mailbox; until then careers uses `contact@`. |
+| Gmail fallback | **ste.hay2010@gmail.com** | **C** | Private fallback and account recovery; **never publish** it on the site, legal pages, JSON-LD or metadata. If mail is forwarded to it, Google enters the policy and the F-118 scope. |
 | Phone | — | **G** | Not confirmed. Omit from footer, contact page and JSON-LD. |
-| Recruitment email | — | **G** | `recrutement@hay2010.ma` appears in the company's own 2026 LinkedIn post but was **not** confirmed by the owner in this session. Use the general email for careers until confirmed. |
 | LinkedIn / Facebook | — | **G** | No official account confirmed. Omit `sameAs` and social icons. |
 | Contact form | — | **G** | No CNDP filing; forms stay disabled until [#14](https://github.com/mustaphaelou/hay2010website/issues/14) and [#12](https://github.com/mustaphaelou/hay2010website/issues/12). |
 | Map | — | **G** | Only after the owner confirms the registered address is a public reception point. |
@@ -87,7 +90,9 @@ Logo and brand assets are gated by [#4](https://github.com/mustaphaelou/hay2010w
 | **Client logos** | No written permission from the client **and** the trademark owner (loi 17-97) | Both written permissions |
 | **Employee photos / portraits** | No image releases | Signed authorization per person (loi 09-08) |
 | **Testimonials** | No written authorization | Signed testimonial release |
-| **Phone, recruitment email, social accounts** | Not confirmed; owner confirmed only the Gmail address (2026-11-08) | Owner confirmation + verification |
+| **Phone and social accounts** | Not confirmed; the owner confirmed the three mailboxes only (2026-11-09) | Owner confirmation + verification |
+| **`recrutement@hay2010.ma` on the public site** | The mailbox is approved but the careers processing needs the F-113 authorization; the address must not invite CVs before #14 covers it | F-113 authorization from [#14](https://github.com/mustaphaelou/hay2010website/issues/14) |
+| **`ste.hay2010@gmail.com` as a public channel** | Replaced by `contact@hay2010.ma`; kept private as a fallback | Never publish; remove after the migration |
 | **CNDP receipt / authorization number** | No public entry and owner confirms no filing (2026-11-08) | CNDP receipt from [#14](https://github.com/mustaphaelou/hay2010website/issues/14) |
 | **Financials, revenue, headcount, key figures** | Not verified; Charika financials are paywalled | Audited figures + owner decision |
 | **"Solaire & ENR"** | Gated by [#2](https://github.com/mustaphaelou/hay2010website/issues/2); no contract evidence; 2026 job posts mention it but that is not proof | Owner confirmation of capability + proof |
@@ -180,16 +185,17 @@ Capital social : 15 000 000 MAD
 Siège social : Local N° 21, Hay El Manzeh, Hay Er-Riad, Rabat — Maroc
 Registre du commerce : RC 87305 — Tribunal de commerce de Rabat
 ICE : 001459327000056
-Contact : ste.hay2010@gmail.com
+Contact : contact@hay2010.ma
+Droits des personnes : donnees@hay2010.ma
 ```
 
-Do **not** add a CNDP receipt line until [#14](https://github.com/mustaphaelou/hay2010website/issues/14) provides one. Do not add a publication director or a phone number; neither is required by loi 5-96 and neither is confirmed. The hosting provider is not a mentions légales requirement in Morocco, but it must be named as a processor in the privacy policy ([#10](https://github.com/mustaphaelou/hay2010website/issues/10)).
+Do **not** add a CNDP receipt line until [#14](https://github.com/mustaphaelou/hay2010website/issues/14) provides one. Do not add a publication director or a phone number; neither is required by loi 5-96 and neither is confirmed. The hosting provider is not a mentions légales requirement in Morocco, but it must be named as a processor in the privacy policy ([#10](https://github.com/mustaphaelou/hay2010website/issues/10)). The exact legal prose and publication gates are in [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) §4.
 
 ### 5.2 Footer
 
 - **Legal line:** `© 2026 SOCIETE HAY 2010 — Tous droits réservés`
-- **Contact block:** `Rabat — Maroc` · `ste.hay2010@gmail.com`
-- **No** phone, recruitment email, social icons, client logos or newsletter.
+- **Contact block:** `Rabat — Maroc` · `contact@hay2010.ma`
+- **No** phone, Gmail, recruitment email, social icons, client logos or newsletter.
 - Footer columns from [#2](https://github.com/mustaphaelou/hay2010website/issues/2) otherwise stand.
 
 ### 5.3 L'Entreprise
@@ -220,7 +226,7 @@ Do **not** add a CNDP receipt line until [#14](https://github.com/mustaphaelou/h
   "name": "HAY2010",
   "legalName": "SOCIETE HAY 2010",
   "url": "https://hay2010.ma",
-  "email": "ste.hay2010@gmail.com",
+  "email": "contact@hay2010.ma",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Local N° 21, Hay El Manzeh, Hay Er-Riad",
@@ -260,8 +266,9 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 
 - **Public register check:** `https://rn-pdp.cndp.ma/fr/list/1.html` was searched on 2026-11-08 for `HAY 2010`, `HAY2010`, `SOCIETE HAY 2010` and `SOCIETE HAY`. It returned **no record** for the company. The register itself works: a control query for `LAMALIF GROUP` returned several declarations/authorizations.
 - **Owner confirmation:** no CNDP filing or receipt exists for the current site, contact processing or recruitment (2026-11-08).
-- **Consequence:** no receipt number may be published. The privacy policy must not claim a filing. Contact forms, CV uploads and analytics stay disabled until [#14](https://github.com/mustaphaelou/hay2010website/issues/14) files the declarations/authorizations and issues the receipt.
-- **Data controller:** `SOCIETE HAY 2010`, `ste.hay2010@gmail.com`, registered address above. A dedicated `donnees@hay2010.ma` mailbox is recommended but does not exist yet; do not publish it.
+- **Consequence:** no receipt number may be published. The privacy policy must not claim a filing. Contact forms and CV uploads stay disabled until [#14](https://github.com/mustaphaelou/hay2010website/issues/14) files the declarations/authorizations and issues the receipt. Analytics is off at launch; the cookieless Cloudflare Web Analytics beacon waits for the F-214.
+- **Data controller:** `SOCIETE HAY 2010`, registered address above. Public contact: `contact@hay2010.ma`; rights contact: `donnees@hay2010.ma`. Both mailboxes are owner-approved (2026-11-09) but must be created and tested before publication; the Gmail is a private fallback. Careers uses `recrutement@hay2010.ma` only after #14 covers it.
+- **Legal/analytics decision:** [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) — no analytics at launch, Cloudflare Web Analytics after F-214, no banner, the two legal pages, retention 12/6/12/6/6 and the mailbox gates.
 - **Handoff:** the filing plan is [#14](https://github.com/mustaphaelou/hay2010website/issues/14); the form behaviour is [#12](https://github.com/mustaphaelou/hay2010website/issues/12); the legal copy is [#10](https://github.com/mustaphaelou/hay2010website/issues/10). See the legal research note on branch `research/hay2010-legal-consent` for the F-211/F-214, F-113 and F-118 requirements.
 
 ---
@@ -272,8 +279,8 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 |---|---|---|---|
 | 1 | Send the **RC extract (modèle 7)** or the OMPIC detailed legal sheet; verify the address and gérant | Final confirmation of §2.1; correct legal pages if either differs | Pending |
 | 2 | Send **both ONEE certificates** (EE HTA-BT, HTA-BT3) | Publication of the ONEE agréments block | Approved, documents pending |
-| 3 | Confirm a **phone**, a **recruitment mailbox** and any **official social accounts**, or confirm they should be omitted permanently | Footer/contact page/JSON-LD additions | Omitted for now |
-| 4 | Create a **data-protection contact** (`donnees@hay2010.ma` or an owner) and file the CNDP declarations | Forms, CV uploads, analytics, privacy policy receipt line | [#14](https://github.com/mustaphaelou/hay2010website/issues/14) |
+| 3 | Confirm a **phone** and any **official social accounts**, or confirm they should be omitted permanently; the three mailboxes are approved | Footer/contact page/JSON-LD additions | Phone/social omitted for now; mailboxes approved 2026-11-09 |
+| 4 | Create and send/receive-test **`contact@`, `donnees@` and `recrutement@`** in the HeberjaHiz cPanel; publish `contact@`/`donnees@` after the test; hold `recrutement@` until #14; then file the CNDP declarations | Footer, contact page, legal pages, JSON-LD, forms, CVs, privacy policy receipt line | Owner action; [#14](https://github.com/mustaphaelou/hay2010website/issues/14) |
 | 5 | Collect **written permissions** for any client name/logo, employee photo or testimonial | Réalisations and Médias content | None yet; fallback stands |
 | 6 | Confirm whether **Solaire & ENR** is a real service line, with proof | `/metiers#solaire`, home card, nav | Gated |
 | 7 | Confirm **logo ownership** and supply brand assets | Header, footer, metadata | [#4](https://github.com/mustaphaelou/hay2010website/issues/4) |
@@ -286,15 +293,15 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 
 | Ticket | What it receives from this register |
 |---|---|
-| [#1](https://github.com/mustaphaelou/hay2010website/issues/1) page tree | **Amendment:** footer contact column is email + "Rabat — Maroc" only; no phone, recruitment email or social icons. `Mot du gérant` stays hidden (name only, no page). Médias stays hidden. |
+| [#1](https://github.com/mustaphaelou/hay2010website/issues/1) page tree | **Amendment:** footer contact column is `contact@hay2010.ma` + "Rabat — Maroc" only; no phone, Gmail, recruitment email or social icons. `Mot du gérant` stays hidden (name only, no page). Médias stays hidden. |
 | [#4](https://github.com/mustaphaelou/hay2010website/issues/4) brand | Logo ownership/asset; no people photos without releases; no client logos. |
 | [#5](https://github.com/mustaphaelou/hay2010website/issues/5) content model | The facts module/source of truth; editors may not add gated facts. Suggested fields: legal identity, contact channels, gated claims, permission status. |
 | [#6](https://github.com/mustaphaelou/hay2010website/issues/6) réalisations | Credentials-led page; the two ONEE agréments; `Références sur demande`; owner inventory and permission campaign; no public-record cards. Full strategy: [`docs/content/realisations-strategy.md`](../content/realisations-strategy.md). |
-| [#10](https://github.com/mustaphaelou/hay2010website/issues/10) legal pages | Exact mentions légales block; no CNDP receipt; no phone; no publication director. Name the host only as a processor in the privacy policy. |
-| [#11](https://github.com/mustaphaelou/hay2010website/issues/11) SEO/JSON-LD | The Organization object in §5.5; omit `foundingDate`, `telephone`, `sameAs`, `logo`. |
-| [#12](https://github.com/mustaphaelou/hay2010website/issues/12) forms | No CNDP filing; no CV upload; careers applications to `ste.hay2010@gmail.com` until a recruitment address is confirmed. |
-| [#14](https://github.com/mustaphaelou/hay2010website/issues/14) CNDP | No existing filing; data controller identity and contact; file before any form collects data. |
-| [#15](https://github.com/mustaphaelou/hay2010website/issues/15) DNS | Canonical URL `https://hay2010.ma`; the `hay2010.ma` domain carries the recruitment mailbox evidenced in the research, so keep MX records when fixing delegation. |
+| [#10](https://github.com/mustaphaelou/hay2010website/issues/10) legal pages | **Resolved** — [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md): exact mentions légales block; privacy policy; no CNDP receipt; no phone; no publication director; host only as a processor; three mailboxes. |
+| [#11](https://github.com/mustaphaelou/hay2010website/issues/11) SEO/JSON-LD | The Organization object in §5.5 with `email: contact@hay2010.ma`; omit `foundingDate`, `telephone`, `sameAs`, `logo`; do not publish `donnees@` or `recrutement@` in metadata. |
+| [#12](https://github.com/mustaphaelou/hay2010website/issues/12) forms | No CNDP filing; no CV upload; `contact@` for the contact form and `recrutement@` for careers only after #14; `donnees@` as rights contact; notices in the #10 decision §4.5. |
+| [#14](https://github.com/mustaphaelou/hay2010website/issues/14) CNDP | No existing filing; controller identity; the three mailboxes; the 12/6/12/6/6 retention schedule; F-211/F-113/F-214/F-118 scope; file before any public collection. |
+| [#15](https://github.com/mustaphaelou/hay2010website/issues/15) DNS | Canonical URL `https://hay2010.ma`; the domain carries `contact@`, `donnees@` and `recrutement@`, so keep MX/SPF/DKIM/autodiscover when fixing delegation and re-test all three mailboxes after the change. |
 
 ---
 
@@ -310,19 +317,23 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 | CNDP national register | https://rn-pdp.cndp.ma/fr/list/1.html | 2026-11-08 | No record for HAY 2010 / SOCIETE HAY 2010; control query LAMALIF GROUP returns records |
 | Alertemarchéspublics — Khemisset award | https://alertemarchespublics.com/societes/hay2010-sarl.html | 2026-11-04 (research) | Public procurement record; not a naming permission |
 | LinkedIn job 4126129601 | https://www.linkedin.com/jobs/view/4126129601/ | 2026-11-04 (research) | Rahhal Essamlali self-described "Gérant de la ste Hay2010 Sarl" |
-| LinkedIn job 4481173694 | https://ma.linkedin.com/jobs/view/4481173694 | 2026-11-04 (research) | `recrutement@hay2010.ma` in the company's own post (not owner-confirmed) |
+| LinkedIn job 4481173694 | https://ma.linkedin.com/jobs/view/4481173694 | 2026-11-04 (research) | `recrutement@hay2010.ma` in the company's own post; the address was owner-approved on 2026-11-09, with public use gated by #14 |
 | Legal research note | `docs/research/hay2010-legal-consent.md` on branch `research/hay2010-legal-consent` | 2026-11-08 | Loi 5-96 art. 45 fields; CNDP F-211/F-214/F-113/F-118; image/logo permissions |
-| Owner confirmations | This session | 2026-11-08 | Address, gérant name-only, no founding year, ONEE-only, email-only, no CNDP filing, no permissions |
+| Owner confirmations | This session | 2026-11-08 | Address, gérant name-only, no founding year, ONEE-only, no CNDP filing, no permissions |
+| Owner mailbox decision | This session ([#10](https://github.com/mustaphaelou/hay2010website/issues/10)) | 2026-11-09 | `contact@`, `donnees@`, `recrutement@`; Gmail private fallback; owner provisions in cPanel; `recrutement@` public after #14 |
+| Legal/analytics decision | [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) | 2026-11-09 | No analytics at launch; Cloudflare Web Analytics after F-214; no banner; two legal pages; retention 12/6/12/6/6; forms/CV gated |
 
-**Owner decisions (2026-11-08, verbatim summary):**
+**Owner decisions (2026-11-08, verbatim summary; mailbox amendment 2026-11-09):**
 
 - Address: `Local N° 21, Hay El Manzeh, Hay Er-Riad, Rabat`.
 - Gérant: `Rahhal Essamlali — name only, no photo/quote`.
 - Founding: `no year — "plus de 10 ans d'expérience"`.
 - Certifications: `ONEE only — both certificates to be sent` (amended 2026-11-09: EE HTA-BT and HTA-BT3).
-- Contact: `only ste.hay2010@gmail.com for now`.
+- Contact: `only ste.hay2010@gmail.com for now` (superseded 2026-11-09: `contact@hay2010.ma` public, `donnees@hay2010.ma` rights, `recrutement@hay2010.ma` careers after #14; Gmail private fallback).
 - CNDP: `no filing — plan the filings in #14`.
 - Permissions: `none yet — use the fallback`.
+- Mailboxes: `contact@ + donnees@ + recrutement@; owner creates in cPanel; Gmail fallback`.
+- Analytics/legal: `no analytics at launch; Cloudflare Web Analytics after F-214; no banner; two legal pages; one-off counsel review`.
 
 **Evidence images:** `docs/company/evidence/ompic-directinfo-2026-11-08.png` and `docs/company/evidence/justice-rc-search-2026-11-08.png`.
 
@@ -335,10 +346,12 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 - [ ] No "depuis 2004" or "depuis 2011" anywhere in the copy, metadata or structured data.
 - [ ] No RC 517, no 6M/4.7M/500k capital, no old address, no IF.
 - [ ] No client names/logos, employee photos or testimonials without a signed permission in this register.
-- [ ] No phone, recruitment email or social links unless confirmed after 2026-11-08.
-- [ ] No CNDP receipt number until #14 issues one; forms disabled until then.
-- [ ] Footer legal line and mentions légales use `SOCIETE HAY 2010`; body copy uses `HAY2010`.
-- [ ] JSON-LD has no `foundingDate`, `telephone`, `sameAs` or `logo`.
+- [ ] No phone or social links unless confirmed after 2026-11-09.
+- [ ] `contact@` and `donnees@` created, send/receive-tested, and published; `recrutement@` published only after #14; the Gmail is not on the site, legal pages, JSON-LD or metadata.
+- [ ] No CNDP receipt number until #14 issues one; forms disabled until then; `recrutement@` does not invite CVs before F-113.
+- [ ] Footer legal line and mentions légales use `SOCIETE HAY 2010`; body copy uses `HAY2010`; the footer contact is `contact@hay2010.ma`.
+- [ ] JSON-LD has `email: contact@hay2010.ma` and no `foundingDate`, `telephone`, `sameAs` or `logo`.
+- [ ] Legal pages match [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md): no publication director, no phone, no host line, no blank CNDP number.
 - [ ] No losing bid, participation, aggregator total or expired MHVP qualification is presented as a reference.
 - [ ] Both ONEE agréments match the filed certificates; no HTA-BT0 line is attributed to HAY 2010.
 - [ ] No reference card without an `evidenceReference`; no named card without a signed permission.

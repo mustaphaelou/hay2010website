@@ -83,6 +83,7 @@ Record the VPS provider and country at provisioning. A US-located VPS is a US pr
 
 - **VPS:** developer-owned for the first deployment. A written hosting/ops agreement covers access, backups, cost and exit. If the client does not accept developer-hosted infrastructure, the target changes to a client-owned VPS; the stack is unchanged.
 - **Domain, Cloudflare zone and R2:** HAY2010-owned. The developer is a member/administrator. A production zone must not sit in a personal account without a written handoff and a plan to transfer it before launch.
+- **Mailboxes:** HAY2010-owned, on the existing HeberjaHiz mail host. The owner creates `contact@`, `donnees@` and `recrutement@` (see [#10](https://github.com/mustaphaelou/hay2010website/issues/10) §6); `recrutement@` is not public before #14. Email hosting does not move.
 - **GitHub:** the repository stays under the developer for now; the client receives access and a handoff at launch. The repository is public, so no platform account is needed to deploy it.
 - **Billing:** the VPS is the developer's existing cost; Cloudflare Free and R2 usage are billed to the HAY2010 account; the domain renewal stays with the client. Commercial terms are outside this ticket; the technical ownership and exit path are not.
 - **Exit:** the client can export content (Payload JSON or `pg_dump`), media from R2, DNS records and the deployment repository, and move to another host. The runbook must make that possible without the developer.
@@ -92,7 +93,7 @@ Record the VPS provider and country at provisioning. A US-located VPS is a US pr
 - Staging holds **synthetic content only**. Forms are hard-disabled; no contact messages, CVs or applicant data. The only personal data is the admin accounts and Cloudflare Access identities.
 - Cloudflare and R2 are US processors; the VPS may be outside Morocco. [#14](https://github.com/mustaphaelou/hay2010website/issues/14) must file the CNDP declarations and the F-118 transfer authorization **before** the public site collects real data. Staging with synthetic data and two admin accounts does not open public collection.
 - Media containing people stays gated by the rights workflow in the content model; no unreleased photo is uploaded to the public bucket.
-- The public privacy policy and mentions légales remain [#10](https://github.com/mustaphaelou/hay2010website/issues/10); they are launch gates.
+- The public privacy policy and mentions légales are decided in [#10](https://github.com/mustaphaelou/hay2010website/issues/10): [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md). They are launch gates, together with the mailbox tests and the CNDP references.
 
 ### 3.5 Backups
 
@@ -143,7 +144,7 @@ Cloudflare zone hay2010.ma
 - **Access** — application on `staging.hay2010.ma` for the whole host; policy allows the owner and developer emails with one-time PIN; session 24 hours. At launch, a second application covers `hay2010.ma/admin*`; the public site stays open. Payload's own auth remains the application-level gate.
 - **Cache** — staging: **bypass all caching** (Access responses must not be shared, and there is no traffic to optimise). Production: cache `/_next/static/*`, brand assets and R2 media aggressively; **bypass HTML**, `/admin*` and `/api/*`. Add a purge-on-publish hook only if HTML caching is introduced later.
 - **WAF** — default managed rules; rate-limit the admin login and any public API. Turnstile arrives with the forms in [#12](https://github.com/mustaphaelou/hay2010website/issues/12).
-- **Analytics** — no GA, no third-party tags. Use Cloudflare's server-side request analytics from the dashboard, not the client-side Web Analytics beacon; the audience-measurement decision is [#10](https://github.com/mustaphaelou/hay2010website/issues/10).
+- **Analytics** — no GA, no third-party tags, no tag manager. At launch, only Cloudflare's server-side edge request analytics from the dashboard; no client-side beacon and no consent banner. After #14 files the F-214, the cookieless Cloudflare Web Analytics beacon may be enabled with six-month retention. Full decision: [#10](https://github.com/mustaphaelou/hay2010website/issues/10) and [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) §2.
 
 ### 4.3 Cloudflare R2
 
@@ -156,10 +157,11 @@ Cloudflare zone hay2010.ma
 
 Payload needs SMTP for password reset and publish notifications. The stack does **not** include a mail server.
 
-- Preferred: the existing `mail.hay2010.ma` mailbox (for example `no-reply@hay2010.ma`) over SMTP submission, if the owner provides credentials and the mailbox exists.
+- Preferred: the existing `mail.hay2010.ma` host over SMTP submission. The owner creates `contact@`, `donnees@` and `recrutement@` in the HeberjaHiz cPanel ([#10](https://github.com/mustaphaelou/hay2010website/issues/10) §6); a separate `no-reply@` service mailbox may be created for transactional mail if the owner prefers, but it is not a public contact.
 - Fallback: a transactional provider (Resend/Postmark) — a US transfer that must be included in #14's F-118.
 - Staging: email disabled or pointed at a test inbox. No real recipients, no announcements.
 - Do not run Postfix on the VPS; deliverability and reputation are not worth it for a brochure site.
+- Keep MX/SPF/DKIM/autodiscover unchanged through #15; re-test all public mailboxes after the DNS cutover.
 
 ### 4.5 Scheduled jobs
 
@@ -247,7 +249,7 @@ The VPS is ARM64, so the image must be ARM64. Do not cross-build with QEMU; it i
 
 ### Phase 3 — public launch (#16)
 
-- Production Coolify environment (separate app/database/buckets or a deliberate promotion), apex/`www` cutover, CNDP filings, analytics/consent, forms, final restore test, WordPress retirement, email/SPF/DMARC verification.
+- Production Coolify environment (separate app/database/buckets or a deliberate promotion), apex/`www` cutover, CNDP filings, the #10 legal-page and consent gates, forms, final restore test, WordPress retirement, email/SPF/DMARC verification and the mailbox tests.
 - Staging remains behind Access after launch.
 
 ---
@@ -256,7 +258,7 @@ The VPS is ARM64, so the image must be ARM64. Do not cross-build with QEMU; it i
 
 - Apex `hay2010.ma` and `www` cutover, old WordPress retirement, redirects — [#16](https://github.com/mustaphaelou/hay2010website/issues/16).
 - CNDP declarations and F-118 — [#14](https://github.com/mustaphaelou/hay2010website/issues/14).
-- Analytics, consent and legal page copy — [#10](https://github.com/mustaphaelou/hay2010website/issues/10).
+- Analytics, consent and legal page copy — resolved in [#10](https://github.com/mustaphaelou/hay2010website/issues/10): [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md). No analytics at launch; Cloudflare Web Analytics after the F-214.
 - Contact, careers and CV forms — [#12](https://github.com/mustaphaelou/hay2010website/issues/12).
 - SEO metadata, structured data, sitemap — [#11](https://github.com/mustaphaelou/hay2010website/issues/11).
 - Homepage prototype and inner-page composition — [#13](https://github.com/mustaphaelou/hay2010website/issues/13).
@@ -269,7 +271,7 @@ The VPS is ARM64, so the image must be ARM64. Do not cross-build with QEMU; it i
 
 - **VPS specs and country** are not yet recorded. The decision assumes the minimums in §3.2. If the VPS is 2 GB, upgrade before deploying; if it is x86 rather than ARM64, the build target changes but the stack is unchanged.
 - **Cloudflare zone access** is unresolved until #15. The decision assumes the project can recover the existing zone or create a new HAY2010-owned zone and delegate at NINDO.
-- **SMTP credentials** for Payload password reset are not confirmed; a production mailbox or provider must be chosen before admin handoff (not before the Phase 0 smoke test).
+- **SMTP credentials** for Payload password reset are not confirmed. The owner creates `contact@`, `donnees@` and `recrutement@` (see #10 §6); a transactional mailbox (`no-reply@`) or provider must still be chosen before admin handoff, not before the Phase 0 smoke test.
 - **Ops agreement** and the exact hosting commercial terms are outside this ticket but are conditions for production.
 - **R2 backup independence** — a second provider is deferred to #16; until then, the backup bucket is in the same Cloudflare account as the media.
 - The Vercel research remains valid as an alternative if the self-hosted path is abandoned; it is not the current decision.

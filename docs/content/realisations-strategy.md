@@ -63,7 +63,7 @@ The only legitimate source of references is the owner’s contract file, and the
 | Nav label | `Réalisations` | Fixed by [#2](https://github.com/mustaphaelou/hay2010website/issues/2) |
 | H1 | `Réalisations` | — |
 | Hero subline | `Références sur demande.` | Approved wording in the facts register §2.2 |
-| Primary CTA | `Demander nos références` | `mailto:ste.hay2010@gmail.com?subject=Demande%20de%20r%C3%A9f%C3%A9rences` |
+| Primary CTA | `Demander nos références` | `mailto:contact@hay2010.ma?subject=Demande%20de%20r%C3%A9f%C3%A9rences` (after the mailbox is tested; see #10 §6) |
 | Secondary CTA | `Découvrir nos métiers` | `/metiers` |
 | Intro | `Depuis plus de 10 ans, HAY2010 accompagne les collectivités et les entreprises dans leurs projets d’éclairage public et d’électrification. Nos références sont transmises sur demande, après accord des maîtres d’ouvrage.` | Lead is the approved positioning line; second sentence is new prose |
 | Qualifications label | `Agréments ONEE` | — |
@@ -205,7 +205,7 @@ Four **separate** asks, each with its own checkbox/signature:
 - One-page letter; three-week window; one reminder; silence means no.
 - No implied consent, no “they didn’t say no”, no logo from a public source.
 - The developer records the status in the facts register §6 and on the project record, prepares the card, and publishes the day the signed paper is filed.
-- [#10](https://github.com/mustaphaelou/hay2010website/issues/10) reviews the letter and the reference wording before the campaign starts. Not legal advice.
+- The [#10](https://github.com/mustaphaelou/hay2010website/issues/10) decision and its one-off counsel review cover the permission letter and the reference wording before the campaign starts. Not legal advice.
 
 ### 5.3 Evidence levels
 
@@ -251,7 +251,7 @@ The [#4](https://github.com/mustaphaelou/hay2010website/issues/4) photography br
 
 - No personal data is stored in the CMS beyond a released photo and its release reference ([#5](https://github.com/mustaphaelou/hay2010website/issues/5), [#14](https://github.com/mustaphaelou/hay2010website/issues/14)).
 - The CTA is a `mailto:`; no form, no CNDP dependency ([#12](https://github.com/mustaphaelou/hay2010website/issues/12)).
-- Legal review is [#10](https://github.com/mustaphaelou/hay2010website/issues/10)’s; this document is not legal advice.
+- Legal review follows the [#10](https://github.com/mustaphaelou/hay2010website/issues/10) counsel gate; this document is not legal advice.
 
 ---
 
@@ -297,10 +297,10 @@ Publishing rules:
 - [ ] The MHVP qualification is absent or, if a later renewal is filed, current; never shown as expired-and-current.
 - [ ] The homepage teaser falls back until 3 published projects.
 - [ ] `/realisations/[slug]` returns 404 and is absent from the sitemap until `caseStudiesLive` and 3 approved case studies.
-- [ ] The fallback CTA opens `mailto:ste.hay2010@gmail.com` with the subject `Demande de références`.
+- [ ] The fallback CTA opens `mailto:contact@hay2010.ma` with the subject `Demande de références` (after the mailbox is tested).
 - [ ] The hero is typographic or a rights-cleared photo; no stock, AI or Porto asset.
 - [ ] Contrast, alt text, reduced motion, mobile/desktop layout pass ([#4](https://github.com/mustaphaelou/hay2010website/issues/4), [#13](https://github.com/mustaphaelou/hay2010website/issues/13)).
-- [ ] [#10](https://github.com/mustaphaelou/hay2010website/issues/10) has reviewed the permission letter and reference wording.
+- [ ] The permission letter and reference wording follow the [#10](https://github.com/mustaphaelou/hay2010website/issues/10) decision and its counsel review; no client name/logo without a signature.
 - [ ] [#11](https://github.com/mustaphaelou/hay2010website/issues/11) has confirmed indexing and no structured data.
 
 ---
@@ -382,7 +382,7 @@ Sources: [ONEE approved-contractor list, p. 27](https://www.one.org.ma/fr/pages/
 | [#2](https://github.com/mustaphaelou/hay2010website/issues/2) page tree | Amendment: `/realisations` is credentials-led; fallback; cards inline then list; detail pages at 3 approved named case studies; teaser threshold 3. |
 | [#3](https://github.com/mustaphaelou/hay2010website/issues/3) facts register | Amendment: two current ONEE agréments (not three; HTA-BT0 is another company); MHVP expired; Khemisset official PV not found; realisations wording and permission campaign. |
 | [#5](https://github.com/mustaphaelou/hay2010website/issues/5) content model | Amendment: `cover` optional for typographic cards; `evidenceReference`; `caseStudiesLive`; teaser threshold; anonymized card rules. |
-| [#10](https://github.com/mustaphaelou/hay2010website/issues/10) legal | Permission letter; reference wording; public-record position; no legal advice. |
+| [#10](https://github.com/mustaphaelou/hay2010website/issues/10) legal | **Resolved** — permission letter, reference wording, public-record position; counsel review gate; no legal advice. |
 | [#11](https://github.com/mustaphaelou/hay2010website/issues/11) SEO | Index the page; no `ItemList`/`Review` until 3 published projects. |
 | [#13](https://github.com/mustaphaelou/hay2010website/issues/13) prototype | Page layout: hero, service rows, qualifications, fallback, method, CTA. |
 | [#16](https://github.com/mustaphaelou/hay2010website/issues/16) launch | Inventory T-2, campaign T-3, the gates in §10. |

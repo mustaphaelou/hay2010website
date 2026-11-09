@@ -47,14 +47,14 @@ Resolved 2026-11-08 by a grilling session with the owner. The page tree, navigat
 | Solaire & ENR | `/metiers#solaire` | Nos Métiers | — (anchor) | Gated: only after the company confirms the capability and #3 clears the wording |
 | Réalisations | `/realisations` | — | Réalisations | Launch: content per #6; fallback is "Références sur demande" |
 | Étude de cas | `/realisations/[slug]` | Réalisations | — | Phase 2: publish detail pages once ≥3 approved case studies exist |
-| Carrières | `/carrieres` | — | Carrières | Launch: openings inline; applications to recrutement@hay2010.ma until #12/CNDP F-113 |
+| Carrières | `/carrieres` | — | Carrières | Launch: openings inline; applications to `recrutement@hay2010.ma` only after #14/F-113, `contact@` until then; no CV upload |
 | Médias | — (menu group) | — | Médias | No page; group appears only when a child is live |
 | Actualités | `/actualites` | Médias | Actualités | Gated: at least one approved article |
 | Article | `/actualites/[slug]` | Actualités | — | With Actualités |
 | Médiathèque | `/mediatheque` | Médias | Médiathèque | Gated: approved photos |
-| Contact | `/contact` | — | Contact | Launch: phone/email/map; form only when #12/CNDP F-211/F-214 clears |
-| Mentions légales | `/mentions-legales` | — | Footer | Launch: #10/#14 content |
-| Politique de confidentialité | `/politique-de-confidentialite` | — | Footer | Launch: #10/#14 content, cookies covered here + banner |
+| Contact | `/contact` | — | Contact | Launch: `contact@hay2010.ma` and address; map only when live; form only when #12/CNDP F-211 clears |
+| Mentions légales | `/mentions-legales` | — | Footer | Launch: #10 decision §4.2; #14 references conditional |
+| Politique de confidentialité | `/politique-de-confidentialite` | — | Footer | Launch: #10 decision §4.3; cookies section, no separate cookie page, no banner at launch |
 | 404 | — | — | — | Launch: custom not-found with links to Accueil, Métiers, Contact |
 
 **Also phase 2, not in the launch table:** job detail pages (`/carrieres/[slug]`), service child pages (`/eclairage-public` etc. at root level if ever split), a certifications page (not planned; "Agréments & certifications" is a block on L'Entreprise once proof exists).
@@ -66,7 +66,7 @@ Resolved 2026-11-08 by a grilling session with the owner. The page tree, navigat
 3. **Nos Métiers** — four cards (Solaire as a fifth only when live) linking to the `/metiers#…` anchors; grid 4/2/1.
 4. **Réalisations teaser** — three approved projects, or the "Références sur demande" fallback with a contact CTA; link to `/realisations`. No client logos without permission.
 5. **Carrières teaser** — "Rejoignez-nous", current roles or a single line, link to `/carrieres`. Secondary audience, kept compact.
-6. **Contact CTA band** — "Un projet d'éclairage public ou d'électrification ?", phone/email, button to `/contact`.
+6. **Contact CTA band** — "Un projet d'éclairage public ou d'électrification ?", `contact@hay2010.ma`, button to `/contact`.
 7. **Footer** — four columns below.
 
 Not on the homepage at launch: video band, stats strip, news teaser, client-logo band, newsletter.
@@ -139,13 +139,21 @@ Old `/wp-json/`, `/xmlrpc.php`, `/wp-admin/` are disabled/404 at the edge, not r
 - **Homepage teaser** falls back to `Références sur demande` until three published projects.
 - Full strategy: [`docs/content/realisations-strategy.md`](../../../docs/content/realisations-strategy.md).
 
+### Amendment 2026-11-09 (analytics, consent and legal pages, #10)
+
+- **Footer column 1:** `contact@hay2010.ma` (not the Gmail); no phone, `donnees@`, `recrutement@` or social icons.
+- **Carrières:** `contact@hay2010.ma` until #14; `recrutement@hay2010.ma` only after the F-113 authorization covers it; no CV upload before then.
+- **Legal pages:** follow [`docs/legal/analytics-consent-legal-pages.md`](../../../docs/legal/analytics-consent-legal-pages.md) §4. No publication director, no phone, no host line, no blank CNDP number. Cookies are a section of the privacy policy, not a third page.
+- **Analytics:** no client-side analytics at launch; no banner; Cloudflare edge analytics only. Cloudflare Web Analytics after #14’s F-214.
+- **Canonical contact in metadata/JSON-LD:** `contact@hay2010.ma` (handoff to #11).
+
 ### Dependencies / handed to other tickets
 
 - #3 — publishable facts, gérant authorization, certifications, contact details, social accounts.
 - #4 — imagery, logo, palette, type.
 - #5 — content model for Actualités and updates.
 - #6 — réalisations format, permissions and fallback.
-- #10 — analytics, consent and legal copy.
+- #10 — resolved: analytics, consent and legal copy; see [`docs/legal/analytics-consent-legal-pages.md`](../../../docs/legal/analytics-consent-legal-pages.md).
 - #11 — SEO, metadata, structured data.
 - #12 — contact/careers forms and CNDP dependency.
 - #13 — homepage prototype.

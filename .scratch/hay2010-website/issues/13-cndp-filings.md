@@ -20,3 +20,5 @@ The legal research ([Research Moroccan legal and consent requirements for the si
 - **Local counsel review:** the legal note flags 10 points that need a Moroccan avocat.
 
 Record each filing's form, date, receipt/authorization number, owner and status in the answer. Flag any filing that cannot be completed before launch and the corresponding feature cut (for example, careers form delayed until F-113 is granted).
+
+**Input from #10 (resolved 2026-11-09):** no analytics at launch (F-214 only when Cloudflare Web Analytics is enabled); no newsletter (D-940-2025 not applicable); contact/rights mailboxes `contact@`/`donnees@` and careers `recrutement@`; retention 12/6/12/6/6; the policy's structured `cndpReferences`; the one-off counsel review. Full decision: [`docs/legal/analytics-consent-legal-pages.md`](../../../docs/legal/analytics-consent-legal-pages.md).
