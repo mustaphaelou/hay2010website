@@ -130,6 +130,15 @@ Old `/wp-json/`, `/xmlrpc.php`, `/wp-admin/` are disabled/404 at the edge, not r
 - **Réalisations** launches on `Références sur demande`; no client names or logos (no permissions).
 - **Legal pages** use the identity block in [`docs/company/facts-register.md`](../../../docs/company/facts-register.md).
 
+### Amendment 2026-11-09 (réalisations, #6)
+
+- **`/realisations` launches credentials-led**, not as a portfolio: hero with `Références sur demande.`, four service rows, the two ONEE agréments, the reference block, the method block and a contact CTA.
+- **Zero project cards are required for launch.** Anonymized cards appear inline under their service when the owner's contract file is documented (1–2), or as a two-column list at 3+; no grid and no filters.
+- **Named cards, logos, photos and testimonials** require the permissions in the facts register §6; no client name is published before a signature.
+- **`/realisations/[slug]` stays off** until three approved named case studies exist; the route returns 404 and is absent from the sitemap.
+- **Homepage teaser** falls back to `Références sur demande` until three published projects.
+- Full strategy: [`docs/content/realisations-strategy.md`](../../../docs/content/realisations-strategy.md).
+
 ### Dependencies / handed to other tickets
 
 - #3 — publishable facts, gérant authorization, certifications, contact details, social accounts.

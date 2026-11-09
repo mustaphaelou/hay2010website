@@ -60,7 +60,7 @@ Use **Payload 3** as the content management system:
 | Navigation, footer, service anchors and their order | `lib/navigation.ts` | The page tree and anchors are fixed by [#2](https://github.com/mustaphaelou/hay2010website/issues/2). |
 | Redirects and 410s | `next.config.ts` / middleware | The WordPress redirect map is code. |
 | SEO defaults, metadata patterns, JSON-LD, sitemap, robots | `lib/seo.ts` | [#11](https://github.com/mustaphaelou/hay2010website/issues/11) owns the rules. |
-| Feature gates | `lib/flags.ts` | `actualitesLive`, `mediathequeLive`, `solaireLive`, `agrementLive`, `mapLive`, `formLive`. |
+| Feature gates | `lib/flags.ts` | `actualitesLive`, `mediathequeLive`, `solaireLive`, `agrementLive`, `mapLive`, `formLive`, `caseStudiesLive`. |
 
 ### Payload-owned (owner-editable)
 
@@ -270,10 +270,11 @@ The owner edits copy, bullets, image and related projects. Adding, removing, reo
 | `clientPermission` | checkbox + `clientPermissionRef` | Written client authorization. |
 | `scope` | textarea | One-line scope. |
 | `challenge`, `solution`, `results` | rich text | The case-study body. |
-| `cover`, `coverAlt` | upload / text | Required for publication. |
+| `cover`, `coverAlt` | upload / text | Required for a named case study; **optional for an anonymized card**, which falls back to a typographic card. |
 | `gallery` | array `{ image, alt, caption }` | Rights-cleared. |
 | `peopleRelease` | checkbox + `peopleReleaseRef` | Required when an image shows identifiable people. |
 | `testimonialPermission` | checkbox + `testimonialPermissionRef` | Required if a quote is included. |
+| `evidenceReference` | text | Developer-only. Contract/réception reference for an owner-confirmed project; required for an anonymized card. |
 | `featured` | checkbox | Eligible for the homepage teaser. |
 | `publishedAt` | date | — |
 | `seo` | group | — |
@@ -285,7 +286,16 @@ Publish validation:
 - A testimonial requires `testimonialPermission`.
 - Client logos require both the client permission and the trademark owner’s permission; until then, no logo.
 
-At launch there are **no published projects**. `/realisations` shows `Références sur demande` and the homepage teaser falls back to the same. Case-study detail pages go live only when at least three approved projects exist (phase 2), per [#6](https://github.com/mustaphaelou/hay2010website/issues/6).
+At launch there are **no published projects**. `/realisations` is a credentials-led page: it shows the two ONEE agréments, the method and `Références sur demande`; the homepage teaser falls back to the same. Case-study detail pages go live only when at least three approved named case studies exist (phase 2), per [#6](https://github.com/mustaphaelou/hay2010website/issues/6).
+
+**Amendment 2026-11-09 (#6) — réalisations references**
+
+- **Anonymized card:** `clientName` empty, `evidenceReference` required, `cover` optional; it renders a typographic card (service, object, region, year, scope) with no buyer, logo, photo, amount, testimonial or detail link.
+- **Named card:** `clientName` + `clientPermission`; a logo additionally needs `trademarkPermission`; a photo still passes the media rights gate; no detail page until the case-study gate.
+- **Detail page:** `caseStudiesLive` (default false) and at least three approved named case studies.
+- **Teaser:** `referencesTeaser.featuredProjects` is ignored until three projects are published; the fallback renders instead.
+- **Amounts:** not modelled; they stay in the owner's inventory and are not displayed by default.
+- The full strategy, page copy, evidence levels and permission campaign are in [`docs/content/realisations-strategy.md`](realisations-strategy.md).
 
 #### `jobs`
 
@@ -395,9 +405,10 @@ users    n ─── 1 role
 | `actualitesLive` | false | `/actualites`, article routes, Médias > Actualités, sitemap entries, homepage news slots. |
 | `mediathequeLive` | false | `/mediatheque`, Médias > Médiathèque, sitemap entries. |
 | `solaireLive` | false | The fifth service, its nav item, homepage card, anchor and sitemap entry. |
-| `agrementLive` | false | The ONEE agrément block on L'Entreprise until the certificate is filed. |
+| `agrementLive` | false | The ONEE agrément blocks on L'Entreprise and `/realisations` until both certificates are filed. |
 | `mapLive` | false | The contact map until the address is confirmed as a reception point. |
 | `formLive` | false | The contact form until CNDP F-211/F-214 and [#12](https://github.com/mustaphaelou/hay2010website/issues/12) clear. |
+| `caseStudiesLive` | false | `/realisations/[slug]`, detail links and sitemap entries until three approved named case studies exist. |
 
 Frontend rule: a record renders only when `status` is public, its gate is true, and its media is rights-cleared. Direct URLs to gated content return 404. The sitemap and internal links use the same filter, so a gate is never a hidden link.
 
@@ -704,7 +715,9 @@ The existing `app/page.tsx` moves into the `(frontend)` route group when the Pay
 - [ ] The first communiqué cannot publish without `legalReviewed`; the gate hides `/actualites` until it is live.
 - [ ] `/mediatheque` stays 404 until `mediathequeLive` is true and at least one approved photo is curated.
 - [ ] The four service anchors are fixed; Solaire stays hidden until `solaireLive`.
-- [ ] `/realisations` falls back to `Références sur demande` with no published projects.
+- [ ] `/realisations` launches with the qualifications block and `Références sur demande`, zero project cards.
+- [ ] A published project without `cover` renders a typographic card; an anonymized card has no buyer, logo, photo or amount.
+- [ ] `/realisations/[slug]` is 404 until `caseStudiesLive` and three approved case studies.
 - [ ] Revalidation updates the page, homepage, listing and sitemap after publish.
 - [ ] Preview works for drafts without exposing them publicly.
 - [ ] A restore from backup is tested before launch.
@@ -718,3 +731,4 @@ The existing `app/page.tsx` moves into the `(frontend)` route group when the Pay
 | Date | Change |
 |---|---|
 | 2026-11-09 | Initial decision: Payload 3, structured content, roles, workflow, media rights, communiqués policy. |
+| 2026-11-09 | Réalisations amendment (#6): anonymized cards, optional cover, `evidenceReference`, `caseStudiesLive`, teaser threshold. |

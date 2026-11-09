@@ -1,6 +1,7 @@
 # HAY2010 — Publishable company facts and legal identity
 
 **Status:** resolved 2026-11-08.
+**Amended 2026-11-09:** the ONEE entry now lists the two current agréments; the réalisations fallback, reference cards and permission campaign are defined in [`docs/content/realisations-strategy.md`](../content/realisations-strategy.md) (ticket [#6](https://github.com/mustaphaelou/hay2010website/issues/6)).
 **Owner decisions:** confirmed in session on 2026-11-08 (recorded in §10).
 **Purpose:** the single source of truth for copy, footer, legal pages and structured data. If a fact is not in §2, it does not go on the site.
 
@@ -47,7 +48,7 @@ Anything not listed in §2 is **G** by default. The register is deliberately nar
 |---|---|---|---|---|
 | Experience, no founding year | **« Plus de 10 ans d'expérience »** | **C** | Owner decision (2026-11-08): no year; the legal entity was registered 26/09/2011 and the 2004 date is not defensible | Home intro, L'Entreprise, metadata description |
 | Four launch services | **Éclairage public · Réseaux HTA/MT & MT/BT · Postes de transformation · CFO/CFA** | **C** | Project scope [#2](https://github.com/mustaphaelou/hay2010website/issues/2); company postings and procurement record (research 2026-11-04) | Home services band; `/metiers`; footer Métiers column; JSON-LD `knowsAbout` if used |
-| ONEE agrément | **« Agrément ONEE — EE HTA-BT : études des électrifications HTA-BT souterraines, BT aériennes et souterraines et bâtiment (02/10/2023 – 30/09/2028) »** | **C** — owner-approved, certificate outstanding | ONEE approved-contractor list, entry "HAY 2010", activity and validity dates (indexed 2026-11-08); owner confirmation (2026-11-08) | L'Entreprise agréments block; `/metiers` secondary line. **Publish only after the certificate is filed in this repo.** |
+| ONEE agréments | **« Agréments ONEE — EE HTA-BT : études des électrifications HTA-BT souterraines, BT aériennes et souterraines et bâtiment (02/10/2023 – 30/09/2028) ; HTA-BT3 : construction des réseaux HTA-BT (sans plafond) (25/03/2026 – 31/03/2029) »** | **C** — owner-approved [#6](https://github.com/mustaphaelou/hay2010website/issues/6) 2026-11-09; certificates outstanding | ONEE approved-contractor list, entry "HAY 2010", p. 27, re-verified 2026-11-09 | L'Entreprise agréments block; `/realisations` qualifications block; `/metiers` secondary line. **Publish only after both certificates are filed in this repo.** **No ONEE agrément covers branchements HTA or postes HTA/BT for HAY 2010; never attribute the HTA-BT0 line to the company — it belongs to HAMZA ANAS ELECTROMECANIQUE.** |
 | Project references | **« Références sur demande »** | **C** | Owner decision (2026-11-08): no permissions yet | `/realisations`, home references teaser, footer |
 | Legal representative line | **« Gérant : Rahhal Essamlali »** | **C** | Owner confirmation (2026-11-08) | L'Entreprise only |
 
@@ -90,7 +91,10 @@ Logo and brand assets are gated by [#4](https://github.com/mustaphaelou/hay2010w
 | **CNDP receipt / authorization number** | No public entry and owner confirms no filing (2026-11-08) | CNDP receipt from [#14](https://github.com/mustaphaelou/hay2010website/issues/14) |
 | **Financials, revenue, headcount, key figures** | Not verified; Charika financials are paywalled | Audited figures + owner decision |
 | **"Solaire & ENR"** | Gated by [#2](https://github.com/mustaphaelou/hay2010website/issues/2); no contract evidence; 2026 job posts mention it but that is not proof | Owner confirmation of capability + proof |
-| **Public procurement award (Khemisset, 187 607 DH TTC)** | Public record, but the buyer is not authorized as a named reference | Written permission; otherwise keep internal |
+| **Public procurement award (Khemisset, 187 607 DH TTC)** | The official PV was **not located** on 2026-11-09; only the aggregator page names it. The buyer is not authorized as a named reference. | The owner supplies the contract/réception (then an anonymized card is possible) **and** a written buyer permission for the name |
+| **Aggregator totals (14 wins / 78.66 M DH)** | Unattributable per project; name matching includes the radiée El Kelaâ namesake | Never |
+| **Losing bids, participations, technical admissibility** | Not réalisations; presenting them as wins would be false | Never |
+| **MHVP 4\*\*\*\* qualification after 03/03/2026** | Renewed 04/03/2024–03/03/2026; expired; no later list found | A later renewal certificate |
 | **"Références sur demande" replaced by a client list** | No permissions | Signed permissions |
 
 ---
@@ -195,8 +199,14 @@ Do **not** add a CNDP receipt line until [#14](https://github.com/mustaphaelou/h
 
 ### 5.4 Réalisations
 
-- Fallback: `Références sur demande.`
-- No client names, no logos, no project photos with identifiable people, no testimonials.
+- **Page shape:** credentials-led references page, not a portfolio. Full strategy: [`docs/content/realisations-strategy.md`](../content/realisations-strategy.md).
+- **Launch fallback:** `Références sur demande.` — no project cards are required for launch.
+- **Qualifications block:** the two ONEE agréments in §2.2, only when `agrementLive` is true and both certificates are filed. No HTA-BT0 line; no ONEE claim over branchements or postes.
+- **Reference cards:** anonymized by default (service, object, region, year, one-line scope); no buyer, logo, photo, amount, testimonial or detail link. Named cards only with the permissions in §6. Cards are built from the owner's contract file, never from public-procurement participations.
+- **Method block:** `De l’étude à la réception`, delivery prose, no certification claim.
+- **Never on the page:** losing bids, participations, aggregator totals, the expired MHVP qualification, stock or AI imagery, client logos without permission.
+- **Detail pages:** `/realisations/[slug]` only after three approved named case studies with rights-cleared photos.
+- **Imagery:** no per-project images until rights-cleared; typographic cards; typographic hero or a rights-cleared documentary photo.
 
 ### 5.5 JSON-LD Organization (handoff to #11)
 
@@ -264,6 +274,9 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 | 5 | Collect **written permissions** for any client name/logo, employee photo or testimonial | Réalisations and Médias content | None yet; fallback stands |
 | 6 | Confirm whether **Solaire & ENR** is a real service line, with proof | `/metiers#solaire`, home card, nav | Gated |
 | 7 | Confirm **logo ownership** and supply brand assets | Header, footer, metadata | [#4](https://github.com/mustaphaelou/hay2010website/issues/4) |
+| 8 | Send the **internal project inventory** (object, buyer, place, year, amount, contract/réception reference, permission contact) | Réalisations cards and the permission campaign | [#6](https://github.com/mustaphaelou/hay2010website/issues/6) |
+| 9 | Check for an **MHVP renewal after 03/03/2026** | Publication of the 4\*\*\*\* qualification, if renewed | Pending |
+| 10 | File **both ONEE certificates** (EE HTA-BT, HTA-BT3) | `agrementLive` and the qualifications block | Approved, documents pending |
 
 ---
 
@@ -274,7 +287,7 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 | [#1](https://github.com/mustaphaelou/hay2010website/issues/1) page tree | **Amendment:** footer contact column is email + "Rabat — Maroc" only; no phone, recruitment email or social icons. `Mot du gérant` stays hidden (name only, no page). Médias stays hidden. |
 | [#4](https://github.com/mustaphaelou/hay2010website/issues/4) brand | Logo ownership/asset; no people photos without releases; no client logos. |
 | [#5](https://github.com/mustaphaelou/hay2010website/issues/5) content model | The facts module/source of truth; editors may not add gated facts. Suggested fields: legal identity, contact channels, gated claims, permission status. |
-| [#6](https://github.com/mustaphaelou/hay2010website/issues/6) réalisations | No client permissions; fallback `Références sur demande`; the Khemisset award is internal evidence only. |
+| [#6](https://github.com/mustaphaelou/hay2010website/issues/6) réalisations | Credentials-led page; the two ONEE agréments; `Références sur demande`; owner inventory and permission campaign; no public-record cards. Full strategy: [`docs/content/realisations-strategy.md`](../content/realisations-strategy.md). |
 | [#10](https://github.com/mustaphaelou/hay2010website/issues/10) legal pages | Exact mentions légales block; no CNDP receipt; no phone; no publication director. Name the host only as a processor in the privacy policy. |
 | [#11](https://github.com/mustaphaelou/hay2010website/issues/11) SEO/JSON-LD | The Organization object in §5.5; omit `foundingDate`, `telephone`, `sameAs`, `logo`. |
 | [#12](https://github.com/mustaphaelou/hay2010website/issues/12) forms | No CNDP filing; no CV upload; careers applications to `ste.hay2010@gmail.com` until a recruitment address is confirmed. |
@@ -324,3 +337,6 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 - [ ] No CNDP receipt number until #14 issues one; forms disabled until then.
 - [ ] Footer legal line and mentions légales use `SOCIETE HAY 2010`; body copy uses `HAY2010`.
 - [ ] JSON-LD has no `foundingDate`, `telephone`, `sameAs` or `logo`.
+- [ ] No losing bid, participation, aggregator total or expired MHVP qualification is presented as a reference.
+- [ ] Both ONEE agréments match the filed certificates; no HTA-BT0 line is attributed to HAY 2010.
+- [ ] No reference card without an `evidenceReference`; no named card without a signed permission.
