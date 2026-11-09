@@ -1,11 +1,11 @@
 # HAY2010 — Publishable company facts and legal identity
 
 **Status:** resolved 2026-11-08.
-**Amended 2026-11-09:** the ONEE entry now lists the two current agréments; the réalisations fallback, reference cards and permission campaign are defined in [`docs/content/realisations-strategy.md`](../content/realisations-strategy.md) (ticket [#6](https://github.com/mustaphaelou/hay2010website/issues/6)).
+**Amended 2026-11-09:** the ONEE entry now lists the two current agréments, re-verified live on 2026-11-09; the réalisations fallback, reference cards and permission campaign are defined in [`docs/content/realisations-strategy.md`](../content/realisations-strategy.md) (ticket [#6](https://github.com/mustaphaelou/hay2010website/issues/6)).
 **Owner decisions:** confirmed in session on 2026-11-08 (recorded in §10).
 **Purpose:** the single source of truth for copy, footer, legal pages and structured data. If a fact is not in §2, it does not go on the site.
 
-> **One-line rule:** publish only the identity block, the four launch services, the email, the owner-confirmed address, the gérant's name and the ONEE agrément (once the certificate is filed). Everything else stays gated.
+> **One-line rule:** publish only the identity block, the four launch services, the email, the owner-confirmed address, the gérant's name and the ONEE agréments (once both certificates are filed). Everything else stays gated.
 
 ---
 
@@ -80,7 +80,7 @@ Logo and brand assets are gated by [#4](https://github.com/mustaphaelou/hay2010w
 | Address **M 2/4 Ribat Al Fath CYM, Rabat** | Historical seat (pre-2018 transfer) | Never, unless the RC extract shows it again |
 | Address **Hay El Fath** / **174 Logement Amal 6, Hay El Fath** | Historical or directory snippets; not the current seat | Never, unless the RC extract shows it |
 | **IF 6580342** | Only on a third-party card; no DGI document; not required by loi 5-96 for mentions légales | A DGI document, if it ever needs publishing |
-| Generic **"entreprise agréée"** | Self-asserted; only the ONEE agrément is evidenced | Replace with the ONEE-specific wording in §2.2 |
+| Generic **"entreprise agréée"** | Self-asserted; only the ONEE agréments are evidenced | Replace with the ONEE-specific wording in §2.2 |
 | Other certifications / agréments | No evidence | A certificate for each claim |
 | Gérant **photo, quote, biography, `/mot-du-gerant`** | Owner approved the name only (2026-11-08) | Written authorization + approved quote + photo release |
 | **Client names** | No written permission | Signed client authorization |
@@ -158,11 +158,14 @@ Logo and brand assets are gated by [#4](https://github.com/mustaphaelou/hay2010w
 
 ### 4.7 "Entreprise agréée"
 
-**Resolved: replace the generic claim with the ONEE-specific agrément.**
+**Resolved: replace the generic claim with the ONEE-specific agréments.**
 
 - The 2025/2026 job posts say "entreprise agréée" with no authority named. That is self-asserted.
-- ONEE's approved-contractor list shows **HAY 2010** for **EE HTA-BT** (studies of HTA-BT underground electrification, overhead and underground BT, and buildings), valid **02/10/2023 – 30/09/2028**.
-- The owner approved publishing **ONEE only**, with the certificate to be filed. No other agrément or certification may be named.
+- ONEE's approved-contractor list shows **HAY 2010** for **two** agréments (re-verified live on 2026-11-09, page 27):
+  - **EE HTA-BT** — études des électrifications HTA-BT souterraines, BT aériennes et souterraines et bâtiment, valid **02/10/2023 – 30/09/2028**;
+  - **HTA-BT3** — construction des réseaux HTA-BT (sans plafond), valid **25/03/2026 – 31/03/2029**.
+- The adjacent **HTA-BT0** line (branchements HTA et postes HTA/BT) belongs to **HAMZA ANAS ELECTROMECANIQUE**, not HAY 2010; never attribute it.
+- The owner approved publishing **ONEE only**, with **both certificates** to be filed. No other agrément or certification may be named.
 
 ---
 
@@ -193,8 +196,8 @@ Do **not** add a CNDP receipt line until [#14](https://github.com/mustaphaelou/h
 
 - Positioning line: `Depuis plus de 10 ans, HAY2010 accompagne les collectivités et les entreprises dans leurs projets d'éclairage public et d'électrification.`
 - Direction line: `Gérant : Rahhal Essamlali`
-- Agréments block: publish only after the ONEE certificate is filed:
-  `Agrément ONEE — EE HTA-BT (02/10/2023 – 30/09/2028)`
+- Agréments block: publish only after **both** ONEE certificates are filed, using the exact §2.2 wording:
+  `Agréments ONEE — EE HTA-BT : études des électrifications HTA-BT souterraines, BT aériennes et souterraines et bâtiment (02/10/2023 – 30/09/2028) ; HTA-BT3 : construction des réseaux HTA-BT (sans plafond) (25/03/2026 – 31/03/2029)`
 - Do not add a `Mot du gérant` link or page.
 
 ### 5.4 Réalisations
@@ -244,7 +247,7 @@ Do **not** add a CNDP receipt line until [#14](https://github.com/mustaphaelou/h
 | Employee photos / portraits | Specific written authorization (loi 09-08 art. 1) | **None** | — | No |
 | Testimonials | Written authorization | **None** | — | No |
 | Gérant photo / quote | Written authorization | **None** (name only) | Owner decision 2026-11-08 | No |
-| ONEE certificate | Company document | **Approved; certificate promised** | Owner decision 2026-11-08; ONEE list | After filing |
+| ONEE certificates (EE HTA-BT, HTA-BT3) | Company documents | **Approved; certificates promised** | Owner decision 2026-11-08; ONEE list re-verified 2026-11-09 | After filing both |
 | Company logo | Ownership confirmation | **Gated** | [#4](https://github.com/mustaphaelou/hay2010website/issues/4) | After #4 |
 | Hero / site photography | Licence or company ownership; releases for people | **Gated** | [#4](https://github.com/mustaphaelou/hay2010website/issues/4) | After #4 |
 | Public procurement award (Khemisset) | Buyer permission to be named | **None** | Public result page | Only as internal evidence; not a named reference |
@@ -268,7 +271,7 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 | # | Action | Unlocks | Owner decision |
 |---|---|---|---|
 | 1 | Send the **RC extract (modèle 7)** or the OMPIC detailed legal sheet; verify the address and gérant | Final confirmation of §2.1; correct legal pages if either differs | Pending |
-| 2 | Send the **ONEE certificate** | Publication of the ONEE agrément block | Approved, document pending |
+| 2 | Send **both ONEE certificates** (EE HTA-BT, HTA-BT3) | Publication of the ONEE agréments block | Approved, documents pending |
 | 3 | Confirm a **phone**, a **recruitment mailbox** and any **official social accounts**, or confirm they should be omitted permanently | Footer/contact page/JSON-LD additions | Omitted for now |
 | 4 | Create a **data-protection contact** (`donnees@hay2010.ma` or an owner) and file the CNDP declarations | Forms, CV uploads, analytics, privacy policy receipt line | [#14](https://github.com/mustaphaelou/hay2010website/issues/14) |
 | 5 | Collect **written permissions** for any client name/logo, employee photo or testimonial | Réalisations and Médias content | None yet; fallback stands |
@@ -276,7 +279,6 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 | 7 | Confirm **logo ownership** and supply brand assets | Header, footer, metadata | [#4](https://github.com/mustaphaelou/hay2010website/issues/4) |
 | 8 | Send the **internal project inventory** (object, buyer, place, year, amount, contract/réception reference, permission contact) | Réalisations cards and the permission campaign | [#6](https://github.com/mustaphaelou/hay2010website/issues/6) |
 | 9 | Check for an **MHVP renewal after 03/03/2026** | Publication of the 4\*\*\*\* qualification, if renewed | Pending |
-| 10 | File **both ONEE certificates** (EE HTA-BT, HTA-BT3) | `agrementLive` and the qualifications block | Approved, documents pending |
 
 ---
 
@@ -304,7 +306,7 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 | OMPIC DirectInfo — search | https://www.directinfo.ma/resultat-search-mot-cle (query "HAY 2010") | 2026-11-08 | RC 87305 Rabat active vs RC 517 Kalaa-Sraghna **radiée** |
 | Ministry of Justice — online documents portal | https://servicesenligne.justice.gov.ma/ → Nouvelle demande → Registre de commerce → Modèle 7 → Tribunal de commerce Rabat → search "HAY 2010" | 2026-11-08 | RC 87305, SARL, 15 000 000 MAD, **Valide**; "SOCIETE HAY 2010" and RC 517 return no record |
 | Charika (Inforisk) — company card | https://www.charika.ma/societe-hay-2010-144738 | 2026-11-08 | Address "Local N° 21, Hay El Manzeh, Hay Er-Riad", capital 15 000 000 DHS, email, legal events (2015/2016/2018/2025/2026) |
-| ONEE — approved contractors list | https://www.one.org.ma/fr/pages/lear.asp?esp=2&id1=7&id2=192&t1=&t2=1&action=&agrmt=&pays=&raison=&page=28 | 2026-11-08 (indexed snippet; live page refused connections after the first fetch) | HAY 2010 — EE HTA-BT — 02/10/2023 → 30/09/2028 |
+| ONEE — approved contractors list | https://www.one.org.ma/fr/pages/lear.asp?esp=2&id1=7&id2=192&t1=&t2=1&action=&agrmt=&pays=&raison=&page=27 | 2026-11-09 (live page, entry "HAY 2010", p. 27) | HAY 2010 — EE HTA-BT (02/10/2023 → 30/09/2028) and HTA-BT3 (25/03/2026 → 31/03/2029), both current; the adjacent HTA-BT0 line belongs to HAMZA ANAS ELECTROMECANIQUE |
 | CNDP national register | https://rn-pdp.cndp.ma/fr/list/1.html | 2026-11-08 | No record for HAY 2010 / SOCIETE HAY 2010; control query LAMALIF GROUP returns records |
 | Alertemarchéspublics — Khemisset award | https://alertemarchespublics.com/societes/hay2010-sarl.html | 2026-11-04 (research) | Public procurement record; not a naming permission |
 | LinkedIn job 4126129601 | https://www.linkedin.com/jobs/view/4126129601/ | 2026-11-04 (research) | Rahhal Essamlali self-described "Gérant de la ste Hay2010 Sarl" |
@@ -317,7 +319,7 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 - Address: `Local N° 21, Hay El Manzeh, Hay Er-Riad, Rabat`.
 - Gérant: `Rahhal Essamlali — name only, no photo/quote`.
 - Founding: `no year — "plus de 10 ans d'expérience"`.
-- Certifications: `ONEE only — certificate to be sent`.
+- Certifications: `ONEE only — both certificates to be sent` (amended 2026-11-09: EE HTA-BT and HTA-BT3).
 - Contact: `only ste.hay2010@gmail.com for now`.
 - CNDP: `no filing — plan the filings in #14`.
 - Permissions: `none yet — use the fallback`.
@@ -329,7 +331,7 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 ## 11. Re-verification checklist before launch
 
 - [ ] RC extract or OMPIC detailed sheet confirms the address and the current gérant. If either differs, update §2.1, §5.1, §5.3 and §5.5 before launch.
-- [ ] ONEE certificate filed; the agrément block matches the certificate's scope and dates.
+- [ ] Both ONEE certificates filed; the agrément block matches each certificate's scope and dates.
 - [ ] No "depuis 2004" or "depuis 2011" anywhere in the copy, metadata or structured data.
 - [ ] No RC 517, no 6M/4.7M/500k capital, no old address, no IF.
 - [ ] No client names/logos, employee photos or testimonials without a signed permission in this register.

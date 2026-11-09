@@ -55,7 +55,7 @@ Use **Payload 3** as the content management system:
 | Area | Where | Why |
 |---|---|---|
 | Legal identity: legal name, form, RC, ICE, capital, address, gérant line | `lib/company.ts` | One typo in the RC or capital is a legal error. |
-| Approved claims: `Plus de 10 ans d'expérience`, the four services, the ONEE agrément wording | `lib/company.ts` / `lib/claims.ts` | The facts register §2.2 is the only approved wording. |
+| Approved claims: `Plus de 10 ans d'expérience`, the four services, the ONEE agréments wording | `lib/company.ts` / `lib/claims.ts` | The facts register §2.2 is the only approved wording. |
 | Contact channels: `ste.hay2010@gmail.com`, `Rabat — Maroc` | `lib/company.ts` | Only one channel is confirmed; phone, recruitment email and socials are gated. |
 | Navigation, footer, service anchors and their order | `lib/navigation.ts` | The page tree and anchors are fixed by [#2](https://github.com/mustaphaelou/hay2010website/issues/2). |
 | Redirects and 410s | `next.config.ts` / middleware | The WordPress redirect map is code. |
@@ -137,7 +137,7 @@ If a value appears in the facts register §2, it is **code-owned**. If it is pro
 | `activities` | array `{ title, body }` | Optional; the four services are the canonical list. |
 | `seo` | group | — |
 
-Code-rendered on this page: the approved positioning line, `Plus de 10 ans d'expérience`, `Gérant : Rahhal Essamlali`, and the ONEE agrément block — the last only when `agrementLive` is true and the certificate is filed. The owner cannot edit or publish these.
+Code-rendered on this page: the approved positioning line, `Plus de 10 ans d'expérience`, `Gérant : Rahhal Essamlali`, and the ONEE agréments block — the last only when `agrementLive` is true and both certificates are filed. The owner cannot edit or publish these.
 
 #### `metiers`
 
@@ -695,7 +695,7 @@ The existing `app/page.tsx` moves into the `(frontend)` route group when the Pay
 
 1. Review the seeded page and service copy in the admin; correct the French.
 2. Supply photography with rights; no employee portraits until releases are signed.
-3. File the ONEE certificate so `agrementLive` can be switched on.
+3. File both ONEE certificates (EE HTA-BT, HTA-BT3) so `agrementLive` can be switched on.
 4. Confirm the active job opening(s) and the application email.
 5. Nominate the legal reviewer/counsel for the first communiqué.
 6. Confirm the account recovery email and who holds the owner account.

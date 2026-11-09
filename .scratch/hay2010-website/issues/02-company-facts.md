@@ -25,7 +25,7 @@ Record each confirmed fact with its source and date in the answer. Anything not 
 
 ## Answer
 
-Resolved 2026-11-08 by an evidence session with the owner. The full register, approved French copy, permissions register and source log are in [`docs/company/facts-register.md`](../../../docs/company/facts-register.md). Evidence screenshots: [`docs/company/evidence/`](../../../docs/company/evidence/).
+Resolved 2026-11-08 by an evidence session with the owner. **Amended 2026-11-09:** the ONEE entry now lists the two current agréments (EE HTA-BT and HTA-BT3), re-verified live on 2026-11-09. The full register, approved French copy, permissions register and source log are in [`docs/company/facts-register.md`](../../../docs/company/facts-register.md). Evidence screenshots: [`docs/company/evidence/`](../../../docs/company/evidence/).
 
 **Official identity — confirmed, publishable**
 
@@ -42,7 +42,7 @@ Resolved 2026-11-08 by an evidence session with the owner. The full register, ap
 | Gérant | **Rahhal Essamlali** — name and title only | Owner confirmation (2026-11-08); LinkedIn self-declaration (2025/2026); RC extract still outstanding |
 | Public email | **ste.hay2010@gmail.com** | Owner confirmation + Charika (2026-11-08) |
 | Domain | **https://hay2010.ma** | Project; DNS is #15 |
-| ONEE agrément | **EE HTA-BT — études des électrifications HTA-BT souterraines, BT aériennes et souterraines et bâtiment — 02/10/2023 → 30/09/2028** | ONEE approved-contractor list (2026-11-08); owner approved; certificate to be filed |
+| ONEE agréments | **EE HTA-BT — études des électrifications HTA-BT souterraines, BT aériennes et souterraines et bâtiment — 02/10/2023 → 30/09/2028** and **HTA-BT3 — construction des réseaux HTA-BT (sans plafond) — 25/03/2026 → 31/03/2029** | ONEE approved-contractor list (2026-11-08; re-verified live 2026-11-09); owner approved; both certificates to be filed |
 
 **Conflicts resolved**
 
@@ -52,14 +52,14 @@ Resolved 2026-11-08 by an evidence session with the owner. The full register, ap
 - **Legal name:** `SOCIETE HAY 2010` in legal pages and the footer legal line; `HAY2010` as the brand. No accent, no "HAY 2010 SARL" as the dénomination.
 - **Address:** the owner confirmed the Charika address; the Ribat Al Fath and Hay El Fath variants are historical. The RC extract is the final check.
 - **Gérant:** the owner confirmed Rahhal Essamlali and approved **name only** — no photo, no quote, no `/mot-du-gerant` page.
-- **"Entreprise agréée":** replace the generic self-claim with the ONEE-specific agrément above; no other certification may be named.
+- **"Entreprise agréée":** replace the generic self-claim with the ONEE-specific agréments above; no other certification may be named.
 
 **What stays out of the site**
 
 - Founding year 2004 or 2011; "créée en 2004"; "depuis 2004"/"depuis 2011".
 - RC 517, the 6M/4.7M/500k capital figures, the old addresses.
 - **IF 6580342** — it appears only on a third-party card (Welipro); no DGI document was obtained, and loi 5-96 does not require it in the mentions légales. It stays out unless the owner supplies a DGI document and a reason to publish it.
-- Generic "entreprise agréée" and any certification other than ONEE (until the certificate is filed).
+- Generic "entreprise agréée" and any certification other than ONEE (until both certificates are filed).
 - The gérant's photo, quote or biography; any `/mot-du-gerant` page.
 - Client names, client logos, employee photos and testimonials — **no written permissions exist** (owner, 2026-11-08). Use **« Références sur demande »**.
 - Phone, recruitment email and social accounts — the owner confirmed **only** `ste.hay2010@gmail.com`. `recrutement@hay2010.ma` appears in the company's own LinkedIn post but is not confirmed for publication.
@@ -89,7 +89,7 @@ Resolved 2026-11-08 by an evidence session with the owner. The full register, ap
 **Before launch**
 
 1. File the RC extract or OMPIC detailed sheet and re-check the address and gérant; update the legal pages if either differs.
-2. File the ONEE certificate; only then publish the agrément block.
+2. File both ONEE certificates (EE HTA-BT, HTA-BT3); only then publish the agréments block.
 3. Keep the gated list in the register enforced in the content model.
 4. Get the CNDP receipts from #14 before enabling any form or CV upload.
 
