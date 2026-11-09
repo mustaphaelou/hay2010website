@@ -63,8 +63,8 @@ The rest of this document specifies the two surfaces (`/contact`, `/carrieres`),
 | Phase | Trigger | `/contact` | `/carrieres` | Flags / env |
 |---|---|---|---|---|
 | **Staging** | First deployment | Email CTA only; form absent | Culture copy; no CV invitation; no real data | `FORMS_ENABLED=false`, `formLive=false`, `recrutementMailboxLive=false`, Turnstile test keys |
-| **Public launch, F-113 ready** | [#16](https://github.com/mustaphaelou/hay2010website/issues/16) gates pass | Email CTA; optional contact form only if F-211 also ready | Openings inline; `recrutement@` published; CVs invited by email | `formLive` true only with F-211; `recrutementMailboxLive=true` |
-| **Public launch, F-113 late** | [#16](https://github.com/mustaphaelou/hay2010website/issues/16) with a late F-113 | Email CTA | Openings may be listed; CTA is `contact@` or the existing LinkedIn post; **no CV invitation** | `recrutementMailboxLive=false`; no `recrutement@` on the site |
+| **Public launch, F-113 ready** | [#16](https://github.com/mustaphaelou/hay2010website/issues/16) gates pass, **including F-211** | Email CTA with the short notice; optional contact form only if the Turnstile/notice gates also pass | Openings inline; `recrutement@` published; CVs invited by email | `formLive` true only with F-211 + G4/G5; `recrutementMailboxLive=true` |
+| **Public launch, F-113 late** | [#16](https://github.com/mustaphaelou/hay2010website/issues/16) gates pass with F-211, late F-113 | Email CTA with the short notice | Openings may be listed; CTA is `contact@` or the existing LinkedIn post; **no CV invitation** | `recrutementMailboxLive=false`; no `recrutement@` on the site |
 | **Contact form enabled** | F-211 receipt + `contact@`/`no-reply@` tests + Turnstile + counsel review | Form + notice + email alternative | Unchanged | `FORMS_ENABLED=true`, `formLive=true` |
 | **Phase 3 upload** (not planned) | F-113 + volume + 8 GB VPS + ClamAV + R2 + deletion job + counsel | Unchanged | Application form at `/carrieres/postuler`, noindex | `applicationFormLive=true`, `cvUploadLive=true` |
 
@@ -445,7 +445,7 @@ Why:
 4. **The 4 GB VPS has no room for ClamAV.** The hosting decision's minimum is 4 GB; ClamAV plus the app, Postgres and Coolify needs 8 GB and a new operational surface. Refusing the upload is the safer engineering decision.
 5. **Data minimisation.** The fewer systems that hold CVs, the fewer places to secure, declare and delete. Law 09-08 rewards this.
 
-The ticket's fallback ("launch with `recrutement@` only and add the form later") becomes the **permanent default**, not a temporary compromise. Reopening it is a new decision with the phase-3 gates in §5.
+The ticket's fallback ("launch with `recrutement@` only and add the form later") becomes the **default**, not a temporary compromise; reopening it is a new decision with the phase-3 gates in §5.
 
 ### 4.4 Email application flow
 
