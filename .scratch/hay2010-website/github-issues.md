@@ -15,7 +15,7 @@ The local files in `.scratch/hay2010-website/` are a mirror. GitHub issues are c
 | 07 | [#8](https://github.com/mustaphaelou/hay2010website/issues/8) | grilling | closed | Decide the first deployment target and staging URL |
 | 08 | [#9](https://github.com/mustaphaelou/hay2010website/issues/9) | research | closed | Research Moroccan legal and consent requirements for the site |
 | 09 | [#10](https://github.com/mustaphaelou/hay2010website/issues/10) | grilling | closed | Decide analytics, consent and legal page content |
-| 10 | [#11](https://github.com/mustaphaelou/hay2010website/issues/11) | grilling | open | Specify SEO, metadata and structured data |
+| 10 | [#11](https://github.com/mustaphaelou/hay2010website/issues/11) | grilling | closed | Specify SEO, metadata and structured data |
 | 11 | [#12](https://github.com/mustaphaelou/hay2010website/issues/12) | grilling | open | Specify contact, careers and application forms |
 | 12 | [#13](https://github.com/mustaphaelou/hay2010website/issues/13) | prototype | open | Produce the homepage prototype |
 | 13 | [#14](https://github.com/mustaphaelou/hay2010website/issues/14) | task | open | Plan the CNDP filings and launch compliance |
