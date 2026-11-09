@@ -22,6 +22,8 @@ Use **Payload 3** as the content management system:
 
 **Hosting is not decided here.** Payload runs on Vercel with managed Postgres and object storage, or on a VPS with Postgres and MinIO. [#8](https://github.com/mustaphaelou/hay2010website/issues/8) chooses the runtime and the providers; this model does not depend on which.
 
+**Platform references:** [Payload is MIT and self-hosted](https://payloadcms.com/posts/blog/open-source) · [Payload 3.73 supports Next.js 16](https://payloadcms.com/posts/releases/new-in-payload-dashboards-developer-control-and-nextjs-16) · [storage adapters](https://payloadcms.com/docs/v3/upload/storage-adapters) · [get started](https://payloadcms.com/get-started).
+
 ### Terms
 
 | Term | Meaning |
