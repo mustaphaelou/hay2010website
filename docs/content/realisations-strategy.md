@@ -347,7 +347,8 @@ Records 3 and 6 are off-trade (solar thermal, HVAC) and are listed only because 
 ### 12.3 Khemisset
 
 - The only source is the aggregator page: [Marché 06/CPK/2024 — Province de KHEMISSET, 187 607 DH TTC, 16 bidders](https://alertemarchespublics.com/resultats/bdc-fourniture-et-pose-de-cable-d-eclairage-public-196316.html).
-- The **official PV was not located** in the 2026-11-09 verification. It is not a verified award until the owner supplies the contract/réception or the official result is found.
+- The **official PV was not located** in the 2026-11-09 verification. The scan walked the portal’s global bons-de-commande register for the 15/11/2024 publication window (pages 22,960–23,100) and found only a different Khemisset contract — `19/BG/2024`, résidence du gouverneur, DAYOCLASS, 225 306,07 MAD. Pages that failed to load were skipped, so this is **“not found”, not “proven absent”**.
+- It is not a verified award until the owner supplies the contract/réception or the official result is found.
 
 ### 12.4 Aggregator totals
 
@@ -363,7 +364,7 @@ Records 3 and 6 are off-trade (solar thermal, HVAC) and are listed only because 
 | MHVP **4\*\*\*\*** | Certif 2051, secteur 4, sous-secteurs 4.1/4.2/4.3 | 04/03/2024 → 03/03/2026; **expired** |
 | ONEE **HTA-BT0** | Branchements HTA + postes HTA/BT, ≤ 1 MDH TTC | **Not HAY2010** — belongs to HAMZA ANAS ELECTROMECANIQUE |
 
-Sources: [ONEE approved-contractor list, p. 27](https://www.one.org.ma/fr/pages/lear.asp?esp=2&id1=7&id2=192&t1=&t2=1&action=&agrmt=&pays=&raison=&page=28); MHVP qualification list “Situation 06 janvier 2025”, p. 10 (`mhpv.gov.ma`).
+Sources: [ONEE approved-contractor list, p. 27](https://www.one.org.ma/fr/pages/lear.asp?esp=2&id1=7&id2=192&t1=&t2=1&action=&agrmt=&pays=&raison=&page=28); MHVP `LISTE-QUALIF-SITE-WEB-06-janvier-2025.pdf`, p. 10 (and `LISTE-QUALIF-SITE-WEB-12-decembre-2022.pdf`, p. 16), `mhpv.gov.ma`.
 
 ### 12.6 Limits of the verification
 
