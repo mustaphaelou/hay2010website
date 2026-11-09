@@ -1,7 +1,7 @@
 # Produce the homepage prototype
 
 Type: prototype
-Status: prototype ready 2026-11-09 — awaiting owner review
+Status: resolved 2026-11-09 — variant A chosen
 Blocked by: 01, 03
 
 ## Question
@@ -32,9 +32,11 @@ Three structurally different homepages, all on the decided section order (hero �
 
 ### Verdict
 
+**Variant A — Éditorial chosen by the owner on 2026-11-09.** B and C are rejected alternatives kept on the branch as evidence; the switcher and all three variants stay there.
+
 - **A is the page skeleton to build.** It is the only variant that is both direction A and affordable with one commissioned hero; it preserves the ink/paper alternation, the label spine and the orange band.
-- **Borrow C’s mobile image-first hero and its stacked service rows** once per-service photography exists; at launch keep A’s icon band.
-- **B is the launch fallback**, not the primary: it drops the photography dependency but reads as an engineering studio rather than the warm editorial register the owner chose.
+- **B is the pre-shoot copy fallback**, not the layout: if no licensed hero exists at launch, open with B’s typographic hero and no photography, but keep A’s order and sections.
+- **C’s mobile image-first composition** was the strongest small-screen read; it is not adopted, and is revisited only if the real 4:5 crop defeats A’s overlay hero.
 - **Drop the “R.” monogram** from the references teaser — it is not in the brand system and proves nothing; keep the `Références sur demande.` statement.
 - **Footer uses the paper-chip badge, not the white stencil**: at 52 px the stencil loses `2010.Sarl`.
 
@@ -51,6 +53,7 @@ Three structurally different homepages, all on the decided section order (hero �
 
 ### Still open
 
-- Owner review of A/B/C; then fold the winner into `app/page.tsx` as `Hero`, `IntroSplit`, `ServicesBand`, `ReferencesTeaser`, `CareersTeaser`, `ContactCta`.
-- Final French copy, the hero photograph (or the typographic fallback) and the footer badge treatment.
+- **Production build** (new ticket): fold A into `app/page.tsx` as `Hero`, `IntroSplit`, `ServicesBand`, `ReferencesTeaser`, `CareersTeaser`, `ContactCta` with the nav data module, metadata from [#11](https://github.com/mustaphaelou/hay2010website/issues/11) and the gated nav from [#2](https://github.com/mustaphaelou/hay2010website/issues/2).
+- Final French copy, the hero photograph (or the typographic fallback) and the footer paper-chip badge.
 - Component inventory/token implementation, and the performance acceptance criteria that depend on real images.
+- **Inner-page section composition** is no longer blocked: the inner pages reuse A’s header, section labels, CTA patterns and footer.

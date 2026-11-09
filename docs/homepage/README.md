@@ -1,12 +1,25 @@
 # HAY2010 — homepage prototype (#13)
 
-**Status:** prototype produced 2026-11-09 — ticket [#13](https://github.com/mustaphaelou/hay2010website/issues/13).
+**Status:** **resolved 2026-11-09 — variant A chosen by the owner.** Ticket [#13](https://github.com/mustaphaelou/hay2010website/issues/13).
 **Branch:** `prototype/homepage` (throwaway; not merged to `main`).
 **Route:** `/prototype/homepage?variant=a|b|c` — floating bar, `←`/`→` to cycle.
 **Screenshots:** [`assets/`](assets/) — desktop 1440 px and mobile 390 px, one per variant.
 **Question:** what should the HAY2010 homepage look like, section by section?
 
 The prototype is a discussion artifact. It does not contain production code, tests or persistence, and it is not linked from the public navigation. It exists so the owner can point at a section and say “this one”.
+
+## 0. The decision
+
+**Variant A — Éditorial is the homepage.** Approved by the owner on 2026-11-09 after reviewing the running prototype and the screenshots.
+
+What that fixes for the build:
+
+- The section order and section treatments are A’s: full-bleed dusk hero with the copy over it, 12-column “Qui sommes-nous” split, four icon columns on ink for Nos Métiers, the split references block, the careers split, the orange contact band, the four-column footer.
+- **B and C are rejected alternatives**, kept only on this branch as evidence of the comparison. B remains the _content_ fallback if the hero photograph is not ready at launch (typographic opening, no photos); it is not the page layout.
+- **C’s mobile composition** (image first, then the headline) was the strongest small-screen reading, but it is not adopted: A’s overlay hero is approved. Revisit only if the real 4:5 crop makes the overlay unreadable.
+- **Drop the “R.” monogram** in the references block — approved as part of A.
+- **Footer badge:** paper chip, not the 52 px white stencil.
+- The prototype route and the switcher stay on `prototype/homepage`; `main` keeps this decision and the screenshots.
 
 ---
 
@@ -57,9 +70,9 @@ They differ in **structure and hierarchy**, not colour.
 
 - **The decided order works as-is.** It reads as a sequence, not a stack of banners: hero → proof of identity → offer → proof of work → secondary audience → conversion → footer.
 - **Section labels (`01 — …`) earn their place.** They give the long page a spine and survive the ink/paper alternation. Keep them, at `10.5 px / 0.2em / 600`, copper on paper and orange on ink.
-- **A is the cheapest variant that still matches direction A**: one hero, one careers frame, optional intro image. C needs roughly nine licensed images and puts the whole page behind the photography critical path; B needs none but is a different register than the chosen direction.
-- **Recommended skeleton for the build: A**, with two borrowings:
-  - C's **stacked, image-first reading on mobile** is the strongest small-screen composition; A's overlay hero is still fine (the copy sits over the dark part of the gradient), but the 4:5 crop is non-negotiable.
+- **A is the cheapest variant that still matches direction A**: one hero, one careers frame, optional intro image. C needs roughly nine licensed images and puts the whole page behind the photography critical path; B needs none but is a different register than the chosen direction — it is the copy fallback, not the layout.
+- **The build skeleton is A** (chosen 2026-11-09), with two refinements:
+  - **C's mobile composition** stays on file as the alternative if the real 4:5 hero crop makes A's overlay unreadable; it is not adopted now.
   - B's **credentials rail is useful but gated**: the ONEE line can only appear after both certificates are filed ([#3](https://github.com/mustaphaelou/hay2010website/issues/3), facts register §2.2). Until then the rail collapses to “Plus de 10 ans d'expérience · Rabat — Maroc”.
 - **Drop the “R.” monogram.** It was a device to give the references teaser a graphic anchor; it proves nothing and introduces a letterform that is not in the brand system. Prefer the plain `Références sur demande.` statement with the four service rows (A) or centred (B).
 - **The orange contact band is the strongest moment on the page** and is the only large accent surface. It obeys the rule “ink on orange, never white” (ink on `#E97425` = 6.23:1). The white pill must carry ink text, not white text.
@@ -101,8 +114,9 @@ The drawn scenes are placeholders and are tagged `VISUEL PROVISOIRE`. They exist
 
 ## 5. Next step
 
-Owner reviews A/B/C against the screenshots or the running route, marks the sections to keep, then:
+The decision is recorded; the owner has approved A. The build now needs its own ticket (not this prototype):
 
-1. Fold the chosen structure into `app/page.tsx` as real components (`Hero`, `IntroSplit`, `ServicesBand`, `ReferencesTeaser`, `CareersTeaser`, `ContactCta`) with the nav data module.
+1. Fold A into `app/page.tsx` as real components (`Hero`, `IntroSplit`, `ServicesBand`, `ReferencesTeaser`, `CareersTeaser`, `ContactCta`) driven by the nav data module, with metadata/JSON-LD from [#11](https://github.com/mustaphaelou/hay2010website/issues/11) and the gated nav from [#2](https://github.com/mustaphaelou/hay2010website/issues/2).
 2. Rewrite the prototype copy against the facts register and get it approved.
-3. Keep the losing variants and the switcher on `prototype/homepage` only; `main` keeps the decision and these screenshots.
+3. Replace the drawn scenes with a licensed hero (or the typographic fallback) and use the paper-chip footer badge.
+4. Keep B, C and the switcher on `prototype/homepage` only; `main` keeps the decision and the screenshots.
