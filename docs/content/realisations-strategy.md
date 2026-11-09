@@ -250,7 +250,7 @@ The [#4](https://github.com/mustaphaelou/hay2010website/issues/4) photography br
 | ONEE agréments | Both certificates filed | Code-owned block | Verbatim only; `agrementLive` |
 
 - No personal data is stored in the CMS beyond a released photo and its release reference ([#5](https://github.com/mustaphaelou/hay2010website/issues/5), [#14](https://github.com/mustaphaelou/hay2010website/issues/14)).
-- The CTA is a `mailto:`; no form, no CNDP dependency ([#12](https://github.com/mustaphaelou/hay2010website/issues/12)).
+- The CTA is a `mailto:`; no form. The email route is covered by the contact processing/F-211; there is no additional form-specific CNDP dependency ([#12](https://github.com/mustaphaelou/hay2010website/issues/12)).
 - Legal review follows the [#10](https://github.com/mustaphaelou/hay2010website/issues/10) counsel gate; this document is not legal advice.
 
 ---
@@ -386,7 +386,7 @@ Sources: [ONEE approved-contractor list, p. 27](https://www.one.org.ma/fr/pages/
 | [#11](https://github.com/mustaphaelou/hay2010website/issues/11) SEO | Index the page; no `ItemList`/`Review` until 3 published projects. |
 | [#13](https://github.com/mustaphaelou/hay2010website/issues/13) prototype | Page layout: hero, service rows, qualifications, fallback, method, CTA. |
 | [#16](https://github.com/mustaphaelou/hay2010website/issues/16) launch | Inventory T-2, campaign T-3, the gates in §10. |
-| [#12](https://github.com/mustaphaelou/hay2010website/issues/12) forms | The CTA is a `mailto:`; no form, no CNDP impact. |
+| [#12](https://github.com/mustaphaelou/hay2010website/issues/12) forms | The CTA is a `mailto:`; no form. The email route is covered by the contact/F-211 processing; no additional form-specific CNDP impact. |
 
 ---
 
@@ -395,3 +395,4 @@ Sources: [ONEE approved-contractor list, p. 27](https://www.one.org.ma/fr/pages/
 | Date | Change |
 |---|---|
 | 2026-11-09 | Initial decision: credentials-led references page, zero-reference launch, anonymized owner-record cards, permission campaign, no per-project imagery, two ONEE agréments, evidence verification appendix. |
+| 2026-11-09 | #12 clarification: the reference CTA is a `mailto:` with no form; the email route is covered by the contact/F-211 processing. |

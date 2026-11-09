@@ -1,6 +1,7 @@
 # HAY2010 — Analytics, consent and legal pages
 
 **Status:** Decided — 2026-11-09.
+**Amended 2026-11-09 (#12):** the contact form is optional and gated on the F-211 receipt; **careers stays email-only** (no application form, no CV upload); the short contact-page notice applies even when the form is off; `no-reply@hay2010.ma` is a service sender; **F-214 is not a form dependency** when Turnstile runs without pre-clearance and sets no cookie. Full form decision: [`docs/forms/contact-careers-forms.md`](../forms/contact-careers-forms.md).
 **Resolves:** GitHub [#10](https://github.com/mustaphaelou/hay2010website/issues/10) (local `09-analytics-consent-legal.md`).
 **Depends on:** [#14](https://github.com/mustaphaelou/hay2010website/issues/14) for the CNDP receipts, the F-118 and the rights procedure; [#12](https://github.com/mustaphaelou/hay2010website/issues/12) for the forms; [#16](https://github.com/mustaphaelou/hay2010website/issues/16) for the public launch; [#15](https://github.com/mustaphaelou/hay2010website/issues/15) for DNS and mail.
 **Amends:** the contact channels in [`docs/company/facts-register.md`](../company/facts-register.md) (#3); the footer and careers handoff in [#2](https://github.com/mustaphaelou/hay2010website/issues/2); the analytics note in [`docs/hosting/deployment-decision.md`](../hosting/deployment-decision.md) (#8); the contact fields in [`docs/content/content-model.md`](../content/content-model.md) (#5); the fallback CTA in [`docs/content/realisations-strategy.md`](../content/realisations-strategy.md) (#6).
@@ -19,13 +20,14 @@
 | **Legal pages** | `/mentions-legales` and `/politique-de-confidentialite`; cookies are a **section of the privacy policy**, not a third page; both linked from every footer. |
 | **Controller** | **SOCIETE HAY 2010**, SARL, RC 87305, ICE 001459327000056, 15 000 000 MAD, Local N° 21, Hay El Manzeh, Hay Er-Riad, Rabat. |
 | **Contact addresses** | **`contact@hay2010.ma`** public; **`donnees@hay2010.ma`** rights contact; **`recrutement@hay2010.ma`** careers, published only after #14 covers the mailbox. `ste.hay2010@gmail.com` becomes a private fallback and account-recovery inbox, never a published channel. |
-| **Mailboxes** | Owner creates all three in the HeberjaHiz cPanel, tests send/receive, and publishes each only after the test. #15 must preserve MX/SPF/DKIM and the mailboxes are re-tested after the DNS change. |
+| **Mailboxes** | Owner creates `contact@`, `donnees@`, `recrutement@` and the service mailbox `no-reply@` in the HeberjaHiz cPanel, tests send/receive, and publishes each public address only after the test. `no-reply@` is never a public contact. #15 must preserve MX/SPF/DKIM and the mailboxes are re-tested after the DNS change. |
 | **Retention** | Contact 12 months after the last exchange; careers 6 months after the decision, 12 months in a pool only with separate consent; logs 6 months; analytics 6 months; consent choice 6 months. |
-| **Forms** | No form at launch. The notices and consent wording are specified in §4.5 for #12; no CV upload before the F-113 authorization. |
+| **Forms** | **No form is required at launch.** The contact form is optional and gated on F-211; careers is **email-only** (no application form, no CV upload). The notices and consent wording are specified in §4.5 for #12. The email-only contact page still needs the short notice and the F-211 receipt. |
+| **F-214** | **Not a form dependency.** It covers cookies/analytics; the default Turnstile widget sets no `cf_clearance` cookie because pre-clearance is disabled. Revisit if a cookie appears or a banner is added. |
 | **Newsletter** | **None.** D-940-2025 does not apply. If one is ever added, it needs its own opt-in, filing and policy update. |
 | **Counsel** | One limited Moroccan counsel review before #16, covering the 2023-versus-2025 consent conflict, the retention periods, the F-118 coverage and the legal-page wording. Not an ongoing retainer. |
 
-The site therefore launches with no analytics script, no consent banner, no form, no newsletter and no advertising or social plugin. It publishes the two legal pages, uses `contact@` and `donnees@` (with `recrutement@` held back until #14), and follows the contact channels in the facts register.
+The site therefore launches with no analytics script, no consent banner, no form by default, no newsletter and no advertising or social plugin. It publishes the two legal pages, uses `contact@` and `donnees@` (with `recrutement@` held back until #14), and follows the contact channels in the facts register. The contact form can be enabled later behind `formLive`; careers applications remain email-only.
 
 ---
 
@@ -167,14 +169,16 @@ This is a new ticket, not a configuration switch.
 
 ### 3.4 Form consent
 
-No public form ships at launch. The consent wording for #12 is fixed in §4.5. The rules are:
+No public form is required at launch. The contact form is optional and gated on F-211; the careers route is email-only, with no application form and no CV upload ([#12](https://github.com/mustaphaelou/hay2010website/issues/12)). The consent wording for #12 is fixed in §4.5. The rules are:
 
 - an unticked, specific checkbox for the processing purpose, never bundled with terms;
 - a short law 09-08 notice next to the submit button, with a link to the policy;
-- a separate, optional checkbox for the 12-month talent pool;
+- a short contact-page notice **even when the form is off**, because the email route is still a collection;
+- a separate, optional checkbox for the 12-month talent pool (form) or an explicit optional line in the careers email template;
 - no CNI number, photo, health, marital-status or religion field;
 - the CNDP receipt or authorization number only when a real number exists;
-- the form gate stays off until #14 has issued the receipt and #12 has implemented the notice.
+- the form gate stays off until #14 has issued the receipt and #12 has implemented the notice;
+- no application form and no CV upload; the mailbox is the CV record.
 
 ---
 
@@ -311,7 +315,7 @@ Conservation : 6 mois après la décision, puis suppression. Si vous y consentez
 
 Destinataires : le service recrutement et nos prestataires techniques. Aucune transmission à un tiers extérieur au recrutement.
 
-Les candidatures sont adressées à l'adresse indiquée sur la page Carrières : recrutement@hay2010.ma lorsque cette boîte est publiée, ou la boîte de contact générale jusqu'à sa mise en service. Aucune pièce d'identité, photographie, donnée de santé, situation matrimoniale ou donnée révélant une origine, une religion ou une appartenance syndicale n'est demandée.
+Lorsque les candidatures sont ouvertes, elles sont adressées à recrutement@hay2010.ma, l'adresse indiquée sur la page Carrières. Avant l'autorisation CNDP F-113, la page ne sollicite pas de CV et les demandes générales passent par contact@hay2010.ma. Aucune pièce d'identité, photographie, donnée de santé, situation matrimoniale ou donnée révélant une origine, une religion ou une appartenance syndicale n'est demandée.
 
 2.3 Sécurité et journaux serveur
 
@@ -362,7 +366,7 @@ Vos données sont accessibles aux services internes habilités de SOCIETE HAY 20
 Elles sont également traitées par les sous-traitants techniques suivants :
 
 - HeberjaHiz — hébergement de la messagerie électronique — Maroc [à confirmer] ;
-- Cloudflare, Inc. — DNS, CDN, sécurité, stockage des médias (R2) et, le cas échéant, mesure d'audience — États-Unis ;
+- Cloudflare, Inc. — DNS, CDN, sécurité (dont la protection anti-robot Turnstile), stockage des médias (R2) et, le cas échéant, mesure d'audience — États-Unis ;
 - [Hébergeur du VPS] — hébergement de l'application et de la base de données — [pays à confirmer] ;
 - Google — boîte Gmail historique, utilisée uniquement comme secours et pour la récupération de compte — États-Unis, si elle est utilisée.
 
@@ -470,7 +474,17 @@ Do not create a separate `/cookies` route. The page tree fixes the cookie conten
 
 ### 4.5 Form notices for #12
 
-These texts are approved for the forms ticket. They are not published at launch because there is no form.
+These texts are approved for the forms ticket. The contact form may be published only after the F-211 receipt; the careers email notice only after the F-113 authorization. The "Careers application form" text is reserved for the phase-3 form, which is **not built** ([#12](https://github.com/mustaphaelou/hay2010website/issues/12)).
+
+**Contact page short notice — form off**
+
+The email route is still a collection, so the contact page shows a short notice even when `formLive` is false:
+
+```text
+Vos données sont traitées par SOCIETE HAY 2010 pour répondre à votre demande. Elles sont destinées aux services concernés et à nos prestataires techniques, et conservées 12 mois après le dernier échange. Vous pouvez exercer vos droits à donnees@hay2010.ma. Ce traitement a fait l'objet d'une déclaration auprès de la CNDP sous le n° [●] du [●/●/●]. Politique de confidentialité : /politique-de-confidentialite.
+```
+
+It is a shortened form of the contact notice, not a replacement for the policy; counsel reviews it with the full notice. It renders only with the real F-211 reference.
 
 **Contact form**
 
@@ -501,8 +515,9 @@ Les candidatures sont reçues à l'adresse indiquée sur cette page. Vos donnée
 - The checkbox is a real, unticked checkbox, not a sentence; the submit button stays disabled until the required box is checked, but the user can still read the page without consent.
 - The policy link opens in the same tab or a new tab; either way it is reachable before submission.
 - Do not ask for a photo, date of birth, marital status, CNI, health data or anything revealing religion, union membership or ethnic origin.
-- No CV upload before the F-113 authorization. The email-only route is a schedule mitigation, not a compliance safe harbour: the mailbox itself must be covered by the F-113 declaration.
-- The 12-month pool consent is separate, optional, and never a condition of applying.
+- **No application form and no CV upload** at launch or in the default plan; careers is email-only. The email-only route is a schedule mitigation, not a compliance safe harbour: the mailbox itself must be covered by the F-113 declaration.
+- **F-214 is not required for the contact form** when Turnstile runs without pre-clearance and no cookie is deposited. If a cookie appears, or pre-clearance is enabled, update the cookie section and the filing before enabling the form.
+- The 12-month pool consent is separate, optional, and never a condition of applying. In the email-only flow, the candidate must opt in explicitly; a missing line means no pool consent.
 
 ---
 
@@ -512,8 +527,8 @@ Les candidatures sont reçues à l'adresse indiquée sur cette page. Vos donnée
 
 | # | Processing | Data subjects | Data | Purpose | Basis | Recipients | Retention | CNDP |
 |---|---|---|---|---|---|---|---|---|
-| 1 | Contact / quote by email or form | Prospects, clients, suppliers | Name, company, email, phone, subject, message, attachments | Answer, quote, follow up | Art. 4-b pre-contract + consent | Internal services; mail host; hosting; Cloudflare | 12 months after last exchange; contract + accounting retention | F-211 |
-| 2 | Careers / CVs | Candidates | Identity, contact, CV, cover letter, experience | Recruitment | Art. 4-b + consent | Recruitment; mail host; hosting | 6 months after decision; 12-month pool with separate consent | F-113 |
+| 1 | Contact / quote by email or form | Prospects, clients, suppliers | Name, company, email, phone, subject, message; attachments by email only (the form has none) | Answer, quote, follow up | Art. 4-b pre-contract + consent | Internal services; mail host; hosting; Cloudflare (Turnstile/CDN) | 12 months after last exchange; contract + accounting retention | F-211 |
+| 2 | Careers / CVs by email | Candidates | Identity, contact, CV, cover letter, experience; stored in the mailbox, not the app | Recruitment | Art. 4-b + consent | Recruitment; mail host; hosting | 6 months after decision; 12-month pool with separate consent | F-113 |
 | 3 | Server logs / security | Visitors | IP, timestamp, URL, user agent, response code, security events | Security, availability, diagnostics | Art. 4-e legitimate interest | Cloudflare; VPS host | 6 months | Covered with hosting/contact filing; #14 confirms |
 | 4 | Audience measurement | Visitors | Page, route, referrer, country, device, Web Vitals (no cookie/ID) | Improve content | Art. 4-e legitimate interest | Cloudflare | 6 months | F-214, only when enabled |
 | 5 | Cookies / consent | Visitors | Choice, policy version, timestamp | Remember choice | Consent | First-party only | 6 months | F-214 if a banner is added |
@@ -523,8 +538,8 @@ Les candidatures sont reçues à l'adresse indiquée sur cette page. Vos donnée
 
 | Processor | Service | Location | Transfer route | Contract / evidence |
 |---|---|---|---|---|
-| **HeberjaHiz** | Email hosting for `contact@`, `donnees@`, `recrutement@` | Morocco (confirm at provisioning) | None if Morocco | Hosting/processor agreement; #14 |
-| **Cloudflare, Inc.** | DNS, CDN, WAF, R2 media, optional Web Analytics | United States | US → F-118 | Cloudflare DPA / self-serve terms; #14 |
+| **HeberjaHiz** | Email hosting for `contact@`, `donnees@`, `recrutement@` and the service sender `no-reply@` | Morocco (confirm at provisioning) | None if Morocco | Hosting/processor agreement; #14 |
+| **Cloudflare, Inc.** | DNS, CDN, WAF, Turnstile, R2 media, optional Web Analytics | United States | US → F-118 | Cloudflare DPA / self-serve terms; #14 |
 | **[VPS provider]** | Next.js/Payload app and PostgreSQL | [TBD at provisioning] | Morocco/EU: no or adequate; US: F-118 | Hosting/processor agreement; #8/#14 |
 | **Google** | Gmail fallback/account recovery only | United States | US → F-118 if used/forwarded | Google terms; #14 |
 | **GitHub** | Source repository | United States | No site personal data | Not a site processor |
@@ -540,14 +555,14 @@ Les candidatures sont reçues à l'adresse indiquée sur cette page. Vos donnée
 |---|---|---|
 | Contact / quote | 12 months after last exchange | Mailbox cleanup / archive rule; owner |
 | Contractual relationship | Duration + legal accounting retention | Accountant confirms the period |
-| Careers | 6 months after decision | Recruitment mailbox cleanup; #12 deletion job when a form exists |
+| Careers | 6 months after decision | Recruitment mailbox cleanup; no app job; deletion log |
 | Talent pool | 12 months maximum, separate consent | Annual purge; proof of consent |
 | Server logs | 6 months | Cloudflare/VPS log retention; Docker log rotation |
 | Analytics | 6 months | Cloudflare Web Analytics retention |
 | Consent choice | 6 months | Cookie/localStorage expiry |
 | Admin logs | 6 months | Payload/host log retention |
 
-The policy, the CNDP declaration and the deletion jobs must use the same numbers. A deletion job is not optional: over-retention is an offence under article 55 of law 09-08.
+The policy, the CNDP declaration and the deletion procedures must use the same numbers. Deletion is not optional: over-retention is an offence under article 55 of law 09-08.
 
 ### 5.4 Rights procedure
 
@@ -569,6 +584,7 @@ The policy, the CNDP declaration and the deletion jobs must use the same numbers
 | **`contact@hay2010.ma`** | General contact, quotes, footer, contact page, mentions légales, JSON-LD | Yes, once tested | Owner creates; send/receive test; update facts register, footer, JSON-LD and policy |
 | **`donnees@hay2010.ma`** | Law 09-08 rights, privacy policy, form notices | Yes, once tested | Owner creates; send/receive test; **public-launch gate**; #14 uses it for the rights procedure |
 | **`recrutement@hay2010.ma`** | Careers applications and recruitment correspondence | Only after #14 covers it | Owner creates now; used on staging; public only after F-113; until then `/carrieres` uses `contact@` |
+| **`no-reply@hay2010.ma`** | Service sender for contact-form notifications and transactional mail; bounce mailbox | **No** | Owner creates; SMTP auth/From; never public; monitor bounces; include in F-211 scope |
 | **`ste.hay2010@gmail.com`** | Private fallback, account recovery, legacy correspondence | **No** | Never publish; if forwarded to, Google enters the policy and F-118 |
 
 ### 6.2 Owner provisioning checklist
@@ -576,7 +592,8 @@ The policy, the CNDP declaration and the deletion jobs must use the same numbers
 Do this in the HeberjaHiz cPanel (or the mail panel the account actually uses), not by changing DNS:
 
 - [ ] Log in to the HeberjaHiz cPanel with the account that owns `hay2010.ma`.
-- [ ] Create `contact@hay2010.ma`, `donnees@hay2010.ma` and `recrutement@hay2010.ma`.
+- [ ] Create `contact@hay2010.ma`, `donnees@hay2010.ma`, `recrutement@hay2010.ma` and `no-reply@hay2010.ma`.
+- [ ] Confirm that inbound attachments are scanned (cPanel/Exim + ClamAV or equivalent) before the site invites CVs; record the evidence for #14.
 - [ ] Set a mailbox quota that matches expected volume (contact and recruitment need more than `donnees@`).
 - [ ] Generate a strong, unique password for each; store it in the company password manager, not in the repository.
 - [ ] Enable IMAP/SMTP (or the webmail-only mode if that is the deliberate choice) and document the client settings.
@@ -585,9 +602,10 @@ Do this in the HeberjaHiz cPanel (or the mail panel the account actually uses), 
 - [ ] Send a test message from an external mailbox (Gmail or another provider) to each address and reply from each address.
 - [ ] Check SPF, DKIM and spam placement for the test messages; do not change MX.
 - [ ] Test password reset/recovery and record who holds the recovery access.
+- [ ] Confirm the mail host's backup rotation; if backups retain deleted mail beyond the stated retention, disclose it or exclude these mailboxes.
 - [ ] Add a calendar reminder to review mailbox access when a person leaves.
 - [ ] After #15 changes the DNS delegation, repeat the send/receive and SPF/DKIM tests.
-- [ ] Publish `contact@` only after the first tests pass; publish `donnees@` only after the rights owner confirms monitoring; publish `recrutement@` only after #14 confirms the F-113 coverage.
+- [ ] Publish `contact@` only after the first tests pass; publish `donnees@` only after the rights owner confirms monitoring; publish `recrutement@` only after #14 confirms the F-113 coverage; never publish `no-reply@`.
 
 ### 6.3 What changes when the mailboxes go live
 
@@ -597,9 +615,9 @@ Do this in the HeberjaHiz cPanel (or the mail panel the account actually uses), 
 - **Privacy policy:** `contact@` and `donnees@`; careers uses “the address shown on the Carrières page”.
 - **JSON-LD:** `"email": "contact@hay2010.ma"`; the rest of the Organization object is unchanged ([#11](https://github.com/mustaphaelou/hay2010website/issues/11)).
 - **Carrières:** `recrutement@hay2010.ma` only when the flag `recrutementMailboxLive` is true; otherwise `contact@`.
-- **Payload/SMTP:** transactional mail uses the mail host; do not use a public mailbox as the bounce address without documenting it. A `no-reply@` service mailbox may be created separately; it is not a public contact.
+- **Payload/SMTP:** transactional mail uses the mail host; the contact form sends from `no-reply@hay2010.ma` with the submitter in `Reply-To`. Do not use a public mailbox as the bounce address. `no-reply@` is a service sender, never a public contact.
 - **Facts register:** the contact-channel table and the owner-actions table are amended in the same commit as this document.
-- **CNDP:** #14 declares the mailboxes and the mail host as recipients/processors.
+- **CNDP:** #14 declares the mailboxes, `no-reply@` as sender, the mail host and the attachment-scanning/backup arrangements as recipients/processors.
 
 ---
 
@@ -609,11 +627,13 @@ Do this in the HeberjaHiz cPanel (or the mail panel the account actually uses), 
 
 | Filing | Scope | When |
 |---|---|---|
-| **F-211** contact declaration | Contact/quote by email and form, `contact@`, `donnees@`, server logs as described | Before the public site collects a real contact message |
-| **F-113** HR authorization (D-298-AU-2014) | Careers, `recrutement@`, CVs by email or upload, 6/12-month retention, candidate consent document | Before `/carrieres` invites applications; the mailbox itself is covered |
-| **F-214** cookies/analytics (D-939-2025) | Cloudflare Web Analytics, cookieless, 6-month retention | Before the beacon is enabled; not needed at launch with analytics off |
-| **F-118** transfer authorization | Cloudflare/R2, VPS if outside Morocco, Google only if used/forwarded | After the base filings are approved; before public data collection |
+| **F-211** contact declaration | Contact/quote by email and form, `contact@`, `no-reply@` as sender, `donnees@`, server logs as described | Before the public site collects a real contact message, by form or by email |
+| **F-113** HR authorization (D-298-AU-2014) | Careers, `recrutement@`, CVs by email (no upload planned), 6/12-month retention, candidate consent document | Before `/carrieres` invites applications; the mailbox itself is covered |
+| **F-214** cookies/analytics (D-939-2025) | Cloudflare Web Analytics, cookieless, 6-month retention; cookies if a banner is added | Before the beacon is enabled; **not** required for the default Turnstile/no-cookie contact form |
+| **F-118** transfer authorization | Cloudflare/R2/Turnstile, VPS if outside Morocco, Google only if used/forwarded | After the base filings are approved; before public data collection |
 | **D-940-2025** newsletter | None | Not applicable; no newsletter |
+
+The contact form needs **F-211**, not F-214. F-214 becomes relevant only if the form deposits a cookie (for example, Turnstile pre-clearance) or if analytics is enabled. Validate the absence of a cookie in the browser before enabling the form; record it in the launch checklist.
 
 The CNDP public register has no record for HAY2010 (2026-11-08) and the owner confirms no filing. No receipt number may be invented, copied from lamalif or shown as a blank.
 
@@ -621,17 +641,17 @@ The CNDP public register has no record for HAY2010 (2026-11-08) and the owner co
 
 The public launch does **not** happen until:
 
-- [ ] F-211 contact declaration is issued and its reference is in the policy and, when a form ships, the form notice.
-- [ ] F-118 covers Cloudflare/R2 and any other non-adequate processor; the policy's transfer paragraph is filled.
+- [ ] F-211 contact declaration is issued and its reference is in the policy and the short contact-page notice; when the contact form ships, the full form notice carries it too.
+- [ ] F-118 covers Cloudflare/R2/Turnstile and any other non-adequate processor; the policy's transfer paragraph is filled.
 - [ ] The legal pages are reviewed by counsel and `legalReviewed` is set.
-- [ ] `contact@` and `donnees@` pass send/receive tests; `recrutement@` is either tested and covered by F-113, or not published.
+- [ ] `contact@` and `donnees@` pass send/receive tests; `no-reply@` is created and tested; `recrutement@` is either tested and covered by F-113, or not published.
 - [ ] The privacy policy's controller, processors, transfers, retention and CNDP references match the declarations.
 - [ ] No blank CNDP number, no “en cours”, no publication-director placeholder, no phone placeholder.
 - [ ] Analytics is off, or the F-214 is issued and the policy is updated.
-- [ ] Forms are off, or the F-211/F-113 are issued and the form notices are live.
+- [ ] No form is required; if the contact form is enabled, F-211 and its notice are live; if careers invites CVs, F-113 is live. No application form, no CV upload.
 - [ ] The staging `noindex`, Cloudflare Access and `X-Robots-Tag` remain in place until the cutover.
 
-If F-113 is late, the careers page may list openings but must not invite CVs; `recrutement@` stays unpublished and the page uses `contact@` for general questions only. If F-211 or F-118 is late, the site stays on staging with forms, analytics and real contact collection disabled. The legal pages can be reviewed on staging with placeholders; they are not public until the gates pass.
+If F-113 is late, the careers page may list openings but must not invite CVs; `recrutement@` stays unpublished and the page uses `contact@` for general questions only. If F-211 or F-118 is late, the site stays on staging with forms, analytics and real contact collection disabled — including the email contact route, which is covered by F-211. The legal pages can be reviewed on staging with placeholders; they are not public until the gates pass.
 
 ### 7.3 Staging behaviour
 
@@ -648,7 +668,7 @@ Commission one limited review before #16. Ask for a short written opinion on:
 1. Whether D-939-2025 displaces the 2023 website guidance for a cookieless, non-profiling beacon, and whether the F-214 is required for Cloudflare Web Analytics.
 2. Whether the proposed retention periods (12/6/12/6/6) are defensible and aligned with the declarations.
 3. Whether one F-118 can cover the Cloudflare/R2/VPS/Google stack, and what the CNDP expects for an EU-region VPS operated by a non-EU provider.
-4. The mentions légales and privacy policy wording, the form notices, the rights procedure and the mailbox setup.
+4. The mentions légales and privacy policy wording, the form notices (including the short contact-page notice and the email-only careers notice), the no-cookie Turnstile position, the rights procedure and the mailbox setup.
 5. Whether the gated Actualités/communiqués stream stays outside loi 88-13 and whether the first communiqué needs a publication director.
 
 The review is not an ongoing retainer. Record the reviewer, date and reference in `legalReviewRef`. If the owner declines the review, record the accepted risk in this document and keep the most conservative posture (no analytics, no banner, shorter retention).
@@ -660,14 +680,14 @@ The review is not an ongoing retainer. Record the reviewer, date and reference i
 | Ticket | What it receives |
 |---|---|
 | [#11](https://github.com/mustaphaelou/hay2010website/issues/11) SEO | `contact@hay2010.ma` in JSON-LD and metadata; `donnees@` not in public metadata; no analytics script at launch; CSP entries for Cloudflare Web Analytics when enabled; legal pages indexable; no CNDP blank in structured data. |
-| [#12](https://github.com/mustaphaelou/hay2010website/issues/12) forms | Exact notices in §4.5; unticked checkboxes; separate pool consent; no sensitive fields; no CV upload before F-113; `formLive` gate; `donnees@` rights contact; CNDP reference conditional. |
+| [#12](https://github.com/mustaphaelou/hay2010website/issues/12) forms | Exact notices in §4.5; short contact-page notice even when the form is off; unticked checkboxes; separate pool consent; no sensitive fields; **no application form and no CV upload**; email-only careers; `formLive`/`recrutementMailboxLive` gates; F-214 not a form dependency; `donnees@` rights contact; CNDP reference conditional. |
 | [#14](https://github.com/mustaphaelou/hay2010website/issues/14) CNDP | F-211/F-113/F-214/F-118 scope; mailbox coverage; rights procedure; retention table; processor contracts; receipts for the policy. |
 | [#16](https://github.com/mustaphaelou/hay2010website/issues/16) launch | The gate list in §7.2; mailbox tests; legal review; no public data before F-211/F-118; careers gated on F-113. |
 | [#5](https://github.com/mustaphaelou/hay2010website/issues/5) content model | `cndpReferences` array instead of one `cndpReceipt`; contact channels in `lib/company.ts`; `recrutementMailboxLive` and `analyticsLive` flags; legal prose stays developer-published; no analytics script in Payload. |
 | [#2](https://github.com/mustaphaelou/hay2010website/issues/2) page tree | Footer `contact@`; careers `recrutement@` after #14; legal pages and cookies section unchanged in structure; no third legal page. |
 | [#3](https://github.com/mustaphaelou/hay2010website/issues/3) facts register | Mailbox amendment: `contact@`, `donnees@`, `recrutement@` (gated), Gmail private fallback; footer, JSON-LD and legal block updated. |
 | [#8](https://github.com/mustaphaelou/hay2010website/issues/8) hosting | Mailboxes on HeberjaHiz; SMTP for Payload; MX preservation; no client-side analytics at launch; Cloudflare Web Analytics after #14; VPS country for the transfer section. |
-| [#15](https://github.com/mustaphaelou/hay2010website/issues/15) DNS | Preserve MX/SPF/DKIM/autodiscover; re-test all three mailboxes after the delegation change; do not enable Email Routing. |
+| [#15](https://github.com/mustaphaelou/hay2010website/issues/15) DNS | Preserve MX/SPF/DKIM/autodiscover; re-test all four mailboxes (`contact@`, `donnees@`, `recrutement@`, `no-reply@`) after the delegation change; do not enable Email Routing. |
 | [#6](https://github.com/mustaphaelou/hay2010website/issues/6) réalisations | Fallback CTA uses `mailto:contact@hay2010.ma`, not the Gmail. |
 
 ---
@@ -701,3 +721,4 @@ All sources were retrieved on 2026-11-08/09. The CNDP has been publishing new de
 | Date | Change |
 |---|---|
 | 2026-11-09 | Initial decision: no analytics at launch; Cloudflare Web Analytics after F-214; no banner; two legal pages; retention 12/6/12/6/6; `contact@`/`donnees@`/`recrutement@` mailboxes; Gmail private fallback; one-off counsel review. |
+| 2026-11-09 | Forms amendment (#12): contact form optional and F-211-gated; careers email-only with no application form or CV upload; short contact-page notice when the form is off; `no-reply@` service mailbox; F-214 clarified as not a form dependency; attachment-scanning/backup checks added. |

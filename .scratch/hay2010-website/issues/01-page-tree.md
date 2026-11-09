@@ -147,6 +147,12 @@ Old `/wp-json/`, `/xmlrpc.php`, `/wp-admin/` are disabled/404 at the edge, not r
 - **Analytics:** no client-side analytics at launch; no banner; Cloudflare edge analytics only. Cloudflare Web Analytics after #14’s F-214.
 - **Canonical contact in metadata/JSON-LD:** `contact@hay2010.ma` (handoff to #11).
 
+### Amendment 2026-11-09 (forms and careers, #12)
+
+- **Contact:** email-first with a short F-211 notice; the text-only contact form is optional after the F-211 receipt. No attachments. See [`docs/forms/contact-careers-forms.md`](../../../docs/forms/contact-careers-forms.md).
+- **Carrières:** email-only after the F-113 authorization; **no application form and no CV upload**; no "Postuler" CTA before F-113.
+- **Jobs:** inline cards only; no job detail pages and no `JobPosting` at launch.
+
 ### Dependencies / handed to other tickets
 
 - #3 — publishable facts, gérant authorization, certifications, contact details, social accounts.

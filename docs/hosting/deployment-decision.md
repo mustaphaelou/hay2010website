@@ -1,6 +1,7 @@
 # HAY2010 — First deployment target and staging URL
 
 **Status:** Decided — 2026-11-09.
+**Amended 2026-11-09 (#12):** the form backend is a Next.js Server Action + Nodemailer over the existing SMTP host; Turnstile and rate limiting are added; `no-reply@` is the service sender; the origin must be locked to Cloudflare before trusting `CF-Connecting-IP`; **no CV upload** (ClamAV/R2 phase 3 only). Full decision: [`docs/forms/contact-careers-forms.md`](../forms/contact-careers-forms.md).
 **Resolves:** GitHub [#8](https://github.com/mustaphaelou/hay2010website/issues/8) (local `07-hosting-decision.md`).
 **Depends on:** GitHub [#15](https://github.com/mustaphaelou/hay2010website/issues/15) for the `hay2010.ma` zone and delegation; [#16](https://github.com/mustaphaelou/hay2010website/issues/16) for the public cutover.
 **Supersedes:** the Vercel Pro recommendation in the hosting research ([#7](https://github.com/mustaphaelou/hay2010website/issues/7)) **for the first deployment only**. The research's DNS and email-cutover findings still apply and are now a prerequisite, not a launch-time detail.
@@ -20,7 +21,9 @@
 | **Redis** | **Not deployed.** No component in this stack consumes it; Coolify's own Redis is for Coolify. Add a separate Coolify Redis only when a concrete cache, queue, session or rate-limit consumer exists. |
 | **Staging access** | **Cloudflare Access** on the whole staging host — owner + developer, email OTP. Phase 0 uses Coolify Basic Auth. |
 | **Backups** | Nightly Postgres dump to a private R2 bucket `hay2010-backups`; media versioned in R2; Coolify's own data backed up; restore test before launch. |
-| **Forms** | **Hard-disabled** on staging. Email fallback only. No real contact data or CVs before [#14](https://github.com/mustaphaelou/hay2010website/issues/14). |
+| **Forms** | **No form by default; hard-disabled on staging.** The contact form is optional after F-211; careers is email-only; no CV upload. Email fallback only; no real contact data or CVs before [#14](https://github.com/mustaphaelou/hay2010website/issues/14). |
+| **Form backend** | **Next.js Server Action + Nodemailer** over authenticated SMTP to `mail.hay2010.ma`; **Turnstile** (managed) + honeypot + app rate limit + one Cloudflare rate-limit rule; **no** Formspree/Resend/Worker. |
+| **Origin trust** | The VPS is reachable only through Cloudflare (Tunnel or IP allowlist) before `CF-Connecting-IP` is used for rate limiting/siteverify. |
 | **Public cutover** | Deferred to [#16](https://github.com/mustaphaelou/hay2010website/issues/16). Only `staging` and `media` subdomains are in scope now. |
 
 The **first deployment brings up the full stack infrastructure**: Coolify, the application, Postgres, R2 and the Cloudflare edge, with synthetic content. The current repository is still the template; Payload and the R2 wiring land in the same build, not in a later hosting change. It is not a throwaway static preview, and it is not the public site.
@@ -77,13 +80,15 @@ If #15 cannot be completed — the zone is unrecoverable and the registrar will 
 
 A 2 GB VPS is not supported for this stack: Coolify alone needs ~2 GB, and Postgres plus the app leave no headroom. On 4 GB, builds must run in CI and a 2 GB swap file is prudent; on 8 GB, Coolify-native builds are acceptable.
 
+**Phase 3 upload only:** a CV upload would add a ClamAV container (~1 GB RAM plus signatures), a private R2 application bucket and a retention job; that needs the 8 GB recommendation, not the 4 GB minimum. The default #12 decision has no upload, so the 4 GB minimum remains sufficient for the site and the contact form.
+
 Record the VPS provider and country at provisioning. A US-located VPS is a US processor in addition to Cloudflare/R2; Morocco or the EU is preferred for the CNDP position.
 
 ### 3.3 Accounts, ownership and billing
 
 - **VPS:** developer-owned for the first deployment. A written hosting/ops agreement covers access, backups, cost and exit. If the client does not accept developer-hosted infrastructure, the target changes to a client-owned VPS; the stack is unchanged.
 - **Domain, Cloudflare zone and R2:** HAY2010-owned. The developer is a member/administrator. A production zone must not sit in a personal account without a written handoff and a plan to transfer it before launch.
-- **Mailboxes:** HAY2010-owned, on the existing HeberjaHiz mail host. The owner creates `contact@`, `donnees@` and `recrutement@` (see [#10](https://github.com/mustaphaelou/hay2010website/issues/10) §6); `recrutement@` is not public before #14. Email hosting does not move.
+- **Mailboxes:** HAY2010-owned, on the existing HeberjaHiz mail host. The owner creates `contact@`, `donnees@`, `recrutement@` and the service sender `no-reply@` (see [#10](https://github.com/mustaphaelou/hay2010website/issues/10) §6); `recrutement@` is not public before #14, and `no-reply@` is never public. Email hosting does not move.
 - **GitHub:** the repository stays under the developer for now; the client receives access and a handoff at launch. The repository is public, so no platform account is needed to deploy it.
 - **Billing:** the VPS is the developer's existing cost; Cloudflare Free and R2 usage are billed to the HAY2010 account; the domain renewal stays with the client. Commercial terms are outside this ticket; the technical ownership and exit path are not.
 - **Exit:** the client can export content (Payload JSON or `pg_dump`), media from R2, DNS records and the deployment repository, and move to another host. The runbook must make that possible without the developer.
@@ -91,7 +96,8 @@ Record the VPS provider and country at provisioning. A US-located VPS is a US pr
 ### 3.4 Data and compliance
 
 - Staging holds **synthetic content only**. Forms are hard-disabled; no contact messages, CVs or applicant data. The only personal data is the admin accounts and Cloudflare Access identities.
-- Cloudflare and R2 are US processors; the VPS may be outside Morocco. [#14](https://github.com/mustaphaelou/hay2010website/issues/14) must file the CNDP declarations and the F-118 transfer authorization **before** the public site collects real data. Staging with synthetic data and two admin accounts does not open public collection.
+- The contact form stores nothing in the app: the notification email is sent and the mailbox is the record ([#12](https://github.com/mustaphaelou/hay2010website/issues/12)). Careers is email-only; no CV upload, no R2 application bucket, no applicant table.
+- Cloudflare, R2 and Turnstile are US processors; the VPS may be outside Morocco. [#14](https://github.com/mustaphaelou/hay2010website/issues/14) must file the CNDP declarations and the F-118 transfer authorization **before** the public site collects real data. Staging with synthetic data and two admin accounts does not open public collection.
 - Media containing people stays gated by the rights workflow in the content model; no unreleased photo is uploaded to the public bucket.
 - The public privacy policy and mentions légales are decided in [#10](https://github.com/mustaphaelou/hay2010website/issues/10): [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md). They are launch gates, together with the mailbox tests and the CNDP references.
 
@@ -143,7 +149,7 @@ Cloudflare zone hay2010.ma
 - **TLS** — Cloudflare edge certificate; origin certificate via Coolify's Let's Encrypt or a Cloudflare Origin CA certificate; SSL/TLS mode **Full (strict)**. If a tunnel is used, Cloudflare terminates TLS and the origin leg is private.
 - **Access** — application on `staging.hay2010.ma` for the whole host; policy allows the owner and developer emails with one-time PIN; session 24 hours. At launch, a second application covers `hay2010.ma/admin*`; the public site stays open. Payload's own auth remains the application-level gate.
 - **Cache** — staging: **bypass all caching** (Access responses must not be shared, and there is no traffic to optimise). Production: cache `/_next/static/*`, brand assets and R2 media aggressively; **bypass HTML**, `/admin*` and `/api/*`. Add a purge-on-publish hook only if HTML caching is introduced later.
-- **WAF** — default managed rules; rate-limit the admin login and any public API. Turnstile arrives with the forms in [#12](https://github.com/mustaphaelou/hay2010website/issues/12).
+- **WAF** — default managed rules; rate-limit the admin login. Add **one** rate-limit rule for `POST /contact` (5 requests / 10 s, block 10 s on the Free plan; verify plan parameters) as a volumetric guard; the app's own limiter and Turnstile are the primary form defences. **Do not** expose the origin directly: use a Cloudflare Tunnel or an IP allowlist so `CF-Connecting-IP` is trustworthy. Turnstile is a Cloudflare service added with the contact form in [#12](https://github.com/mustaphaelou/hay2010website/issues/12); no pre-clearance cookie.
 - **Analytics** — no GA, no third-party tags, no tag manager. At launch, only Cloudflare's server-side edge request analytics from the dashboard; no client-side beacon and no consent banner. After #14 files the F-214, the cookieless Cloudflare Web Analytics beacon may be enabled with six-month retention. Full decision: [#10](https://github.com/mustaphaelou/hay2010website/issues/10) and [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) §2.
 
 ### 4.3 Cloudflare R2
@@ -155,19 +161,23 @@ Cloudflare zone hay2010.ma
 
 ### 4.4 Email (Payload transactional mail)
 
-Payload needs SMTP for password reset and publish notifications. The stack does **not** include a mail server.
+Payload needs SMTP for password reset and publish notifications; the contact form uses the same transport. The stack does **not** include a mail server.
 
-- Preferred: the existing `mail.hay2010.ma` host over SMTP submission. The owner creates `contact@`, `donnees@` and `recrutement@` in the HeberjaHiz cPanel ([#10](https://github.com/mustaphaelou/hay2010website/issues/10) §6); a separate `no-reply@` service mailbox may be created for transactional mail if the owner prefers, but it is not a public contact.
-- Fallback: a transactional provider (Resend/Postmark) — a US transfer that must be included in #14's F-118.
-- Staging: email disabled or pointed at a test inbox. No real recipients, no announcements.
+- Preferred: the existing `mail.hay2010.ma` host over SMTP submission (465 SSL or 587 STARTTLS; confirm the port/TLS with HeberjaHiz). The owner creates `contact@`, `donnees@`, `recrutement@` and `no-reply@` in the HeberjaHiz cPanel ([#10](https://github.com/mustaphaelou/hay2010website/issues/10) §6). `no-reply@` is the service sender for the contact form and transactional mail; it is never a public contact.
+- The contact form composes a plain-text message, `From: no-reply@hay2010.ma`, `Reply-To` the submitter, `To: contact@hay2010.ma`; no attachments. Nodemailer with a pooled transport, TLS validation, 8 s timeouts, one retry on transient failure.
+- **Attachment scanning:** before the site invites CVs, confirm that the mail host scans inbound attachments (cPanel/Exim + ClamAV or equivalent) and record it for [#14](https://github.com/mustaphaelou/hay2010website/issues/14). If it does not, the site stays email-question-only for careers.
+- Fallback: a transactional provider (Resend/Postmark) — a US transfer that must be included in #14's F-118; only if the HeberjaHiz SMTP path is blocked.
+- Staging: email disabled or pointed at Mailpit/a test inbox. No real recipients, no announcements.
 - Do not run Postfix on the VPS; deliverability and reputation are not worth it for a brochure site.
-- Keep MX/SPF/DKIM/autodiscover unchanged through #15; re-test all public mailboxes after the DNS cutover.
+- Keep MX/SPF/DKIM/autodiscover unchanged through #15; re-test all public mailboxes after the DNS cutover. Add DMARC `p=none` after the cutover.
+- Do not forward these mailboxes to Gmail; Google would become a recipient and the F-118 scope would grow. Confirm the mail host's backup rotation so deletion is not undone by backups.
 
 ### 4.5 Scheduled jobs
 
 - **Daily** jobs-expiry revalidation: `GET /api/revalidate?tag=jobs` with a bearer secret, via a Coolify scheduled task (or host cron if the resource type does not support it).
 - **Nightly** Postgres backup via Coolify's database backup schedule.
 - **Monthly** Coolify update and backup verification; **quarterly** restore test.
+- **Mailbox retention** — no app job: the owner runs a monthly `contact@`/`recrutement@` cleanup (12/6/12 months) and records it. A phase-3 CV upload would add a daily retention job; it is not built.
 - Media lifecycle is handled by R2 rules, not a job.
 
 ---
@@ -201,9 +211,11 @@ The VPS is ARM64, so the image must be ARM64. Do not cross-build with QEMU; it i
    - `PAYLOAD_SECRET`
    - `NEXT_PUBLIC_SERVER_URL` (final staging URL; rebuild when it changes)
    - `S3_ENDPOINT`, `S3_REGION=auto`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRET_ACCESS_KEY`, `S3_PUBLIC_URL=https://media.hay2010.ma`
-   - `FORMS_ENABLED=false`
+   - `FORMS_ENABLED=false` (hard kill switch; set true only when the contact form is approved)
+   - `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` (the secret is server-only)
+   - `SMTP_HOST=mail.hay2010.ma`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER=no-reply@hay2010.ma`, `SMTP_PASSWORD`, `MAIL_FROM=no-reply@hay2010.ma`, `MAIL_TO_CONTACT=contact@hay2010.ma`
+   - `NEXT_SERVER_ACTIONS_ENCRYPTION_KEY` (stable across deploys; generate 32 bytes, base64)
    - `REVALIDATE_SECRET`
-   - SMTP variables only when email is enabled
    - No secret in the repository, the image or a build argument.
 7. **Previews** — disabled for now. A preview would need its own database and a wildcard DNS/Access policy; that is not worth the surface for a one-developer site. Revisit if the review workflow needs it.
 8. **Deploy logs and alerts** — Coolify notifications to the developer; deployment failure, backup failure and disk thresholds must reach a human.
@@ -216,6 +228,8 @@ The VPS is ARM64, so the image must be ARM64. Do not cross-build with QEMU; it i
 - **Coolify dashboard** — strong password and 2FA where supported; do not expose port 8000 publicly. Use an SSH tunnel, an IP allowlist, or a separate hostname behind Cloudflare Access. A compromised Coolify instance is a compromised server.
 - **Postgres/R2** — no public database port; R2 tokens scoped per bucket; rotate on handoff. No credentials in logs.
 - **Admin** — Cloudflare Access + Payload auth on staging; at launch, Access on `/admin*` and a strong Payload password. No admin link from the public site; `noindex` on the admin paths.
+- **Origin lockdown** — the VPS must not be reachable directly. Use a Cloudflare Tunnel or allow only Cloudflare's IP ranges. `CF-Connecting-IP` is trustworthy only then; it feeds the form rate limiter and Turnstile `remoteip`. If the origin is exposed, do not trust the header and fix the lockdown before enabling the form.
+- **Form security** — Server Action same-origin check, 32 KB body cap, field maxima, no file input, no message content in logs, Turnstile server-side, plain-text email, no attachments, `no-reply@` sender, SMTP secrets in Coolify. The app stores no submission ([#12](https://github.com/mustaphaelou/hay2010website/issues/12)).
 - **noindex** — staging sets `X-Robots-Tag: noindex` and a disallow-all `robots.txt`; Cloudflare Access already prevents indexing, but the header is defence in depth. Staging keeps it permanently; production removes it only at the public cutover.
 - **Monitoring** — external uptime check on `staging.hay2010.ma` (with an Access service token or a bypass path), Coolify server metrics, disk and backup alerts. Cloudflare analytics covers edge traffic.
 - **Patching** — monthly OS/Docker/Coolify/Postgres minor updates; update Coolify after a backup; pin major versions; read release notes before upgrading.
@@ -249,8 +263,8 @@ The VPS is ARM64, so the image must be ARM64. Do not cross-build with QEMU; it i
 
 ### Phase 3 — public launch (#16)
 
-- Production Coolify environment (separate app/database/buckets or a deliberate promotion), apex/`www` cutover, CNDP filings, the #10 legal-page and consent gates, forms, final restore test, WordPress retirement, email/SPF/DMARC verification and the mailbox tests.
-- Staging remains behind Access after launch.
+- Production Coolify environment (separate app/database/buckets or a deliberate promotion), apex/`www` cutover, CNDP filings, the #10 legal-page and consent gates, the optional contact form, final restore test, WordPress retirement, email/SPF/DMARC verification and the mailbox tests.
+- Careers stays email-only; no CV upload. Staging remains behind Access after launch.
 
 ---
 
@@ -259,7 +273,7 @@ The VPS is ARM64, so the image must be ARM64. Do not cross-build with QEMU; it i
 - Apex `hay2010.ma` and `www` cutover, old WordPress retirement, redirects — [#16](https://github.com/mustaphaelou/hay2010website/issues/16).
 - CNDP declarations and F-118 — [#14](https://github.com/mustaphaelou/hay2010website/issues/14).
 - Analytics, consent and legal page copy — resolved in [#10](https://github.com/mustaphaelou/hay2010website/issues/10): [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md). No analytics at launch; Cloudflare Web Analytics after the F-214.
-- Contact, careers and CV forms — [#12](https://github.com/mustaphaelou/hay2010website/issues/12).
+- Contact, careers and application forms — resolved in [#12](https://github.com/mustaphaelou/hay2010website/issues/12): [`docs/forms/contact-careers-forms.md`](../forms/contact-careers-forms.md). Contact form optional after F-211, Next.js + SMTP + Turnstile; careers email-only; no CV upload.
 - SEO metadata, structured data, sitemap — [#11](https://github.com/mustaphaelou/hay2010website/issues/11).
 - Homepage prototype and inner-page composition — [#13](https://github.com/mustaphaelou/hay2010website/issues/13).
 - Production environment, second backup provider, SMTP production credentials and the written ops agreement — launch prerequisites, tracked in #16.
@@ -271,7 +285,7 @@ The VPS is ARM64, so the image must be ARM64. Do not cross-build with QEMU; it i
 
 - **VPS specs and country** are not yet recorded. The decision assumes the minimums in §3.2. If the VPS is 2 GB, upgrade before deploying; if it is x86 rather than ARM64, the build target changes but the stack is unchanged.
 - **Cloudflare zone access** is unresolved until #15. The decision assumes the project can recover the existing zone or create a new HAY2010-owned zone and delegate at NINDO.
-- **SMTP credentials** for Payload password reset are not confirmed. The owner creates `contact@`, `donnees@` and `recrutement@` (see #10 §6); a transactional mailbox (`no-reply@`) or provider must still be chosen before admin handoff, not before the Phase 0 smoke test.
+- **SMTP credentials** are not confirmed. The owner creates `contact@`, `donnees@`, `recrutement@` and `no-reply@` (see #10 §6); the form uses `no-reply@` as sender. Confirm the port (465/587), TLS, hourly send limit and inbound attachment scanning with HeberjaHiz before enabling the contact form or inviting CVs.
 - **Ops agreement** and the exact hosting commercial terms are outside this ticket but are conditions for production.
 - **R2 backup independence** — a second provider is deferred to #16; until then, the backup bucket is in the same Cloudflare account as the media.
 - The Vercel research remains valid as an alternative if the self-hosted path is abandoned; it is not the current decision.
@@ -282,6 +296,7 @@ The VPS is ARM64, so the image must be ARM64. Do not cross-build with QEMU; it i
 
 - Hosting research: [#7](https://github.com/mustaphaelou/hay2010website/issues/7), note on branch `research/hay2010-hosting-deployment` (`docs/research/hay2010-hosting-deployment.md`).
 - Content model: [`docs/content/content-model.md`](../content/content-model.md).
+- Forms decision: [`docs/forms/contact-careers-forms.md`](../forms/contact-careers-forms.md).
 - Company facts and contact channels: [`docs/company/facts-register.md`](../company/facts-register.md).
 - Coolify: [self-hosted requirements](https://coolify.io/docs/start-with-self-hosted), [databases and backups](https://coolify.io/docs/databases), [Basic Auth](https://coolify.io/docs/core/networking/proxy/traefik/basic-auth), [scheduled tasks](https://coolify.io/docs/applications/operations/scheduled-tasks), [rollbacks](https://coolify.io/docs/applications/deployments/rollbacks), [Docker Compose](https://coolify.io/docs/applications/builds/docker-compose).
 - Cloudflare: [Access](https://developers.cloudflare.com/cloudflare-one/policies/access/), [R2 custom domains](https://developers.cloudflare.com/r2/buckets/public-buckets/), [Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/), [cache rules](https://developers.cloudflare.com/cache/how-to/cache-rules/).

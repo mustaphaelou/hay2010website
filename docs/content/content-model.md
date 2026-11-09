@@ -2,6 +2,7 @@
 
 **Status:** resolved 2026-11-09 — ticket [#5](https://github.com/mustaphaelou/hay2010website/issues/5).
 **Amended 2026-11-09 (#10):** contact channels are `contact@`, `donnees@` and `recrutement@hay2010.ma` (careers gated by #14); the legal global carries structured CNDP references; the analytics and legal-page decision is [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md).
+**Amended 2026-11-09 (#12):** no application form and no CV upload; the contact form is optional and gated on F-211; `contactNotice` is shown even when the form is off; the form/CV flow is in [`docs/forms/contact-careers-forms.md`](../forms/contact-careers-forms.md).
 **Platform:** **Payload 3** (MIT, self-hosted), embedded in the existing Next.js 16 app, admin at `/admin`.
 **Scope:** the website content model and authoring workflow. Hosting, forms, SEO rules, analytics and visual design stay with their own tickets.
 **Source of truth:** this document plus the schema in code. The facts register remains the source for legal identity and approved claims: [`docs/company/facts-register.md`](../company/facts-register.md).
@@ -44,7 +45,7 @@ Use **Payload 3** as the content management system:
 2. **Gates are enforced by the schema, not by memory.** A gated claim, an unapproved photo or a client logo cannot be published by filling a field.
 3. **Structured content, not a page builder.** The owner edits named fields; the layout remains developer-owned.
 4. **Rights before publication.** Every image carries alt text, credit and a rights status. Unclear rights block publication.
-5. **No personal data in the content database.** Contact and application data stay with [#12](https://github.com/mustaphaelou/hay2010website/issues/12). The one exception is a released photo of a person, which is gated by its release record.
+5. **No personal data in the content database.** Contact and application data stay with [#12](https://github.com/mustaphaelou/hay2010website/issues/12); #12 decided that the app stores none of it — the mailboxes are the record. The one exception is a released photo of a person, which is gated by its release record.
 6. **Content is portable.** Collections export to JSON and media to the bucket; the frontend reads through a content adapter, so the source can be replaced without rewriting pages.
 
 ---
@@ -61,7 +62,8 @@ Use **Payload 3** as the content management system:
 | Navigation, footer, service anchors and their order | `lib/navigation.ts` | The page tree and anchors are fixed by [#2](https://github.com/mustaphaelou/hay2010website/issues/2). |
 | Redirects and 410s | `next.config.ts` / middleware | The WordPress redirect map is code. |
 | SEO defaults, metadata patterns, JSON-LD, sitemap, robots | `lib/seo.ts` | [#11](https://github.com/mustaphaelou/hay2010website/issues/11) owns the rules. |
-| Feature gates | `lib/flags.ts` | `actualitesLive`, `mediathequeLive`, `solaireLive`, `agrementLive`, `mapLive`, `formLive`, `caseStudiesLive`, `recrutementMailboxLive`, `analyticsLive`. |
+| Feature gates | `lib/flags.ts` | `actualitesLive`, `mediathequeLive`, `solaireLive`, `agrementLive`, `mapLive`, `formLive`, `applicationFormLive`, `cvUploadLive`, `caseStudiesLive`, `recrutementMailboxLive`, `analyticsLive`. |
+| Form notices | `components/forms/` | `contactNotice` (shown even when the form is off), `formNotice` (form-only), the careers email notice; all code-owned from the #10 §4.5 texts and `cndpReferences`. |
 
 ### Payload-owned (owner-editable)
 
@@ -90,6 +92,7 @@ If a value appears in the facts register §2, it is **code-owned**. If it is pro
 - The owner and the developer are the two launch accounts. `editor` exists for a future assistant and can stay unused.
 - Field-level restrictions:
   - `legalReviewed`, `legalReviewRef`: developer only.
+  - `contactNotice`, `formNotice`: developer only; they carry the CNDP receipt and cannot be edited by the owner.
   - `rightsStatus`, `releaseStatus`, `clientPermission`, `trademarkPermission`: developer only, except the owner may set `rightsStatus=cleared` on an image that is company-owned, has no people and no client/trademark marks (see §7).
   - `services.key`, `services.order`, `services.status`: developer only.
   - `users.role`: developer only.
@@ -199,7 +202,7 @@ The owner curates the gallery order. The rights gate filters the items: an uncle
 | `spontaneous.title`, `spontaneous.body` | text / rich text | Spontaneous applications; the email is code-rendered. |
 | `seo` | group | — |
 
-The application email is `recrutement@hay2010.ma` when `recrutementMailboxLive` is true, and `contact@hay2010.ma` until then. The flag stays false until [#14](https://github.com/mustaphaelou/hay2010website/issues/14) confirms the F-113 authorization covers the mailbox. No CV upload at launch; that is [#12](https://github.com/mustaphaelou/hay2010website/issues/12) and CNDP-gated. The email notice is in [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) §4.5.
+The application email is `recrutement@hay2010.ma` when `recrutementMailboxLive` is true, and `contact@hay2010.ma` until then. The flag stays false until [#14](https://github.com/mustaphaelou/hay2010website/issues/14) confirms the F-113 authorization covers the mailbox. **No application form and no CV upload** at launch: [#12](https://github.com/mustaphaelou/hay2010website/issues/12) decided email-only, with the CV travelling to `recrutement@` and the mailbox as the record. The page does not invite CVs before F-113. The email notice is in [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) §4.5; the full flow is in [`docs/forms/contact-careers-forms.md`](../forms/contact-careers-forms.md) §4.
 
 #### `contact`
 
@@ -207,10 +210,11 @@ The application email is `recrutement@hay2010.ma` when `recrutementMailboxLive` 
 |---|---|---|
 | `hero.label`, `hero.title`, `hero.subtitle` | text / text / textarea | — |
 | `intro.title`, `intro.body` | text / rich text | — |
-| `formNotice` | rich text | Shown only when `formLive` is true; until then the form is absent, not broken. |
+| `contactNotice` | rich text | Developer-only. Shown **even when the form is off**, because the email route is still a collection; carries the short law 09-08 notice and the `contact` CNDP reference. |
+| `formNotice` | rich text | Developer-only. Shown only when `formLive` is true; the full form notice. Until then the form is absent, not broken. |
 | `seo` | group | — |
 
-Code-rendered: address and `contact@hay2010.ma`. The Gmail is not shown. The map is hidden until `mapLive` is true and the owner confirms the address is a public reception point. The contact form waits on [#12](https://github.com/mustaphaelou/hay2010website/issues/12) and [#14](https://github.com/mustaphaelou/hay2010website/issues/14); its notice is in [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) §4.5.
+Code-rendered: address and `contact@hay2010.ma`. The Gmail is not shown. The map is hidden until `mapLive` is true and the owner confirms the address is a public reception point. The contact form is **optional** and waits on the F-211 receipt, the mailbox tests and [#12](https://github.com/mustaphaelou/hay2010website/issues/12); the email-only page still needs the short notice and the F-211 receipt. The notices are in [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) §4.5; the behaviour is in [`docs/forms/contact-careers-forms.md`](../forms/contact-careers-forms.md) §3.
 
 #### `legal`
 
@@ -315,11 +319,11 @@ At launch there are **no published projects**. `/realisations` is a credentials-
 | `description` | rich text | — |
 | `responsibilities`, `requirements` | array of text | — |
 | `postedAt`, `closingAt` | date | `closingAt` auto-hides the job. |
-| `applicationEmail` | email, read-only | `recrutement@hay2010.ma` when `recrutementMailboxLive` is true; `contact@hay2010.ma` until then. |
+| `applicationEmail` | email, read-only | `recrutement@hay2010.ma` when `recrutementMailboxLive` is true; `contact@hay2010.ma` until then. **Not rendered as an application CTA before F-113**; it is for questions only until the gate opens. |
 | `featured` | checkbox | Homepage teaser. |
 | `seo` | group | — |
 
-No detail pages at launch: openings render inline on `/carrieres`. No CV upload; applications go by email until [#12](https://github.com/mustaphaelou/hay2010website/issues/12) and the CNDP F-113 authorization clear. `recrutement@` is not public before that authorization; until then the page uses `contact@` and does not invite CVs. The owner creates, publishes and closes openings.
+No detail pages at launch: openings render inline on `/carrieres`. **No application form and no CV upload**: applications go by email after the F-113 authorization (email-only for the site, per [#12](https://github.com/mustaphaelou/hay2010website/issues/12)); `recrutement@` is not public before that authorization, and until then the page uses `contact@` and does not invite CVs. The owner creates, publishes and closes openings. See [`docs/forms/contact-careers-forms.md`](../forms/contact-careers-forms.md) §4.
 
 #### `communiques`
 
@@ -386,7 +390,7 @@ No Porto demo assets, no stock construction photography, no AI-generated people.
 
 - Newsletter, site search, comments, blog categories/tags/authors/RSS.
 - A free-form page builder or block library.
-- Contact form submissions or CVs — these stay with [#12](https://github.com/mustaphaelou/hay2010website/issues/12) and are not stored in Payload.
+- Contact form submissions or CVs — the app stores none (see [#12](https://github.com/mustaphaelou/hay2010website/issues/12)); they are not modelled in Payload.
 - Analytics, cookie consent and tag manager configuration — decided in [#10](https://github.com/mustaphaelou/hay2010website/issues/10); no analytics script is configured in the CMS.
 - Navigation, footer, redirects, legal identity, approved claims and SEO defaults — code.
 - Testimonials as a separate type — they live inside an approved project until a permission exists.
@@ -411,7 +415,10 @@ users    n ─── 1 role
 | `solaireLive` | false | The fifth service, its nav item, homepage card, anchor and sitemap entry. |
 | `agrementLive` | false | The ONEE agrément blocks on L'Entreprise and `/realisations` until both certificates are filed. |
 | `mapLive` | false | The contact map until the address is confirmed as a reception point. |
-| `formLive` | false | The contact form until CNDP F-211/F-214 and [#12](https://github.com/mustaphaelou/hay2010website/issues/12) clear. |
+| `formLive` | false | The contact form until the F-211 receipt, the mailbox tests and the [#12](https://github.com/mustaphaelou/hay2010website/issues/12) gates clear. The email-only page has its own short notice and does not depend on this flag. |
+| `applicationFormLive` | false | The phase-3 application form (not built); no `/carrieres/postuler`, no application fields. |
+| `cvUploadLive` | false | The phase-3 CV upload (not built); no file input, no R2 application bucket. |
+| `recrutementMailboxLive` | false | `recrutement@` on `/carrieres`, CV invitations and the careers email CTA until the F-113 authorization covers the mailbox. |
 | `caseStudiesLive` | false | `/realisations/[slug]`, detail links and sitemap entries until three approved named case studies exist. |
 
 Frontend rule: a record renders only when `status` is public, its gate is true, and its media is rights-cleared. Direct URLs to gated content return 404. The sitemap and internal links use the same filter, so a gate is never a hidden link.
@@ -517,7 +524,7 @@ Loi 88-13 applies to a “journal électronique” — a publication that is reg
 
 ### 9.2 CNDP and personal data
 
-- No contact-form messages, CVs or applicant data in Payload. Those belong to [#12](https://github.com/mustaphaelou/hay2010website/issues/12), after [#14](https://github.com/mustaphaelou/hay2010website/issues/14).
+- No contact-form messages, CVs or applicant data in Payload — and none in the app either, per [#12](https://github.com/mustaphaelou/hay2010website/issues/12); the mailboxes are the record.
 - Media may contain people; that is personal data. It is published only with a recorded release, and the release reference is part of the media record.
 - Employee photos need a specific written authorization, not a generic consent.
 - The privacy policy names `SOCIETE HAY 2010` as controller (`contact@hay2010.ma`, rights `donnees@hay2010.ma`); the CMS is a tool, not the controller.
@@ -687,7 +694,7 @@ The existing `app/page.tsx` moves into the `(frontend)` route group when the Pay
 | [#8](https://github.com/mustaphaelou/hay2010website/issues/8) hosting | Payload runtime, Postgres, object storage, backups, region, cron. |
 | [#10](https://github.com/mustaphaelou/hay2010website/issues/10) legal/analytics | **Resolved** — [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md): legal prose fields, identity block, `cndpReferences`, `legalReviewed`, no personal data in the CMS, no analytics script at launch. |
 | [#11](https://github.com/mustaphaelou/hay2010website/issues/11) SEO | SEO groups on every page/collection, noindex for drafts/gated, sitemap from published content, JSON-LD from code facts. |
-| [#12](https://github.com/mustaphaelou/hay2010website/issues/12) forms | No form submissions or CVs in Payload; the `formLive` gate; application email. |
+| [#12](https://github.com/mustaphaelou/hay2010website/issues/12) forms | No form submissions or CVs in Payload or the app; `contactNotice` even when the form is off; `formLive`; `applicationFormLive`/`cvUploadLive` false; email-only careers. |
 | [#13](https://github.com/mustaphaelou/hay2010website/issues/13) prototype | The field names and copy slots the prototype should exercise. |
 | [#14](https://github.com/mustaphaelou/hay2010website/issues/14) CNDP | No applicant data; releases for people; the conditional receipt field. |
 | [#15](https://github.com/mustaphaelou/hay2010website/issues/15) DNS | Canonical URL from `lib/company.ts`; admin on the same domain or a protected subdomain. |
@@ -700,7 +707,7 @@ The existing `app/page.tsx` moves into the `(frontend)` route group when the Pay
 1. Review the seeded page and service copy in the admin; correct the French.
 2. Supply photography with rights; no employee portraits until releases are signed.
 3. File both ONEE certificates (EE HTA-BT, HTA-BT3) so `agrementLive` can be switched on.
-4. Confirm the active job opening(s) and the application email.
+4. Confirm the active job opening(s) and the application email; confirm that the site stays email-only (no form, no CV upload).
 5. Nominate the legal reviewer/counsel for the first communiqué.
 6. Confirm the account recovery email and who holds the owner account.
 7. Confirm whether the admin should be French (yes by default).
@@ -725,7 +732,9 @@ The existing `app/page.tsx` moves into the `(frontend)` route group when the Pay
 - [ ] Revalidation updates the page, homepage, listing and sitemap after publish.
 - [ ] Preview works for drafts without exposing them publicly.
 - [ ] A restore from backup is tested before launch.
-- [ ] No contact message, CV or applicant data is stored in Payload.
+- [ ] No contact message, CV or applicant data is stored in Payload or the app; the mailboxes are the record.
+- [ ] The contact page renders the short notice even when `formLive` is false; no blank CNDP number can render.
+- [ ] `/carrieres` has no application form, no CV upload and no `recrutement@` before F-113.
 - [ ] The public site remains available when the admin is down.
 
 ---
@@ -736,3 +745,4 @@ The existing `app/page.tsx` moves into the `(frontend)` route group when the Pay
 |---|---|
 | 2026-11-09 | Initial decision: Payload 3, structured content, roles, workflow, media rights, communiqués policy. |
 | 2026-11-09 | Réalisations amendment (#6): anonymized cards, optional cover, `evidenceReference`, `caseStudiesLive`, teaser threshold. |
+| 2026-11-09 | Forms amendment (#12): no application form or CV upload; contact form optional and F-211-gated; `contactNotice` for the email-only page; `applicationFormLive`/`cvUploadLive`; `recrutementMailboxLive` in the gate table. |

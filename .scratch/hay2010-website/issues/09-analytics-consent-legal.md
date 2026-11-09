@@ -39,7 +39,7 @@ Resolved 2026-11-09 by a grilling session with the owner. Full decision and lega
 - Exact identity block from the facts register; no publication director, no phone, no host line, no CNDP receipt until #14. The host is a processor in the privacy policy only.
 - Controller `SOCIETE HAY 2010`; rights contact `donnees@hay2010.ma`; general contact `contact@hay2010.ma`.
 - Retention: contact 12 months after the last exchange; careers 6 months after the decision / 12-month pool with separate consent; logs 6 months; analytics 6 months; consent choice 6 months.
-- Form notices and consent wording fixed for [#12](https://github.com/mustaphaelou/hay2010website/issues/12); no CV upload before F-113.
+- Form notices and consent wording fixed for [#12](https://github.com/mustaphaelou/hay2010website/issues/12); **no application form and no CV upload** — careers is email-only; the contact form is optional after F-211. F-214 is not a form dependency without a cookie.
 - One-off Moroccan counsel review before [#16](https://github.com/mustaphaelou/hay2010website/issues/16) covers the consent conflict, retention, F-118 and legal wording.
 
 **Mailboxes**

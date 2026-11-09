@@ -106,7 +106,7 @@ The root homepage canonical resolves to `https://hay2010.ma` (no trailing slash)
 | Layer | Owner | Contents |
 |---|---|---|
 | `lib/company.ts` | Developer | Legal identity, address, `contact@hay2010.ma`, approved claims, ONEE wording and gate. |
-| `lib/flags.ts` | Developer | `actualitesLive`, `mediathequeLive`, `solaireLive`, `agrementLive`, `mapLive`, `formLive`, `caseStudiesLive`, `recrutementMailboxLive`, `analyticsLive`. |
+| `lib/flags.ts` | Developer | `actualitesLive`, `mediathequeLive`, `solaireLive`, `agrementLive`, `mapLive`, `formLive`, `applicationFormLive`, `cvUploadLive`, `caseStudiesLive`, `recrutementMailboxLive`, `analyticsLive`. |
 | `lib/seo.ts` | Developer | `SITE`, title/description defaults, canonical builder, OG defaults, JSON-LD builders, robots/sitemap values. |
 | Page copy | Owner (Payload) | Body copy, headings, service copy, images with rights. |
 | Payload `seo` group | Developer at launch | Optional `title`, `description`, `ogImage`; no canonical, robots, keywords or free-form suffix. |
@@ -1088,7 +1088,7 @@ The current defaults assume no phone, no social, no GBP, no public reception, no
 - **schema.org** — [Electrician](https://schema.org/Electrician); `https://schema.org/ElectricalContractor` returns 404 (verified 2026-11-09).
 - **Open Graph protocol** — https://ogp.me/ (required `og:title`, `og:type`, `og:image`, `og:url`; `og:locale` `language_TERRITORY`; `og:image:alt`).
 - **Current WordPress inventory** — `hay2010.ma`, live 2026-11-09: 12 pages, 7 posts, 6 portfolio CPT, 2 member CPT, 3 categories, 3 sitemap children, `/sitemap.xml` malformed, `/sitemaps.xml` index, `/blog/` 404, `/shop/` empty, `/wp-login.php` 200/indexable, `/wp-json/` open, empty descriptions and duplicate OG tags. Read-only audit; nothing modified.
-- **Project docs** — [`docs/company/facts-register.md`](../company/facts-register.md), [`docs/content/content-model.md`](../content/content-model.md), [`docs/content/realisations-strategy.md`](../content/realisations-strategy.md), [`docs/brand/brand-direction.md`](../brand/brand-direction.md), [`docs/hosting/deployment-decision.md`](../hosting/deployment-decision.md), [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md), [`.scratch/hay2010-website/issues/01-page-tree.md`](../../.scratch/hay2010-website/issues/01-page-tree.md).
+- **Project docs** — [`docs/company/facts-register.md`](../company/facts-register.md), [`docs/content/content-model.md`](../content/content-model.md), [`docs/content/realisations-strategy.md`](../content/realisations-strategy.md), [`docs/brand/brand-direction.md`](../brand/brand-direction.md), [`docs/hosting/deployment-decision.md`](../hosting/deployment-decision.md), [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md), [`docs/forms/contact-careers-forms.md`](../forms/contact-careers-forms.md), [`.scratch/hay2010-website/issues/01-page-tree.md`](../../.scratch/hay2010-website/issues/01-page-tree.md).
 
 ---
 
@@ -1097,3 +1097,4 @@ The current defaults assume no phone, no social, no GBP, no public reception, no
 | Date | Change |
 |---|---|
 | 2026-11-09 | Initial decision: apex/no-slash canonical, 301/308 policy, code-owned metadata, title/description table, fr/fr_FR, Organization + WebSite + WebPage JSON-LD, typographic OG card, robots/sitemap rules, full WordPress redirect/410 map, keyword map, no blog, spec-only deliverable. |
+| 2026-11-09 | #12 form flags added to the `lib/flags.ts` inventory: `applicationFormLive`, `cvUploadLive` (both false); no `JobPosting` and no new indexable form URL. |

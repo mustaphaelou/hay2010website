@@ -82,8 +82,8 @@ Resolved 2026-11-08 by an evidence session with the owner. **Amended 2026-11-09:
 - #6: no client permissions; fallback `Références sur demande`; the Khemisset award is internal evidence only.
 - #10: exact mentions légales block; no CNDP receipt; no phone; no publication director/host.
 - #11: the Organization JSON-LD above.
-- #12: no CNDP filing; no CV upload; careers applications to `ste.hay2010@gmail.com`.
-- #14: no existing filing; file F-211/F-214 (contact), F-113 (HR) and F-118 (US transfers) before collecting data.
+- #12: no CNDP filing yet; contact form optional after F-211; careers email-only to `recrutement@` after F-113, `contact@` before; **no application form, no CV upload**; `no-reply@` service sender.
+- #14: no existing filing; file F-211 (contact, email or form), F-113 (HR) and F-118 (US transfers) before collecting data; F-214 only for cookies/analytics.
 - #15: keep MX records for hay2010.ma when fixing DNS.
 
 **Before launch**
@@ -100,5 +100,12 @@ Resolved 2026-11-08 by an evidence session with the owner. **Amended 2026-11-09:
 - The owner creates the three mailboxes in the HeberjaHiz cPanel; `contact@` and `donnees@` are public-launch gates after a send/receive test. #15 preserves MX/SPF/DKIM.
 - The facts register and the approved copy are amended: footer/contact page/mentions légales/JSON-LD use `contact@`; rights use `donnees@`; careers uses `recrutement@` after #14, `contact@` before.
 - Full decision and legal copy: [`docs/legal/analytics-consent-legal-pages.md`](../../../docs/legal/analytics-consent-legal-pages.md).
+
+### Amendment 2026-11-09 (#12, forms and careers)
+
+- The contact form is optional after the F-211 receipt; the **email-only** contact page also needs F-211 and carries the short notice.
+- Careers is **email-only**: no application form, no CV upload; `recrutement@` only after F-113; `contact@` for questions before.
+- `no-reply@hay2010.ma` is a service sender, never a public contact.
+- Full decision: [`docs/forms/contact-careers-forms.md`](../../../docs/forms/contact-careers-forms.md).
 
 The register is the source of truth; this answer is the summary. Anything not confirmed above stays out.

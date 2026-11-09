@@ -3,6 +3,7 @@
 **Status:** resolved 2026-11-08; amended 2026-11-09 for the mailboxes.
 **Amended 2026-11-09:** the ONEE entry now lists the two current agréments, re-verified live on 2026-11-09; the réalisations fallback, reference cards and permission campaign are defined in [`docs/content/realisations-strategy.md`](../content/realisations-strategy.md) (ticket [#6](https://github.com/mustaphaelou/hay2010website/issues/6)).
 **Amended 2026-11-09 (#10):** the owner approved three domain mailboxes — **`contact@hay2010.ma`** (public general contact), **`donnees@hay2010.ma`** (law 09-08 rights contact) and **`recrutement@hay2010.ma`** (careers, not public before #14). `ste.hay2010@gmail.com` becomes a private fallback and account-recovery inbox, never a published channel. The addresses are **C** only after creation and a send/receive test; see [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) §6.
+**Amended 2026-11-09 (#12):** `no-reply@hay2010.ma` is added as a **service sender** (never public); the contact form is optional after F-211; careers stays email-only with **no application form and no CV upload**. Full decision: [`docs/forms/contact-careers-forms.md`](../forms/contact-careers-forms.md).
 **Owner decisions:** confirmed in session on 2026-11-08, with the mailbox amendment on 2026-11-09 (both recorded in §10).
 **Purpose:** the single source of truth for copy, footer, legal pages and structured data. If a fact is not in §2, it does not go on the site.
 
@@ -63,11 +64,13 @@ Logo and brand assets are gated by [#4](https://github.com/mustaphaelou/hay2010w
 |---|---|---|---|
 | Public general email | **contact@hay2010.ma** | **C** — owner-approved 2026-11-09; mailbox pending | The public contact once created and tested. Replaces the Gmail in the footer, contact page, mentions légales, policy and JSON-LD. |
 | Data-protection email | **donnees@hay2010.ma** | **C** — owner-approved 2026-11-09; mailbox pending | Law 09-08 rights contact; published in the policy and form notices after creation/test. Public-launch gate. |
-| Recruitment email | **recrutement@hay2010.ma** | **C** — owner-approved 2026-11-09; mailbox pending; public use gated by #14 | Create now and use on staging. Publish on `/carrieres` only after the F-113 authorization covers the mailbox; until then careers uses `contact@`. |
+| Recruitment email | **recrutement@hay2010.ma** | **C** — owner-approved 2026-11-09; mailbox pending; public use gated by #14 | Create now and use on staging. Publish on `/carrieres` only after the F-113 authorization covers the mailbox; until then careers uses `contact@`. **Email-only**: no application form, no CV upload ([#12](https://github.com/mustaphaelou/hay2010website/issues/12)). |
+| Service sender | **no-reply@hay2010.ma** | **C** — technical mailbox; not a public contact | Contact-form notifications and transactional mail; `Reply-To` carries the submitter. Never publish; monitor bounces. |
 | Gmail fallback | **ste.hay2010@gmail.com** | **C** | Private fallback and account recovery; **never publish** it on the site, legal pages, JSON-LD or metadata. If mail is forwarded to it, Google enters the policy and the F-118 scope. |
 | Phone | — | **G** | Not confirmed. Omit from footer, contact page and JSON-LD. |
 | LinkedIn / Facebook | — | **G** | No official account confirmed. Omit `sameAs` and social icons. |
-| Contact form | — | **G** | No CNDP filing; forms stay disabled until [#14](https://github.com/mustaphaelou/hay2010website/issues/14) and [#12](https://github.com/mustaphaelou/hay2010website/issues/12). |
+| Contact form | — | **G** | No form by default. The optional contact form ships only after the F-211 receipt, Turnstile and the #12 gates; the email route also needs F-211. |
+| Application form / CV upload | — | **G** | **Not built.** Careers is email-only; an upload would need F-113, ClamAV, private R2 and a deletion job ([#12](https://github.com/mustaphaelou/hay2010website/issues/12) §5). |
 | Map | — | **G** | Only after the owner confirms the registered address is a public reception point. |
 
 ---
@@ -90,7 +93,7 @@ Logo and brand assets are gated by [#4](https://github.com/mustaphaelou/hay2010w
 | **Client logos** | No written permission from the client **and** the trademark owner (loi 17-97) | Both written permissions |
 | **Employee photos / portraits** | No image releases | Signed authorization per person (loi 09-08) |
 | **Testimonials** | No written authorization | Signed testimonial release |
-| **Phone and social accounts** | Not confirmed; the owner confirmed the three mailboxes only (2026-11-09) | Owner confirmation + verification |
+| **Phone and social accounts** | Not confirmed; the owner confirmed the three **public** mailboxes only (2026-11-09) | Owner confirmation + verification |
 | **`recrutement@hay2010.ma` on the public site** | The mailbox is approved but the careers processing needs the F-113 authorization; the address must not invite CVs before #14 covers it | F-113 authorization from [#14](https://github.com/mustaphaelou/hay2010website/issues/14) |
 | **`ste.hay2010@gmail.com` as a public channel** | Replaced by `contact@hay2010.ma`; kept private as a fallback | Never publish; remove after the migration |
 | **CNDP receipt / authorization number** | No public entry and owner confirms no filing (2026-11-08) | CNDP receipt from [#14](https://github.com/mustaphaelou/hay2010website/issues/14) |
@@ -266,10 +269,10 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 
 - **Public register check:** `https://rn-pdp.cndp.ma/fr/list/1.html` was searched on 2026-11-08 for `HAY 2010`, `HAY2010`, `SOCIETE HAY 2010` and `SOCIETE HAY`. It returned **no record** for the company. The register itself works: a control query for `LAMALIF GROUP` returned several declarations/authorizations.
 - **Owner confirmation:** no CNDP filing or receipt exists for the current site, contact processing or recruitment (2026-11-08).
-- **Consequence:** no receipt number may be published. The privacy policy must not claim a filing. Contact forms and CV uploads stay disabled until [#14](https://github.com/mustaphaelou/hay2010website/issues/14) files the declarations/authorizations and issues the receipt. Analytics is off at launch; the cookieless Cloudflare Web Analytics beacon waits for the F-214.
+- **Consequence:** no receipt number may be published. The privacy policy must not claim a filing. The contact form stays off until the F-211 receipt; the email-only contact route is also covered by F-211. No CV upload; careers by email only after F-113. Analytics is off at launch; the cookieless Cloudflare Web Analytics beacon waits for the F-214. See [`docs/forms/contact-careers-forms.md`](../forms/contact-careers-forms.md).
 - **Data controller:** `SOCIETE HAY 2010`, registered address above. Public contact: `contact@hay2010.ma`; rights contact: `donnees@hay2010.ma`. Both mailboxes are owner-approved (2026-11-09) but must be created and tested before publication; the Gmail is a private fallback. Careers uses `recrutement@hay2010.ma` only after #14 covers it.
 - **Legal/analytics decision:** [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) — no analytics at launch, Cloudflare Web Analytics after F-214, no banner, the two legal pages, retention 12/6/12/6/6 and the mailbox gates.
-- **Handoff:** the filing plan is [#14](https://github.com/mustaphaelou/hay2010website/issues/14); the form behaviour is [#12](https://github.com/mustaphaelou/hay2010website/issues/12); the legal copy is [#10](https://github.com/mustaphaelou/hay2010website/issues/10). See the legal research note on branch `research/hay2010-legal-consent` for the F-211/F-214, F-113 and F-118 requirements.
+- **Handoff:** the filing plan is [#14](https://github.com/mustaphaelou/hay2010website/issues/14); the form behaviour is [#12](https://github.com/mustaphaelou/hay2010website/issues/12); the legal copy is [#10](https://github.com/mustaphaelou/hay2010website/issues/10). See the legal research note on branch `research/hay2010-legal-consent` for the F-211 (contact), F-113 (HR), F-214 (cookies/analytics) and F-118 requirements.
 
 ---
 
@@ -279,13 +282,14 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 |---|---|---|---|
 | 1 | Send the **RC extract (modèle 7)** or the OMPIC detailed legal sheet; verify the address and gérant | Final confirmation of §2.1; correct legal pages if either differs | Pending |
 | 2 | Send **both ONEE certificates** (EE HTA-BT, HTA-BT3) | Publication of the ONEE agréments block | Approved, documents pending |
-| 3 | Confirm a **phone** and any **official social accounts**, or confirm they should be omitted permanently; the three mailboxes are approved | Footer/contact page/JSON-LD additions | Phone/social omitted for now; mailboxes approved 2026-11-09 |
-| 4 | Create and send/receive-test **`contact@`, `donnees@` and `recrutement@`** in the HeberjaHiz cPanel; publish `contact@`/`donnees@` after the test; hold `recrutement@` until #14; then file the CNDP declarations | Footer, contact page, legal pages, JSON-LD, forms, CVs, privacy policy receipt line | Owner action; [#14](https://github.com/mustaphaelou/hay2010website/issues/14) |
+| 3 | Confirm a **phone** and any **official social accounts**, or confirm they should be omitted permanently; the three public mailboxes are approved | Footer/contact page/JSON-LD additions | Phone/social omitted for now; public mailboxes approved 2026-11-09 |
+| 4 | Create and send/receive-test **`contact@`, `donnees@`, `recrutement@`** and the service sender **`no-reply@`** in the HeberjaHiz cPanel; publish `contact@`/`donnees@` after the test; hold `recrutement@` until #14; confirm attachment scanning and backup rotation; then file the CNDP declarations | Footer, contact page, legal pages, JSON-LD, forms, CVs, privacy policy receipt line | Owner action; [#14](https://github.com/mustaphaelou/hay2010website/issues/14) |
 | 5 | Collect **written permissions** for any client name/logo, employee photo or testimonial | Réalisations and Médias content | None yet; fallback stands |
 | 6 | Confirm whether **Solaire & ENR** is a real service line, with proof | `/metiers#solaire`, home card, nav | Gated |
 | 7 | Confirm **logo ownership** and supply brand assets | Header, footer, metadata | [#4](https://github.com/mustaphaelou/hay2010website/issues/4) |
 | 8 | Send the **internal project inventory** (object, buyer, place, year, amount, contract/réception reference, permission contact) | Réalisations cards and the permission campaign | [#6](https://github.com/mustaphaelou/hay2010website/issues/6) |
 | 9 | Check for an **MHVP renewal after 03/03/2026** | Publication of the 4\*\*\*\* qualification, if renewed | Pending |
+| 10 | Supply the **current job openings** (title, contract, location, summary, description, closing date) or confirm none; confirm the site stays **email-only** for applications | `/carrieres` content; no application form or CV upload | Pending |
 
 ---
 
@@ -297,11 +301,11 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 | [#4](https://github.com/mustaphaelou/hay2010website/issues/4) brand | Logo ownership/asset; no people photos without releases; no client logos. |
 | [#5](https://github.com/mustaphaelou/hay2010website/issues/5) content model | The facts module/source of truth; editors may not add gated facts. Suggested fields: legal identity, contact channels, gated claims, permission status. |
 | [#6](https://github.com/mustaphaelou/hay2010website/issues/6) réalisations | Credentials-led page; the two ONEE agréments; `Références sur demande`; owner inventory and permission campaign; no public-record cards. Full strategy: [`docs/content/realisations-strategy.md`](../content/realisations-strategy.md). |
-| [#10](https://github.com/mustaphaelou/hay2010website/issues/10) legal pages | **Resolved** — [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md): exact mentions légales block; privacy policy; no CNDP receipt; no phone; no publication director; host only as a processor; three mailboxes. |
+| [#10](https://github.com/mustaphaelou/hay2010website/issues/10) legal pages | **Resolved** — [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md): exact mentions légales block; privacy policy; no CNDP receipt; no phone; no publication director; host only as a processor; three public mailboxes + `no-reply@` service sender. |
 | [#11](https://github.com/mustaphaelou/hay2010website/issues/11) SEO/JSON-LD | The Organization object in §5.5 with `email: contact@hay2010.ma`; omit `foundingDate`, `telephone`, `sameAs`, `logo`; do not publish `donnees@` or `recrutement@` in metadata. |
-| [#12](https://github.com/mustaphaelou/hay2010website/issues/12) forms | No CNDP filing; no CV upload; `contact@` for the contact form and `recrutement@` for careers only after #14; `donnees@` as rights contact; notices in the #10 decision §4.5. |
-| [#14](https://github.com/mustaphaelou/hay2010website/issues/14) CNDP | No existing filing; controller identity; the three mailboxes; the 12/6/12/6/6 retention schedule; F-211/F-113/F-214/F-118 scope; file before any public collection. |
-| [#15](https://github.com/mustaphaelou/hay2010website/issues/15) DNS | Canonical URL `https://hay2010.ma`; the domain carries `contact@`, `donnees@` and `recrutement@`, so keep MX/SPF/DKIM/autodiscover when fixing delegation and re-test all three mailboxes after the change. |
+| [#12](https://github.com/mustaphaelou/hay2010website/issues/12) forms | No CNDP filing yet; `contact@` for the optional contact form and `recrutement@` for careers only after F-113; `no-reply@` service sender; `donnees@` as rights contact; **no application form, no CV upload**; notices in the #10 decision §4.5. Full decision: [`docs/forms/contact-careers-forms.md`](../forms/contact-careers-forms.md). |
+| [#14](https://github.com/mustaphaelou/hay2010website/issues/14) CNDP | No existing filing; controller identity; the three public mailboxes plus `no-reply@`; attachment-scanning/backup evidence; the 12/6/12/6/6 retention schedule; F-211/F-113/F-214/F-118 scope; file before any public collection. |
+| [#15](https://github.com/mustaphaelou/hay2010website/issues/15) DNS | Canonical URL `https://hay2010.ma`; the domain carries `contact@`, `donnees@`, `recrutement@` and `no-reply@`, so keep MX/SPF/DKIM/autodiscover when fixing delegation and re-test all four mailboxes after the change. |
 
 ---
 
@@ -322,6 +326,7 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 | Owner confirmations | This session | 2026-11-08 | Address, gérant name-only, no founding year, ONEE-only, no CNDP filing, no permissions |
 | Owner mailbox decision | This session ([#10](https://github.com/mustaphaelou/hay2010website/issues/10)) | 2026-11-09 | `contact@`, `donnees@`, `recrutement@`; Gmail private fallback; owner provisions in cPanel; `recrutement@` public after #14 |
 | Legal/analytics decision | [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) | 2026-11-09 | No analytics at launch; Cloudflare Web Analytics after F-214; no banner; two legal pages; retention 12/6/12/6/6; forms/CV gated |
+| Forms decision | [`docs/forms/contact-careers-forms.md`](../forms/contact-careers-forms.md) | 2026-11-09 | Contact form optional after F-211; careers email-only; no application form or CV upload; `no-reply@` service sender; Turnstile/no-cookie position |
 
 **Owner decisions (2026-11-08, verbatim summary; mailbox amendment 2026-11-09):**
 
@@ -332,7 +337,7 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 - Contact: `only ste.hay2010@gmail.com for now` (superseded 2026-11-09: `contact@hay2010.ma` public, `donnees@hay2010.ma` rights, `recrutement@hay2010.ma` careers after #14; Gmail private fallback).
 - CNDP: `no filing — plan the filings in #14`.
 - Permissions: `none yet — use the fallback`.
-- Mailboxes: `contact@ + donnees@ + recrutement@; owner creates in cPanel; Gmail fallback`.
+- Mailboxes: `contact@ + donnees@ + recrutement@` public/approved; `no-reply@` service sender (never public); owner creates in cPanel; Gmail fallback.
 - Analytics/legal: `no analytics at launch; Cloudflare Web Analytics after F-214; no banner; two legal pages; one-off counsel review`.
 
 **Evidence images:** `docs/company/evidence/ompic-directinfo-2026-11-08.png` and `docs/company/evidence/justice-rc-search-2026-11-08.png`.
@@ -347,8 +352,8 @@ The fallback for every "No" is **`Références sur demande`**, with no logos and
 - [ ] No RC 517, no 6M/4.7M/500k capital, no old address, no IF.
 - [ ] No client names/logos, employee photos or testimonials without a signed permission in this register.
 - [ ] No phone or social links unless confirmed after 2026-11-09.
-- [ ] `contact@` and `donnees@` created, send/receive-tested, and published; `recrutement@` published only after #14; the Gmail is not on the site, legal pages, JSON-LD or metadata.
-- [ ] No CNDP receipt number until #14 issues one; forms disabled until then; `recrutement@` does not invite CVs before F-113.
+- [ ] `contact@`, `donnees@` and `no-reply@` created, send/receive-tested; `recrutement@` published only after #14; the Gmail is not on the site, legal pages, JSON-LD or metadata.
+- [ ] No CNDP receipt number until #14 issues one; the contact form is off without F-211; the email-only contact page still carries the short notice; no CV upload; `recrutement@` does not invite CVs before F-113.
 - [ ] Footer legal line and mentions légales use `SOCIETE HAY 2010`; body copy uses `HAY2010`; the footer contact is `contact@hay2010.ma`.
 - [ ] JSON-LD has `email: contact@hay2010.ma` and no `foundingDate`, `telephone`, `sameAs` or `logo`.
 - [ ] Legal pages match [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md): no publication director, no phone, no host line, no blank CNDP number.
