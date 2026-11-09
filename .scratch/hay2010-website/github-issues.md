@@ -12,7 +12,7 @@ The local files in `.scratch/hay2010-website/` are a mirror. GitHub issues are c
 | 04 | [#5](https://github.com/mustaphaelou/hay2010website/issues/5) | grilling | closed | Decide the content model and update workflow |
 | 05 | [#6](https://github.com/mustaphaelou/hay2010website/issues/6) | grilling | closed | Define the réalisations and portfolio strategy |
 | 06 | [#7](https://github.com/mustaphaelou/hay2010website/issues/7) | research | closed | Research hosting, domain and deployment options |
-| 07 | [#8](https://github.com/mustaphaelou/hay2010website/issues/8) | grilling | open | Decide the first deployment target and staging URL |
+| 07 | [#8](https://github.com/mustaphaelou/hay2010website/issues/8) | grilling | closed | Decide the first deployment target and staging URL |
 | 08 | [#9](https://github.com/mustaphaelou/hay2010website/issues/9) | research | closed | Research Moroccan legal and consent requirements for the site |
 | 09 | [#10](https://github.com/mustaphaelou/hay2010website/issues/10) | grilling | open | Decide analytics, consent and legal page content |
 | 10 | [#11](https://github.com/mustaphaelou/hay2010website/issues/11) | grilling | open | Specify SEO, metadata and structured data |
