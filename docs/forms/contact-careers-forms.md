@@ -6,6 +6,7 @@
 **Depends on (open):** [#14](https://github.com/mustaphaelou/hay2010website/issues/14) CNDP filings and mailbox tests, [#15](https://github.com/mustaphaelou/hay2010website/issues/15) DNS and mail, [#16](https://github.com/mustaphaelou/hay2010website/issues/16) public launch.
 **Amends:** the contact and careers sections and the gate table in [`docs/content/content-model.md`](../content/content-model.md) (#5); the form notices, mailbox list and F-214 scope in [`docs/legal/analytics-consent-legal-pages.md`](../legal/analytics-consent-legal-pages.md) (#10); the forms, WAF, SMTP and environment sections in [`docs/hosting/deployment-decision.md`](../hosting/deployment-decision.md) (#8); the contact channels and handoff in [`docs/company/facts-register.md`](../company/facts-register.md) (#3); the contact/careers CTA wording in [#2](https://github.com/mustaphaelou/hay2010website/issues/2).
 **Not legal advice.** The notices, retention periods and CNDP scope come from the legal research note and the [#10](https://github.com/mustaphaelou/hay2010website/issues/10) decision. Counsel review before [#16](https://github.com/mustaphaelou/hay2010website/issues/16) remains a launch gate.
+**Amended 2026-11-09 (#14):** the CNDP filing plan — F-211/F-113/F-214/F-118 sequence, owners, annexes, fallbacks and launch gates — is in [`docs/legal/cndp-filings-launch-compliance.md`](../legal/cndp-filings-launch-compliance.md).
 
 > **One-line rule:** no form is required at launch; one **text-only contact form** may be enabled after the F-211 receipt; **careers applications stay email-only**; no CV upload; no submission is stored in the application, the database or object storage.
 
@@ -1165,3 +1166,4 @@ All sources were retrieved on 2026-11-08/09. Re-check the CNDP texts, the Cloudf
 | Date | Change |
 |---|---|
 | 2026-11-09 | Initial decision record. No application form; contact form gated on F-211; careers email-only; no CV upload; custom Next.js + SMTP backend; Turnstile/honeypot/rate limits; F-214 clarified as not a form dependency; phase-3 upload design recorded but not approved. |
+| 2026-11-09 | CNDP plan (#14): filing sequence, owners, annexes, fallbacks and launch gates recorded in [`docs/legal/cndp-filings-launch-compliance.md`](../legal/cndp-filings-launch-compliance.md). |
