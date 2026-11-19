@@ -18,6 +18,6 @@ The local files in `.scratch/hay2010-website/` are a mirror. GitHub issues are c
 | 10 | [#11](https://github.com/mustaphaelou/hay2010website/issues/11) | grilling | closed | Specify SEO, metadata and structured data |
 | 11 | [#12](https://github.com/mustaphaelou/hay2010website/issues/12) | grilling | closed | Specify contact, careers and application forms |
 | 12 | [#13](https://github.com/mustaphaelou/hay2010website/issues/13) | prototype | closed | Produce the homepage prototype |
-| 13 | [#14](https://github.com/mustaphaelou/hay2010website/issues/14) | task | open | Plan the CNDP filings and launch compliance |
+| 13 | [#14](https://github.com/mustaphaelou/hay2010website/issues/14) | task | closed | Plan the CNDP filings and launch compliance |
 | 14 | [#15](https://github.com/mustaphaelou/hay2010website/issues/15) | task | open | Fix the hay2010.ma DNS delegation and identify account owners |
 | 15 | [#16](https://github.com/mustaphaelou/hay2010website/issues/16) | grilling | open | Plan the public launch and domain cutover |
