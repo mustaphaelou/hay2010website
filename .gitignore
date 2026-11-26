@@ -45,3 +45,7 @@ next-env.d.ts
 
 # local git worktrees used by the build agent
 /.worktrees/
+
+# Local gate logs
+.gate.log
+.test-run.log
