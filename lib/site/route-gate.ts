@@ -3,6 +3,10 @@
  * `next/navigation` import, so the proxy bundle stays minimal.
  */
 import { getContentProviderName } from "@/lib/content"
+import {
+  DOMAIN_KEYS,
+  domainGateOpen,
+} from "@/lib/payload/content-map"
 import { getPublishedDomain, DOMAINES_ROUTE } from "@/lib/site/domaines"
 import { caseStudiesLive } from "@/lib/site/realisations"
 import { getPublishState, RUBRIQUES } from "@/lib/site/rubriques"
@@ -55,16 +59,39 @@ export async function resolveRouteGate(pathname: string): Promise<RouteGate> {
   const path = normalizePath(pathname)
 
   /**
-   * CMS mode (#29): the proxy must stay cheap and database-free. The CMS gate
-   * is resolved by layer 2 instead — `requirePublishedRubrique()` /
-   * `requirePublishedDomain()` in the page files, at build time for the
-   * statically rendered pages and per request for dynamic routes. Pages built
-   * with `CONTENT_SOURCE=cms` bake their publish state exactly like the fixture
-   * build bakes its scenario (docs/build/content-seam.md §9.6).
+   * CMS mode (#29): the proxy stays database-free, but the **code-owned** gates
+   * are resolvable without a query — they are literals in
+   * `lib/payload/content-map.ts`. Resolving them here (instead of returning
+   * `unknown`) matters for #30's parity contract: a code-gated route then gets
+   * the same server-rendered branded 404 document as the fixture build, rather
+   * than a runtime `notFound()` shell that only a JavaScript client can hydrate.
    *
-   * The fixture path is untouched: it keeps the fast proxy 404 rewrite.
+   * Only the CMS publish state is deferred to layer 2
+   * (`requirePublishedRubrique()` in the page files): a P1 page the owner
+   * unpublishes answers 404 at the render boundary, as documented in
+   * docs/build/cms.md ("Gate resolution in CMS mode").
    */
-  if (getContentProviderName() === "cms") return "unknown"
+  if (getContentProviderName() === "cms") {
+    const cmsRubrique = RUBRIQUES.find((entry) => entry.href === path)
+    if (cmsRubrique) {
+      // P2/P3 tiers are code-owned: a CMS record could never open them.
+      return cmsRubrique.tier === "P1" ? "unknown" : "closed"
+    }
+
+    if (isDomainChild(path)) {
+      const slug = domainSlugFromPath(path)
+      // Unknown or code-gated domain slugs are closed at the code level
+      // (the five slugs are a code-owned enum, content-map.ts).
+      const known = DOMAIN_KEYS.some((domain) => domain.slug === slug)
+      return known && domainGateOpen(slug) ? "unknown" : "closed"
+    }
+
+    if (isChildOf(path, REALISATIONS_ROUTE)) {
+      return caseStudiesLive() ? "unknown" : "closed"
+    }
+
+    return "unknown"
+  }
 
   const rubrique = RUBRIQUES.find((entry) => entry.href === path)
   if (rubrique) {

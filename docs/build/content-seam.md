@@ -421,10 +421,14 @@ clean-database command (`npm run migrate`), the migration workflow, the roles
 and media-rights rules, and the #30/#31 extension points. Two decisions taken
 there that later tickets must keep:
 
-- **CMS gate trade-off (§9.6):** in CMS mode `resolveRouteGate` returns
-  `unknown`; the proxy stays database-free and the render-side guards plus
-  `app/(frontend)/not-found.tsx` serve the branded 404. Publishing freshness
-  therefore depends on #30's revalidation, not on the proxy.
+- **CMS gate trade-off (§9.6, refined by #30):** in CMS mode the proxy stays
+  database-free and resolves only the **code-owned** gates (P2/P3 rubriques,
+  code-gated/unknown domains, the case-study family) from literals in
+  `lib/payload/content-map.ts`; the P1 publish state is resolved by the
+  render-side guards. Publishing freshness depends on #30's revalidation, not on
+  the proxy. See `docs/build/cms.md` §11 for the exact split and the remaining
+  trade-off (owner-unpublished P1 routes answer 404 through the render
+  boundary).
 - **Migrations are an explicit deploy job, never `prodMigrations`:** the
   standalone image does not contain `payload.config.ts` or the Payload CLI, so
   `payload migrate` runs from the full source checkout with database access
@@ -436,16 +440,37 @@ rights gate on `cover`), `users` + roles and `media` + rights. #30 replaces the
 transient `pages.blocks` JSON with the structured content model and fills the
 seam methods that still return empty (domains, actualités).
 
-## 10. How #30 extends content
+## 10. Implemented by #30 — content types, seed and parity
 
-- Add Payload content types/globals and a seed that reproduces the fixture
-  corpus (`site.json` + scenario `p1` gates) so fixture-vs-CMS parity (#33) can
-  compare the same route matrix.
-- Map new CMS fields onto the existing block union; if a genuinely new block is
-  needed, add it to `ContentBlock` **and** to the renderer in the same change.
-- Publish/unpublish (never delete) feeds `getPublishState`; a closed page keeps
-  its document and its gate reason (admin-visible).
-- Media rights: only `rightsStatus: cleared` records leave the seam.
+- **Content model:** seven page/listing globals (`homepage`, `entreprise`,
+  `metiers`, `realisations`, `contact`, `carrieres`, `actualites`) and four
+  collections (`domaines`, `projects`, `jobs`, `communiques`); the #29 `pages`
+  collection is gone. Field names follow `docs/content/content-model.md` §5
+  where the delivered trame renders them; the mapping and the trame-specific
+  fields are documented in `docs/build/cms.md` §4.
+- **Seed:** `scripts/seed.ts` reproduces `content/fixtures/site.json` with the
+  launch gate state of `content/fixtures/scenarios/p1.json`, idempotently and
+  through the Local API (`overrideAccess: true`, hooks run).
+- **Parity:** `scripts/parity.mjs` captures the P1 route matrix under both
+  providers (statuses, metadata, normalised `<main>` structure/text, header and
+  footer links, sitemap) and `scripts/test-cms.mjs` compares them on every CMS
+  acceptance run. #33 reuses that comparison for the final audit.
+- **Gate visibility:** the admin dashboard renders read-only panels listing the
+  code-owned gate for every closed page/domain/family with its reason, plus the
+  code-owned constants (identity, approved claims, nav labels, SEO defaults).
+- **Revalidation:** `lib/payload/revalidate.ts` is called from the publish hooks
+  (`revalidatePath`, `revalidateTag(tag, "max")`); publish/unpublish, job
+  closing and media revocation show up without a rebuild.
+- **Media rights:** the publish gate now covers `homepage.hero.image`,
+  `seo.ogImage` on every type, `projects.cover`/`gallery.*.image` and
+  `communiques.cover`; a rights revocation invalidates the whole frontend layout
+  so the image disappears from every published page.
+- **Mapping rule:** a new CMS field is mapped onto the existing block union; a
+  genuinely new block is added to `ContentBlock` **and** to the renderer in the
+  same change. Publish/unpublish (never delete) feeds `getPublishState`; a closed
+  page keeps its document and its gate reason (admin-visible).
+- The named-case-study family (`/realisations/{slug}`) and the actualités routes
+  stay code-gated at P1; their models and permission validations exist.
 
 ---
 

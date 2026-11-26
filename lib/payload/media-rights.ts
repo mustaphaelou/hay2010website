@@ -23,6 +23,8 @@ import { Forbidden, ValidationError } from "payload"
 import type {
   CollectionBeforeChangeHook,
   CollectionBeforeValidateHook,
+  GlobalBeforeChangeHook,
+  GlobalBeforeValidateHook,
   PayloadRequest,
 } from "payload"
 
@@ -110,7 +112,7 @@ export const validateMediaRights: CollectionBeforeChangeHook = ({ data, original
 }
 
 /** Resolve an upload relation value (id or populated document) to rights values. */
-async function resolveMediaValue(
+export async function resolveMediaValue(
   value: unknown,
   req: PayloadRequest
 ): Promise<MediaRightsValues | null> {
@@ -140,8 +142,34 @@ interface PublishedMediaCheck {
   readonly data?: Record<string, unknown> | null
   readonly originalDoc?: Record<string, unknown> | null
   readonly req: PayloadRequest
-  /** Top-level upload fields of the referencing document. */
+  /**
+   * Upload fields of the referencing document. Top-level names (`cover`) and
+   * dotted array paths with a `*` segment (`gallery.*.image`) are supported, so
+   * an upload nested in an array is gated exactly like a top-level one.
+   */
   readonly uploadFields: readonly string[]
+}
+
+/** Read every value a dotted field path points at (`*` expands array items). */
+function readPathValues(record: Record<string, unknown>, path: string): unknown[] {
+  const segments = path.split(".")
+  let values: unknown[] = [record]
+
+  for (const segment of segments) {
+    const next: unknown[] = []
+    for (const value of values) {
+      if (segment === "*") {
+        if (Array.isArray(value)) next.push(...value)
+        continue
+      }
+      if (value === null || value === undefined) continue
+      if (typeof value !== "object") continue
+      next.push((value as Record<string, unknown>)[segment])
+    }
+    values = next
+  }
+
+  return values.filter((value) => value !== null && value !== undefined && value !== "")
 }
 
 /**
@@ -166,20 +194,19 @@ export async function enforcePublishedMediaRights({
   const errors: Array<{ message: string; path: string }> = []
 
   for (const field of uploadFields) {
-    const value = merged[field]
-    if (value === null || value === undefined || value === "") continue
-
-    const media = await resolveMediaValue(value, req)
-    if (!media) {
-      errors.push({ message: "Média introuvable.", path: field })
-      continue
-    }
-    if (!mediaIsCleared(media)) {
-      errors.push({
-        message:
-          "Image sans droits enregistrés : la publication est bloquée tant que sa permission n’est pas « cleared ».",
-        path: field,
-      })
+    for (const value of readPathValues(merged, field)) {
+      const media = await resolveMediaValue(value, req)
+      if (!media) {
+        errors.push({ message: "Média introuvable.", path: field })
+        continue
+      }
+      if (!mediaIsCleared(media)) {
+        errors.push({
+          message:
+            "Image sans droits enregistrés : la publication est bloquée tant que sa permission n’est pas « cleared ».",
+          path: field,
+        })
+      }
     }
   }
 
@@ -201,6 +228,21 @@ export function publishedMediaRightsHook(
   }
 }
 
+/** Build the global's `beforeValidate` hook (same gate as collections). */
+export function publishedGlobalMediaRightsHook(
+  uploadFields: readonly string[]
+): GlobalBeforeValidateHook {
+  return async ({ data, originalDoc, req }) => {
+    await enforcePublishedMediaRights({
+      data: data as Record<string, unknown> | undefined,
+      originalDoc: originalDoc as Record<string, unknown> | undefined,
+      req,
+      uploadFields,
+    })
+    return data
+  }
+}
+
 /**
  * Editor publish lock (content model §4: the editor creates and edits drafts,
  * never publishes).
@@ -209,16 +251,38 @@ export function publishedMediaRightsHook(
  * documents are updatable, but an API PATCH with `{ "_status": "published" }`
  * still succeeds; this hook is the enforcement. `Forbidden` is what the REST
  * layer turns into a 403.
+ *
+ * The rule is shared by collections and globals (#30's page globals are
+ * publishable singletons), so the core is a plain function with two thin typed
+ * wrappers.
  */
-export const preventEditorPublish: CollectionBeforeChangeHook = ({ data, originalDoc, req }) => {
+export function enforceEditorPublishLock({
+  data,
+  originalDoc,
+  req,
+}: {
+  data?: Record<string, unknown> | null
+  originalDoc?: Record<string, unknown> | null
+  req: PayloadRequest
+}): void {
   const role = (req.user as { role?: string } | null | undefined)?.role
-  if (role !== "editor") return data
+  if (role !== "editor") return
 
-  const target = (data as { _status?: string } | undefined)?._status
-  const current = (originalDoc as { _status?: string } | undefined)?._status
+  const target = data?._status
+  const current = originalDoc?._status
   if (target === "published" || (target === undefined && current === "published")) {
     throw new Forbidden(req.t)
   }
+}
 
-  return data
+/** Collection hook: the editor can never publish a document. */
+export const preventEditorPublish: CollectionBeforeChangeHook = (args) => {
+  enforceEditorPublishLock(args)
+  return args.data
+}
+
+/** Global hook: the editor can never publish a page singleton. */
+export const preventEditorPublishGlobal: GlobalBeforeChangeHook = (args) => {
+  enforceEditorPublishLock(args)
+  return args.data
 }
