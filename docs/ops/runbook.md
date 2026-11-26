@@ -11,13 +11,16 @@ GitHub Actions (deploy/backup); their location is recorded here, never their val
 ## 1. Ownership and where things live
 
 Recorded at handover; fill in and keep the filled copy **outside the repository**
-if it contains personal contact details. Inventory of what must exist:
+if it contains personal contact details. The written confirmation — titulaire réel de chaque actif,
+comptes à énumérer, accès délégué, rotation et signature — is the template
+[`docs/handover/ownership.md`](../handover/ownership.md); it must be completed, verified and signed.
+The table below is the operational summary, not the legal record. Inventory of what must exist:
 
 | Item | Owner | Where it lives | Access |
 |---|---|---|---|
 | Domain `hay2010.ma` | HAY2010 | NINDO HOST registrar | owner + developer |
 | Cloudflare zone `hay2010.ma` | HAY2010 | Cloudflare account (HAY2010) | owner + developer |
-| VPS (Coolify) | developer for first deployment (written agreement) | Hetzner/provider account | developer, SSH keys only |
+| VPS (Coolify) | developer for first deployment (written agreement); target HAY2010 | Hetzner/provider account | developer, SSH keys only |
 | Coolify dashboard | developer | `<VPS host>:<port>` behind SSH tunnel / Access | developer + owner |
 | Postgres `hay2010-postgres` | HAY2010 (data) | Coolify database resource, internal network only | via Coolify |
 | R2 `hay2010-media` (public, versioned) | HAY2010 | Cloudflare R2 | owner + developer |
@@ -31,6 +34,11 @@ DNS records, this repository and the image tags. The runbook must be usable
 without the developer.
 
 ### Incident contacts (placeholders — fill at handover)
+
+Names and channels are **not** stored in this public repository: they are completed in the signed
+ownership record ([`docs/handover/ownership.md`](../handover/ownership.md)) and only the filled contact
+block is copied here (or kept beside the printed runbook). The placeholders below are a reminder, not a
+filled record.
 
 | Role | Name | Channel |
 |---|---|---|
@@ -90,6 +98,45 @@ GitHub repository **secrets**: `COOLIFY_API_TOKEN`, `COOLIFY_APP_UUID`,
 
 Rotate on handoff: Coolify API token, GHCR read token, R2 tokens, GitHub
 secrets. Never put a value in an image build arg, a commit or a CI log.
+
+### Admin accounts — bootstrap and recovery
+
+The Payload admin has **no email adapter configured at P1**, so there is no self-service password
+reset by email (the console warns "No email adapter provided"); forgotten passwords are reset by a
+developer. Accounts are **not** created by the seed in production — `lib/payload/seed-accounts.ts`
+uses `@hay2010.test` addresses that are development/test only.
+
+**Fresh database (first deployment, or a recreated CMS database):**
+
+1. Apply the migrations first (§4 and [`docs/build/cms.md`](../build/cms.md) §5), then open
+   `https://<host>/admin`. With no user in the database Payload serves the **create-first-user** screen.
+2. Create the **developer** account there: real e-mail, long unique password, **Rôle = Développeur**
+   (the screen renders every field; the role select is required and must not be left at its default).
+3. Sign in, open **Comptes → Créer un compte**, create the **owner** account (real e-mail,
+   **Rôle = Éditeur**) and hand the password over in person. The owner changes it at first login
+   (**Compte → Changer le mot de passe**).
+4. Optional contributor account (**Rôle = Contributeur**) — drafts only, unused at launch.
+5. `npm run seed` on a development/staging database also creates three `.test` bootstrap accounts
+   (`developpeur@`, `proprietaire@`, `contributeur@hay2010.test`). They exist to make a local CMS
+   reproducible: **deactivate or delete them on any database that is not local**, and never publish
+   the admin URL with a documented test password.
+6. Headless alternative on an empty database (no user yet), same outcome — the endpoint accepts the
+   role because first-user creation runs with `overrideAccess`:
+
+   ```bash
+   curl -sS -X POST "$ADMIN_ORIGIN/api/users/first-register" \
+     -H 'Content-Type: application/json' \
+     -d '{"email":"…@hay2010.ma","password":"<long unique>","name":"…","role":"developer"}'
+   ```
+
+**Recovery (lost password, no signed-in developer):** the last resort is a one-off Local API script run
+against the full source with `DATABASE_URL` set (the standalone image has no Payload CLI); it updates
+`users` with `overrideAccess: true` and must run from the server, never from a ticket or a log. Record
+the action in the ownership log. No recovery script is committed at P1 — write it on the server and
+delete it after use.
+
+Record the real account list in [`docs/handover/ownership.md`](../handover/ownership.md) §3; never in
+this public repository.
 
 ---
 
@@ -240,6 +287,8 @@ bucket and a restore into a **Postgres 17** database are still operator actions.
       disposable database).
 - [ ] Handover check: a second operator can deploy, roll back and restore using
       this runbook only.
+- [ ] Handover check: the owner's training sign-off and the signed ownership record are still valid;
+      new content evidence is recorded in [`docs/handover/contenu-attendu.md`](../handover/contenu-attendu.md).
 
 ---
 
@@ -257,3 +306,27 @@ deploy, rollback and health-check behaviour; Cloudflare zone/Access service
 token; R2 buckets and the nightly Coolify backup schedule; an external uptime
 check; a restore into the production Postgres 17. Do not claim these until they
 have been executed and this section is updated with the date and observer.
+
+---
+
+## 8. Reste à faire côté HAY2010 / opérateur
+
+These are **human or external actions**, not repository deliverables. The code and the procedures
+exist; the items below are not done until the named proof is filed and dated. Do not report the
+handover as complete while a line is open.
+
+| # | Action | Who | Proof to file | Source |
+|---|---|---|---|---|
+| 1 | Hold and **record** the two-hour French training; the owner completes one real edit and one publish/unpublish unaided | Developer + owner | Signed session record; recording stored outside the repo | [`docs/handover/formation.md`](../handover/formation.md) §6 |
+| 2 | Complete, verify and **sign** the ownership record; rotate delegated credentials | Owner + developer (+ counsel if needed) | Signed record outside the repo; rotation list dated | [`docs/handover/ownership.md`](../handover/ownership.md) |
+| 3 | Deploy to the **real staging** and verify ARM64 image, Coolify, Access, rollback, health, backups | Operator | `external-steps.md` items ticked with date + observer | [`deploy.md`](deploy.md), [`external-steps.md`](external-steps.md) |
+| 4 | File **CNDP F-211** (contact) and **F-118** (transfers) before public launch; **F-113** before any CV invitation; **F-214** only if analytics is enabled | Owner submits; developer prepares; counsel reviews | Receipt/authorization reference in the policy and the short notice | [`docs/legal/cndp-filings-launch-compliance.md`](../legal/cndp-filings-launch-compliance.md) §2, §12 |
+| 5 | Create, **send/receive-test** and publish the mailboxes (`contact@`, `donnees@`, `no-reply@`; `recrutement@` after F-113) | Owner (cPanel) + developer | Test evidence in the filing dossier | `contenu-attendu.md`; facts register §8 |
+| 6 | Supply the owner content and evidence per tier (RC extract, both ONEE certificates, permissions, logo ownership, jobs, MHVP) | Owner | Each row of the checklist dated and complete | [`docs/handover/contenu-attendu.md`](../handover/contenu-attendu.md) |
+| 7 | Obtain the **structeur's written sign-off** on the CDC deviation register | Structeur | Signed register | [`docs/cdc/deviation-register.md`](../cdc/deviation-register.md) |
+| 8 | Read the **P1 audit** (#33) before public launch and archive its evidence | Developer + owner | `docs/build/p1-audit.md` | [`docs/build/`](../build/) |
+| 9 | Run a backup **restore test** against the real R2 bucket and the production Postgres major version; record it | Operator | Restore rehearsal record dated | §5 above; `external-steps.md` §4 |
+| 10 | Complete the **contacts** block (names, phones, support channels) in the printed runbook | Owner + developer | Filled block kept outside the repo | §1 above |
+
+Re-run the technical verification any time with the commands in
+[`docs/handover/README.md`](../handover/README.md) §2 (repo gate, local fixture site, local CMS, `npm run test:cms`).

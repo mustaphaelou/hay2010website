@@ -122,4 +122,5 @@ claimed. Track completion by editing this file (add the date and observer).
 - [ ] Rotation on handoff: Coolify API token, GHCR read token, R2 tokens,
       GitHub secrets, Access list.
 - [ ] Handover: this runbook + `deploy.md` + `external-steps.md` usable by a
-      second operator without the original developer (#34 expands the handover).
+      second operator without the original developer (#34 expands the handover:
+      [`docs/handover/README.md`](../handover/README.md)).
