@@ -1,5 +1,5 @@
 {
-  "$comment": "Gate regression scenario: the P1 launch state with one P1 rubrique (À propos) and one P1 domain (Éclairage public) closed. The routes exist and return 200 under p1, so the suite proves the gate itself — not a missing file — drives the 404.",
+  "$comment": "Gate regression scenario: the P1 launch state with one P1 rubrique (À propos) and one P1 domain (Éclairage public) closed. The routes exist and return 200 under p1, so the suite proves the gate itself — not a missing file — drives the 404. /carrières stays open like p1 but publishes no opening: the honest empty state (forms doc §4.9), and the legal utilities stay published (#28).",
   "tier": "P1",
   "rubriques": {
     "accueil": { "published": true },
@@ -22,10 +22,7 @@
       "reason": "Palier P3 — au moins une actualité approuvée requise."
     },
     "contact": { "published": true },
-    "carrieres": {
-      "published": false,
-      "reason": "Page livrée par le ticket #27."
-    },
+    "carrieres": { "published": true },
     "mentions-legales": { "published": true },
     "politique-de-confidentialite": { "published": true }
   },
@@ -44,5 +41,20 @@
       "published": false,
       "reason": "Catalogue et autorisations de distribution et de marque manquants (CDC §4.5)."
     }
-  }
+  },
+  "jobs": {
+    "electricien-hta-bt": {
+      "published": false,
+      "reason": "Aucune offre confirmée par l’owner au lancement (registre des faits §8)."
+    },
+    "chef-de-chantier-eclairage-public": {
+      "published": false,
+      "reason": "Aucune offre confirmée par l’owner au lancement (registre des faits §8)."
+    },
+    "technicien-cfo-cfa": {
+      "published": false,
+      "reason": "Aucune offre confirmée par l’owner au lancement (registre des faits §8)."
+    }
+  },
+  "careers": { "recruitmentMailboxLive": false }
 }

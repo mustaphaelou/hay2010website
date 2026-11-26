@@ -16,12 +16,15 @@ import p1Scenario from "@/content/fixtures/scenarios/p1.json"
 import p2Scenario from "@/content/fixtures/scenarios/p2.json"
 import p3Scenario from "@/content/fixtures/scenarios/p3.json"
 import p1GatesClosedScenario from "@/content/fixtures/scenarios/p1-gates-closed.json"
+import p1RecrutementScenario from "@/content/fixtures/scenarios/p1-recrutement.json"
 
 import type {
   ActualiteDocument,
+  CareersChannel,
   ContentBlock,
   ContentSource,
   DomainDocument,
+  JobOpening,
   MediaRecord,
   PageDocument,
   PublishState,
@@ -29,11 +32,24 @@ import type {
   Tier,
 } from "@/lib/content/types"
 
-/** One gate scenario: the publish state of every rubrique and domain. */
+/**
+ * One gate scenario: the publish state of every rubrique, domain and job
+ * opening, plus the simulated F-113 careers channel state. Everything here is
+ * gate data, never copy — a scenario opens or closes a gate, it does not write
+ * the page.
+ */
 interface ScenarioFixture {
   readonly tier: Tier
   readonly rubriques: Readonly<Record<string, PublishState>>
   readonly domains: Readonly<Record<string, PublishState>>
+  readonly jobs?: Readonly<Record<string, PublishState>>
+  readonly careers?: CareersChannel
+}
+
+/** A job record as stored in the fixture corpus (state + opening metadata). */
+interface JobFixture extends JobOpening {
+  readonly status: "open" | "closed"
+  readonly featured?: boolean
 }
 
 /** The documents shared by every scenario. */
@@ -61,6 +77,7 @@ interface SiteFixture {
     readonly publishedAt?: string
     readonly blocks: readonly ContentBlock[]
   }[]
+  readonly jobs: readonly JobFixture[]
   readonly media: readonly MediaRecord[]
 }
 
@@ -74,6 +91,7 @@ const SCENARIOS: Readonly<Record<string, ScenarioFixture>> = {
   p2: p2Scenario as unknown as ScenarioFixture,
   p3: p3Scenario as unknown as ScenarioFixture,
   "p1-gates-closed": p1GatesClosedScenario as unknown as ScenarioFixture,
+  "p1-recrutement": p1RecrutementScenario as unknown as ScenarioFixture,
 }
 
 const DEFAULT_SCENARIO = "p1"
@@ -133,6 +151,35 @@ function toDomainDocument(slug: string): DomainDocument | null {
   }
 }
 
+/** A job record still counts as an opening today (forms doc §4.2). */
+function isJobStillOpen(job: JobFixture, now: number): boolean {
+  if (job.status !== "open") return false
+  if (!job.closingAt) return true
+  const closing = Date.parse(`${job.closingAt}T23:59:59Z`)
+  return Number.isFinite(closing) && closing >= now
+}
+
+/** Cards render `featured` first, then the most recently posted (§4.2). */
+function compareJobs(a: JobFixture, b: JobFixture): number {
+  if (Boolean(a.featured) !== Boolean(b.featured)) return a.featured ? -1 : 1
+  return (b.postedAt ?? "").localeCompare(a.postedAt ?? "")
+}
+
+/** Strip the record's internal state before it leaves the seam. */
+function toJobOpening(job: JobFixture): JobOpening {
+  return {
+    slug: job.slug,
+    title: job.title,
+    contractType: job.contractType,
+    location: job.location,
+    department: job.department,
+    experience: job.experience,
+    summary: job.summary,
+    postedAt: job.postedAt,
+    closingAt: job.closingAt,
+  }
+}
+
 function isMediaCleared(media: MediaRecord): boolean {
   const rights = media.rights
   if (rights.status !== "cleared") return false
@@ -178,6 +225,26 @@ const fixtureSource: ContentSource = {
       publishedAt: actualite.publishedAt,
       blocks: actualite.blocks,
     }))
+  },
+
+  async getOpenJobs(): Promise<readonly JobOpening[]> {
+    // Two filters compose, exactly like the CMS will: the publish gate (may this
+    // record be public?) and the opening state (is the role still open?). The
+    // launch corpus publishes no role; the "owner content" simulation scenarios
+    // publish the drafted fixtures.
+    const gates = getScenario().jobs ?? {}
+    const now = Date.now()
+    return SITE.jobs
+      .filter((job) => gates[job.slug]?.published === true && isJobStillOpen(job, now))
+      .sort(compareJobs)
+      .map(toJobOpening)
+  },
+
+  async getCareersChannel(): Promise<CareersChannel> {
+    // Fail closed: a scenario that does not say the F-113 gate is open gets the
+    // questions-only state, and a live channel without its authorization
+    // reference is not live (the page re-checks, forms doc §4.9).
+    return getScenario().careers ?? { recruitmentMailboxLive: false }
   },
 
   async getMedia(id: string): Promise<MediaRecord | null> {

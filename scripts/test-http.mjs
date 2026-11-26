@@ -40,7 +40,14 @@ const vitestBin = path.join(projectRoot, "node_modules", "vitest", "vitest.mjs")
  * `content/fixtures/scenarios/<name>.json`; the suite's expectations live in
  * `tests/http/scenarios.ts`.
  */
-const SCENARIOS = ["p1", "p2", "p3", "p1-gates-closed"]
+const SCENARIOS = [
+  "p1",
+  "p2",
+  "p3",
+  "p1-gates-closed",
+  // F-113-granted simulation: the careers mailbox live and openings published.
+  "p1-recrutement",
+]
 
 const READINESS_TIMEOUT_MS = 60_000
 const SERVER_STOP_TIMEOUT_MS = 5_000

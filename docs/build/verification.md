@@ -23,7 +23,7 @@ port (`31NN`), never 3000. Without it the runner defaults to 3100.
 ### What the command does
 
 `scripts/test-http.mjs` runs the suite once **per fixture scenario**
-(`p1`, `p2`, `p3`, `p1-gates-closed`):
+(`p1`, `p2`, `p3`, `p1-gates-closed`, `p1-recrutement`):
 
 1. removes `.next` and runs `next build` with
    `CONTENT_SOURCE=fixture CONTENT_SCENARIO=<scenario>` — the build is the
@@ -69,10 +69,11 @@ rule) — so fixture data and the spec cannot drift silently.
 
 | Scenario | Public shape | What it proves |
 | --- | --- | --- |
-| `p1` | 5 rubriques, 3 domains, legal utility pages published | launch state: open routes 200, gated routes/domains 404, sitemap = published set. The legal pages are P1 pages (#28) so the contact notice can link the privacy policy; Carrières stays closed until #27 |
-| `p2` | 7 rubriques, 5 domains | tier composition (Moyens + Références inserted), opening the two gated domains makes their routes 200 |
+| `p1` | 5 rubriques, 3 domains, Carrières and the legal utility pages published | launch state: open routes 200, gated routes/domains 404, sitemap = published set; Carrières empty state, F-113 closed (questions to `contact@`, no CV invitation). The legal pages are P1 pages (#28) so the contact and careers notices can link the privacy policy |
+| `p2` | 7 rubriques, 5 domains | tier composition (Moyens + Références inserted), opening the two gated domains makes their routes 200; owner-published openings render while F-113 stays closed |
 | `p3` | 8 rubriques | Actualités inserted; published-but-unbuilt page stays out of the sitemap |
-| `p1-gates-closed` | P1 minus À propos and Éclairage public | closing a gate removes it from every surface and makes its existing route 404 |
+| `p1-gates-closed` | P1 minus À propos and Éclairage public | closing a gate removes it from every surface and makes its existing route 404; Carrières stays open with its empty state |
+| `p1-recrutement` | P1 plus the F-113 channel live | the careers mailbox is published, CVs are invited by e-mail and the approved notice renders with a (fictitious) CNDP reference; never a production corpus |
 
 The same test bodies run in every scenario, so a gate is always observed from
 both sides: `p1` asserts `/a-propos` 200 and present; `p1-gates-closed` asserts
@@ -237,14 +238,33 @@ import a component and never assert class names or call order.
   404 (same document as an unknown URL), never redirects, and appears in no
   navigation, footer, sitemap entry or internal link of the route matrix.
 
+`tests/http/carrieres.test.ts` (#27)
+
+- `/carrieres` serves a canonical French document with one `h1` (`Carrières`)
+  and is linked from the footer of every published page, while never appearing
+  in the desktop row or the drawer's primary navigation;
+- openings render inline from the content source, in the decided order
+  (`featured` first, then `postedAt` descending); a record past its closing date
+  never renders and no card links into a `/carrieres/{slug}` detail route;
+- the honest empty state renders when no role is open — never a placeholder;
+- the F-113 email gate: until the CNDP authorization covers `recrutement@`,
+  only `contact@` is published and the page never invites a CV, the spontaneous
+  application section, a CNDP reference or a blank `n°`; once it opens, the
+  careers mailbox, the CV-by-e-mail copy and the approved notice render with the
+  real authorization number and date;
+- no application form, input, upload, `JobPosting` structured data, phone,
+  social profile, private mailbox or unverified claim renders anywhere on the
+  page; metadata is the approved unique title/description for the current gate
+  state.
+
 `tests/architecture.test.ts` (structural guards, not HTTP)
 
 - no file outside `lib/content/providers/` imports Payload — the CMS stays
   behind the adapter (#29 must keep this);
 - only `lib/content/` imports a provider directly — rendering code goes through
   `getContentSource()`;
-- every frontend page calls `requirePublishedRubrique()` /
-  `requirePublishedDomain()`;
+- every frontend page calls its `requirePublishedRubrique()` /
+  `requirePublishedDomain()` / `requirePublishedCaseStudy()` guard first;
 - there is no root `app/layout.tsx` (the embedded Payload admin needs its own
   root layout) and `app/global-not-found.tsx` exists.
 
@@ -292,6 +312,7 @@ preemptively (spec: "Deferred").
 | `tests/http/domaines.test.ts` | #22 domain index, CDC trame pages, DEV-006 omissions, gated-domain/claim absence, unique metadata |
 | `tests/http/legal.test.ts` | #28 legal pages: code-owned identity/copy, cookies, retention, rights, footer links, metadata |
 | `tests/http/realisations.test.ts` | #24 credentials-led références page, qualification claim gate, no catalogue/client evidence, gated case-study family 404 and absence |
+| `tests/http/carrieres.test.ts` | #27 Carrières: footer-only reachability, inline openings, F-113 email gate, no form/`JobPosting`, unique metadata |
 | `tests/architecture.test.ts` | seam/layout/legal-ownership guards: no direct CMS import, no root `app/layout.tsx`, every page gated, legal copy code-owned |
 
 ## Extending it (later tickets)

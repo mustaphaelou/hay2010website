@@ -51,6 +51,8 @@ a database driver or `payload.config.ts`.
 | `listPublishedDomains()` | `DomainDocument[]` | Published only, CDC order. |
 | `getDomain(slug)` | `DomainDocument \| null` | `null` for a closed **or unknown** slug — the route cannot leak a gated page. |
 | `getActualites()` | `ActualiteDocument[]` | Published only; empty at P1. |
+| `getOpenJobs()` | `JobOpening[]` | Published **and** still open (`status=open`, closing date absent/future), ordered `featured` first then `postedAt` descending (forms doc §4.2). Powers the inline `/carrieres` cards; no detail route exists. |
+| `getCareersChannel()` | `CareersChannel` | The F-113 gate: `recruitmentMailboxLive` plus the real CNDP reference. Fails closed. Never CMS-editable (#30). |
 | `getMedia(id)` | `MediaRecord \| null` | Only rights-cleared records leave the seam. |
 
 Domain types are trame-oriented. The block union (`ContentBlock`) covers the
@@ -58,7 +60,9 @@ fixed trames: `hero`, `intro`, `presentation`, `prestations`, `methods`,
 `photos`, `associees`, `domaines`, `reperes`, `engagements`, `credentials`,
 `contact-cta`, `sections`, `openings`. **A block is optional**: a renderer omits
 an absent block, it never fills a placeholder (DEV-006). Page tickets may add
-block kinds, but must keep the existing ones working.
+block kinds, but must keep the existing ones working. The `openings` block
+predates the jobs collection: jobs are content documents returned by
+`getOpenJobs()` and rendered inline (below), not a page-document block.
 
 `PageDocument` / `DomainDocument` carry `title` and `description` for the page
 h1 and metadata; page tickets add the decided copy, #32 wires metadata.
@@ -73,6 +77,7 @@ h1 and metadata; page tickets add the decided copy, #32 wires metadata.
 | Rubrique keys, CDC titles, nav labels, routes, tiers: `rubriques.ts` | Publish state per scenario (then per document in the CMS) |
 | Domain route prefix: `domaines.ts` | Domain documents and their titles |
 | Gate plumbing: `gates.ts`, `route-gate.ts` | Utility page copy |
+| Careers channel gate, approved careers behaviour strings and metadata: `careers.ts` | Job opening records |
 | Canonical origin (until #32): `site.ts` | Actualités documents |
 
 Identity and navigation constants never become CMS-editable (content model §3).
@@ -106,12 +111,14 @@ content/fixtures/
     pages:   { "<rubriqueKey>": { title?, description?, blocks: [] } }
     domains: [ { slug, title, description?, blocks: [] } ]   ← the five CDC domains
     actualites: []
+    jobs: [ { slug, title, contractType, location, summary, status, postedAt?, closingAt? } ]
     media: []
   scenarios/
     p1.json                  launch state
     p2.json                  + Moyens, Références, all five domains
     p3.json                  + Actualités
     p1-gates-closed.json     P1 with À propos and Éclairage public closed
+    p1-recrutement.json      + the F-113 careers mailbox live and openings published
 ```
 
 A scenario is a **gate map**, not code:
@@ -204,6 +211,29 @@ and `Références`, P3 adds `Actualités`. A gated entry disappears from every
 surface at once because every surface calls one of these functions.
 
 ---
+
+### Career openings and the F-113 channel (#27)
+
+`/carrieres` is a footer-only utility page. Two extra pieces of state come
+through the seam, never from a page branch:
+
+- **Job openings** are content documents (`site.json` → `jobs`, the CMS `jobs`
+  collection from #30). A record renders when its publish gate is open and it
+  is still open (status open, closing date absent or in the future); the
+  provider filters and orders them (`featured` first, then `postedAt`
+  descending) and the page renders them inline. There is **no** detail route
+  and no `JobPosting` data at launch (forms doc §4.8).
+- **The careers application channel** is the F-113 gate (forms doc §4.4):
+  `contact@hay2010.ma` for questions until the CNDP authorization covers
+  `recrutement@hay2010.ma`. `getCareersChannel()` exposes
+  `{ recruitmentMailboxLive, authorization? }`; the page renders the
+  questions-only state unless the flag is true **and** a real authorization
+  number/date is present — and then the approved notice with that reference,
+  never a blank `n°` (§4.9). The switch is data: a fixture scenario field
+  (`"careers": { recruitmentMailboxLive, authorization }`) today, code-owned
+  deployment configuration in the CMS provider (#29/#30) — the admin can never
+  open it (content model §3/§5.1). The `p1-recrutement` scenario simulates the
+  open state with a deliberately fictitious reference.
 
 ## 5. Gate semantics — two layers
 
@@ -410,5 +440,5 @@ npm run typecheck && npm run lint && TEST_HTTP_PORT=3121 npm test
 
 `npm test` builds the production app once per fixture scenario and runs the
 whole HTTP suite against each build: `tests/http/{shell,navigation,gates,
-not-found,en-reserved}.test.ts`. See `docs/build/verification.md` for what each
-group proves and the negative checks that keep the suite honest.
+not-found,en-reserved,carrieres}.test.ts`. See `docs/build/verification.md` for
+what each group proves and the negative checks that keep the suite honest.
