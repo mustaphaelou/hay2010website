@@ -26,10 +26,21 @@ const subsectionHeadingClassName =
   "text-[17px] font-semibold leading-snug tracking-[-0.01em] text-ink"
 
 function LegalTable({ block }: { readonly block: LegalTableBlock }) {
+  const caption = frenchTypography(block.caption)
   return (
-    <div className="mt-6 overflow-x-auto">
+    /*
+     * The wrapper scrolls horizontally below 34 rem; a scrollable region must
+     * be reachable by keyboard (WCAG 2.1.1, axe `scrollable-region-focusable`),
+     * so it is a named, focusable region. The screen-reader caption names it.
+     */
+    <div
+      role="region"
+      aria-label={caption}
+      tabIndex={0}
+      className="mt-6 overflow-x-auto"
+    >
       <table className="w-full min-w-[34rem] border-collapse text-left text-[14px] leading-relaxed text-body">
-        <caption className="sr-only">{frenchTypography(block.caption)}</caption>
+        <caption className="sr-only">{caption}</caption>
         <thead>
           <tr className="border-b border-line">
             {block.head.map((cell) => (
