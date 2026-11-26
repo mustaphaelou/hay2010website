@@ -1,5 +1,5 @@
 {
-  "$comment": "P1 launch state: the five CDC rubriques and three published domains. The legal utility pages are P1 pages (ticket #28) and are published so the contact and careers notices can link the privacy policy; Carrières is published by #27.",
+  "$comment": "P1 launch state: the five CDC rubriques and three published domains. The legal utility pages are P1 pages (ticket #28) and are published so the contact and careers notices can link the privacy policy; Carrières (#27) stays gated and flips its state here when it ships.",
   "tier": "P1",
   "rubriques": {
     "accueil": { "published": true },

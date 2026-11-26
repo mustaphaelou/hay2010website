@@ -60,7 +60,7 @@ export interface ScenarioExpectation {
   /**
    * Homepage hero state of this corpus: `true` when the content carries a
    * rights-cleared documentary image, `false` for the typographic fallback
-   * (the launch state — no licensed photograph exists yet).
+   * (the launch state — no licensed photograph exists yet, #23).
    */
   readonly heroImage: boolean
 }
@@ -110,14 +110,19 @@ const GATED_DOMAINS = [
   "fourniture-equipements",
 ] as const
 
+/** The five P1 rubriques' routes. */
 const P1_ROUTES = P1_NAVIGATION.map((item) => item.href)
 
 /**
  * The legal utility pages are P1 pages delivered by #28; an email-first contact
- * or careers page must link the privacy policy, so they are published in every
- * scenario (their prose lands with #28). Carrières is footer-only and lands with
- * #27: it stays closed — and absent from every surface — until then.
+ * page must link the privacy policy, so they are published in every scenario.
  */
+const LEGAL_ROUTES = [
+  "/mentions-legales",
+  "/politique-de-confidentialite",
+] as const
+
+/** Footer/drawer utilities published at P1 (#28; Carrières joins with #27). */
 const LEGAL_UTILITIES: readonly ExpectedNavItem[] = [
   { label: "Mentions légales", href: "/mentions-legales" },
   {
@@ -125,7 +130,9 @@ const LEGAL_UTILITIES: readonly ExpectedNavItem[] = [
     href: "/politique-de-confidentialite",
   },
 ]
-const CAREERS_ROUTE = "/carrieres"
+
+/** Carrières is footer-only and lands with #27: it stays gated until then. */
+const GATED_UTILITY_ROUTES = ["/carrieres"] as const
 
 const domainPath = (slug: string) => `/domaines-activite/${slug}`
 
@@ -140,126 +147,137 @@ function sitemapPathsFor(
   ]
 }
 
-/*
- * P1 launch state: five nav items, three domains, legal utility pages
- * published. The homepage hero is the typographic fallback because no
- * licensed photograph exists at launch (#23).
- */
-const P1_EXPECTATION: ScenarioExpectation = {
-  name: "p1",
-  navigation: P1_NAVIGATION,
-  utilities: LEGAL_UTILITIES,
-  publishedDomains: [...P1_DOMAINS],
-  gatedDomains: [...GATED_DOMAINS],
-  openRoutes: [...P1_ROUTES, ...P1_DOMAINS.map(domainPath)],
-  gatedRoutes: [
-    ...GATED_DOMAINS.map(domainPath),
-    "/moyens-et-competences",
-    "/references-et-partenaires",
-    "/actualites",
-    CAREERS_ROUTE,
-  ],
-  sitemapPaths: sitemapPathsFor(P1_ROUTES, [...P1_DOMAINS]),
-  heroImage: false,
+const BASE_EXPECTATIONS: Readonly<
+  Record<Exclude<ScenarioName, "p1-hero-image">, ScenarioExpectation>
+> = {
+  /*
+   * P1 launch state: five nav items, three domains, no utility page yet.
+   * Page routes are gate-guarded stubs in this ticket; their copy lands in
+   * #22–#28 without changing this expectation (the route already exists).
+   */
+  p1: {
+    name: "p1",
+    navigation: P1_NAVIGATION,
+    utilities: LEGAL_UTILITIES,
+    publishedDomains: [...P1_DOMAINS],
+    gatedDomains: [...GATED_DOMAINS],
+    openRoutes: [...P1_ROUTES, ...LEGAL_ROUTES, ...P1_DOMAINS.map(domainPath)],
+    gatedRoutes: [
+      ...GATED_DOMAINS.map(domainPath),
+      "/moyens-et-competences",
+      "/references-et-partenaires",
+      "/actualites",
+      ...GATED_UTILITY_ROUTES,
+    ],
+    sitemapPaths: sitemapPathsFor(
+      [...P1_ROUTES, ...LEGAL_ROUTES],
+      [...P1_DOMAINS]
+    ),
+    heroImage: false,
+  },
+
+  /*
+   * P2 gate simulation: seven nav items and all five domains open. The P2
+   * rubriques have no page document yet, so they are in the row but not in the
+   * sitemap — a route that cannot return 200 is never listed (SEO §6.2).
+   */
+  p2: {
+    name: "p2",
+    navigation: P2_NAVIGATION,
+    utilities: LEGAL_UTILITIES,
+    publishedDomains: [...P1_DOMAINS, ...GATED_DOMAINS],
+    gatedDomains: [],
+    openRoutes: [
+      ...P1_ROUTES,
+      ...LEGAL_ROUTES,
+      ...[...P1_DOMAINS, ...GATED_DOMAINS].map(domainPath),
+    ],
+    gatedRoutes: ["/actualites", ...GATED_UTILITY_ROUTES],
+    sitemapPaths: sitemapPathsFor(
+      [...P1_ROUTES, ...LEGAL_ROUTES],
+      [...P1_DOMAINS, ...GATED_DOMAINS]
+    ),
+    heroImage: false,
+  },
+
+  /*
+   * P3 gate simulation: eight nav items. Actualités is open in the row but has
+   * no page document yet, so it stays out of the sitemap until its route ships.
+   */
+  p3: {
+    name: "p3",
+    navigation: P3_NAVIGATION,
+    utilities: LEGAL_UTILITIES,
+    publishedDomains: [...P1_DOMAINS, ...GATED_DOMAINS],
+    gatedDomains: [],
+    openRoutes: [
+      ...P1_ROUTES,
+      ...LEGAL_ROUTES,
+      ...[...P1_DOMAINS, ...GATED_DOMAINS].map(domainPath),
+    ],
+    gatedRoutes: [...GATED_UTILITY_ROUTES],
+    sitemapPaths: sitemapPathsFor(
+      [...P1_ROUTES, ...LEGAL_ROUTES],
+      [...P1_DOMAINS, ...GATED_DOMAINS]
+    ),
+    heroImage: false,
+  },
+
+  /*
+   * Gate regression: the P1 launch state with one P1 rubrique (À propos) and
+   * one P1 domain (Éclairage public) closed. Their routes exist and return 200
+   * under p1, so a failure here proves the gate itself drove the 404.
+   */
+  "p1-gates-closed": {
+    name: "p1-gates-closed",
+    navigation: [
+      P1_NAVIGATION[0],
+      P1_NAVIGATION[2],
+      P1_NAVIGATION[3],
+      P1_NAVIGATION[4],
+    ],
+    utilities: LEGAL_UTILITIES,
+    publishedDomains: [
+      "installations-electriques",
+      "infrastructures-reseaux-electriques",
+    ],
+    gatedDomains: ["eclairage-public"],
+    openRoutes: [
+      "/",
+      "/domaines-activite",
+      "/realisations",
+      "/contact",
+      ...LEGAL_ROUTES,
+      domainPath("installations-electriques"),
+      domainPath("infrastructures-reseaux-electriques"),
+    ],
+    gatedRoutes: [
+      "/a-propos",
+      domainPath("eclairage-public"),
+      ...GATED_DOMAINS.map(domainPath),
+      ...GATED_UTILITY_ROUTES,
+    ],
+    sitemapPaths: sitemapPathsFor(
+      ["/", "/domaines-activite", "/realisations", "/contact", ...LEGAL_ROUTES],
+      ["installations-electriques", "infrastructures-reseaux-electriques"]
+    ),
+    heroImage: false,
+  },
 }
 
 export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> =
   {
-    p1: P1_EXPECTATION,
-
-    /*
-     * P2 gate simulation: seven nav items and all five domains open. The P2
-     * rubriques have no page document yet, so they are in the row but not in the
-     * sitemap — a route that cannot return 200 is never listed (SEO §6.2).
-     */
-    p2: {
-      name: "p2",
-      navigation: P2_NAVIGATION,
-      utilities: LEGAL_UTILITIES,
-      publishedDomains: [...P1_DOMAINS, ...GATED_DOMAINS],
-      gatedDomains: [],
-      openRoutes: [
-        ...P1_ROUTES,
-        ...[...P1_DOMAINS, ...GATED_DOMAINS].map(domainPath),
-      ],
-      gatedRoutes: ["/actualites", CAREERS_ROUTE],
-      sitemapPaths: sitemapPathsFor(P1_ROUTES, [
-        ...P1_DOMAINS,
-        ...GATED_DOMAINS,
-      ]),
-      heroImage: false,
-    },
-
-    /*
-     * P3 gate simulation: eight nav items. Actualités is open in the row but has
-     * no page document yet, so it stays out of the sitemap until its route ships.
-     */
-    p3: {
-      name: "p3",
-      navigation: P3_NAVIGATION,
-      utilities: LEGAL_UTILITIES,
-      publishedDomains: [...P1_DOMAINS, ...GATED_DOMAINS],
-      gatedDomains: [],
-      openRoutes: [
-        ...P1_ROUTES,
-        ...[...P1_DOMAINS, ...GATED_DOMAINS].map(domainPath),
-      ],
-      gatedRoutes: [CAREERS_ROUTE],
-      sitemapPaths: sitemapPathsFor(P1_ROUTES, [
-        ...P1_DOMAINS,
-        ...GATED_DOMAINS,
-      ]),
-      heroImage: false,
-    },
-
-    /*
-     * Gate regression: the P1 launch state with one P1 rubrique (À propos) and
-     * one P1 domain (Éclairage public) closed. Their routes exist and return 200
-     * under p1, so a failure here proves the gate itself drove the 404.
-     */
-    "p1-gates-closed": {
-      name: "p1-gates-closed",
-      navigation: [
-        P1_NAVIGATION[0],
-        P1_NAVIGATION[2],
-        P1_NAVIGATION[3],
-        P1_NAVIGATION[4],
-      ],
-      utilities: LEGAL_UTILITIES,
-      publishedDomains: [
-        "installations-electriques",
-        "infrastructures-reseaux-electriques",
-      ],
-      gatedDomains: ["eclairage-public"],
-      openRoutes: [
-        "/",
-        "/domaines-activite",
-        "/realisations",
-        "/contact",
-        domainPath("installations-electriques"),
-        domainPath("infrastructures-reseaux-electriques"),
-      ],
-      gatedRoutes: [
-        "/a-propos",
-        domainPath("eclairage-public"),
-        ...GATED_DOMAINS.map(domainPath),
-        CAREERS_ROUTE,
-      ],
-      sitemapPaths: sitemapPathsFor(
-        ["/", "/domaines-activite", "/realisations", "/contact"],
-        ["installations-electriques", "infrastructures-reseaux-electriques"]
-      ),
-      heroImage: false,
-    },
+    ...BASE_EXPECTATIONS,
 
     /*
      * #23 hero image state: the P1 launch gates with a cleared documentary image
-     * supplied through the content seam. No licensed photograph exists at
-     * launch, so this test-only corpus is how the image path is proven; `p1`
-     * keeps the typographic fallback.
+     * supplied through the content seam (see content/fixtures/scenarios/
+     * p1-hero-image.json). No licensed photograph exists at launch, so this
+     * test-only corpus is how the image path is proven; `p1` keeps the
+     * typographic fallback.
      */
     "p1-hero-image": {
-      ...P1_EXPECTATION,
+      ...BASE_EXPECTATIONS.p1,
       name: "p1-hero-image",
       heroImage: true,
     },

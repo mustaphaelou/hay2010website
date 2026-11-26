@@ -1,5 +1,5 @@
 {
-  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy; gate states live in content/fixtures/scenarios/*.json. #22 delivered the domain index and the three published domain pages (CDC trame, DEV-006 omissions; CFO/CFA and postes de transformation are prestations, not domains). #23 delivered the homepage trame (hero typographic fallback, intro, domain blocks, repères, réalisations teaser, engagements, contact CTA). #25 delivered the À propos page (identity, perimeter, mission/vision/values, compliance). #26 delivered the email-first Contact page (gated channels behind the seam, no form).",
+  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy; gate states live in content/fixtures/scenarios/*.json. #22 delivered the domain index and the three published domain pages (CDC trame, DEV-006 omissions; CFO/CFA and postes de transformation are prestations, not domains). #23 delivered the homepage trame (hero typographic fallback, intro, domain blocks, repères, réalisations teaser, engagements, contact CTA). #25 delivered the À propos page (identity, perimeter, mission/vision/values, compliance). #26 delivered the email-first Contact page (gated channels behind the seam, no form). #28 delivers the two legal utility pages: their identity block and approved copy are code-owned in lib/legal/ (never CMS-editable), so their page documents only register the route for the sitemap and the gate, with no blocks, title or description.",
   "pages": {
     "accueil": {
       "title": "Éclairage public et électrification à Rabat",
@@ -259,7 +259,9 @@
           ]
         }
       ]
-    }
+    },
+    "mentions-legales": { "blocks": [] },
+    "politique-de-confidentialite": { "blocks": [] }
   },
   "domains": [
     {
