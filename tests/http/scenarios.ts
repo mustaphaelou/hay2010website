@@ -49,9 +49,15 @@ export interface ExpectedNavItem {
 
 /** One opening rendered inline on `/carrieres` (forms doc §4.2). */
 export interface ExpectedJobOpening {
+  /** Record slug — no public detail route exists while it is gated. */
+  readonly slug: string
   readonly title: string
   readonly contractType: string
   readonly location: string
+  /** A distinctive fragment of the card summary. */
+  readonly summary: string
+  /** The French rendering of `postedAt` (a date, never a countdown). */
+  readonly postedOn: string
 }
 
 /** Careers application channel state and inline listings for one scenario. */
@@ -168,19 +174,42 @@ export const CAREERS_DESCRIPTION_LIVE =
  */
 export const CAREERS_OPENINGS: readonly ExpectedJobOpening[] = [
   {
+    slug: "electricien-hta-bt",
     title: "Électricien HTA-BT",
     contractType: "CDI",
     location: "Rabat",
+    summary: "Raccordement, pose et mise en service de réseaux HTA-BT",
+    postedOn: "2 novembre 2026",
   },
   {
+    slug: "chef-de-chantier-eclairage-public",
     title: "Chef de chantier éclairage public",
     contractType: "CDI",
     location: "Rabat",
+    summary: "Encadrement des équipes de pose",
+    postedOn: "10 novembre 2026",
   },
 ]
 
 /** A published record whose closing date is past — never an opening (§4.2). */
 export const CAREERS_EXPIRED_OPENING_TITLE = "Technicien CFO/CFA"
+export const CAREERS_EXPIRED_OPENING_SLUG = "technicien-cfo-cfa"
+
+/**
+ * Approved fixed behaviour strings — forms doc §4.9. Hardcoded here (not
+ * imported from the implementation) so the suite fails if the wording drifts.
+ */
+export const CAREERS_EMPTY_STATE = "Aucune offre n’est ouverte pour le moment."
+export const CAREERS_PENDING_LINE =
+  "Les candidatures ne sont pas ouvertes sur ce site pour le moment."
+export const CAREERS_PENDING_CTA =
+  "Une question sur nos offres ? Écrivez-nous à contact@hay2010.ma."
+export const CAREERS_SPONTANEOUS_TITLE = "Candidature spontanée"
+export const CAREERS_SPONTANEOUS_BODY_FRAGMENT =
+  "Envoyez-nous votre CV et une courte présentation"
+export const CAREERS_LIVE_CTA = "Postuler par e-mail"
+export const CAREERS_NOTICE_FRAGMENT =
+  "Les candidatures sont reçues à l’adresse indiquée sur cette page."
 
 /** The CNDP reference the F-113 simulation publishes (fictitious on purpose). */
 const SIMULATED_AUTHORIZATION = {
