@@ -8,6 +8,9 @@
 !.yarn/releases
 !.yarn/versions
 
+# Payload local upload fallback (dev/tests only; production uses S3/R2)
+/media
+
 # testing
 /coverage
 

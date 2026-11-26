@@ -1,3 +1,4 @@
+import { withPayload } from "@payloadcms/next/withPayload"
 import type { NextConfig } from "next"
 
 /**
@@ -11,13 +12,23 @@ import type { NextConfig } from "next"
  * unconditional `output` — it breaks the harness (verified on Next 16.4.6).
  *
  * `NEXT_PUBLIC_SERVER_URL` is a public build-time value: the canonical site URL
- * used by metadata (#32). It is baked into the image by the Docker build arg.
+ * used by metadata (#32) and by Payload's `serverURL` (admin cookie/CSRF origin).
+ * It is baked into the image by the Docker build arg.
+ *
+ * The config is wrapped in `withPayload` (#29) because the embedded Payload
+ * admin lives in this app (`app/(payload)`). It injects the empty `turbopack`
+ * key Next 16 requires next to a `webpack` function, the `serverExternalPackages`
+ * required by Payload's server packages (graphql, drizzle-kit, sharp, …) and the
+ * admin theme negotiation headers. Do NOT hand-roll those, and do not add a
+ * `webpack` block of your own.
  */
 const nextConfig: NextConfig = {
   ...(process.env.NEXT_STANDALONE === "1"
     ? { output: "standalone" as const }
     : {}),
-  // Do not advertise the framework in responses.
+  // Do not advertise the framework in responses. This also suppresses Payload's
+  // `X-Powered-By: Next.js, Payload` header on purpose: the site does not
+  // advertise its stack (the verification suite asserts its absence).
   poweredByHeader: false,
   experimental: {
     /**
@@ -32,4 +43,4 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default nextConfig
+export default withPayload(nextConfig)
