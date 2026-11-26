@@ -111,3 +111,169 @@ describe(`domaines d’activité — index (${scenario.name})`, () => {
     expect(listTitles).not.toContain("Postes de transformation")
   })
 })
+
+/** The three P1 domains carrying the CDC trame (IA §Domaines d'activité). */
+const P1_CONTENT_DOMAINS = [
+  "eclairage-public",
+  "installations-electriques",
+  "infrastructures-reseaux-electriques",
+] as const
+
+/** Section headings of the fixed CDC trame, in order (spec §Domaines). */
+const TRAME_HEADINGS = [
+  "Présentation et besoins",
+  "Prestations confirmées",
+  "Méthode, moyens et compétences",
+] as const
+
+/** Content domains published in the active scenario. */
+function publishedContentDomains(): string[] {
+  return P1_CONTENT_DOMAINS.filter((slug) => scenario.publishedDomains.includes(slug))
+}
+
+/** Section elements of `<main>`, in document order. */
+function sectionsOf(main: HTMLElement): HTMLElement[] {
+  return main.querySelectorAll("section")
+}
+
+/** Collapsed text of every `h2`/`h3` under an element. */
+function headingsOf(element: HTMLElement, selector: "h2" | "h3"): string[] {
+  return element.querySelectorAll(selector).map((heading) => textOf(heading))
+}
+
+describe(`domaine pages — CDC trame (${scenario.name})`, () => {
+  it("serves each published content domain as a canonical document with its title as h1", async () => {
+    for (const slug of publishedContentDomains()) {
+      const page = await fetchPage(domainPath(slug))
+      expect(page.status, `published domain ${slug} must be served`).toBe(200)
+
+      const canonical = assertCanonicalDocument(page)
+      const h1 = canonical.main.querySelector("h1")
+      expect(h1, `${slug} must carry one h1`).not.toBeNull()
+      if (!h1) throw new Error(`missing h1 on ${slug}`)
+      expect(textOf(h1)).toBe(DOMAIN_TITLES[slug])
+    }
+  })
+
+  it("renders the trame sections in the CDC order", async () => {
+    for (const slug of publishedContentDomains()) {
+      const page = await fetchPage(domainPath(slug))
+      const { main } = assertCanonicalDocument(page)
+
+      const headings = headingsOf(main, "h2")
+      expect(headings, `${slug} must render exactly the CDC trame`).toHaveLength(4)
+      expect(headings.slice(0, TRAME_HEADINGS.length), `${slug} trame order`).toEqual([
+        ...TRAME_HEADINGS,
+      ])
+      // The last trame section is the contact CTA, phrased as a question.
+      expect(headings[3], `${slug} contact CTA must be phrased as a question`).toMatch(
+        /projet|installation|réseau/i
+      )
+      expect(headings[3], `${slug} contact CTA must end with a question mark`).toMatch(
+        /\?$/
+      )
+    }
+  })
+
+  it("renders presentation and needs, confirmed prestations and methods from content", async () => {
+    for (const slug of publishedContentDomains()) {
+      const page = await fetchPage(domainPath(slug))
+      const { main } = assertCanonicalDocument(page)
+      const sections = sectionsOf(main)
+      expect(sections, `${slug} must render one section per trame block`).toHaveLength(4)
+
+      const [presentation, prestations, methods, contact] = sections
+
+      // 1. Presentation and needs: prose, not a placeholder.
+      const presentationParagraphs = presentation.querySelectorAll("p")
+      expect(
+        presentationParagraphs.length,
+        `${slug} presentation must carry its prose`
+      ).toBeGreaterThanOrEqual(2)
+      expect(
+        textOf(presentation).length,
+        `${slug} presentation must be substantive`
+      ).toBeGreaterThan(250)
+
+      // 2. Confirmed prestations: named items, each with a description.
+      const prestationItems = prestations.querySelectorAll("li")
+      expect(
+        prestationItems.length,
+        `${slug} must list its confirmed prestations`
+      ).toBeGreaterThanOrEqual(3)
+      const prestationNames = headingsOf(prestations, "h3")
+      expect(prestationNames).toHaveLength(prestationItems.length)
+      for (const name of prestationNames) {
+        expect(name, `${slug} prestation names must be French`).not.toBe("")
+      }
+      prestationItems.forEach((item, index) => {
+        expect(
+          textOf(item).length,
+          `${slug} every prestation must carry its own description`
+        ).toBeGreaterThan(prestationNames[index].length)
+      })
+
+      // 3. Methods, means and competences: titled items, not one blob.
+      expect(
+        headingsOf(methods, "h3").length,
+        `${slug} must detail its methods, means and competences`
+      ).toBeGreaterThanOrEqual(3)
+
+      // 4. Contact CTA: the cleared contact route, once.
+      const ctaLinks = contact.querySelectorAll('a[href="/contact"]')
+      expect(ctaLinks, `${slug} must close on the contact CTA`).toHaveLength(1)
+      expect(textOf(ctaLinks[0]).length).toBeGreaterThan(0)
+    }
+  })
+
+  it("keeps CFO/CFA and postes de transformation inside their domain", async () => {
+    const installations = await fetchPage(domainPath("installations-electriques"))
+    if (scenario.publishedDomains.includes("installations-electriques")) {
+      expect(installations.status).toBe(200)
+      const text = textOf(installations.document.querySelector("main") as HTMLElement)
+      expect(text, "CFO/CFA is a prestation of the installations domain").toContain(
+        "CFO/CFA"
+      )
+    }
+
+    const infrastructures = await fetchPage(domainPath("infrastructures-reseaux-electriques"))
+    if (scenario.publishedDomains.includes("infrastructures-reseaux-electriques")) {
+      expect(infrastructures.status).toBe(200)
+      const text = textOf(
+        infrastructures.document.querySelector("main") as HTMLElement
+      )
+      expect(
+        text,
+        "postes de transformation is a prestation of the networks domain"
+      ).toMatch(/postes de transformation/i)
+    }
+  })
+
+  it("omits the photo and associated-réalisations blocks instead of faking them", async () => {
+    for (const slug of publishedContentDomains()) {
+      const page = await fetchPage(domainPath(slug))
+      const { main } = assertCanonicalDocument(page)
+
+      // DEV-006: no photo block and no associated-réalisations block at P1.
+      for (const selector of ["img", "figure", "picture"]) {
+        expect(
+          main.querySelectorAll(selector),
+          `${slug} must not render a ${selector} block (DEV-006)`
+        ).toHaveLength(0)
+      }
+
+      const headings = [...headingsOf(main, "h2"), ...headingsOf(main, "h3")]
+      expect(
+        headings.filter((heading) =>
+          /photos?|réalisations associées|galerie/i.test(heading)
+        ),
+        `${slug} must not render a photo or associated-réalisations heading`
+      ).toEqual([])
+
+      expect(
+        textOf(main),
+        `${slug} must not fill the omitted blocks with placeholder copy`
+      ).not.toMatch(/bientôt|à venir|prochainement|lorem ipsum|placeholder|en construction/i)
+    }
+  })
+})

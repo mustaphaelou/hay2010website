@@ -1,5 +1,5 @@
 {
-  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy: at #21 the pages were skeletons (no blocks); page tickets #22–#28 fill them. Gate states live in content/fixtures/scenarios/*.json. #22 delivered the domain index and the three published domain pages (CDC trame, DEV-006 omissions).",
+  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy: at #21 the pages were skeletons (no blocks); page tickets #22–#28 fill them. Gate states live in content/fixtures/scenarios/*.json. #22 delivered the domain index and the three published domain pages (CDC trame, DEV-006 omissions). Domain copy is drafted from the information architecture and the facts register; CFO/CFA and postes de transformation are prestations, not domains.",
   "pages": {
     "accueil": { "blocks": [] },
     "a-propos": { "blocks": [] },
@@ -25,19 +25,187 @@
       "slug": "eclairage-public",
       "title": "Éclairage public",
       "summary": "Les travaux d’éclairage public, de l’étude d’exécution à la mise en service des installations.",
-      "blocks": []
+      "description": "HAY2010 réalise les travaux d’éclairage public à Rabat\u00a0: études, installation et mise en service des ouvrages, pour les collectivités et les entreprises.",
+      "blocks": [
+        {
+          "kind": "presentation",
+          "title": "Présentation et besoins",
+          "paragraphs": [
+            "L’éclairage public organise la vie nocturne d’un territoire\u00a0: il éclaire les voies, sécurise les déplacements et accompagne l’image des espaces publics. Ces installations sont aussi des ouvrages électriques, qui demandent une conception rigoureuse et une exécution soignée.",
+            "HAY2010 réalise les travaux d’éclairage public\u00a0: études d’exécution, réalisation des installations et mise en service, en coordination avec le maître d’ouvrage et les intervenants du chantier."
+          ]
+        },
+        {
+          "kind": "prestations",
+          "title": "Prestations confirmées",
+          "items": [
+            {
+              "label": "Études d’exécution",
+              "description": "Études techniques et photométriques, dimensionnement et plans d’exécution des installations d’éclairage public."
+            },
+            {
+              "label": "Travaux d’éclairage public",
+              "description": "Réalisation des installations d’éclairage public\u00a0: alimentation, câblage, raccordement et pose des ouvrages."
+            },
+            {
+              "label": "Essais et mise en service",
+              "description": "Essais, réception et mise en service des installations réalisées."
+            }
+          ]
+        },
+        {
+          "kind": "methods",
+          "title": "Méthode, moyens et compétences",
+          "items": [
+            {
+              "title": "Étude et implantation",
+              "body": "Études techniques et photométriques, dimensionnement et implantation des installations en fonction des usages et du site."
+            },
+            {
+              "title": "Travaux et coordination",
+              "body": "Réalisation des travaux, coordination de chantier et contrôle de la conformité des ouvrages."
+            },
+            {
+              "title": "Essais et mise en service",
+              "body": "Essais, réception et mise en service des installations d’éclairage public."
+            },
+            {
+              "title": "Moyens d’étude et de suivi",
+              "body": "Études, chiffrage et suivi de chantier assurés en interne, de l’étude à la réception."
+            }
+          ]
+        },
+        {
+          "kind": "contact-cta",
+          "title": "Un projet d’éclairage public\u00a0?",
+          "body": "Décrivez votre besoin d’éclairage public\u00a0; nous vous répondrons par e-mail.",
+          "link": { "label": "Nous contacter", "href": "/contact" }
+        }
+      ]
     },
     {
       "slug": "installations-electriques",
       "title": "Installations électriques",
       "summary": "Les installations électriques CFO/CFA : tableaux, distribution, protection, câblage et mise en service.",
-      "blocks": []
+      "description": "HAY2010 réalise les installations électriques CFO/CFA\u00a0: tableaux, distribution, protection, câblage et mise en service, pour les collectivités et les entreprises.",
+      "blocks": [
+        {
+          "kind": "presentation",
+          "title": "Présentation et besoins",
+          "paragraphs": [
+            "Les installations électriques d’un bâtiment ou d’un site d’activité doivent distribuer l’énergie de façon sûre et lisible. Tableaux, circuits de distribution, protections et câblage forment un ensemble qui se conçoit dès l’étude et se vérifie à la mise en service.",
+            "HAY2010 réalise les installations électriques en courants forts et courants faibles (CFO/CFA)\u00a0: études d’exécution, réalisation, câblage et mise en service, en coordination avec les autres corps d’état."
+          ]
+        },
+        {
+          "kind": "prestations",
+          "title": "Prestations confirmées",
+          "items": [
+            {
+              "label": "Courants forts et courants faibles (CFO/CFA)",
+              "description": "Installations CFO/CFA\u00a0: distribution, protection et câblage des courants forts et des courants faibles."
+            },
+            {
+              "label": "Tableaux et distribution",
+              "description": "Tableaux électriques, circuits de distribution et protections."
+            },
+            {
+              "label": "Câblage et mise en service",
+              "description": "Câblage des installations, essais et mise en service."
+            }
+          ]
+        },
+        {
+          "kind": "methods",
+          "title": "Méthode, moyens et compétences",
+          "items": [
+            {
+              "title": "Études d’exécution",
+              "body": "Plans d’exécution, schémas de distribution et coordination avec les autres corps d’état."
+            },
+            {
+              "title": "Réalisation des installations",
+              "body": "Pose des tableaux, distribution, protection et câblage des installations."
+            },
+            {
+              "title": "Contrôles et essais",
+              "body": "Contrôles et essais des circuits, vérification du fonctionnement avant mise en service."
+            },
+            {
+              "title": "Moyens d’étude et de suivi",
+              "body": "Études, chiffrage et suivi de chantier assurés en interne, jusqu’à la réception."
+            }
+          ]
+        },
+        {
+          "kind": "contact-cta",
+          "title": "Une installation électrique à réaliser\u00a0?",
+          "body": "Décrivez votre installation\u00a0; nous vous répondrons par e-mail.",
+          "link": { "label": "Nous contacter", "href": "/contact" }
+        }
+      ]
     },
     {
       "slug": "infrastructures-reseaux-electriques",
       "title": "Infrastructures et réseaux électriques",
       "summary": "Les réseaux HTA/MT et MT/BT et les postes de transformation, de l’étude à la réception.",
-      "blocks": []
+      "description": "HAY2010 réalise les infrastructures et réseaux électriques HTA/MT et MT/BT, y compris les postes de transformation, pour les collectivités et les entreprises.",
+      "blocks": [
+        {
+          "kind": "presentation",
+          "title": "Présentation et besoins",
+          "paragraphs": [
+            "Les réseaux électriques HTA/MT et MT/BT constituent l’ossature d’un territoire ou d’un site\u00a0: ils transportent l’énergie jusqu’aux postes de transformation, puis la distribuent aux installations. Leur réalisation demande des études précises, une exécution coordonnée et des essais avant la mise en service.",
+            "HAY2010 réalise les infrastructures et réseaux électriques, ainsi que les postes de transformation\u00a0: études, travaux, essais et réception, en coordination avec le maître d’ouvrage et les intervenants du chantier."
+          ]
+        },
+        {
+          "kind": "prestations",
+          "title": "Prestations confirmées",
+          "items": [
+            {
+              "label": "Réseaux HTA/MT",
+              "description": "Électrification des réseaux HTA/MT\u00a0: travaux et mise en service."
+            },
+            {
+              "label": "Réseaux MT/BT",
+              "description": "Électrification des réseaux MT/BT\u00a0: travaux et mise en service."
+            },
+            {
+              "label": "Postes de transformation",
+              "description": "Réalisation et mise en service des postes de transformation."
+            }
+          ]
+        },
+        {
+          "kind": "methods",
+          "title": "Méthode, moyens et compétences",
+          "items": [
+            {
+              "title": "Études et préparation",
+              "body": "Études techniques, plans d’exécution et préparation des travaux de réseaux et de postes."
+            },
+            {
+              "title": "Travaux de réseaux",
+              "body": "Exécution des travaux HTA/MT et MT/BT, coordination de chantier et contrôle de la conformité des ouvrages."
+            },
+            {
+              "title": "Postes de transformation",
+              "body": "Réalisation et mise en service des postes de transformation, essais et réception compris."
+            },
+            {
+              "title": "Moyens d’étude et de suivi",
+              "body": "Études, chiffrage et suivi de chantier assurés en interne, pour l’ensemble des ouvrages."
+            }
+          ]
+        },
+        {
+          "kind": "contact-cta",
+          "title": "Un réseau ou un poste de transformation à réaliser\u00a0?",
+          "body": "Décrivez votre projet de réseau ou de poste\u00a0; nous vous répondrons par e-mail.",
+          "link": { "label": "Nous contacter", "href": "/contact" }
+        }
+      ]
     },
     {
       "slug": "energies-renouvelables",
