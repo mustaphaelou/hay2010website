@@ -77,6 +77,14 @@ h1 and metadata; page tickets add the decided copy, #32 wires metadata.
 
 Identity and navigation constants never become CMS-editable (content model §3).
 
+**Contact channels (#26).** The primary mailbox (`contact@hay2010.ma`) and the
+registered address are code-owned (`lib/site/company.ts`). The channels the
+facts register has **not** cleared — phone, opening hours, map, social profiles
+— are modelled as an optional `contact-channels` block in the page document:
+while the block is absent, the contact page renders nothing for them (no empty
+shell, no placeholder). Clearing a channel is a content-data change (the #30
+contact global maps onto the same block) and needs no renderer change.
+
 ---
 
 ## 3. Fixture corpus and scenarios

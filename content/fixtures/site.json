@@ -1,5 +1,5 @@
 {
-  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy; gate states live in content/fixtures/scenarios/*.json. #22 delivered the domain index and the three published domain pages (CDC trame, DEV-006 omissions; CFO/CFA and postes de transformation are prestations, not domains). #25 delivered the À propos page (identity, perimeter, mission/vision/values, compliance).",
+  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy; gate states live in content/fixtures/scenarios/*.json. #22 delivered the domain index and the three published domain pages (CDC trame, DEV-006 omissions; CFO/CFA and postes de transformation are prestations, not domains). #25 delivered the À propos page (identity, perimeter, mission/vision/values, compliance). #26 delivered the email-first Contact page (gated channels behind the seam, no form).",
   "pages": {
     "accueil": {
       "blocks": []
@@ -109,7 +109,62 @@
       "blocks": []
     },
     "contact": {
-      "blocks": []
+      "title": "Contact",
+      "description": "Contactez HAY2010 à Rabat : Local N° 21, Hay El Manzeh, Hay Er-Riad. Écrivez-nous pour vos projets d’éclairage public. Devis sur demande.",
+      "blocks": [
+        {
+          "kind": "intro",
+          "paragraphs": [
+            "Un projet d’éclairage public, de réseaux HTA/BT ou de CFO/CFA ? Décrivez votre besoin ; nous vous répondrons par e-mail.",
+            "Le site ne comporte pas de formulaire. Votre message part de votre logiciel de messagerie vers contact@hay2010.ma : il n’est pas enregistré par le site."
+          ]
+        },
+        {
+          "kind": "contact-cta",
+          "title": "Écrivez-nous",
+          "body": "Un e-mail suffit pour démarrer un échange. Le bouton ouvre votre logiciel de messagerie avec l’adresse de contact déjà renseignée ; l’adresse reste lisible et sélectionnable comme texte."
+        },
+        {
+          "kind": "sections",
+          "title": "Ce que votre e-mail doit contenir",
+          "items": [
+            {
+              "title": "Votre demande",
+              "body": "Indiquez s’il s’agit d’une demande de renseignement ou d’une demande de devis, et exposez votre besoin en quelques phrases."
+            },
+            {
+              "title": "Le lieu et les travaux",
+              "body": "Précisez la commune ou le site concerné, et la nature des travaux : éclairage public, réseaux HTA/MT et MT/BT, postes de transformation, CFO/CFA."
+            },
+            {
+              "title": "Les documents utiles",
+              "body": "Joignez les plans, photos ou documents dont vous disposez. N’envoyez ni pièce d’identité ni donnée sensible : elles ne sont pas nécessaires à l’étude de votre demande."
+            },
+            {
+              "title": "Vos coordonnées",
+              "body": "Un nom, une société si vous écrivez pour une organisation, et une adresse e-mail pour la réponse."
+            }
+          ]
+        },
+        {
+          "kind": "steps",
+          "title": "Ce qui se passe ensuite",
+          "items": [
+            {
+              "title": "Vous nous écrivez",
+              "body": "Votre message part de votre logiciel de messagerie vers l’adresse de contact ; aucun formulaire ne s’interpose."
+            },
+            {
+              "title": "Nous lisons votre demande",
+              "body": "Le message est reçu dans la boîte de contact, consultée par les services concernés."
+            },
+            {
+              "title": "Nous vous répondons par e-mail",
+              "body": "Nous revenons vers vous par le même canal, avec les éléments utiles à votre demande."
+            }
+          ]
+        }
+      ]
     }
   },
   "domains": [
