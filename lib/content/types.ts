@@ -216,11 +216,60 @@ export interface SectionsBlock {
   readonly items: readonly TitledItem[]
 }
 
-/** Carrières: openings listed inline by the owner. */
+/** Carrières: openings listed inline by the owner (legacy page-document block). */
 export interface OpeningsBlock {
   readonly kind: "openings"
   readonly title?: string
   readonly items: readonly LabelledItem[]
+}
+
+/**
+ * A job opening rendered inline on `/carrieres` (forms doc §4.2).
+ *
+ * There is no detail route at launch: the slug identifies the record for the
+ * content source (#30's jobs collection) and must never become a public URL
+ * while `JobPosting` and `/carrieres/{slug}` stay forbidden (§4.8).
+ */
+export interface JobOpening {
+  readonly slug: string
+  /** Job title, e.g. « Électricien HTA-BT ». */
+  readonly title: string
+  /** Contract type: `CDI`, `CDD`, `Stage` or `Alternance`. */
+  readonly contractType: string
+  /** Work location; the default is the registered base, `Rabat`. */
+  readonly location: string
+  readonly department?: string
+  readonly experience?: string
+  /** Two-to-three-line summary shown on the card. */
+  readonly summary: string
+  /** ISO date (`YYYY-MM-DD`); rendered as a date, never as a countdown. */
+  readonly postedAt?: string
+  /** ISO closing date; a record past it is not an opening any more. */
+  readonly closingAt?: string
+}
+
+/**
+ * Careers application channel — the F-113 gate (forms doc §4.4).
+ *
+ * `recrutement@hay2010.ma` is an approved but gated channel: it may not be
+ * published, nor may the page invite CVs, before the CNDP F-113 authorization
+ * covers the mailbox (facts register §2.3/§3). The switch is data, not code:
+ * the fixture provider reads it from a scenario, the CMS provider (#29/#30)
+ * keeps it code-owned deployment configuration and never lets the admin open
+ * it (content model §3/§5.1).
+ */
+export interface CareersChannel {
+  /** True only when F-113 covers `recrutement@hay2010.ma`. */
+  readonly recruitmentMailboxLive: boolean
+  /**
+   * The real CNDP authorization reference. Required while the mailbox is live:
+   * the notice renders only with a real number and date, never a blank `n°`
+   * (forms doc §4.9). Absent means the channel fails closed.
+   */
+  readonly authorization?: {
+    readonly number: string
+    readonly date: string
+  }
 }
 
 /**
@@ -322,6 +371,15 @@ export interface ContentSource {
   getDomain(slug: DomainSlug): Promise<DomainDocument | null>
   /** Published actualités (empty at P1). */
   getActualites(): Promise<readonly ActualiteDocument[]>
+  /**
+   * Published, currently open job openings, already filtered and ordered:
+   * a record renders only when its publish gate is open and it is still open
+   * (status open, closing date absent or in the future); order is `featured`
+   * first, then `postedAt` descending (forms doc §4.2).
+   */
+  getOpenJobs(): Promise<readonly JobOpening[]>
+  /** F-113 careers application channel state; fails closed when unknown. */
+  getCareersChannel(): Promise<CareersChannel>
   /** A media record whose rights are cleared; `null` otherwise. */
   getMedia(id: MediaId): Promise<MediaRecord | null>
 }
