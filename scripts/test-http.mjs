@@ -28,11 +28,21 @@ import fs from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
-const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
+const projectRoot = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  ".."
+)
 const port = process.env.TEST_HTTP_PORT ?? "3100"
 const hostname = "127.0.0.1"
 const baseUrl = `http://${hostname}:${port}`
-const nextBin = path.join(projectRoot, "node_modules", "next", "dist", "bin", "next")
+const nextBin = path.join(
+  projectRoot,
+  "node_modules",
+  "next",
+  "dist",
+  "bin",
+  "next"
+)
 const vitestBin = path.join(projectRoot, "node_modules", "vitest", "vitest.mjs")
 
 /**
@@ -40,7 +50,7 @@ const vitestBin = path.join(projectRoot, "node_modules", "vitest", "vitest.mjs")
  * `content/fixtures/scenarios/<name>.json`; the suite's expectations live in
  * `tests/http/scenarios.ts`.
  */
-const SCENARIOS = ["p1", "p2", "p3", "p1-gates-closed"]
+const SCENARIOS = ["p1", "p2", "p3", "p1-gates-closed", "p1-hero-image"]
 
 const READINESS_TIMEOUT_MS = 60_000
 const SERVER_STOP_TIMEOUT_MS = 5_000
@@ -90,17 +100,23 @@ async function waitForServer(server) {
   const deadline = Date.now() + READINESS_TIMEOUT_MS
   while (Date.now() < deadline) {
     if (server.exitCode !== null || server.signalCode !== null) {
-      throw new Error(`the production server exited before answering (code ${server.exitCode})`)
+      throw new Error(
+        `the production server exited before answering (code ${server.exitCode})`
+      )
     }
     try {
-      const response = await fetch(`${baseUrl}/`, { signal: AbortSignal.timeout(2_000) })
+      const response = await fetch(`${baseUrl}/`, {
+        signal: AbortSignal.timeout(2_000),
+      })
       if (response.status > 0) return
     } catch {
       // Not listening yet.
     }
     await delay(250)
   }
-  throw new Error(`the production server did not answer within ${READINESS_TIMEOUT_MS}ms`)
+  throw new Error(
+    `the production server did not answer within ${READINESS_TIMEOUT_MS}ms`
+  )
 }
 
 /**
@@ -125,18 +141,24 @@ async function stopServer(server) {
  * @param {string} scenario
  */
 async function startServer(scenario) {
-  log(`starting the production server on ${baseUrl} (CONTENT_SCENARIO=${scenario})`)
+  log(
+    `starting the production server on ${baseUrl} (CONTENT_SCENARIO=${scenario})`
+  )
   let stderr = ""
-  const server = spawn(process.execPath, [nextBin, "start", "-p", port, "-H", hostname], {
-    cwd: projectRoot,
-    stdio: ["ignore", "ignore", "pipe"],
-    env: {
-      ...process.env,
-      NODE_ENV: "production",
-      CONTENT_SOURCE: "fixture",
-      CONTENT_SCENARIO: scenario,
-    },
-  })
+  const server = spawn(
+    process.execPath,
+    [nextBin, "start", "-p", port, "-H", hostname],
+    {
+      cwd: projectRoot,
+      stdio: ["ignore", "ignore", "pipe"],
+      env: {
+        ...process.env,
+        NODE_ENV: "production",
+        CONTENT_SOURCE: "fixture",
+        CONTENT_SCENARIO: scenario,
+      },
+    }
+  )
   server.stderr?.setEncoding("utf8")
   server.stderr?.on("data", (chunk) => {
     stderr = (stderr + chunk).slice(-STDERR_KEEP)
@@ -155,7 +177,8 @@ async function startServer(scenario) {
     await stopServer(server)
     process.removeListener("SIGINT", interrupt)
     process.removeListener("SIGTERM", interrupt)
-    if (stderr.trim()) console.error(`[http-test] production server stderr:\n${stderr.trim()}`)
+    if (stderr.trim())
+      console.error(`[http-test] production server stderr:\n${stderr.trim()}`)
     throw error
   }
 
@@ -195,7 +218,11 @@ function buildForScenario(scenario) {
   log(`scenario "${scenario}" — building the production app (next build)`)
   fs.rmSync(path.join(projectRoot, ".next"), { recursive: true, force: true })
   return run([nextBin, "build"], {
-    env: { ...process.env, CONTENT_SOURCE: "fixture", CONTENT_SCENARIO: scenario },
+    env: {
+      ...process.env,
+      CONTENT_SOURCE: "fixture",
+      CONTENT_SCENARIO: scenario,
+    },
   })
 }
 
@@ -206,9 +233,13 @@ async function main() {
     : SCENARIOS
 
   if (skipBuild) {
-    log(`SKIP_BUILD=1 — reusing the existing .next build for scenario "${scenarios[0]}"`)
+    log(
+      `SKIP_BUILD=1 — reusing the existing .next build for scenario "${scenarios[0]}"`
+    )
     if (scenarios[0] !== "p1") {
-      log("note: the existing build must have been produced with the same CONTENT_SCENARIO")
+      log(
+        "note: the existing build must have been produced with the same CONTENT_SCENARIO"
+      )
     }
   }
 
@@ -234,7 +265,9 @@ async function main() {
       if (testStatus !== 0) {
         const stderr = running.stderr()
         if (stderr.trim()) {
-          console.error(`\n[http-test] production server stderr:\n${stderr.trim()}`)
+          console.error(
+            `\n[http-test] production server stderr:\n${stderr.trim()}`
+          )
         }
         return testStatus
       }
@@ -243,7 +276,9 @@ async function main() {
     }
   }
 
-  log(`all ${scenarios.length} scenario group(s) passed: ${scenarios.join(", ")}`)
+  log(
+    `all ${scenarios.length} scenario group(s) passed: ${scenarios.join(", ")}`
+  )
   return 0
 }
 

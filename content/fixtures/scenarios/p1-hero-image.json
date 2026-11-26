@@ -1,0 +1,62 @@
+{
+  "$comment": "Test-only content variant of the P1 launch state (#23): it proves the hero renders a licensed documentary image when the content carries a cleared one. No licensed photograph exists at launch, so `p1` keeps the typographic fallback and this scenario supplies a rights-cleared media record through the content seam. The alt text is generic on purpose (no place is claimed until it is verified); the media URL is a scenario fixture and is not shipped on the launch page. Everything else — gates, domains, sitemap — is the `p1` launch state.",
+  "tier": "P1",
+  "rubriques": {
+    "accueil": { "published": true },
+    "a-propos": { "published": true },
+    "domaines-activite": { "published": true },
+    "realisations": { "published": true },
+    "moyens-et-competences": {
+      "published": false,
+      "reason": "Palier P2 — inventaire matériel, photographique et RH de l’owner requis (CDC §11)."
+    },
+    "references-et-partenaires": {
+      "published": false,
+      "reason": "Palier P2 — autorisations clients, partenaires et certifications requises (CDC §11)."
+    },
+    "actualites": {
+      "published": false,
+      "reason": "Palier P3 — au moins une actualité approuvée requise."
+    },
+    "contact": { "published": true },
+    "carrieres": {
+      "published": false,
+      "reason": "Page livrée par le ticket #27."
+    },
+    "mentions-legales": { "published": true },
+    "politique-de-confidentialite": { "published": true }
+  },
+  "domains": {
+    "eclairage-public": { "published": true },
+    "installations-electriques": { "published": true },
+    "infrastructures-reseaux-electriques": { "published": true },
+    "energies-renouvelables": {
+      "published": false,
+      "reason": "Périmètre réel à confirmer par écrit par l’owner (CDC §4.3)."
+    },
+    "fourniture-equipements": {
+      "published": false,
+      "reason": "Catalogue et autorisations de distribution et de marque manquants (CDC §4.5)."
+    }
+  },
+  "heroMedia": {
+    "accueil": "hero-documentaire-test"
+  },
+  "media": [
+    {
+      "id": "hero-documentaire-test",
+      "src": "/media/hero-documentaire-test.jpg",
+      "alt": "Rue éclairée au crépuscule par une rangée de luminaires publics.",
+      "width": 2400,
+      "height": 1350,
+      "rights": {
+        "status": "cleared",
+        "basis": "licensed",
+        "permissionReference": "SCÉNARIO DE TEST UNIQUEMENT — aucune photographie sous licence n’existe au lancement.",
+        "peoplePresent": false,
+        "releaseStatus": "not-required",
+        "clientMarks": false
+      }
+    }
+  ]
+}

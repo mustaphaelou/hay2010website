@@ -32,10 +32,10 @@ getContentSource(): Promise<ContentSource>
 getContentProviderName(): "fixture" | "cms"
 ```
 
-| Env var          | Default   | Meaning                                        |
-| ---------------- | --------- | ---------------------------------------------- |
-| `CONTENT_SOURCE` | `fixture` | `fixture` (JSON corpus) or `cms` (#29).        |
-| `CONTENT_SCENARIO` | `p1`    | Fixture gate scenario, see §3. Ignored by `cms`. |
+| Env var            | Default   | Meaning                                          |
+| ------------------ | --------- | ------------------------------------------------ |
+| `CONTENT_SOURCE`   | `fixture` | `fixture` (JSON corpus) or `cms` (#29).          |
+| `CONTENT_SCENARIO` | `p1`      | Fixture gate scenario, see §3. Ignored by `cms`. |
 
 The provider is resolved once per process. The CMS branch is a **dynamic
 `import()`** (`providers/cms.ts`) so a fixture build/test never bundles Payload,
@@ -43,15 +43,15 @@ a database driver or `payload.config.ts`.
 
 ### `ContentSource` — `lib/content/types.ts`
 
-| Method | Returns | Gate semantics |
-| --- | --- | --- |
-| `getPublishState(key)` | `{ published, reason? }` | The rubrique gate. `reason` is internal (admin #30), never rendered. |
-| `listPublishedRubriques()` | `RubriqueKey[]` | **Published only.** Order is the provider's; the registry imposes CDC order. |
-| `getPage(key)` | `PageDocument \| null` | A document may exist **while its gate is closed** (content complete, page hidden). |
-| `listPublishedDomains()` | `DomainDocument[]` | Published only, CDC order. |
-| `getDomain(slug)` | `DomainDocument \| null` | `null` for a closed **or unknown** slug — the route cannot leak a gated page. |
-| `getActualites()` | `ActualiteDocument[]` | Published only; empty at P1. |
-| `getMedia(id)` | `MediaRecord \| null` | Only rights-cleared records leave the seam. |
+| Method                     | Returns                  | Gate semantics                                                                     |
+| -------------------------- | ------------------------ | ---------------------------------------------------------------------------------- |
+| `getPublishState(key)`     | `{ published, reason? }` | The rubrique gate. `reason` is internal (admin #30), never rendered.               |
+| `listPublishedRubriques()` | `RubriqueKey[]`          | **Published only.** Order is the provider's; the registry imposes CDC order.       |
+| `getPage(key)`             | `PageDocument \| null`   | A document may exist **while its gate is closed** (content complete, page hidden). |
+| `listPublishedDomains()`   | `DomainDocument[]`       | Published only, CDC order.                                                         |
+| `getDomain(slug)`          | `DomainDocument \| null` | `null` for a closed **or unknown** slug — the route cannot leak a gated page.      |
+| `getActualites()`          | `ActualiteDocument[]`    | Published only; empty at P1.                                                       |
+| `getMedia(id)`             | `MediaRecord \| null`    | Only rights-cleared records leave the seam.                                        |
 
 Domain types are trame-oriented. The block union (`ContentBlock`) covers the
 fixed trames: `hero`, `intro`, `presentation`, `prestations`, `methods`,
@@ -67,13 +67,13 @@ h1 and metadata; page tickets add the decided copy, #32 wires metadata.
 
 ## 2. Code-owned vs content-owned
 
-| Code-owned (`lib/site/`) | Content-owned (`content/` today, CMS from #30) |
-| --- | --- |
-| Legal identity, claims, contact channels: `company.ts` | Page copy and blocks |
+| Code-owned (`lib/site/`)                                             | Content-owned (`content/` today, CMS from #30)            |
+| -------------------------------------------------------------------- | --------------------------------------------------------- |
+| Legal identity, claims, contact channels: `company.ts`               | Page copy and blocks                                      |
 | Rubrique keys, CDC titles, nav labels, routes, tiers: `rubriques.ts` | Publish state per scenario (then per document in the CMS) |
-| Domain route prefix: `domaines.ts` | Domain documents and their titles |
-| Gate plumbing: `gates.ts`, `route-gate.ts` | Utility page copy |
-| Canonical origin (until #32): `site.ts` | Actualités documents |
+| Domain route prefix: `domaines.ts`                                   | Domain documents and their titles                         |
+| Gate plumbing: `gates.ts`, `route-gate.ts`                           | Utility page copy                                         |
+| Canonical origin (until #32): `site.ts`                              | Actualités documents                                      |
 
 Identity and navigation constants never become CMS-editable (content model §3).
 
@@ -101,6 +101,7 @@ content/fixtures/
     p2.json                  + Moyens, Références, all five domains
     p3.json                  + Actualités
     p1-gates-closed.json     P1 with À propos and Éclairage public closed
+    p1-hero-image.json       P1 + one cleared hero photograph (#23, test-only)
 ```
 
 A scenario is a **gate map**, not code:
@@ -108,7 +109,10 @@ A scenario is a **gate map**, not code:
 ```json
 {
   "tier": "P1",
-  "rubriques": { "accueil": { "published": true }, "a-propos": { "published": false, "reason": "…" } },
+  "rubriques": {
+    "accueil": { "published": true },
+    "a-propos": { "published": false, "reason": "…" }
+  },
   "domains": { "eclairage-public": { "published": true } }
 }
 ```
@@ -301,7 +305,7 @@ appears there.
   It has no animation, so reduced-motion needs no special case.
 - `components/site/site-footer.tsx` (server): four columns — identity,
   published rubriques, published utilities (column omitted while empty), siège
-  + contact. Same published set, so gates cannot diverge.
+  - contact. Same published set, so gates cannot diverge.
 - `app/(frontend)/sitemap.ts`: published rubriques **with a page document**
   (i.e. built) + published domains, absolute `https://hay2010.ma` URLs, no
   trailing slash. #32 takes over `lastModified`/robots policy via `lib/site/site.ts`.
@@ -370,13 +374,13 @@ status and never redirects. P2 adds English without moving French URLs:
 
 ## 11. Environment summary
 
-| Variable | Values | Used by |
-| --- | --- | --- |
-| `CONTENT_SOURCE` | `fixture` (default), `cms` | `lib/content/index.ts` |
-| `CONTENT_SCENARIO` | `p1` (default), `p2`, `p3`, `p1-gates-closed` | fixture provider, `scripts/test-http.mjs` |
-| `DATABASE_URL`, `PAYLOAD_SECRET` | #29 only | CMS provider |
-| `TEST_HTTP_PORT` | `31NN` per ticket | HTTP orchestrator |
-| `TEST_HTTP_SCENARIO`, `TEST_HTTP_BASE_URL` | set by the orchestrator | tests |
+| Variable                                   | Values                                        | Used by                                   |
+| ------------------------------------------ | --------------------------------------------- | ----------------------------------------- |
+| `CONTENT_SOURCE`                           | `fixture` (default), `cms`                    | `lib/content/index.ts`                    |
+| `CONTENT_SCENARIO`                         | `p1` (default), `p2`, `p3`, `p1-gates-closed` | fixture provider, `scripts/test-http.mjs` |
+| `DATABASE_URL`, `PAYLOAD_SECRET`           | #29 only                                      | CMS provider                              |
+| `TEST_HTTP_PORT`                           | `31NN` per ticket                             | HTTP orchestrator                         |
+| `TEST_HTTP_SCENARIO`, `TEST_HTTP_BASE_URL` | set by the orchestrator                       | tests                                     |
 
 ---
 
@@ -388,5 +392,6 @@ npm run typecheck && npm run lint && TEST_HTTP_PORT=3121 npm test
 
 `npm test` builds the production app once per fixture scenario and runs the
 whole HTTP suite against each build: `tests/http/{shell,navigation,gates,
-not-found,en-reserved}.test.ts`. See `docs/build/verification.md` for what each
+not-found,en-reserved,homepage,a-propos,domaines,contact,health}.test.ts` plus
+`tests/architecture.test.ts`. See `docs/build/verification.md` for what each
 group proves and the negative checks that keep the suite honest.
