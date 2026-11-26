@@ -23,7 +23,7 @@ port (`31NN`), never 3000. Without it the runner defaults to 3100.
 ### What the command does
 
 `scripts/test-http.mjs` runs the suite once **per fixture scenario**
-(`p1`, `p2`, `p3`, `p1-gates-closed`):
+(`p1`, `p2`, `p3`, `p1-gates-closed`, `p1-recrutement`):
 
 1. removes `.next` and runs `next build` with
    `CONTENT_SOURCE=fixture CONTENT_SCENARIO=<scenario>` — the build is the
@@ -69,10 +69,11 @@ rule) — so fixture data and the spec cannot drift silently.
 
 | Scenario | Public shape | What it proves |
 | --- | --- | --- |
-| `p1` | 5 rubriques, 3 domains, no utility page | launch state: open routes 200, gated routes/domains 404, sitemap = published set |
-| `p2` | 7 rubriques, 5 domains | tier composition (Moyens + Références inserted), opening the two gated domains makes their routes 200 |
+| `p1` | 5 rubriques, 3 domains, Carrières open in the footer, legal utilities closed | launch state: open routes 200, gated routes/domains 404, sitemap = published set; Carrières empty state, F-113 closed (questions to `contact@`, no CV invitation) |
+| `p2` | 7 rubriques, 5 domains | tier composition (Moyens + Références inserted), opening the two gated domains makes their routes 200; owner-published openings render while F-113 stays closed |
 | `p3` | 8 rubriques | Actualités inserted; published-but-unbuilt page stays out of the sitemap |
-| `p1-gates-closed` | P1 minus À propos and Éclairage public | closing a gate removes it from every surface and makes its existing route 404 |
+| `p1-gates-closed` | P1 minus À propos and Éclairage public | closing a gate removes it from every surface and makes its existing route 404; Carrières stays open with its empty state |
+| `p1-recrutement` | P1 plus the F-113 channel live | the careers mailbox is published, CVs are invited by e-mail and the approved notice renders with a (fictitious) CNDP reference; never a production corpus |
 
 The same test bodies run in every scenario, so a gate is always observed from
 both sides: `p1` asserts `/a-propos` 200 and present; `p1-gates-closed` asserts
