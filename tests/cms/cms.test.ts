@@ -214,13 +214,16 @@ describe("anonymous access is denied where it must be", () => {
   it("returns only published pages to anonymous readers", async () => {
     const { status, json } = await restJson<RestList<RestPage>>(null, "/api/pages?limit=50")
     expect(status).toBe(200)
-    // Seeded: accueil, a-propos, domaines-activite, contact published;
+    // Seeded: the four core pages and the three utility pages are published;
     // réalisations exists as a draft and must not leak.
     expect(json.docs.map((page) => page.key).sort()).toEqual([
       "a-propos",
       "accueil",
+      "carrieres",
       "contact",
       "domaines-activite",
+      "mentions-legales",
+      "politique-de-confidentialite",
     ])
     for (const page of json.docs) expect(page._status).toBe("published")
   })
@@ -266,8 +269,39 @@ describe("a P1 route renders from the CMS through the adapter", () => {
     expect(html).toContain('href="/a-propos"')
     expect(html).toContain('href="/domaines-activite"')
     expect(html).toContain('href="/contact"')
+    // …the published utility pages are in the footer…
+    expect(html).toContain('href="/carrieres"')
+    expect(html).toContain('href="/mentions-legales"')
+    expect(html).toContain('href="/politique-de-confidentialite"')
     // …and the CMS draft page is absent from every surface.
     expect(html).not.toContain('href="/realisations"')
+  })
+
+  it("serves the published Carrières page with its honest empty openings state", async () => {
+    const response = await fetch(`${BASE_URL}/carrieres`, { headers: headers() })
+    expect(response.status).toBe(200)
+    const html = await response.text()
+    // No opening is confirmed at launch (fixture p1 jobs gates): the page shows
+    // the approved empty state, never a placeholder.
+    expect(html).toContain("Aucune offre n’est ouverte pour le moment.")
+    // F-113 is closed: questions go to the general mailbox, the careers mailbox
+    // is a gated claim and must not appear (getCareersChannel fail-closed).
+    expect(html).toContain("contact@hay2010.ma")
+    expect(html).not.toContain("recrutement@hay2010.ma")
+  })
+
+  it("serves the published legal utility pages with the code-owned identity block", async () => {
+    const mentions = await fetch(`${BASE_URL}/mentions-legales`, { headers: headers() })
+    expect(mentions.status).toBe(200)
+    const mentionsHtml = await mentions.text()
+    // Identity is code-owned (lib/legal/), never from the CMS.
+    expect(mentionsHtml).toContain("RC 87305")
+    expect(mentionsHtml).toContain("001459327000056")
+
+    const policy = await fetch(`${BASE_URL}/politique-de-confidentialite`, {
+      headers: headers(),
+    })
+    expect(policy.status).toBe(200)
   })
 
   it("404s the CMS-draft page even though it exists in the database", async () => {
@@ -293,7 +327,7 @@ describe("roles separate the owner from the developer over HTTP", () => {
   it("lets the developer delete a draft, and keeps the owner unable to", async () => {
     const created = await rest(developer, "/api/pages", {
       method: "POST",
-      body: { key: "carrieres", title: "Page de test de suppression", _status: "draft" },
+      body: { key: "moyens-et-competences", title: "Page de test de suppression", _status: "draft" },
     })
     expect([200, 201]).toContain(created.status)
     const createdJson = (await created.json()) as { doc: RestPage }
@@ -312,7 +346,7 @@ describe("roles separate the owner from the developer over HTTP", () => {
     // from the media rights gate (which would answer 400 first).
     const created = await rest(developer, "/api/pages", {
       method: "POST",
-      body: { key: "carrieres", title: "Brouillon du contributeur", _status: "draft" },
+      body: { key: "moyens-et-competences", title: "Brouillon du contributeur", _status: "draft" },
     })
     expect([200, 201]).toContain(created.status)
     const { doc } = (await created.json()) as { doc: RestPage }

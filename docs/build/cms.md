@@ -119,7 +119,8 @@ npm run migrate:status   # every row must show Ran = Yes
 That is the complete schema setup: tables for users, media, pages, drafts
 (`_pages_v`), preferences, locks and `payload_migrations`. Optionally seed the
 dev bootstrap corpus (three accounts, two media records with rights, the P1
-pages; idempotent, safe to re-run):
+pages — four rubriques plus the two legal utility pages; Réalisations as a draft;
+Carrières absent, footer-only and closed at launch; idempotent, safe to re-run):
 
 ```bash
 npm run seed
@@ -314,7 +315,12 @@ Consequences, accepted for #29 and revisited by #30:
   (homepage, entreprise, services, projects, jobs, communiqués, domains,
   actualités) replace the transient `pages.blocks` JSON field and fill the seam
   methods that currently return empty (`listPublishedDomains`, `getDomain`,
-  `getActualites`). Domain routes therefore 404 in CMS mode until then.
+  `getActualites`, `getOpenJobs`). Domain routes and job openings therefore show
+  their honest empty state in CMS mode until then.
+- **Careers channel (F-113)**: `getCareersChannel()` is code-owned deployment
+  state in the CMS provider (`recruitment@` only when the gate is live, with the
+  real CNDP reference; `contact@` otherwise, fail closed). The admin can never
+  open it — that would be a gated claim (content model §3, facts register §3).
 - **Seed parity**: replace the foundation seed with the fixture corpus
   (`content/fixtures/site.json` + `p1` scenario) so #33 can compare fixture vs
   CMS route matrices.

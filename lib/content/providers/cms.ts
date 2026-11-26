@@ -24,9 +24,11 @@
 import type { Payload } from "payload"
 
 import type {
+  CareersChannel,
   ContentBlock,
   ContentSource,
   DomainDocument,
+  JobOpening,
   MediaRecord,
   PageDocument,
   PublishState,
@@ -55,6 +57,11 @@ const KNOWN_BLOCK_KINDS = new Set([
   "steps",
   "openings",
 ])
+
+/** F-113 closed state: questions go to contact@, no CV invitation (fail closed). */
+const CAREERS_CHANNEL_CLOSED: CareersChannel = Object.freeze({
+  recruitmentMailboxLive: false,
+})
 
 /** One Payload client per server process (it owns the Postgres pool). */
 let payloadPromise: Promise<Payload> | null = null
@@ -235,6 +242,26 @@ export function createCmsContentSource(payload: Payload): ContentSource {
     async getActualites() {
       // The P3 actualités model does not exist yet (#30); the corpus is empty.
       return []
+    },
+
+    async getOpenJobs(): Promise<readonly JobOpening[]> {
+      // No `jobs` collection exists in the #29 foundation (the content model's
+      // jobs type is #30 work). An empty list is the honest state of the launch
+      // corpus too: no opening has been confirmed by the owner (fixture `p1`
+      // closes every jobs gate). #30 adds the collection and applies the seam
+      // filters here — publish gate open, not past `closingAt`, featured first,
+      // then `postedAt` descending (forms doc §4.2).
+      return []
+    },
+
+    async getCareersChannel(): Promise<CareersChannel> {
+      // F-113 gate — code-owned deployment state, NEVER CMS-editable: opening
+      // `recrutement@hay2010.ma` is a gated claim until the CNDP authorization
+      // covers the mailbox (facts register §2.3/§3, forms doc §4.4/§4.9). At
+      // launch the gate is closed: the page points at contact@ only and never
+      // invites a CV. Opening it is a code change that carries the real
+      // authorization number and date — not an admin action (#30/#34).
+      return CAREERS_CHANNEL_CLOSED
     },
 
     async getMedia(id: string): Promise<MediaRecord | null> {

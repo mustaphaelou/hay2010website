@@ -175,6 +175,12 @@ async function seedMedia(
 interface SeedPage {
   readonly key: RubriqueKey
   readonly title: string
+  /**
+   * Meta description. The foundation seed carries short factual lines so pages
+   * whose metadata requires a description (À propos) build; #30 replaces them
+   * with the decided SEO copy.
+   */
+  readonly description?: string
   readonly status: "draft" | "published"
   readonly blocks?: ContentBlock[]
   /** Filename of a seeded media record attached as the page cover. */
@@ -183,16 +189,25 @@ interface SeedPage {
 
 /**
  * The P1 pages the adapter needs. The publish state mirrors the fixture `p1`
- * scenario (`content/fixtures/scenarios/p1.json`): the four core pages are
- * published, Réalisations is a draft so the CMS verification suite can prove a
- * CMS-unpublished page 404s while it exists in the database. #30 replaces this
- * corpus with the decided French copy.
+ * scenario (`content/fixtures/scenarios/p1.json`): the four core pages and the
+ * two legal utility pages are published, Réalisations is a draft so the CMS
+ * verification suite can prove a CMS-unpublished page 404s while it exists in
+ * the database, and Carrières is absent (footer-only, closed at launch, #27).
+ * #30 replaces this corpus with the decided French copy.
  */
 const SEED_PAGES: readonly SeedPage[] = [
-  { key: "accueil", title: "Accueil", status: "published" },
+  {
+    key: "accueil",
+    title: "Accueil",
+    description:
+      "HAY2010, entreprise d’éclairage public et d’électrification à Rabat : HTA/MT, MT/BT, postes de transformation et CFO/CFA.",
+    status: "published",
+  },
   {
     key: "a-propos",
     title: "À propos",
+    description:
+      "SOCIETE HAY 2010, entreprise d’éclairage public et d’électrification à Rabat : positionnement, activités, engagements qualité et sécurité.",
     status: "published",
     // Approved identity only — no invented copy (facts register §2.1).
     blocks: [
@@ -208,11 +223,49 @@ const SEED_PAGES: readonly SeedPage[] = [
       },
     ],
   },
-  { key: "domaines-activite", title: "Nos domaines d’activité", status: "published" },
-  { key: "contact", title: "Contact", status: "published" },
+  {
+    key: "domaines-activite",
+    title: "Nos domaines d’activité",
+    description:
+      "Les domaines d’activité de HAY2010 : éclairage public, installations électriques et infrastructures de réseaux électriques à Rabat.",
+    status: "published",
+  },
+  {
+    key: "contact",
+    title: "Contact",
+    description:
+      "Contactez HAY2010 par e-mail à contact@hay2010.ma pour vos projets d’éclairage public et d’électrification à Rabat.",
+    status: "published",
+  },
+  {
+    key: "carrieres",
+    title: "Carrières",
+    description:
+      "Carrières chez HAY2010 : offres d’emploi, candidatures par e-mail et informations pour rejoindre l’entreprise à Rabat.",
+    status: "published",
+  },
+  // The utility pages are P1 pages: Carrières is footer-only and opens with
+  // #27, the legal pages with #28 (the contact and careers notices link the
+  // privacy policy). Same publish state as the fixture `p1` scenario.
+  {
+    key: "mentions-legales",
+    title: "Mentions légales",
+    description:
+      "Mentions légales de SOCIETE HAY 2010 (SARL, RC 87305, ICE 001459327000056) : éditeur, propriété intellectuelle, données personnelles et cookies.",
+    status: "published",
+  },
+  {
+    key: "politique-de-confidentialite",
+    title: "Politique de confidentialité",
+    description:
+      "Politique de confidentialité de SOCIETE HAY 2010 : données traitées, finalités, durées de conservation, droits et cookies.",
+    status: "published",
+  },
   {
     key: "realisations",
     title: "Nos réalisations",
+    description:
+      "Les réalisations de HAY2010 : méthodes, moyens et références sur demande pour l’éclairage public et l’électrification à Rabat.",
     status: "draft",
     // Rights-pending image: publishing this page must be rejected until the
     // developer records the release (the media rights gate).
@@ -247,6 +300,7 @@ async function seedPages(
       data: {
         key: definition.key,
         title: definition.title,
+        description: definition.description,
         blocks: definition.blocks ?? [],
         cover: cover?.id,
         _status: definition.status,
