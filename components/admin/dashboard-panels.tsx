@@ -22,7 +22,8 @@
  */
 import { APPROVED_CLAIMS } from "@/lib/site/claims"
 import { COMPANY } from "@/lib/site/company"
-import { NOT_FOUND_TITLE, SITE_URL } from "@/lib/site/site"
+import { SITE_ORIGIN } from "@/lib/seo/site"
+import { NOT_FOUND_TITLE } from "@/lib/site/site"
 import {
   CODE_GATE_NOTES,
   DOMAIN_GATES,
@@ -221,7 +222,7 @@ export function DashboardPanels() {
         </h3>
         <ReferenceList
           items={[
-            ["Origine canonique", SITE_URL],
+            ["Origine canonique", SITE_ORIGIN],
             ["Suffixe de marque", "— HAY2010"],
             ["Titre du 404", NOT_FOUND_TITLE],
             ["Modèles SEO", "Code-owned (#32) : jamais un champ du CMS"],

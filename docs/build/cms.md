@@ -177,7 +177,8 @@ Modelled nowhere in Payload, therefore impossible to edit from the admin:
 - the qualification position and the case-study gate (`lib/site/realisations.ts`);
 - navigation labels/order, routes, tiers and gate reasons
   (`lib/site/rubriques.ts`, `lib/payload/content-map.ts`);
-- SEO patterns/defaults (`lib/site/site.ts`, `lib/site/metadata.ts`; #32 extends);
+- SEO patterns/defaults (`lib/seo/*`: canonical origin, title template, launch
+  metadata table — #32 delivered the system, the CMS stores no default);
 - the F-113 careers mailbox state and the internal-link destinations
   (`lib/payload/link-targets.ts`).
 - `domaines.slug`, `jobs.applicationEmail` and every permission/review reference
