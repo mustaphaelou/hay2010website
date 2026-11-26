@@ -1,5 +1,5 @@
 {
-  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy; gate states live in content/fixtures/scenarios/*.json. #22 delivered the domain index and the three published domain pages (CDC trame, DEV-006 omissions; CFO/CFA and postes de transformation are prestations, not domains). #25 delivered the À propos page (identity, perimeter, mission/vision/values, compliance). #26 delivered the email-first Contact page (gated channels behind the seam, no form). #28 delivers the two legal utility pages: their identity block and approved copy are code-owned in lib/legal/ (never CMS-editable), so their page documents only register the route for the sitemap and the gate, with no blocks, title or description.",
+  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy; gate states live in content/fixtures/scenarios/*.json. #22 delivered the domain index and the three published domain pages (CDC trame, DEV-006 omissions; CFO/CFA and postes de transformation are prestations, not domains). #25 delivered the À propos page (identity, perimeter, mission/vision/values, compliance). #26 delivered the email-first Contact page (gated channels behind the seam, no form). #28 delivers the two legal utility pages: their identity block and approved copy are code-owned in lib/legal/ (never CMS-editable), so their page documents only register the route for the sitemap and the gate, with no blocks, title or description. #24 delivered the credentials-led Réalisations page (références sur demande, qualification position, method; no cards, no detail routes); its block set is hero, intro, domaines, qualifications, credentials, sections, steps and contact-cta.",
   "pages": {
     "accueil": {
       "blocks": []
@@ -106,7 +106,124 @@
       ]
     },
     "realisations": {
-      "blocks": []
+      "title": "Réalisations",
+      "description": "Références de HAY2010 en éclairage public et électrification : méthode de projet et références transmises sur demande. Plus de 10 ans d’expérience.",
+      "blocks": [
+        {
+          "kind": "hero",
+          "headline": "Références sur demande.",
+          "links": [
+            {
+              "label": "Demander nos références",
+              "href": "mailto:contact@hay2010.ma?subject=Demande%20de%20r%C3%A9f%C3%A9rences"
+            },
+            {
+              "label": "Découvrir nos domaines d’activité",
+              "href": "/domaines-activite"
+            }
+          ]
+        },
+        {
+          "kind": "intro",
+          "paragraphs": [
+            "Depuis plus de 10 ans, HAY2010 accompagne les collectivités et les entreprises dans leurs projets d’éclairage public et d’électrification.",
+            "Nos références sont transmises sur demande, après accord des maîtres d’ouvrage."
+          ],
+          "link": {
+            "label": "Découvrir nos domaines d’activité",
+            "href": "/domaines-activite"
+          }
+        },
+        {
+          "kind": "domaines",
+          "title": "Ce que nous réalisons"
+        },
+        {
+          "kind": "qualifications",
+          "title": "Nos qualifications"
+        },
+        {
+          "kind": "credentials",
+          "title": "Références",
+          "statement": "Références sur demande.",
+          "body": "Nos références sont transmises sur demande, après accord des maîtres d’ouvrage.",
+          "items": [
+            {
+              "label": "Objet et service",
+              "description": "L’objet des travaux réalisés et le domaine d’activité concerné."
+            },
+            {
+              "label": "Lieu et année",
+              "description": "La région et l’année de réalisation ou de contrat."
+            },
+            {
+              "label": "Périmètre",
+              "description": "Le périmètre des travaux, en une ligne."
+            },
+            {
+              "label": "Pièces du dossier",
+              "description": "Chaque référence transmise s’appuie sur les pièces du dossier : contrat ou procès-verbal de réception."
+            }
+          ],
+          "link": {
+            "label": "Demander nos références",
+            "href": "mailto:contact@hay2010.ma?subject=Demande%20de%20r%C3%A9f%C3%A9rences"
+          }
+        },
+        {
+          "kind": "sections",
+          "title": "Comment un projet est documenté",
+          "items": [
+            {
+              "title": "Nom du maître d’ouvrage",
+              "body": "Le nom d’un client ne figure sur le site qu’après son autorisation écrite."
+            },
+            {
+              "title": "Photographies",
+              "body": "Une photographie de chantier n’est publiée qu’avec l’autorisation écrite du site et les droits du photographe. Toute personne identifiable fait l’objet d’une autorisation propre."
+            },
+            {
+              "title": "Témoignages",
+              "body": "Un témoignage n’est publié qu’avec l’accord écrit de son auteur, sur un texte qu’il a approuvé."
+            },
+            {
+              "title": "Fiche détaillée",
+              "body": "Un projet ne dispose d’une fiche détaillée qu’une fois ces autorisations réunies."
+            }
+          ]
+        },
+        {
+          "kind": "steps",
+          "title": "De l’étude à la réception",
+          "items": [
+            {
+              "title": "Étude et dimensionnement",
+              "body": "Études techniques et photométriques, plans d’exécution."
+            },
+            {
+              "title": "Chiffrage et approvisionnement",
+              "body": "Chiffrage, achats et logistique du matériel."
+            },
+            {
+              "title": "Exécution et coordination",
+              "body": "Travaux, coordination de chantier et contrôle de conformité."
+            },
+            {
+              "title": "Réception et mise en service",
+              "body": "Essais, réception et mise en service."
+            }
+          ]
+        },
+        {
+          "kind": "contact-cta",
+          "title": "Un projet d’éclairage public ou d’électrification ?",
+          "body": "Écrivez-nous pour présenter votre projet ou demander nos références.",
+          "link": {
+            "label": "Nous contacter",
+            "href": "/contact"
+          }
+        }
+      ]
     },
     "contact": {
       "title": "Contact",
