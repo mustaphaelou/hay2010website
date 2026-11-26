@@ -154,6 +154,8 @@ export interface EngagementsBlock {
 export interface CredentialsBlock {
   readonly kind: "credentials"
   readonly statement: string
+  /** Optional supporting paragraph (homepage teaser, fallback wording). */
+  readonly body?: string
   readonly items: readonly LabelledItem[]
   readonly link?: ContentLink
 }
@@ -286,7 +288,8 @@ export interface ActualiteDocument {
 /** Permission state of a media asset (content model §7). */
 export interface MediaRights {
   readonly status: "cleared" | "pending" | "revoked"
-  readonly basis: "company-owned" | "purchased" | "licensed" | "authorised" | "unknown"
+  readonly basis:
+    "company-owned" | "purchased" | "licensed" | "authorised" | "unknown"
   readonly permissionReference?: string
   readonly peoplePresent: boolean
   readonly releaseStatus: "cleared" | "pending" | "not-required"
