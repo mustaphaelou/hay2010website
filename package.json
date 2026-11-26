@@ -7,12 +7,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
+    "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
+    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
+    "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
+    "migrate:status": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:status",
+    "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/seed.ts",
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "node scripts/test-http.mjs",
     "typecheck": "tsc --noEmit",
     "check:ops": "node scripts/check-ops.mjs",
-    "rehearse:backup": "bash scripts/rehearse-backup-restore.sh"
+    "rehearse:backup": "bash scripts/rehearse-backup-restore.sh",
+    "test:cms": "node scripts/test-cms.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
