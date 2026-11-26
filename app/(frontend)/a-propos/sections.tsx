@@ -153,11 +153,12 @@ export function AProposChapter({
                 twoColumns ? "grid gap-x-10 gap-y-8 sm:grid-cols-2" : "space-y-8"
               )}
             >
-              {items.map((item) => (
+              {items.map((item, itemIndex) => (
                 <li
                   key={item.title}
                   className={cn(
                     "border-t pt-5",
+                    twoColumns && itemIndex === 0 && "sm:col-span-2",
                     ink ? "border-surface/15" : "border-line"
                   )}
                 >
@@ -221,7 +222,7 @@ export function AProposContactCta({ block }: { block: ContactCtaBlock }) {
             {block.title}
           </h2>
           {block.body ? (
-            <p className="mt-4 max-w-[48ch] text-[14px] leading-relaxed text-ink/75">
+            <p className="mt-4 max-w-[48ch] text-[14px] leading-relaxed text-ink">
               {block.body}
             </p>
           ) : null}
