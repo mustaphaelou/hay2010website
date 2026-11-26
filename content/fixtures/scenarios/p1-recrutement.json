@@ -1,0 +1,54 @@
+{
+  "$comment": "F-113-granted simulation, never a production corpus: P1 plus the careers mailbox live and the owner-published openings. The CNDP reference is fictitious on purpose; the test proves the page publishes recrutement@, invites CVs by e-mail and renders the approved notice only with a real number and date (forms doc §4.4/§4.9). the five CDC rubriques, three published domains, the Carrières utility page open in the footer, the legal utilities still closed until #28. No opening has been confirmed by the owner, so the jobs gates are closed and /carrières renders its honest empty state (forms doc §4.9). The F-113 careers channel is closed: contact@ for questions, no CV invitation.",
+  "tier": "P1",
+  "rubriques": {
+    "accueil": { "published": true },
+    "a-propos": { "published": true },
+    "domaines-activite": { "published": true },
+    "realisations": { "published": true },
+    "moyens-et-competences": {
+      "published": false,
+      "reason": "Palier P2 — inventaire matériel, photographique et RH de l’owner requis (CDC §11)."
+    },
+    "references-et-partenaires": {
+      "published": false,
+      "reason": "Palier P2 — autorisations clients, partenaires et certifications requises (CDC §11)."
+    },
+    "actualites": {
+      "published": false,
+      "reason": "Palier P3 — au moins une actualité approuvée requise."
+    },
+    "contact": { "published": true },
+    "carrieres": { "published": true },
+    "mentions-legales": {
+      "published": false,
+      "reason": "Page livrée par le ticket #28."
+    },
+    "politique-de-confidentialite": {
+      "published": false,
+      "reason": "Page livrée par le ticket #28."
+    }
+  },
+  "domains": {
+    "eclairage-public": { "published": true },
+    "installations-electriques": { "published": true },
+    "infrastructures-reseaux-electriques": { "published": true },
+    "energies-renouvelables": {
+      "published": false,
+      "reason": "Périmètre réel à confirmer par écrit par l’owner (CDC §4.3)."
+    },
+    "fourniture-equipements": {
+      "published": false,
+      "reason": "Catalogue et autorisations de distribution et de marque manquants (CDC §4.5)."
+    }
+  },
+  "jobs": {
+    "electricien-hta-bt": { "published": true },
+    "chef-de-chantier-eclairage-public": { "published": true },
+    "technicien-cfo-cfa": { "published": true }
+  },
+  "careers": {
+    "recruitmentMailboxLive": true,
+    "authorization": { "number": "F113-SIMULATION", "date": "01/01/2027" }
+  }
+}

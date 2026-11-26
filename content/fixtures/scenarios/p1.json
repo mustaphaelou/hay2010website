@@ -1,5 +1,5 @@
 {
-  "$comment": "P1 launch state: the five CDC rubriques, three published domains, no utility page yet (Carrières #27, legal #28 flip their state here).",
+  "$comment": "P1 launch state: the five CDC rubriques, three published domains, the Carrières utility page open in the footer, the legal utilities still closed until #28. No opening has been confirmed by the owner, so the jobs gates are closed and /carrières renders its honest empty state (forms doc §4.9). The F-113 careers channel is closed: contact@ for questions, no CV invitation.",
   "tier": "P1",
   "rubriques": {
     "accueil": { "published": true },
@@ -19,10 +19,7 @@
       "reason": "Palier P3 — au moins une actualité approuvée requise."
     },
     "contact": { "published": true },
-    "carrieres": {
-      "published": false,
-      "reason": "Page livrée par le ticket #27."
-    },
+    "carrieres": { "published": true },
     "mentions-legales": {
       "published": false,
       "reason": "Page livrée par le ticket #28."
@@ -44,5 +41,20 @@
       "published": false,
       "reason": "Catalogue et autorisations de distribution et de marque manquants (CDC §4.5)."
     }
-  }
+  },
+  "jobs": {
+    "electricien-hta-bt": {
+      "published": false,
+      "reason": "Aucune offre confirmée par l’owner au lancement (registre des faits §8)."
+    },
+    "chef-de-chantier-eclairage-public": {
+      "published": false,
+      "reason": "Aucune offre confirmée par l’owner au lancement (registre des faits §8)."
+    },
+    "technicien-cfo-cfa": {
+      "published": false,
+      "reason": "Aucune offre confirmée par l’owner au lancement (registre des faits §8)."
+    }
+  },
+  "careers": { "recruitmentMailboxLive": false }
 }

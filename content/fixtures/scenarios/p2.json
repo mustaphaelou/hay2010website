@@ -1,5 +1,5 @@
 {
-  "$comment": "P2 gate simulation: Moyens and Références open (7-item row), the two gated domains open. No page document exists for the P2 rubriques yet, so they appear in navigation but not in the sitemap.",
+  "$comment": "P2 gate simulation: Moyens and Références open (7-item row), the two gated domains open. No page document exists for the P2 rubriques yet, so they appear in navigation but not in the sitemap. The owner-published openings simulate the populated /carrières state while F-113 stays closed (questions to contact@, no CV invitation); the third job is past its closing date and must never render.",
   "tier": "P2",
   "rubriques": {
     "accueil": { "published": true },
@@ -13,10 +13,7 @@
       "reason": "Palier P3 — au moins une actualité approuvée requise."
     },
     "contact": { "published": true },
-    "carrieres": {
-      "published": false,
-      "reason": "Page livrée par le ticket #27."
-    },
+    "carrieres": { "published": true },
     "mentions-legales": {
       "published": false,
       "reason": "Page livrée par le ticket #28."
@@ -32,5 +29,11 @@
     "infrastructures-reseaux-electriques": { "published": true },
     "energies-renouvelables": { "published": true },
     "fourniture-equipements": { "published": true }
-  }
+  },
+  "jobs": {
+    "electricien-hta-bt": { "published": true },
+    "chef-de-chantier-eclairage-public": { "published": true },
+    "technicien-cfo-cfa": { "published": true }
+  },
+  "careers": { "recruitmentMailboxLive": false }
 }

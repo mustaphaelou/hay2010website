@@ -1,5 +1,5 @@
 {
-  "$comment": "P3 gate simulation: Actualités open (8-item row). Actualités has no page document yet, so it stays out of the sitemap until its route and content ship.",
+  "$comment": "P3 gate simulation: Actualités open (8-item row). Actualités has no page document yet, so it stays out of the sitemap until its route and content ship. /carrières keeps the populated openings and the F-113-closed channel from p2.",
   "tier": "P3",
   "rubriques": {
     "accueil": { "published": true },
@@ -10,10 +10,7 @@
     "references-et-partenaires": { "published": true },
     "actualites": { "published": true },
     "contact": { "published": true },
-    "carrieres": {
-      "published": false,
-      "reason": "Page livrée par le ticket #27."
-    },
+    "carrieres": { "published": true },
     "mentions-legales": {
       "published": false,
       "reason": "Page livrée par le ticket #28."
@@ -29,5 +26,11 @@
     "infrastructures-reseaux-electriques": { "published": true },
     "energies-renouvelables": { "published": true },
     "fourniture-equipements": { "published": true }
-  }
+  },
+  "jobs": {
+    "electricien-hta-bt": { "published": true },
+    "chef-de-chantier-eclairage-public": { "published": true },
+    "technicien-cfo-cfa": { "published": true }
+  },
+  "careers": { "recruitmentMailboxLive": false }
 }

@@ -5,7 +5,25 @@
     "a-propos": { "blocks": [] },
     "domaines-activite": { "blocks": [] },
     "realisations": { "blocks": [] },
-    "contact": { "blocks": [] }
+    "contact": { "blocks": [] },
+    "carrieres": {
+      "title": "Carrières",
+      "blocks": [
+        {
+          "kind": "hero",
+          "headline": "Carrières",
+          "tagline": "Les métiers de l’éclairage public et de l’électrification à Rabat.",
+          "links": []
+        },
+        {
+          "kind": "intro",
+          "paragraphs": [
+            "HAY2010 accompagne les collectivités et les entreprises dans leurs projets d’éclairage public et d’électrification. Plus de 10 ans d’expérience, des équipes de terrain et des chantiers suivis de l’étude à la réception.",
+            "Nos équipes interviennent sur les réseaux HTA/MT et MT/BT, les postes de transformation et les installations CFO/CFA, dans le respect des règles de sécurité et de la qualité d’exécution."
+          ]
+        }
+      ]
+    }
   },
   "domains": [
     { "slug": "eclairage-public", "title": "Éclairage public", "blocks": [] },
@@ -31,5 +49,42 @@
     }
   ],
   "actualites": [],
+  "jobs": [
+    {
+      "slug": "electricien-hta-bt",
+      "title": "Électricien HTA-BT",
+      "contractType": "CDI",
+      "location": "Rabat",
+      "department": "Réseaux électriques",
+      "experience": "2 ans d’expérience",
+      "summary": "Raccordement, pose et mise en service de réseaux HTA-BT\u00a0; lecture de plans et respect des règles de sécurité sur chantier.",
+      "status": "open",
+      "featured": true,
+      "postedAt": "2026-11-02"
+    },
+    {
+      "slug": "chef-de-chantier-eclairage-public",
+      "title": "Chef de chantier éclairage public",
+      "contractType": "CDI",
+      "location": "Rabat",
+      "department": "Éclairage public",
+      "experience": "5 ans d’expérience",
+      "summary": "Encadrement des équipes de pose et suivi des chantiers d’éclairage public, de la préparation à la réception.",
+      "status": "open",
+      "featured": false,
+      "postedAt": "2026-11-10"
+    },
+    {
+      "slug": "technicien-cfo-cfa",
+      "title": "Technicien CFO/CFA",
+      "contractType": "CDD",
+      "location": "Rabat",
+      "summary": "Installation et mise en service de tableaux et de câblages CFO/CFA sur des chantiers de bâtiment.",
+      "status": "open",
+      "featured": false,
+      "postedAt": "2026-01-05",
+      "closingAt": "2026-02-28"
+    }
+  ],
   "media": []
 }
