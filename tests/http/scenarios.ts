@@ -270,6 +270,16 @@ const CAREERS_LIVE: ScenarioCareers = {
 
 const domainPath = (slug: string) => `/domaines-activite/${slug}`
 
+/**
+ * The named-case-study family `/realisations/{slug}` is gated at every tier
+ * until three approved named case studies exist (realisations strategy §4,
+ * spec §"Réalisations"). The gate is code-owned (`CASE_STUDIES_LIVE`), not a
+ * fixture tier flag, so the same closed paths are expected in every scenario.
+ */
+export const GATED_CASE_STUDY_ROUTES = [
+  "/realisations/projet-non-publie",
+] as const
+
 /** Sitemap: published rubriques with a page document + published domains. */
 function sitemapPathsFor(
   pageRoutes: readonly string[],
@@ -307,6 +317,7 @@ const BASE_EXPECTATIONS: Readonly<
       "/moyens-et-competences",
       "/references-et-partenaires",
       "/actualites",
+      ...GATED_CASE_STUDY_ROUTES,
     ],
     sitemapPaths: sitemapPathsFor(
       [...P1_ROUTES, ...LEGAL_ROUTES, CAREERS_ROUTE],
@@ -335,7 +346,7 @@ const BASE_EXPECTATIONS: Readonly<
       CAREERS_ROUTE,
       ...[...P1_DOMAINS, ...GATED_DOMAINS].map(domainPath),
     ],
-    gatedRoutes: ["/actualites"],
+    gatedRoutes: ["/actualites", ...GATED_CASE_STUDY_ROUTES],
     sitemapPaths: sitemapPathsFor(
       [...P1_ROUTES, ...LEGAL_ROUTES, CAREERS_ROUTE],
       [...P1_DOMAINS, ...GATED_DOMAINS]
@@ -361,7 +372,7 @@ const BASE_EXPECTATIONS: Readonly<
       CAREERS_ROUTE,
       ...[...P1_DOMAINS, ...GATED_DOMAINS].map(domainPath),
     ],
-    gatedRoutes: [],
+    gatedRoutes: [...GATED_CASE_STUDY_ROUTES],
     sitemapPaths: sitemapPathsFor(
       [...P1_ROUTES, ...LEGAL_ROUTES, CAREERS_ROUTE],
       [...P1_DOMAINS, ...GATED_DOMAINS]
@@ -396,6 +407,7 @@ const BASE_EXPECTATIONS: Readonly<
       "/a-propos",
       domainPath("eclairage-public"),
       ...GATED_DOMAINS.map(domainPath),
+      ...GATED_CASE_STUDY_ROUTES,
     ],
     sitemapPaths: sitemapPathsFor(
       [
@@ -436,6 +448,7 @@ const BASE_EXPECTATIONS: Readonly<
       "/moyens-et-competences",
       "/references-et-partenaires",
       "/actualites",
+      ...GATED_CASE_STUDY_ROUTES,
     ],
     sitemapPaths: sitemapPathsFor(
       [...P1_ROUTES, ...LEGAL_ROUTES, CAREERS_ROUTE],

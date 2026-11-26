@@ -150,14 +150,36 @@ export interface EngagementsBlock {
   readonly items: readonly TitledItem[]
 }
 
-/** Réalisations: credentials-led statement and service rows. */
+/**
+ * Réalisations: the references block of the credentials-led page.
+ *
+ * `statement` is the approved `Références sur demande.` wording; `body` the
+ * settled fallback sentence; `items` what a reference request covers. No card
+ * data exists in this block: anonymized reference cards are not published at
+ * launch (realisations strategy §2.3, DEV-001).
+ */
 export interface CredentialsBlock {
   readonly kind: "credentials"
+  readonly title?: string
   readonly statement: string
   /** Optional supporting paragraph (homepage teaser, fallback wording). */
   readonly body?: string
   readonly items: readonly LabelledItem[]
   readonly link?: ContentLink
+}
+
+/**
+ * Réalisations: the qualifications block anchor.
+ *
+ * The block is a placement marker, not claim content: the qualifications are
+ * code-owned in `lib/site/realisations.ts` and read the approved claim registry
+ * in `lib/site/claims.ts`. While the claim gate is closed (both ONEE
+ * certificates missing at P1) the renderer prints the honest code-owned
+ * position instead of any agrément wording, and never a placeholder.
+ */
+export interface QualificationsBlock {
+  readonly kind: "qualifications"
+  readonly title?: string
 }
 
 /** A call to the cleared contact channel. */
@@ -290,6 +312,7 @@ export type ContentBlock =
   | ReperesBlock
   | EngagementsBlock
   | CredentialsBlock
+  | QualificationsBlock
   | ContactCtaBlock
   | ContactChannelsBlock
   | SectionsBlock
@@ -332,6 +355,57 @@ export interface ActualiteDocument {
   /** ISO date of publication, when the content source records one. */
   readonly publishedAt?: string
   readonly blocks: readonly ContentBlock[]
+}
+
+/**
+ * One rights-cleared image of a named case study (content model §5 `projects`
+ * gallery item). Only cleared media may be referenced; the provider applies
+ * the rights gate before a record leaves the seam.
+ */
+export interface CaseStudyImage {
+  readonly mediaId: MediaId
+  readonly alt: string
+  readonly caption?: string
+}
+
+/**
+ * A published named case study — the `/realisations/{slug}` detail record.
+ *
+ * The model exists before the family opens (realisations strategy §4, content
+ * model §5 `projects`): the route and its links stay gated until
+ * `CASE_STUDIES_LIVE` is true **and** at least three approved named case
+ * studies exist. Nothing is exposed at P1.
+ *
+ * The fields mirror the decided publish rules, so the permission gates are
+ * structural: `clientName` appears only with a signed client authorisation,
+ * `gallery`/`cover` only with rights-cleared media, a quote only with written
+ * consent. An anonymized card has no detail page and is never modelled here.
+ */
+export interface CaseStudyDocument {
+  readonly slug: string
+  readonly title: string
+  /** One of the four launch services (the card's service label). */
+  readonly service: string
+  /** Region by default; a city only when it does not identify the client. */
+  readonly location: string
+  readonly year: number
+  /** Buyer name; present only with a signed client authorisation. */
+  readonly clientName?: string
+  /** One-line scope of the works. */
+  readonly scope: string
+  /** Approved case-study body. */
+  readonly body?: {
+    readonly challenge?: string
+    readonly solution?: string
+    readonly results?: string
+  }
+  /** Rights-cleared cover; absent for a typographic anonymized card. */
+  readonly cover?: CaseStudyImage
+  /** Rights-cleared gallery; never a placeholder frame. */
+  readonly gallery?: readonly CaseStudyImage[]
+  readonly relatedProjects?: readonly ContentLink[]
+  /** ISO date of publication, when the content source records one. */
+  readonly publishedAt?: string
 }
 
 /** Permission state of a media asset (content model §7). */

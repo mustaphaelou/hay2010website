@@ -76,15 +76,6 @@ const DOMAIN_TITLES: Readonly<Record<string, string>> = {
   "fourniture-equipements": "Fourniture d’équipements et de matériel",
 }
 
-/**
- * Routes whose page still inherits the layout's metadata because its content
- * ticket has not landed: /realisations is the credentials-led page of #24, and
- * until it ships it renders the shell default (which is the homepage default).
- * Its own suite proves its unique metadata; the homepage cannot fix another
- * page's head, so the collision check skips it here.
- */
-const ROUTES_AWAITING_OWN_COPY = new Set(["/realisations"])
-
 /** Top-level sections of `<main>`, in document order (the trame is flat). */
 function sectionsOf(main: HTMLElement): HTMLElement[] {
   return elementChildren(main).filter(
@@ -526,7 +517,7 @@ describe(`accueil — motion and metadata (${scenario.name})`, () => {
 
     // Unique metadata against every other published page of this scenario.
     for (const route of scenario.openRoutes) {
-      if (route === HOMEPAGE || ROUTES_AWAITING_OWN_COPY.has(route)) continue
+      if (route === HOMEPAGE) continue
       const other = await fetchPage(route)
       expect(other.status, `${route} must be served in this scenario`).toBe(200)
       const document = assertCanonicalDocument(other)

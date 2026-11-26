@@ -237,6 +237,37 @@ import a component and never assert class names or call order.
 - the identity and approved copy are code-owned (`lib/legal/`), absent from the
   content corpus, and never read through the content seam.
 
+`tests/http/realisations.test.ts` (#24)
+
+- `/realisations` serves one canonical French document with one `h1` and
+  substantive credentials copy, not an empty shell;
+- it states the approved `Références sur demande.` wording and the exact
+  fallback sentence, and the qualification block prints the honest code-owned
+  position — with no ONEE/agrément/certification/« entreprise agréée » wording
+  in any P1 scenario (the claim's `live` flag in `lib/site/claims.ts` is false
+  while both certificates are missing);
+- the service rows are exactly the scenario's published domains, each linking
+  its live domain page; a gated domain is absent from the rows and their links;
+- the page explains what a reference request covers (object/service, place and
+  year, scope, contract or réception as evidence) and the permission rules that
+  document a project once written authorisations exist;
+- no catalogue surface: no form/filter/pagination control or vocabulary, no URL
+  filter parameters, no card list (no nested `<article>`, no `<time>`), no
+  image/media element, no client name, logo, quote, amount or procurement
+  figure, no testimonial or « ils nous font confiance » band, no portfolio
+  wording, no placeholder copy;
+- the four-step method renders as an ordered list under `De l’étude à la
+  réception`, and the contact CTA links `/contact` while the reference CTA is
+  the exact `mailto:contact@hay2010.ma` with the decided subject;
+- metadata: the decided unique title, the 120–170 character `agrementLive:
+  false` description, one canonical apex URL without a slash, indexable, and no
+  JSON-LD at all (`#32` owns structured data; no ItemList/CreativeWork/Review
+  before three published projects); the title/description are unique against
+  every other open route of the scenario;
+- the gated named-case-study family: `/realisations/{slug}` serves the branded
+  404 (same document as an unknown URL), never redirects, and appears in no
+  navigation, footer, sitemap entry or internal link of the route matrix.
+
 `tests/http/carrieres.test.ts` (#27)
 
 - `/carrieres` serves a canonical French document with one `h1` (`Carrières`)
@@ -262,8 +293,8 @@ import a component and never assert class names or call order.
   behind the adapter (#29 must keep this);
 - only `lib/content/` imports a provider directly — rendering code goes through
   `getContentSource()`;
-- every frontend page calls `requirePublishedRubrique()` /
-  `requirePublishedDomain()`;
+- every frontend page calls its `requirePublishedRubrique()` /
+  `requirePublishedDomain()` / `requirePublishedCaseStudy()` guard first;
 - there is no root `app/layout.tsx` (the embedded Payload admin needs its own
   root layout) and `app/global-not-found.tsx` exists.
 
@@ -311,6 +342,7 @@ preemptively (spec: "Deferred").
 | `tests/http/a-propos.test.ts` | #25 institutional trame, gated claims, unique metadata |
 | `tests/http/domaines.test.ts` | #22 domain index, CDC trame pages, DEV-006 omissions, gated-domain/claim absence, unique metadata |
 | `tests/http/legal.test.ts` | #28 legal pages: code-owned identity/copy, cookies, retention, rights, footer links, metadata |
+| `tests/http/realisations.test.ts` | #24 credentials-led références page, qualification claim gate, no catalogue/client evidence, gated case-study family 404 and absence |
 | `tests/http/carrieres.test.ts` | #27 Carrières: footer-only reachability, inline openings, F-113 email gate, no form/`JobPosting`, unique metadata |
 | `tests/architecture.test.ts` | seam/layout/legal-ownership guards: no direct CMS import, no root `app/layout.tsx`, every page gated, legal copy code-owned |
 
@@ -323,8 +355,12 @@ Extend this suite; do not add a second runner or component tests.
   `fetchPage`, `assertCanonicalDocument`, `textOf`. Import the expectations of
   `scenarios.ts` when the public shape changes.
 - **New gated route families** (#24 and later): extend `resolveRouteGate()`
-  (`lib/site/route-gate.ts`) and the `gatedRoutes`/`openRoutes` lists in
-  `tests/http/scenarios.ts`.
+  (`lib/site/route-gate.ts`), add the route's render-side `requirePublished*()`
+  guard, and add the closed paths to `gatedRoutes` in
+  `tests/http/scenarios.ts`. #24's `/realisations/{slug}` family is the worked
+  example: a code-owned `CASE_STUDIES_LIVE` gate, a route that calls
+  `requirePublishedCaseStudy()` first, and `GATED_CASE_STUDY_ROUTES` asserted in
+  every scenario.
 - **New scenario**: JSON file + provider map + `SCENARIOS` in the orchestrator +
   expectations block.
 - **Legacy redirects/410s** (#32): fetch with `redirect: "manual"` (already the

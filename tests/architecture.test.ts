@@ -98,11 +98,12 @@ describe("content seam architecture", () => {
     expect(publicPages.length, "expected the P1 route pages to exist").toBeGreaterThan(0)
     const unguarded = publicPages.filter((file) => {
       const content = readFileSync(path.join(ROOT, file), "utf8")
-      return !/requirePublished(?:Rubrique|Domain)\(/.test(content)
+      // A gated dynamic family gets its own render-side guard (#24).
+      return !/requirePublished(?:Rubrique|Domain|CaseStudy)\(/.test(content)
     })
     expect(
       unguarded,
-      "every page must call requirePublishedRubrique()/requirePublishedDomain() first"
+      "every page must call its requirePublished*() guard first"
     ).toEqual([])
   })
 })
