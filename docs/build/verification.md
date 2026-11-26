@@ -287,6 +287,75 @@ import a component and never assert class names or call order.
   page; metadata is the approved unique title/description for the current gate
   state.
 
+`tests/http/seo.test.ts` (#32)
+
+- every decided P1 route serves the approved `<title>` and 120–160 character
+  description (SEO §3.3 adapted to the P1 routes); titles carry exactly one
+  `— HAY2010` (homepage `title.absolute`, brand first) and are unique per
+  scenario, as are descriptions;
+- one absolute, apex, HTTPS, query-free, slash-free self-referencing canonical
+  per page (homepage = the origin); full Open Graph/Twitter objects on every
+  page (`fr_FR`, `og:site_name`, `summary_large_image`, 1200×630 image
+  descriptor, no `twitter:site`/`creator`, no alternate locale);
+- baseline head: `lang=fr`, index/follow + Googlebot hints, light scheme, paper
+  theme colour, viewport-fit, format-detection off, no keywords/author/hreflang;
+- the 404 document is noindex/nofollow with the French title and no canonical;
+- no gated claim (ONEE/agrément/solaire/phone/old RC/figures/…) in the metadata
+  of a published P1 page.
+
+`tests/http/structured-data.test.ts` (#32)
+
+- one native JSON-LD block per page, one parsed `@graph`, exactly one
+  Organization and one WebPage node; WebSite only on the homepage (no
+  `SearchAction`, no tagline);
+- Organization carries only cleared facts (name, legal/alternate name, URL,
+  `contact@`, registered seat, RC/ICE identifiers, four `knowsAbout`
+  services); the WebPage subtype matches the page (`AboutPage`, `ContactPage`,
+  `CollectionPage`, else `WebPage`), ids/url/name are stable and canonical;
+- the type whitelist and the gated-type/gated-property denylists hold
+  (`LocalBusiness`, `JobPosting`, `BreadcrumbList`, `Review`, `Service`,
+  `Article`, `sameAs`, `logo`, `telephone`, `foundingDate`, …), no gated URL or
+  claim appears in a graph, and a 404 carries no structured data.
+
+`tests/http/og-card.test.ts` (#32)
+
+- the default share card is served over HTTP as a real 1200×630 PNG under
+  300 KB, on the same origin; every published page uses it as `og:image` and
+  `twitter:image` with width/height/type metas; the 404 publishes no card.
+
+`tests/http/robots.test.ts` (#32)
+
+- production `/robots.txt`: allow public, disallow `/admin`, `/api/`, `/preview/`,
+  absolute sitemap line, never the staging disallow-all and never blocking
+  `/_next/`, `/og/`, the sitemap or the legacy paths; no public response carries
+  the staging `X-Robots-Tag`; the advertised sitemap is served. Staging's
+  disallow-all/noindex behaviour is covered by `scripts/check-ops.mjs`, not by
+  this production-mode suite.
+
+`tests/http/sitemap.test.ts` (#32)
+
+- exactly the published, built set of the scenario (derived through the seam),
+  one `urlset`, absolute apex HTTPS URLs without slash/query, every entry is the
+  canonical 200 page it claims; no gated rubrique/domain, no
+  `/realisations/{slug}` family, no `/en`/admin/API/preview/prototype/legacy or
+  asset URL; no fake `lastmod`, `changefreq`, `priority` or image/video
+  extension; crawlable (200, XML, no staging header, referenced by robots.txt).
+
+`tests/http/legacy-urls.test.ts` (#32)
+
+- table-driven SEO §7 map: every legacy equivalent (pages, service children,
+  portfolio archive, sitemap files, file-path slashes) is a single-hop 301 to
+  its decided new route, whose target returns 200; the old shortlink/search
+  queries 301 to the homepage with the query dropped; demo posts/archives,
+  portfolio records, members, taxonomies, author, feeds, WooCommerce, WP assets,
+  the sitemap stylesheet, filler page, pagination, search and `/blog/` are 410
+  (no `Location`, noindex, minimal French HTML with a home link and no
+  canonical); the other WP query parameters are 410 while tracking parameters
+  render 200; case variants 301; every trailing-slash variant normalises
+  permanently to the no-slash URL (gated routes still end on 404); no redirect
+  target is gated or on `/en`/`/admin`/`/api`/`/preview`; `/api/health` and
+  `/admin` are not intercepted; WP internals are 404.
+
 `tests/architecture.test.ts` (structural guards, not HTTP)
 
 - no file outside `lib/content/providers/` imports Payload — the CMS stays
@@ -344,7 +413,14 @@ preemptively (spec: "Deferred").
 | `tests/http/legal.test.ts` | #28 legal pages: code-owned identity/copy, cookies, retention, rights, footer links, metadata |
 | `tests/http/realisations.test.ts` | #24 credentials-led références page, qualification claim gate, no catalogue/client evidence, gated case-study family 404 and absence |
 | `tests/http/carrieres.test.ts` | #27 Carrières: footer-only reachability, inline openings, F-113 email gate, no form/`JobPosting`, unique metadata |
+| `tests/http/seo.test.ts` | #32 canonical URL policy, approved titles/descriptions, uniqueness/bounds, OG/Twitter, head baseline, 404 metadata, gated-claim denylist |
+| `tests/http/structured-data.test.ts` | #32 one JSON-LD `@graph`, Organization/WebSite/WebPage types and ids, cleared facts, gated-type/property denylists |
+| `tests/http/og-card.test.ts` | #32 served 1200×630 PNG share card as the default `og:image`/`twitter:image` |
+| `tests/http/robots.test.ts` | #32 production robots rules, staging posture absent in production, sitemap advertised/served |
+| `tests/http/sitemap.test.ts` | #32 exact published sitemap set, canonical 200 per entry, gated-URL guards, no fake `lastmod` |
+| `tests/http/legacy-urls.test.ts` | #32 table-driven 301/410/case/query/trailing-slash legacy WordPress map, no gated target, `/api`/`/admin` untouched |
 | `tests/architecture.test.ts` | seam/layout/legal-ownership guards: no direct CMS import, no root `app/layout.tsx`, every page gated, legal copy code-owned |
+| `scripts/generate-og-card.mjs` | #32 regenerates the committed typographic 1200×630 Open Graph card |
 
 ## Extending it (later tickets)
 
@@ -364,7 +440,12 @@ Extend this suite; do not add a second runner or component tests.
 - **New scenario**: JSON file + provider map + `SCENARIOS` in the orchestrator +
   expectations block.
 - **Legacy redirects/410s** (#32): fetch with `redirect: "manual"` (already the
-  default in `fetchPage`) and assert status and `location`.
+  default in `fetchPage`) and assert status and `location`, or use the
+  terminal-response helper in `tests/http/legacy-urls.test.ts` when the generic
+  trailing-slash normalisation may add one permanent hop.
+- **Share card** (#32): `npm run og:generate` regenerates
+  `public/og/hay2010-default.png` from `scripts/generate-og-card.mjs` and the
+  committed Poppins TTFs; commit the result. The suite asserts the served bytes.
 - Keep tests deterministic and self-cleaning: no CMS, no Postgres, no network at
   test time, no shared server outside the orchestrator. Fonts are fetched once
   at build time by `next/font` and self-hosted from then on, so visitors and

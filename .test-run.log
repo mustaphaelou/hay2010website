@@ -13,36 +13,37 @@
 
  RUN  v5.1.2 /home/eloaurdi/codeprojects/hay2010website/.worktrees/ticket-32
 
- ✓ tests/http/legacy-urls.test.ts (9 tests) 643ms
+ ✓ tests/http/legacy-urls.test.ts (9 tests) 1149ms
    ✓ legacy WordPress URL map (p1) (9)
-     ✓ 301s every equivalent old address to its decided new route 359ms
- ✓ tests/http/seo.test.ts (8 tests) 586ms
- ✓ tests/http/structured-data.test.ts (7 tests) 488ms
+     ✓ 301s every equivalent old address to its decided new route 398ms
+     ✓ does not intercept or change /api or /admin behaviour 461ms
+ ✓ tests/http/seo.test.ts (8 tests) 658ms
+ ✓ tests/http/structured-data.test.ts (7 tests) 463ms
  ✓ tests/http/realisations.test.ts (18 tests) 453ms
- ✓ tests/http/legal.test.ts (19 tests) 324ms
- ✓ tests/http/gates.test.ts (7 tests) 319ms
- ✓ tests/http/shell.test.ts (21 tests) 351ms
- ✓ tests/http/domaines.test.ts (12 tests) 309ms
- ✓ tests/http/carrieres.test.ts (11 tests) 311ms
- ✓ tests/http/homepage.test.ts (17 tests) 261ms
- ✓ tests/http/a-propos.test.ts (14 tests | 1 skipped) 229ms
- ✓ tests/http/en-reserved.test.ts (4 tests) 164ms
+ ✓ tests/http/shell.test.ts (21 tests) 293ms
+ ✓ tests/http/legal.test.ts (19 tests) 398ms
+ ✓ tests/http/gates.test.ts (7 tests) 310ms
+ ✓ tests/http/carrieres.test.ts (11 tests) 308ms
+ ✓ tests/http/domaines.test.ts (12 tests) 298ms
+ ✓ tests/http/homepage.test.ts (17 tests) 264ms
+ ✓ tests/http/a-propos.test.ts (14 tests | 1 skipped) 319ms
+ ✓ tests/http/contact.test.ts (14 tests) 189ms
  ✓ tests/http/navigation.test.ts (7 tests) 176ms
- ✓ tests/http/sitemap.test.ts (6 tests) 172ms
- ✓ tests/http/contact.test.ts (14 tests) 212ms
- ✓ tests/http/og-card.test.ts (3 tests) 145ms
- ✓ tests/http/not-found.test.ts (5 tests) 95ms
- ✓ tests/http/robots.test.ts (4 tests) 83ms
+ ✓ tests/http/sitemap.test.ts (6 tests) 167ms
+ ✓ tests/http/en-reserved.test.ts (4 tests) 158ms
+ ✓ tests/http/og-card.test.ts (3 tests) 142ms
+ ✓ tests/http/not-found.test.ts (5 tests) 90ms
+ ✓ tests/http/robots.test.ts (4 tests) 82ms
  ✓ tests/http/health.test.ts (6 tests) 74ms
  ✓ tests/architecture.test.ts (8 tests) 21ms
 
  Test Files  20 passed (20)
       Tests  199 passed | 1 skipped (200)
-   Start at  21:47:04
-   Duration  8.01s (tests 91%, import 6%, worker 1%, transform 1%)
+   Start at  21:49:17
+   Duration  8.94s (tests 88%, import 6%, transform 5%, worker 1%)
 
-    Isolate  20 workers spawned · ~96ms startup each (spawn + environment, per file)
-             at least ~1.82s faster with isolate: false — reuses workers across files instead of one per file
+    Isolate  20 workers spawned · ~98ms startup each (spawn + environment, per file)
+             at least ~1.86s faster with isolate: false — reuses workers across files instead of one per file
 
 
 [http-test] all 1 scenario group(s) passed: p1
