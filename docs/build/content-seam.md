@@ -77,6 +77,14 @@ h1 and metadata; page tickets add the decided copy, #32 wires metadata.
 
 Identity and navigation constants never become CMS-editable (content model §3).
 
+**Contact channels (#26).** The primary mailbox (`contact@hay2010.ma`) and the
+registered address are code-owned (`lib/site/company.ts`). The channels the
+facts register has **not** cleared — phone, opening hours, map, social profiles
+— are modelled as an optional `contact-channels` block in the page document:
+while the block is absent, the contact page renders nothing for them (no empty
+shell, no placeholder). Clearing a channel is a content-data change (the #30
+contact global maps onto the same block) and needs no renderer change.
+
 ---
 
 ## 3. Fixture corpus and scenarios
@@ -129,6 +137,27 @@ simulation cannot emit a 404 URL.
 Domains are content documents, never navigation entries: add the object to
 `site.json` and its publish state to each scenario. `listPublishedDomains()`
 and the sitemap pick it up; the `[slug]` route already exists.
+
+A domain document carries `title` (h1/metadata), `summary` (one-line row on the
+domain index) and `description` (120–160 character metadata). Its `blocks` are
+the CDC trame in render order (#22):
+
+1. `presentation` — `title` + `paragraphs`: presentation and needs;
+2. `prestations` — titled named items: the confirmed prestations. CFO/CFA and
+   postes de transformation are **prestations inside their domain**, never
+   domains;
+3. `methods` — titled items: methods, means and competences;
+4. `contact-cta` — title, body and the link to the cleared contact route.
+
+The CDC trame's optional `photos` and `associees` blocks are **absent at P1**
+(DEV-006): they are not in the content and the renderer omits them — never a
+placeholder frame.
+
+Approved claims (for example the ONEE agréments wording) are **code-owned** in
+`lib/site/claims.ts`, not content. A claim names the `domains` whose pages may
+display it and carries a `live` gate; while `live` is false the domain renderer
+omits the block entirely, so no gated wording reaches a published page. #24/#25
+reuse the same registry for their qualification blocks.
 
 ### Add a scenario
 

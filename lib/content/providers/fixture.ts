@@ -51,6 +51,7 @@ interface SiteFixture {
   readonly domains: readonly {
     readonly slug: string
     readonly title: string
+    readonly summary?: string
     readonly description?: string
     readonly blocks: readonly ContentBlock[]
   }[]
@@ -126,6 +127,7 @@ function toDomainDocument(slug: string): DomainDocument | null {
   return {
     slug: domain.slug,
     title: domain.title,
+    summary: domain.summary,
     description: domain.description,
     blocks: domain.blocks,
   }

@@ -69,7 +69,7 @@ rule) — so fixture data and the spec cannot drift silently.
 
 | Scenario | Public shape | What it proves |
 | --- | --- | --- |
-| `p1` | 5 rubriques, 3 domains, no utility page | launch state: open routes 200, gated routes/domains 404, sitemap = published set |
+| `p1` | 5 rubriques, 3 domains, legal utility pages published | launch state: open routes 200, gated routes/domains 404, sitemap = published set. The legal pages are P1 pages (#28) so the contact notice can link the privacy policy; Carrières stays closed until #27 |
 | `p2` | 7 rubriques, 5 domains | tier composition (Moyens + Références inserted), opening the two gated domains makes their routes 200 |
 | `p3` | 8 rubriques | Actualités inserted; published-but-unbuilt page stays out of the sitemap |
 | `p1-gates-closed` | P1 minus À propos and Éclairage public | closing a gate removes it from every surface and makes its existing route 404 |
@@ -132,11 +132,64 @@ import a component and never assert class names or call order.
 - links back to every published main rubrique (derived from the registry);
 - no gated rubrique suggested.
 
+`tests/http/domaines.test.ts` (#22)
+
+- the index serves a canonical document and links exactly the published domains
+  in CDC order; a gated domain is absent from the list, the links and the copy;
+- each published domain page renders the CDC trame in order (presentation and
+  needs → prestations → methods/means/competences → contact CTA), with named
+  prestations and CFO/CFA / postes de transformation in their own domain;
+- the photo and associated-réalisations blocks are absent, not placeholders;
+- no ONEE agrément wording on any published page while the certificate gate is
+  closed, and no Solaire vocabulary while the P2 domains are gated;
+- the index and the three domain pages each carry a unique title, description
+  and canonical apex URL without a trailing slash.
+
 `tests/http/en-reserved.test.ts` (#21)
 
 - `/en` returns 404 (no redirect, no route);
 - French routes stay prefix-free (`/fr` 404, `/` 200);
 - no hreflang alternates and no English document language at P1.
+
+`tests/http/a-propos.test.ts` (#25)
+
+- the page serves a French document with one `h1`, the approved positioning
+  line, the approved experience line and the exact gérant line;
+- the required trame sections render once each, in the decided order:
+  activité et périmètre → mission/vision/values → qualité/sécurité/conformité,
+  each `h2` labelling its own section landmark;
+- the four cleared launch services and the Rabat base render, with no national
+  coverage claim;
+- gated material is absent: no founding year or other history claim, no
+  agrément/certification wording, no gated solaire domain, no team/org-chart or
+  quote block, no photograph and no employee name (the gérant line is the only
+  person named, exactly once);
+- no link to `/references-et-partenaires` while that P2 rubrique is unpublished
+  (the page keeps a documented extension point that renders the canonical link
+  only when the rubrique is published *and* has a page document);
+- unique title and description across the scenario's published routes, within
+  the SEO length bounds; no form, analytics, consent banner or tracking cookie;
+  no placeholder copy.
+`tests/http/contact.test.ts` (#26)
+
+- one canonical French document with one `h1` (`Contact`), served with 200;
+- the primary action is the cleared mailbox as a bare `mailto:`; no other or
+  private mailbox is linked;
+- the registered address renders verbatim from the code-owned identity block
+  (postal `<address>` markup);
+- no gated channel leaks: no `tel:` link, phone, opening hours, map/iframe or
+  social profile at P1 (facts register §2.3); clearing one is a content-data
+  change (`ContactChannelsBlock`), not a renderer refactor;
+- no form control, no browser storage hook, no analytics script or API marker,
+  no tracking cookie, no consent banner, no `Set-Cookie`;
+- the privacy policy is linked and the code-owned short law 09-08 notice is
+  present, with **no** CNDP declaration while no receipt exists;
+- the page states what is and is not collected, explains what to put in an
+  email and what happens next (ordered steps);
+- no gated claim (ONEE/agrément, founding year, client, RC/ICE), no invented
+  response time or free-quote promise;
+- metadata: unique French title and 120–170 character description, unique
+  against the other built pages of the scenario.
 
 `tests/architecture.test.ts` (structural guards, not HTTP)
 
@@ -189,6 +242,8 @@ preemptively (spec: "Deferred").
 | `tests/http/gates.test.ts` | publication gates, internal-link and sitemap leaks |
 | `tests/http/not-found.test.ts` | real 404 status/document/links back |
 | `tests/http/en-reserved.test.ts` | `/en` reserved, French prefix-free |
+| `tests/http/a-propos.test.ts` | #25 institutional trame, gated claims, unique metadata |
+| `tests/http/domaines.test.ts` | #22 domain index, CDC trame pages, DEV-006 omissions, gated-domain/claim absence, unique metadata |
 | `tests/architecture.test.ts` | seam/layout guards: no direct CMS import, no root `app/layout.tsx`, every page gated |
 
 ## Extending it (later tickets)

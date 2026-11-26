@@ -1,19 +1,53 @@
+import type { Metadata } from "next"
+
+import { DomainePage } from "@/components/domaines/domaine-page"
+import { getDomainPath, getPublishedDomain, getPublishedDomains } from "@/lib/site/domaines"
 import { requirePublishedDomain } from "@/lib/site/gates"
+import { pageMetadata } from "@/lib/site/metadata"
 
 /**
- * A domaine d'activité page — gate-guarded stub shipped by #21; the trame and
- * copy are ticket #22.
+ * A published domaine d'activité page (ticket #22).
  *
- * `requirePublishedDomain` resolves the domain *through the seam*: a closed
- * gate and an unknown slug behave identically (404). The proxy layer rewrites
- * both to the branded 404 document before this page renders.
+ * The route already existed as a gate-guarded stub from #21; this ticket adds
+ * the CDC trame from content. `requirePublishedDomain` is the render guard and
+ * resolves the document *through the seam*: a closed gate and an unknown slug
+ * both return `null`, so the route cannot leak a gated page. The proxy layer
+ * rewrites both to the branded 404 document before rendering
+ * (docs/build/content-seam.md §5).
+ *
+ * Published domain pages are prerendered at build (like every content page in
+ * the production model); the gated domains are not generated, and a request
+ * for one is rewritten to the 404 by `proxy.ts`.
  */
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  const domains = await getPublishedDomains()
+  return domains.map((domain) => ({ slug: domain.slug }))
+}
+
+/** Unique title, description and canonical URL per domain page. */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const domain = await getPublishedDomain(slug)
+  if (!domain) return {}
+
+  return pageMetadata({
+    title: domain.title,
+    description: domain.description,
+    path: getDomainPath(slug),
+  })
+}
+
 export default async function Page({
   params,
 }: {
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  await requirePublishedDomain(slug)
-  return null
+  const domain = await requirePublishedDomain(slug)
+
+  return <DomainePage domain={domain} />
 }

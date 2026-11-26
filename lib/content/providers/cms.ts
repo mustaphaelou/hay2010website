@@ -50,7 +50,9 @@ const KNOWN_BLOCK_KINDS = new Set([
   "engagements",
   "credentials",
   "contact-cta",
+  "contact-channels",
   "sections",
+  "steps",
   "openings",
 ])
 
