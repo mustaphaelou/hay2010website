@@ -1,11 +1,13 @@
 {
-  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy: at #21 the pages are skeletons (no blocks) and page tickets #22–#28 fill them. Gate states live in content/fixtures/scenarios/*.json.",
+  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy: at #21 the pages are skeletons (no blocks) and page tickets #22–#28 fill them. Gate states live in content/fixtures/scenarios/*.json. Legal pages (#28) are the documented exception: their identity block and approved copy are code-owned in lib/legal/ (never CMS-editable), so their page documents only register the route for the sitemap and gate, with no blocks, title or description.",
   "pages": {
     "accueil": { "blocks": [] },
     "a-propos": { "blocks": [] },
     "domaines-activite": { "blocks": [] },
     "realisations": { "blocks": [] },
-    "contact": { "blocks": [] }
+    "contact": { "blocks": [] },
+    "mentions-legales": { "blocks": [] },
+    "politique-de-confidentialite": { "blocks": [] }
   },
   "domains": [
     { "slug": "eclairage-public", "title": "Éclairage public", "blocks": [] },

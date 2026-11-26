@@ -1,5 +1,5 @@
 {
-  "$comment": "P1 launch state: the five CDC rubriques, three published domains, no utility page yet (Carrières #27, legal #28 flip their state here).",
+  "$comment": "P1 launch state: the five CDC rubriques, three published domains, the two legal utility pages (#28) published. Carrières (#27) flips its state here when it ships.",
   "tier": "P1",
   "rubriques": {
     "accueil": { "published": true },
@@ -23,14 +23,8 @@
       "published": false,
       "reason": "Page livrée par le ticket #27."
     },
-    "mentions-legales": {
-      "published": false,
-      "reason": "Page livrée par le ticket #28."
-    },
-    "politique-de-confidentialite": {
-      "published": false,
-      "reason": "Page livrée par le ticket #28."
-    }
+    "mentions-legales": { "published": true },
+    "politique-de-confidentialite": { "published": true }
   },
   "domains": {
     "eclairage-public": { "published": true },
