@@ -138,6 +138,22 @@ import a component and never assert class names or call order.
 - French routes stay prefix-free (`/fr` 404, `/` 200);
 - no hreflang alternates and no English document language at P1.
 
+`tests/http/legal.test.ts` (#28)
+
+- `/mentions-legales` carries the exact facts-register identity block and the
+  approved §4.2 sections, with no publication director, host line, phone,
+  representative or blank CNDP field;
+- `/politique-de-confidentialite` carries the §4.3 copy: controller identity,
+  processing register (2.1–2.6), recipients, transfers, the §5.3 retention
+  table and the §5.4 rights procedure at `donnees@hay2010.ma`;
+- cookies are §7 of the policy (anchor `#cookies`, launch-state table, no
+  banner, no analytics paragraph) and there is no separate `/cookies` route;
+- both pages render no form, banner, analytics or tracking cookie, declare a
+  self-referencing canonical and unique title/description, and are linked from
+  the footer of every published page and of the 404 document;
+- the identity and approved copy are code-owned (`lib/legal/`), absent from the
+  content corpus, and never read through the content seam.
+
 `tests/architecture.test.ts` (structural guards, not HTTP)
 
 - no file outside `lib/content/providers/` imports Payload — the CMS stays
@@ -189,7 +205,8 @@ preemptively (spec: "Deferred").
 | `tests/http/gates.test.ts` | publication gates, internal-link and sitemap leaks |
 | `tests/http/not-found.test.ts` | real 404 status/document/links back |
 | `tests/http/en-reserved.test.ts` | `/en` reserved, French prefix-free |
-| `tests/architecture.test.ts` | seam/layout guards: no direct CMS import, no root `app/layout.tsx`, every page gated |
+| `tests/http/legal.test.ts` | #28 legal pages: code-owned identity/copy, cookies, retention, rights, footer links, metadata |
+| `tests/architecture.test.ts` | seam/layout/legal-ownership guards: no direct CMS import, no root `app/layout.tsx`, every page gated, legal copy code-owned |
 
 ## Extending it (later tickets)
 
