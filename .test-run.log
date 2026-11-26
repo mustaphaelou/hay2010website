@@ -13,31 +13,32 @@
 
  RUN  v5.1.2 /home/eloaurdi/codeprojects/hay2010website/.worktrees/ticket-32
 
- ✓ tests/http/seo.test.ts (8 tests) 827ms
- ✓ tests/http/structured-data.test.ts (7 tests) 527ms
- ✓ tests/http/realisations.test.ts (18 tests) 583ms
- ✓ tests/http/shell.test.ts (21 tests) 476ms
- ✓ tests/http/gates.test.ts (7 tests) 379ms
- ✓ tests/http/carrieres.test.ts (11 tests) 324ms
- ✓ tests/http/domaines.test.ts (12 tests) 340ms
- ✓ tests/http/legal.test.ts (19 tests) 410ms
- ✓ tests/http/homepage.test.ts (17 tests) 286ms
- ✓ tests/http/a-propos.test.ts (14 tests | 1 skipped) 292ms
- ✓ tests/http/contact.test.ts (14 tests) 240ms
- ✓ tests/http/navigation.test.ts (7 tests) 203ms
- ✓ tests/http/og-card.test.ts (3 tests) 163ms
- ✓ tests/http/en-reserved.test.ts (4 tests) 167ms
- ✓ tests/http/health.test.ts (6 tests) 100ms
- ✓ tests/http/not-found.test.ts (5 tests) 95ms
- ✓ tests/architecture.test.ts (8 tests) 23ms
+ ✓ tests/http/seo.test.ts (8 tests) 756ms
+ ✓ tests/http/realisations.test.ts (18 tests) 511ms
+ ✓ tests/http/structured-data.test.ts (7 tests) 731ms
+ ✓ tests/http/shell.test.ts (21 tests) 334ms
+ ✓ tests/http/legal.test.ts (19 tests) 329ms
+ ✓ tests/http/gates.test.ts (7 tests) 322ms
+ ✓ tests/http/domaines.test.ts (12 tests) 342ms
+ ✓ tests/http/carrieres.test.ts (11 tests) 271ms
+ ✓ tests/http/a-propos.test.ts (14 tests | 1 skipped) 237ms
+ ✓ tests/http/homepage.test.ts (17 tests) 264ms
+ ✓ tests/http/contact.test.ts (14 tests) 207ms
+ ✓ tests/http/navigation.test.ts (7 tests) 179ms
+ ✓ tests/http/robots.test.ts (4 tests) 108ms
+ ✓ tests/http/en-reserved.test.ts (4 tests) 161ms
+ ✓ tests/http/og-card.test.ts (3 tests) 145ms
+ ✓ tests/http/health.test.ts (6 tests) 92ms
+ ✓ tests/http/not-found.test.ts (5 tests) 90ms
+ ✓ tests/architecture.test.ts (8 tests) 20ms
 
- Test Files  17 passed (17)
-      Tests  180 passed | 1 skipped (181)
-   Start at  21:37:18
-   Duration  7.92s (tests 91%, import 6%, worker 1%, transform 1%)
+ Test Files  18 passed (18)
+      Tests  184 passed | 1 skipped (185)
+   Start at  21:38:03
+   Duration  7.52s (tests 91%, import 6%, worker 1%, transform 1%)
 
-    Isolate  17 workers spawned · ~108ms startup each (spawn + environment, per file)
-             at least ~1.73s faster with isolate: false — reuses workers across files instead of one per file
+    Isolate  18 workers spawned · ~100ms startup each (spawn + environment, per file)
+             at least ~1.69s faster with isolate: false — reuses workers across files instead of one per file
 
 
 [http-test] all 1 scenario group(s) passed: p1
