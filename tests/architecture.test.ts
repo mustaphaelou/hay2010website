@@ -147,28 +147,47 @@ describe("root layout constraint (#29)", () => {
  * #30 re-verifies the admin surface; this test keeps the code boundary honest.
  */
 describe("code-owned legal pages (#28)", () => {
-  const LEGAL_MAILBOXES = ["contact@hay2010.ma", "donnees@hay2010.ma"]
+  /*
+   * The registered address and the general contact mailbox are public contact
+   * facts: #26's Contact page publishes them in its own copy. The guard only
+   * forbids the identity values that exist for the legal pages alone; the legal
+   * page documents themselves must stay route markers (no copy at all), which
+   * is what keeps their rendering out of the admin's reach.
+   */
+  const LEGAL_ONLY_VALUES = [
+    "SOCIETE HAY 2010",
+    "Registre du commerce : RC 87305",
+    "RC 87305 — Tribunal de commerce de Rabat",
+    "001459327000056",
+    "15 000 000 MAD",
+    "donnees@hay2010.ma",
+  ]
+  const SITE_FIXTURE = path.join("content", "fixtures", "site.json")
 
   it("keeps the legal identity and approved copy out of the content corpus", () => {
     // `content/fixtures/` is what the CMS provider seeds and what the fixture
     // provider serves: if a legal string lived here, the admin could edit it.
     const corpus = readSources(allFiles(path.join("content", "fixtures")))
 
-    const forbidden = [
-      "SOCIETE HAY 2010",
-      "Registre du commerce : RC 87305",
-      "RC 87305 — Tribunal de commerce de Rabat",
-      "001459327000056",
-      "15 000 000 MAD",
-      "Local N° 21, Hay El Manzeh",
-      ...LEGAL_MAILBOXES,
-    ]
-    for (const value of forbidden) {
+    for (const value of LEGAL_ONLY_VALUES) {
       expect(
         corpus,
         `the content corpus must not carry the code-owned legal value "${value}"`
       ).not.toContain(value)
     }
+
+    // The legal page documents register the route only: no blocks, title or
+    // description, so there is no legal copy in the content source (#28).
+    const site = JSON.parse(readFileSync(path.join(ROOT, SITE_FIXTURE), "utf8")) as {
+      pages: Record<string, unknown>
+    }
+    const legalDocuments = ["mentions-legales", "politique-de-confidentialite"].map(
+      (key) => site.pages[key]
+    )
+    expect(
+      legalDocuments,
+      "the legal page documents must stay empty route markers (#28)"
+    ).toEqual([{ blocks: [] }, { blocks: [] }])
   })
 
   it("keeps the code-owned legal modules off the content seam", () => {
