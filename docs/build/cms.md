@@ -269,7 +269,7 @@ re-runs them (no-op), seeds, builds with `CONTENT_SOURCE=cms`, serves on port
 **3129**, runs `tests/cms/**` through Vitest, then removes the container, the
 local uploads and the build. It is separate from `npm test` on purpose.
 
-What it proves over HTTP:
+What it proves over HTTP (23 Vitest assertions across `tests/cms/`):
 
 | Assertion | Expected |
 | --- | --- |
@@ -279,8 +279,10 @@ What it proves over HTTP:
 | wrong password login | 401/403 |
 | anonymous `GET /api/pages`, `GET /api/media` | published pages only, cleared media only |
 | media file route (cleared / pending) | 200 `image/png` (with generated sizes) / 403-404 |
-| `GET /a-propos` | 200, navigation derived from CMS publish state, draft absent |
+| `GET /a-propos` | 200, navigation derived from CMS publish state, utility pages in the footer, draft absent |
 | `GET /realisations` (draft in DB) | 404 with the branded 404 document |
+| `GET /mentions-legales`, `/politique-de-confidentialite` | 200 with the code-owned identity block (never CMS copy) |
+| `GET /carrieres` | 200, honest empty openings state (`getOpenJobs()` = 0 at launch), contact@ only while F-113 is closed (`getCareersChannel()` fail-closed) |
 | owner `DELETE` a page / a media | 403 (developer delete: 200) |
 | editor publish | 403 (editing a draft: 200) |
 | owner publish with a rights-pending cover | 400 on `cover` |
