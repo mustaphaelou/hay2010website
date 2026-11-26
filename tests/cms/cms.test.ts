@@ -395,9 +395,11 @@ describe("the seeded corpus renders on the P1 route matrix", () => {
       expect(gated.html).toContain("Page introuvable")
     }
 
+    // #32 builds absolute URLs from the build-time origin; in this test that is
+    // the disposable server origin (production bakes https://hay2010.ma).
     const sitemap = await page("/sitemap.xml")
     expect(sitemap.status).toBe(200)
-    expect(sitemap.html).toContain("https://hay2010.ma/domaines-activite/eclairage-public")
+    expect(sitemap.html).toContain(`${BASE_URL}/domaines-activite/eclairage-public`)
     expect(sitemap.html).not.toContain("energies-renouvelables")
   })
 })
@@ -521,7 +523,31 @@ describe("the owner edits, publishes and unpublishes content", () => {
     expect(unpublish.status).toBe(200)
     expect((await page("/carrieres")).html).not.toContain("Contrôle #30 — offre publiée")
 
+    // A published opening past its closing date is not an opening any more:
+    // the content provider filters it even if the record stays published.
+    const expired = await rest(owner, "/api/jobs", {
+      method: "POST",
+      body: {
+        title: "Contrôle #30 — offre échue",
+        slug: "controle-30-offre-echue",
+        openingStatus: "open",
+        contractType: "CDD",
+        summary: "Offre échue.",
+        postedAt: "2025-11-01",
+        closingAt: "2026-01-31",
+      },
+    })
+    expect([200, 201]).toContain(expired.status)
+    const expiredDoc = (await restJson<{ doc: RestJob }>(expired)).doc
+    const publishExpired = await rest(owner, `/api/jobs/${expiredDoc.id}`, {
+      method: "PATCH",
+      body: { _status: "published" },
+    })
+    expect(publishExpired.status).toBe(200)
+    expect((await page("/carrieres")).html).not.toContain("Contrôle #30 — offre échue")
+
     // Cleanup: the developer can permanently delete what the owner created.
+    expect((await rest(developer, `/api/jobs/${expiredDoc.id}`, { method: "DELETE" })).status).toBe(200)
     const remove = await rest(developer, `/api/jobs/${doc.id}`, { method: "DELETE" })
     expect(remove.status).toBe(200)
   })
@@ -812,8 +838,53 @@ describe("gated families cannot be opened from the admin", () => {
       // Even a published, legally reviewed communiqué cannot reach the public
       // site while `actualitesLive` is false (code-owned gate).
       expect((await page("/actualites")).status).toBe(404)
-    } finally {
-      expect((await rest(developer, `/api/communiques/${doc.id}`, { method: "DELETE" })).status).toBe(200)
+
+      // The annual cap is six: fill the year, then assert the seventh publish
+      // is refused by the validation hook (content model §5.2). The already
+      // published communiqué is dated first so the calendar-year count is exact.
+      const dated = await rest(developer, `/api/communiques/${doc.id}`, {
+        method: "PATCH",
+        body: { publishedAt: "2026-05-01" },
+      })
+      expect(dated.status).toBe(200)
+      const createdIds: number[] = [doc.id]
+      for (let index = 0; index < 5; index += 1) {
+        const extra = await rest(developer, "/api/communiques", {
+          method: "POST",
+          body: {
+            title: `Contrôle #30 — communiqué ${index + 2}`,
+            slug: `controle-30-communique-${index + 2}`,
+            publishedAt: "2026-06-01",
+            legalReviewed: true,
+            legalReviewRef: "REVUE-CONTROLE-30",
+            _status: "published",
+          },
+        })
+        expect([200, 201]).toContain(extra.status)
+        createdIds.push((await restJson<{ doc: RestCommunique }>(extra)).doc.id)
+      }
+
+      const seventh = await rest(developer, "/api/communiques", {
+        method: "POST",
+        body: {
+          title: "Contrôle #30 — septième communiqué",
+          slug: "controle-30-communique-7",
+          publishedAt: "2026-07-01",
+          legalReviewed: true,
+          legalReviewRef: "REVUE-CONTROLE-30",
+          _status: "published",
+        },
+      })
+      expect(seventh.status).toBe(400)
+
+      // Cleanup every created communiqué (developer-only permanent delete).
+      for (const createdId of createdIds) {
+        expect((await rest(developer, `/api/communiques/${createdId}`, { method: "DELETE" })).status).toBe(200)
+      }
+    } catch (error) {
+      // Best-effort cleanup on failure so the suite is re-runnable.
+      await rest(developer, `/api/communiques/${doc.id}`, { method: "DELETE" })
+      throw error
     }
   })
 
