@@ -1,23 +1,13 @@
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
-import { Poppins } from "next/font/google"
 
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteHeader } from "@/components/site/site-header"
+import { SkipLink } from "@/components/site/skip-link"
+import { poppins } from "@/lib/site/fonts"
 import { cn } from "@/lib/utils"
 
 import "./globals.css"
-
-/**
- * Poppins, the single brand family (brand direction §2.3): weights 300/400/500/600,
- * self-hosted by the framework, swapped in without layout shift.
- */
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-poppins",
-  display: "swap",
-})
 
 /**
  * French metadata holding the approved positioning. The full SEO system
@@ -32,13 +22,26 @@ export const metadata: Metadata = {
 }
 
 /**
- * French root shell: one header, one main, one footer around every page.
+ * French root layout of the site, inside the `(frontend)` route group.
  *
- * The skip link is the first focusable element and targets the `main` landmark
- * (`#contenu`), which is programmatically focusable so keyboard navigation
- * lands in the content. Header and footer render here once, not per page.
+ * There is deliberately no `app/layout.tsx`: the embedded Payload admin (#29)
+ * brings its own root layout in `app/(payload)/layout.tsx`, which is only legal
+ * when no root layout exists at the app root. Each root group owns its
+ * `<html lang="fr">` document — see docs/build/content-seam.md §"Layout".
+ *
+ * Pages are statically rendered from the content source at build time, the
+ * production model #29 keeps: a deploy builds with the CMS database reachable
+ * and publishes through revalidation. The HTTP suite proves each gate scenario
+ * by rebuilding the app with `CONTENT_SCENARIO=<name>` (see
+ * docs/build/verification.md), so the tested artefact is always the production
+ * build — no runtime flag weakens the render path.
  */
-export default function RootLayout({
+
+/**
+ * One header, one main, one footer around every page. Header and footer render
+ * here once, not per page; they derive their links from the published set.
+ */
+export default function FrontendLayout({
   children,
 }: Readonly<{
   children: ReactNode
@@ -46,12 +49,7 @@ export default function RootLayout({
   return (
     <html lang="fr" className={cn(poppins.variable, "font-sans")}>
       <body className="flex min-h-svh flex-col bg-background text-foreground antialiased">
-        <a
-          href="#contenu"
-          className="sr-only focus:not-sr-only focus:self-start focus:rounded-full focus:bg-ink focus:px-5 focus:py-3 focus:text-sm focus:font-medium focus:text-surface"
-        >
-          Aller au contenu
-        </a>
+        <SkipLink />
 
         <SiteHeader />
 

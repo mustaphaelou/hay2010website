@@ -276,3 +276,90 @@ export function findTrackingCookies(headers: Headers): string[] {
 export function textOf(element: HTMLElement): string {
   return element.text.replace(/\s+/g, " ").trim()
 }
+
+/** The public origin of the site (SEO §6.2: absolute, HTTPS, apex, no slash). */
+export const SITEMAP_ORIGIN = "https://hay2010.ma"
+
+/**
+ * Fetch `/sitemap.xml` and return the listed pathnames (`""` for the homepage),
+ * asserting the absolute-origin rule on the way.
+ */
+export async function fetchSitemapPaths(): Promise<string[]> {
+  const sitemap = await fetchPage("/sitemap.xml")
+  expect(sitemap.status, "the sitemap must be served").toBe(200)
+  expect(sitemap.headers.get("content-type") ?? "").toMatch(/xml/i)
+
+  const locations = [...sitemap.html.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) =>
+    match[1].trim()
+  )
+  expect(locations.length, "the sitemap must list at least one URL").toBeGreaterThan(0)
+
+  return locations.map((location) => {
+    const url = new URL(location)
+    expect(url.origin, `sitemap URL must be absolute on the apex origin: ${location}`).toBe(
+      SITEMAP_ORIGIN
+    )
+    expect(url.search, `sitemap URL must not carry a query: ${location}`).toBe("")
+    expect(
+      url.pathname.endsWith("/") && url.pathname !== "/",
+      `sitemap URL must not carry a trailing slash: ${location}`
+    ).toBe(false)
+    return url.pathname === "/" ? "" : url.pathname
+  })
+}
+
+/** A 404 document's signature: what a visitor or crawler sees on it. */
+export interface NotFoundSignature {
+  readonly status: number
+  readonly lang: string
+  readonly heading: string
+  readonly title: string
+  readonly navigation: string[]
+  readonly mainLinks: string[]
+  readonly footerLinks: string[]
+}
+
+/**
+ * Assert a served document is the site's real 404 page (status, French
+ * language, one canonical shell, `noindex`) and return its observable content.
+ *
+ * Used both for unmatched URLs and for gated routes, so the suite proves a
+ * gated URL serves *the* 404 page rather than a hollow shell or a redirect.
+ */
+export function assertNotFoundDocument(page: PageDocument): NotFoundSignature {
+  expect(page.status, "a 404 response must carry the 404 status").toBe(404)
+  expect(
+    page.headers.get("location"),
+    "a 404 must not redirect"
+  ).toBeNull()
+
+  const canonical = assertCanonicalDocument(page)
+  expect(canonical.html.getAttribute("lang")).toBe("fr")
+
+  const robots =
+    page.document
+      .querySelector('meta[name="robots"]')
+      ?.getAttribute("content")
+      ?.toLowerCase() ?? ""
+  expect(robots, "the 404 page must be noindex").toContain("noindex")
+
+  const heading = canonical.main.querySelector("h1")?.text.replace(/\s+/g, " ").trim() ?? ""
+  expect(heading, "the 404 page must carry an h1").not.toBe("")
+  expect(heading, "the 404 heading must be French").toMatch(/introuvable/i)
+
+  return {
+    status: page.status,
+    lang: canonical.html.getAttribute("lang") ?? "",
+    heading,
+    title: canonical.title,
+    navigation: canonical.header
+      .querySelectorAll("nav a[href]")
+      .map((anchor) => anchor.getAttribute("href") ?? ""),
+    mainLinks: canonical.main
+      .querySelectorAll("a[href]")
+      .map((anchor) => anchor.getAttribute("href") ?? ""),
+    footerLinks: canonical.footer
+      .querySelectorAll("a[href]")
+      .map((anchor) => anchor.getAttribute("href") ?? ""),
+  }
+}

@@ -1,19 +1,30 @@
 #!/usr/bin/env node
 /**
- * One command that verifies the site the way a visitor sees it.
+ * One command that verifies the site the way a visitor or a crawler sees it.
  *
- *   1. builds the production app (`next build`) unless SKIP_BUILD=1;
- *   2. starts it with `next start` on TEST_HTTP_PORT (default 3100);
- *   3. waits until it answers;
- *   4. runs the single HTTP suite (`vitest run`);
- *   5. always stops the server;
- *   6. exits with the test status.
+ *   1. for each fixture scenario (`content/fixtures/scenarios/`):
+ *        a. builds the production app with `CONTENT_SCENARIO=<scenario>`
+ *           (from a clean `.next`, so the static prerender really follows the
+ *           scenario) unless SKIP_BUILD=1;
+ *        b. starts the production server on TEST_HTTP_PORT with the same
+ *           environment;
+ *        c. waits until it answers;
+ *        d. runs the single HTTP suite (`vitest run`) with
+ *           `TEST_HTTP_SCENARIO=<scenario>`;
+ *        e. always stops the server;
+ *   2. stops at the first failing scenario and exits with its status.
  *
- * Later tickets extend the suite (and may add scenario env vars read by the
- * server), never this orchestrator. See docs/build/verification.md.
+ * The built artefact is the production build with its normal static
+ * prerendering, fonts and metadata; only the fixture scenario changes between
+ * groups. With SKIP_BUILD=1 the existing `.next` is reused and one scenario
+ * runs (`TEST_HTTP_SCENARIO`, default p1) — fast iteration only, never the gate.
+ *
+ * Later tickets extend the suite, never this orchestrator (see
+ * docs/build/verification.md and docs/build/content-seam.md).
  */
 import { spawn, spawnSync } from "node:child_process"
 import { once } from "node:events"
+import fs from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
@@ -23,6 +34,13 @@ const hostname = "127.0.0.1"
 const baseUrl = `http://${hostname}:${port}`
 const nextBin = path.join(projectRoot, "node_modules", "next", "dist", "bin", "next")
 const vitestBin = path.join(projectRoot, "node_modules", "vitest", "vitest.mjs")
+
+/**
+ * Fixture scenarios to run. Each name is a file in
+ * `content/fixtures/scenarios/<name>.json`; the suite's expectations live in
+ * `tests/http/scenarios.ts`.
+ */
+const SCENARIOS = ["p1", "p2", "p3", "p1-gates-closed"]
 
 const READINESS_TIMEOUT_MS = 60_000
 const SERVER_STOP_TIMEOUT_MS = 5_000
@@ -102,13 +120,96 @@ async function stopServer(server) {
   }
 }
 
+/**
+ * Start the production server for one fixture scenario.
+ * @param {string} scenario
+ */
+async function startServer(scenario) {
+  log(`starting the production server on ${baseUrl} (CONTENT_SCENARIO=${scenario})`)
+  let stderr = ""
+  const server = spawn(process.execPath, [nextBin, "start", "-p", port, "-H", hostname], {
+    cwd: projectRoot,
+    stdio: ["ignore", "ignore", "pipe"],
+    env: {
+      ...process.env,
+      NODE_ENV: "production",
+      CONTENT_SOURCE: "fixture",
+      CONTENT_SCENARIO: scenario,
+    },
+  })
+  server.stderr?.setEncoding("utf8")
+  server.stderr?.on("data", (chunk) => {
+    stderr = (stderr + chunk).slice(-STDERR_KEEP)
+  })
+
+  const interrupt = (signal) => {
+    server.kill(signal === "SIGINT" ? "SIGTERM" : signal)
+    process.exit(signal === "SIGINT" ? 130 : 143)
+  }
+  process.once("SIGINT", interrupt)
+  process.once("SIGTERM", interrupt)
+
+  try {
+    await waitForServer(server)
+  } catch (error) {
+    await stopServer(server)
+    process.removeListener("SIGINT", interrupt)
+    process.removeListener("SIGTERM", interrupt)
+    if (stderr.trim()) console.error(`[http-test] production server stderr:\n${stderr.trim()}`)
+    throw error
+  }
+
+  return {
+    server,
+    stderr: () => stderr,
+    /** Stop the server and unregister the signal handlers. */
+    async stop() {
+      process.removeListener("SIGINT", interrupt)
+      process.removeListener("SIGTERM", interrupt)
+      await stopServer(server)
+    },
+  }
+}
+
+/** Run the whole HTTP suite against the already-running server for a scenario. */
+function runSuite(scenario) {
+  return run([vitestBin, "run", "--config", "vitest.config.ts"], {
+    env: {
+      ...process.env,
+      TEST_HTTP_BASE_URL: baseUrl,
+      TEST_HTTP_PORT: port,
+      TEST_HTTP_SCENARIO: scenario,
+    },
+  })
+}
+
+/**
+ * Build the production app for one fixture scenario.
+ *
+ * The previous `.next` is removed so the static prerender cannot reuse another
+ * scenario's pages: the scenario bakes navigation, gate routes, sitemap and 404
+ * links at build time, exactly like the production deploy does with the CMS.
+ * @param {string} scenario
+ */
+function buildForScenario(scenario) {
+  log(`scenario "${scenario}" — building the production app (next build)`)
+  fs.rmSync(path.join(projectRoot, ".next"), { recursive: true, force: true })
+  return run([nextBin, "build"], {
+    env: { ...process.env, CONTENT_SOURCE: "fixture", CONTENT_SCENARIO: scenario },
+  })
+}
+
 async function main() {
-  if (process.env.SKIP_BUILD === "1") {
-    log("SKIP_BUILD=1 — reusing the existing .next production build")
-  } else {
-    log("building the production app (next build)")
-    const buildStatus = run([nextBin, "build"])
-    if (buildStatus !== 0) return buildStatus
+  const skipBuild = process.env.SKIP_BUILD === "1"
+  const scenarios = skipBuild
+    ? [(process.env.TEST_HTTP_SCENARIO ?? "p1").trim() || "p1"]
+    : SCENARIOS
+
+  if (skipBuild) {
+    log(`SKIP_BUILD=1 — reusing the existing .next build for scenario "${scenarios[0]}"`)
+    if (scenarios[0] !== "p1") {
+      log("note: the existing build must have been produced with the same CONTENT_SCENARIO")
+    }
   }
 
   if (await isPortServing()) {
@@ -119,45 +220,31 @@ async function main() {
     return 1
   }
 
-  log(`starting the production server on ${baseUrl}`)
-  let stderr = ""
-  const server = spawn(process.execPath, [nextBin, "start", "-p", port, "-H", hostname], {
-    cwd: projectRoot,
-    stdio: ["ignore", "ignore", "pipe"],
-    env: { ...process.env, NODE_ENV: "production" },
-  })
-  server.stderr?.setEncoding("utf8")
-  server.stderr?.on("data", (chunk) => {
-    stderr = (stderr + chunk).slice(-STDERR_KEEP)
-  })
-
-  /** @param {NodeJS.Signals} signal */
-  const interrupt = (signal) => {
-    server.kill(signal === "SIGINT" ? "SIGTERM" : signal)
-    process.exit(signal === "SIGINT" ? 130 : 143)
-  }
-  process.once("SIGINT", interrupt)
-  process.once("SIGTERM", interrupt)
-
-  try {
-    await waitForServer(server)
-    log("running the HTTP suite (vitest run)")
-    const testStatus = run([vitestBin, "run", "--config", "vitest.config.ts"], {
-      env: { ...process.env, TEST_HTTP_BASE_URL: baseUrl, TEST_HTTP_PORT: port },
-    })
-    if (testStatus !== 0 && stderr.trim()) {
-      console.error(`\n[http-test] production server stderr:\n${stderr.trim()}`)
+  for (const scenario of scenarios) {
+    if (!skipBuild) {
+      const buildStatus = buildForScenario(scenario)
+      if (buildStatus !== 0) return buildStatus
     }
-    return testStatus
-  } catch (error) {
-    console.error(`[http-test] ${error instanceof Error ? error.message : String(error)}`)
-    if (stderr.trim()) console.error(`[http-test] production server stderr:\n${stderr.trim()}`)
-    return 1
-  } finally {
-    process.removeListener("SIGINT", interrupt)
-    process.removeListener("SIGTERM", interrupt)
-    await stopServer(server)
+
+    log(`scenario "${scenario}" — starting the production server`)
+    const running = await startServer(scenario)
+    try {
+      log(`scenario "${scenario}" — running the HTTP suite (vitest run)`)
+      const testStatus = runSuite(scenario)
+      if (testStatus !== 0) {
+        const stderr = running.stderr()
+        if (stderr.trim()) {
+          console.error(`\n[http-test] production server stderr:\n${stderr.trim()}`)
+        }
+        return testStatus
+      }
+    } finally {
+      await running.stop()
+    }
   }
+
+  log(`all ${scenarios.length} scenario group(s) passed: ${scenarios.join(", ")}`)
+  return 0
 }
 
 main()

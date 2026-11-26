@@ -1,0 +1,36 @@
+{
+  "$comment": "P2 gate simulation: Moyens and Références open (7-item row), the two gated domains open. No page document exists for the P2 rubriques yet, so they appear in navigation but not in the sitemap.",
+  "tier": "P2",
+  "rubriques": {
+    "accueil": { "published": true },
+    "a-propos": { "published": true },
+    "domaines-activite": { "published": true },
+    "realisations": { "published": true },
+    "moyens-et-competences": { "published": true },
+    "references-et-partenaires": { "published": true },
+    "actualites": {
+      "published": false,
+      "reason": "Palier P3 — au moins une actualité approuvée requise."
+    },
+    "contact": { "published": true },
+    "carrieres": {
+      "published": false,
+      "reason": "Page livrée par le ticket #27."
+    },
+    "mentions-legales": {
+      "published": false,
+      "reason": "Page livrée par le ticket #28."
+    },
+    "politique-de-confidentialite": {
+      "published": false,
+      "reason": "Page livrée par le ticket #28."
+    }
+  },
+  "domains": {
+    "eclairage-public": { "published": true },
+    "installations-electriques": { "published": true },
+    "infrastructures-reseaux-electriques": { "published": true },
+    "energies-renouvelables": { "published": true },
+    "fourniture-equipements": { "published": true }
+  }
+}
