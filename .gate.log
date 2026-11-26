@@ -1,0 +1,125 @@
+
+> hay2010website@0.0.1 test
+> node scripts/test-http.mjs
+
+
+[http-test] scenario "p1" — building the production app (next build)
+▲ Next.js 16.4.6 (Turbopack)
+✓ Running next.config.ts took 48ms
+- Experiments (use with caution):
+  ✓ globalNotFound
+  ⨯ turbopackServerFastRefresh
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 26.6s
+  Running TypeScript ...
+  Finished TypeScript in 11.5s ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/19) ...
+  Generating static pages using 11 workers (4/19) 
+  Generating static pages using 11 workers (9/19) 
+  Generating static pages using 11 workers (14/19) 
+✓ Generating static pages using 11 workers (19/19) in 1063ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /a-propos
+├ ƒ /admin/[[...segments]]
+├ ƒ /api/[...slug]
+├ ƒ /api/graphql
+├ ƒ /api/graphql-playground
+├ ƒ /api/health
+├ ○ /carrieres
+├ ○ /contact
+├ ○ /domaines-activite
+├   /domaines-activite/[slug]
+│ ├ ● /domaines-activite/eclairage-public
+│ ├ ● /domaines-activite/installations-electriques
+│ └ ● /domaines-activite/infrastructures-reseaux-electriques
+├ ○ /mentions-legales
+├ ○ /politique-de-confidentialite
+├ ƒ /prototype/homepage
+├ ○ /realisations
+├ ƒ /realisations/[slug]
+├ ○ /robots.txt
+└ ○ /sitemap.xml
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
+
+[http-test] scenario "p1" — starting the production server
+
+[http-test] starting the production server on http://127.0.0.1:3132 (CONTENT_SCENARIO=p1)
+
+[http-test] scenario "p1" — running the HTTP suite (vitest run)
+
+ RUN  v5.1.2 /home/eloaurdi/codeprojects/hay2010website/.worktrees/ticket-32
+
+ ❯ tests/http/legacy-urls.test.ts (9 tests | 1 failed) 1515ms
+   ❯ legacy WordPress URL map (p1) (9)
+     × 301s every equivalent old address to its decided new route 394ms
+     ✓ 301s the legacy shortlink and search queries to the homepage 8ms
+     ✓ 410s demo content and dead structures with no redirect 165ms
+     ✓ 410s WordPress query strings that are not tracking parameters 76ms
+     ✓ leaves tracking parameters alone: the page renders, not a redirect 35ms
+     ✓ normalises trailing-slash variants permanently to the no-slash URL 162ms
+     ✓ never redirects to a gated URL 40ms
+     ✓ does not intercept or change /api or /admin behaviour 612ms
+     ✓ does not serve WordPress internals as a page 21ms
+ ✓ tests/http/realisations.test.ts (18 tests) 493ms
+ ✓ tests/http/structured-data.test.ts (7 tests) 554ms
+ ✓ tests/http/homepage.test.ts (17 tests) 328ms
+ ✓ tests/http/domaines.test.ts (12 tests) 407ms
+ ✓ tests/http/seo.test.ts (8 tests) 593ms
+ ✓ tests/http/legal.test.ts (19 tests) 333ms
+ ✓ tests/http/health.test.ts (6 tests) 86ms
+ ✓ tests/http/robots.test.ts (4 tests) 129ms
+ ✓ tests/http/en-reserved.test.ts (4 tests) 222ms
+ ✓ tests/http/shell.test.ts (21 tests) 312ms
+ ✓ tests/http/not-found.test.ts (5 tests) 114ms
+ ✓ tests/http/gates.test.ts (7 tests) 356ms
+ ✓ tests/http/carrieres.test.ts (11 tests) 346ms
+ ✓ tests/http/sitemap.test.ts (6 tests) 217ms
+ ✓ tests/http/contact.test.ts (14 tests) 221ms
+ ✓ tests/http/og-card.test.ts (3 tests) 165ms
+ ✓ tests/http/navigation.test.ts (7 tests) 219ms
+ ✓ tests/architecture.test.ts (8 tests) 28ms
+ ✓ tests/http/a-propos.test.ts (14 tests | 1 skipped) 263ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/http/legacy-urls.test.ts > legacy WordPress URL map (p1) > 301s every equivalent old address to its decided new route
+AssertionError: /sitemap.xml is closed in this scenario: expected 200 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 200
+
+ ❯ tests/http/legacy-urls.test.ts:268:76
+    266|           `${source} must not redirect to a permanently gated URL`
+    267|         ).toBe(true)
+    268|         expect(destination.status, `${target} is closed in this scenar…
+       |                                                                            ^
+    269|       }
+    270|     }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 19 passed (20)
+      Tests  1 failed | 198 passed | 1 skipped (200)
+   Start at  21:57:03
+   Duration  9.97s (tests 91%, import 6%, transform 2%, worker 1%)
+
+    Isolate  20 workers spawned · ~111ms startup each (spawn + environment, per file)
+             at least ~2.11s faster with isolate: false — reuses workers across files instead of one per file
+

@@ -258,7 +258,10 @@ describe(`legacy WordPress URL map (${scenario.name})`, () => {
       // unpublishes one P1 page: the code-owned map still targets its decided
       // route (a content-unpublish simulation, never a permanent gate).
       const destination = await fetchPage(target)
-      if (scenario.openRoutes.includes(target)) {
+      if (target === "/sitemap.xml" || target === "/robots.txt") {
+        // Crawl files are always served, independent of a page gate.
+        expect(destination.status, `301 target ${target} must return 200`).toBe(200)
+      } else if (scenario.openRoutes.includes(target)) {
         expect(destination.status, `301 target ${target} must return 200`).toBe(200)
       } else {
         expect(
