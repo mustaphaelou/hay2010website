@@ -114,8 +114,22 @@ function RealisationsHero({
             </p>
           ) : null}
 
+          {/* Hero CTAs first, then the intro prose and its text link
+              (strategy §2.2: hero carries the two CTAs, the intro follows). */}
+          {hero && hero.links.length > 0 ? (
+            <ul className="mt-8 flex flex-wrap gap-3">
+              {hero.links.map((link, index) => (
+                <li key={`${link.label}-${link.href}`}>
+                  <CtaLink href={link.href} variant={index === 0 ? "primary" : "secondary"}>
+                    {link.label}
+                  </CtaLink>
+                </li>
+              ))}
+            </ul>
+          ) : null}
+
           {intro && intro.paragraphs.length > 0 ? (
-            <div className="mt-8 space-y-5 text-[15px] leading-relaxed text-body md:text-base">
+            <div className="mt-10 space-y-5 text-[15px] leading-relaxed text-body md:text-base">
               {intro.paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
@@ -132,18 +146,6 @@ function RealisationsHero({
                 <span aria-hidden="true">→</span>
               </Link>
             </p>
-          ) : null}
-
-          {hero && hero.links.length > 0 ? (
-            <ul className="mt-10 flex flex-wrap gap-3">
-              {hero.links.map((link, index) => (
-                <li key={`${link.label}-${link.href}`}>
-                  <CtaLink href={link.href} variant={index === 0 ? "primary" : "secondary"}>
-                    {link.label}
-                  </CtaLink>
-                </li>
-              ))}
-            </ul>
           ) : null}
         </div>
       </div>
