@@ -326,6 +326,30 @@ status and never redirects. P2 adds English without moving French URLs:
 7. Code-owned constants (`lib/site/`) never come from the CMS; the CMS stores
    prose and images only.
 
+### 9.1 Implemented by #29 — operator contract
+
+The foundation is live: `lib/content/providers/cms.ts`, `payload.config.ts`,
+`app/(payload)/**`, the migrations and the verification suite. Read
+[`docs/build/cms.md`](cms.md) for the package versions, environment table, the
+clean-database command (`npm run migrate`), the migration workflow, the roles
+and media-rights rules, and the #30/#31 extension points. Two decisions taken
+there that later tickets must keep:
+
+- **CMS gate trade-off (§9.6):** in CMS mode `resolveRouteGate` returns
+  `unknown`; the proxy stays database-free and the render-side guards plus
+  `app/(frontend)/not-found.tsx` serve the branded 404. Publishing freshness
+  therefore depends on #30's revalidation, not on the proxy.
+- **Migrations are an explicit deploy job, never `prodMigrations`:** the
+  standalone image does not contain `payload.config.ts` or the Payload CLI, so
+  `payload migrate` runs from the full source checkout with database access
+  before the image is promoted (#31 wires it).
+
+**#29 foundation scope:** the `pages` collection (keyed by rubrique, drafts,
+owner publish/unpublish, developer-only delete, editor publish lock, media
+rights gate on `cover`), `users` + roles and `media` + rights. #30 replaces the
+transient `pages.blocks` JSON with the structured content model and fills the
+seam methods that still return empty (domains, actualités).
+
 ## 10. How #30 extends content
 
 - Add Payload content types/globals and a seed that reproduces the fixture

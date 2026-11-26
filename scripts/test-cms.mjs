@@ -88,10 +88,14 @@ function run(command, args, options = {}) {
   }
 }
 
-/** Run an npm script; throw on failure with the script name. */
-function runScript(script, extraEnv = {}) {
+/**
+ * Run an npm script; throw on failure with the script name.
+ * @param {string} script
+ * @param {{ env?: NodeJS.ProcessEnv, capture?: boolean }} [options]
+ */
+function runScript(script, options = {}) {
   log(`npm run ${script}`)
-  const result = run(npmBin, ["run", script], { env: extraEnv })
+  const result = run(npmBin, ["run", script], { env: options.env, capture: options.capture })
   if (result.status !== 0) throw new Error(`npm run ${script} failed with status ${result.status}`)
   return result
 }
