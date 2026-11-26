@@ -99,22 +99,23 @@ const P1_DOMAINS = [
 /** The two gated domains. */
 const GATED_DOMAINS = ["energies-renouvelables", "fourniture-equipements"] as const
 
+/** The five P1 rubriques' routes. */
 const P1_ROUTES = P1_NAVIGATION.map((item) => item.href)
 
 /**
  * The legal utility pages are P1 pages delivered by #28; an email-first contact
- * or careers page must link the privacy policy, so they are published in every
- * scenario (their prose lands with #28). Carrières is footer-only and lands with
- * #27: it stays closed — and absent from every surface — until then.
+ * page must link the privacy policy, so they are published in every scenario.
  */
+const LEGAL_ROUTES = ["/mentions-legales", "/politique-de-confidentialite"] as const
+
+/** Footer/drawer utilities published at P1 (#28; Carrières joins with #27). */
 const LEGAL_UTILITIES: readonly ExpectedNavItem[] = [
   { label: "Mentions légales", href: "/mentions-legales" },
-  {
-    label: "Politique de confidentialité",
-    href: "/politique-de-confidentialite",
-  },
+  { label: "Politique de confidentialité", href: "/politique-de-confidentialite" },
 ]
-const CAREERS_ROUTE = "/carrieres"
+
+/** Carrières is footer-only and lands with #27: it stays gated until then. */
+const GATED_UTILITY_ROUTES = ["/carrieres"] as const
 
 const domainPath = (slug: string) => `/domaines-activite/${slug}`
 
@@ -138,15 +139,15 @@ export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> =
     utilities: LEGAL_UTILITIES,
     publishedDomains: [...P1_DOMAINS],
     gatedDomains: [...GATED_DOMAINS],
-    openRoutes: [...P1_ROUTES, ...P1_DOMAINS.map(domainPath)],
+    openRoutes: [...P1_ROUTES, ...LEGAL_ROUTES, ...P1_DOMAINS.map(domainPath)],
     gatedRoutes: [
       ...GATED_DOMAINS.map(domainPath),
       "/moyens-et-competences",
       "/references-et-partenaires",
       "/actualites",
-      CAREERS_ROUTE,
+      ...GATED_UTILITY_ROUTES,
     ],
-    sitemapPaths: sitemapPathsFor(P1_ROUTES, [...P1_DOMAINS]),
+    sitemapPaths: sitemapPathsFor([...P1_ROUTES, ...LEGAL_ROUTES], [...P1_DOMAINS]),
   },
 
   /*
@@ -160,9 +161,16 @@ export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> =
     utilities: LEGAL_UTILITIES,
     publishedDomains: [...P1_DOMAINS, ...GATED_DOMAINS],
     gatedDomains: [],
-    openRoutes: [...P1_ROUTES, ...[...P1_DOMAINS, ...GATED_DOMAINS].map(domainPath)],
-    gatedRoutes: ["/actualites", CAREERS_ROUTE],
-    sitemapPaths: sitemapPathsFor(P1_ROUTES, [...P1_DOMAINS, ...GATED_DOMAINS]),
+    openRoutes: [
+      ...P1_ROUTES,
+      ...LEGAL_ROUTES,
+      ...[...P1_DOMAINS, ...GATED_DOMAINS].map(domainPath),
+    ],
+    gatedRoutes: ["/actualites", ...GATED_UTILITY_ROUTES],
+    sitemapPaths: sitemapPathsFor(
+      [...P1_ROUTES, ...LEGAL_ROUTES],
+      [...P1_DOMAINS, ...GATED_DOMAINS]
+    ),
   },
 
   /*
@@ -175,9 +183,16 @@ export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> =
     utilities: LEGAL_UTILITIES,
     publishedDomains: [...P1_DOMAINS, ...GATED_DOMAINS],
     gatedDomains: [],
-    openRoutes: [...P1_ROUTES, ...[...P1_DOMAINS, ...GATED_DOMAINS].map(domainPath)],
-    gatedRoutes: [CAREERS_ROUTE],
-    sitemapPaths: sitemapPathsFor(P1_ROUTES, [...P1_DOMAINS, ...GATED_DOMAINS]),
+    openRoutes: [
+      ...P1_ROUTES,
+      ...LEGAL_ROUTES,
+      ...[...P1_DOMAINS, ...GATED_DOMAINS].map(domainPath),
+    ],
+    gatedRoutes: [...GATED_UTILITY_ROUTES],
+    sitemapPaths: sitemapPathsFor(
+      [...P1_ROUTES, ...LEGAL_ROUTES],
+      [...P1_DOMAINS, ...GATED_DOMAINS]
+    ),
   },
 
   /*
@@ -196,12 +211,18 @@ export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> =
       "/domaines-activite",
       "/realisations",
       "/contact",
+      ...LEGAL_ROUTES,
       domainPath("installations-electriques"),
       domainPath("infrastructures-reseaux-electriques"),
     ],
-    gatedRoutes: ["/a-propos", domainPath("eclairage-public"), ...GATED_DOMAINS.map(domainPath), CAREERS_ROUTE],
+    gatedRoutes: [
+      "/a-propos",
+      domainPath("eclairage-public"),
+      ...GATED_DOMAINS.map(domainPath),
+      ...GATED_UTILITY_ROUTES,
+    ],
     sitemapPaths: sitemapPathsFor(
-      ["/", "/domaines-activite", "/realisations", "/contact"],
+      ["/", "/domaines-activite", "/realisations", "/contact", ...LEGAL_ROUTES],
       ["installations-electriques", "infrastructures-reseaux-electriques"]
     ),
   },

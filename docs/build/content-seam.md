@@ -85,6 +85,17 @@ while the block is absent, the contact page renders nothing for them (no empty
 shell, no placeholder). Clearing a channel is a content-data change (the #30
 contact global maps onto the same block) and needs no renderer change.
 
+**Legal exception (#28).** The mentions légales and the politique de
+confidentialité are code-owned in `lib/legal/`: the identity block (facts
+register §2.1), the approved §4.2/§4.3 copy, the retention/rights sections and
+the cookies table. Their page documents in the content source only register the
+route for the sitemap and the gate — no blocks, no title, no description — and
+the route files still call `requirePublishedRubrique()` first, so the normal
+gate decides reachability. The admin can neither edit nor remove the legal copy
+(#30 verifies); `tests/architecture.test.ts` guards the boundary. Their
+metadata defaults are code-owned in `lib/legal/metadata.ts` until #32's
+`lib/seo.ts` takes over.
+
 ---
 
 ## 3. Fixture corpus and scenarios
