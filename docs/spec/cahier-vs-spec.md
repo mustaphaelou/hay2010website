@@ -4,7 +4,7 @@
 **Source:** [`cahier-des-charges-site-web-2026-11-26.pdf`](cahier-des-charges-site-web-2026-11-26.pdf) — authored "HAY2010", 26/11/2026.
 **Compared against:** the resolved wayfinder tickets on map [#1](https://github.com/mustaphaelou/hay2010website/issues/1) — page tree [#2](https://github.com/mustaphaelou/hay2010website/issues/2), facts register [#3](https://github.com/mustaphaelou/hay2010website/issues/3), brand [#4](https://github.com/mustaphaelou/hay2010website/issues/4), content model [#5](https://github.com/mustaphaelou/hay2010website/issues/5), réalisations [#6](https://github.com/mustaphaelou/hay2010website/issues/6), hosting [#8](https://github.com/mustaphaelou/hay2010website/issues/8), legal [#10](https://github.com/mustaphaelou/hay2010website/issues/10), SEO [#11](https://github.com/mustaphaelou/hay2010website/issues/11), forms [#12](https://github.com/mustaphaelou/hay2010website/issues/12), CNDP [#14](https://github.com/mustaphaelou/hay2010website/issues/14).
 
-> **One-line reading:** the cahier is ~70 % already satisfied or exceeded. Its demands that are not satisfied are almost all blocked on **owner-supplied content and permissions**, not on engineering. The one true architectural change it forces — a second language — must be decided before routes are written, because URLs are forever.
+> **One-line reading:** of the 55 requirement rows below, 19 are already satisfied as decided and 6 are compatible extensions; 21 are blocked on **owner-supplied content and permissions**, and 9 contradict a resolved decision. The blocked rows are the cahier's heaviest sections — the project portfolio, the moyens page and the références page — not its architecture. The one true architectural change it forces, a second language, must be decided before routes are written, because URLs are forever.
 
 ---
 
@@ -16,6 +16,8 @@
 | ➕ | Compatible extension — adds a page/section the decided tree lacks |
 | ⚠️ | Contradicts a resolved decision — needs an owner decision |
 | ⛔ | Requires content, proof or permissions that do not exist yet |
+
+Distribution across the 55 requirement rows of §2 (mixed rows counted by their dominant verdict): **19 ✅ · 6 ➕ · 9 ⚠️ · 21 ⛔**.
 
 ---
 
