@@ -42,11 +42,16 @@ describe(`root shell over HTTP (${scenario.name})`, () => {
     expect(canonical.html.getAttribute("lang")).toBe("fr")
   })
 
-  it("renders one banner, one main and one contentinfo around an empty main", async () => {
+  it("renders one banner, one main and one contentinfo around the homepage", async () => {
     const page = await fetchPage("/")
     const canonical = assertCanonicalDocument(page)
-    // The homepage sections land in #23: the shell must hold an empty <main>.
-    expect(textOf(canonical.main)).toBe("")
+    // The shell keeps a single banner/contentinfo pair; the homepage trame
+    // (#23) lives under the one main landmark and carries the page h1.
+    expect(
+      textOf(canonical.main).length,
+      "the homepage must render its trame, not an empty shell"
+    ).toBeGreaterThan(0)
+    expect(canonical.main.querySelectorAll("h1")).toHaveLength(1)
   })
 
   it("opens with a skip link targeting the main landmark", async () => {
@@ -96,7 +101,10 @@ describe(`root shell over HTTP (${scenario.name})`, () => {
       href: anchor.getAttribute("href") ?? "",
     }))
     expect(links).toEqual(
-      scenario.navigation.map((item) => ({ label: item.label, href: item.href }))
+      scenario.navigation.map((item) => ({
+        label: item.label,
+        href: item.href,
+      }))
     )
   })
 
@@ -159,6 +167,8 @@ describe(`root shell over HTTP (${scenario.name})`, () => {
     const allowed = new Set([
       ...scenario.navigation.map((item) => item.href),
       ...scenario.utilities.map((item) => item.href),
+      // The homepage domain blocks link the published domain children (#23).
+      ...scenario.publishedDomains.map((slug) => `/domaines-activite/${slug}`),
     ])
     const hrefs = page.document
       .querySelectorAll("a[href]")

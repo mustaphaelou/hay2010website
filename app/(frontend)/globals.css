@@ -112,6 +112,50 @@ dialog.site-drawer::backdrop {
   background: rgb(17 18 23 / 0.4);
 }
 
+/*
+ * Homepage hero motion (brand direction §2.7): one Ken Burns pass on the hero
+ * photograph (22 s) and a single rise on the hero copy (700 ms). Motion is
+ * opt-in: the animation is only declared inside `prefers-reduced-motion:
+ * no-preference`, and the reduce query switches it off outright, so the content
+ * is visible immediately for visitors who ask for reduced motion.
+ */
+@keyframes accueil-ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes accueil-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .accueil-hero-media img {
+    animation: accueil-ken-burns 22s ease-out 1 both;
+  }
+
+  .accueil-hero-copy {
+    animation: accueil-rise 700ms ease-out 1 both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accueil-hero-media img,
+  .accueil-hero-copy {
+    animation: none;
+  }
+}
+
 /* Motion respects the visitor's preference (brand direction §2.7). */
 @media (prefers-reduced-motion: reduce) {
   *,

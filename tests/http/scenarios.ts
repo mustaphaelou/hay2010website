@@ -23,6 +23,7 @@ export type ScenarioName =
   | "p3"
   | "p1-gates-closed"
   | "p1-recrutement"
+  | "p1-hero-image"
 
 export const SCENARIO_NAMES: readonly ScenarioName[] = [
   "p1",
@@ -30,6 +31,7 @@ export const SCENARIO_NAMES: readonly ScenarioName[] = [
   "p3",
   "p1-gates-closed",
   "p1-recrutement",
+  "p1-hero-image",
 ]
 
 export const SCENARIO: ScenarioName = (() => {
@@ -92,6 +94,12 @@ export interface ScenarioExpectation {
   readonly sitemapPaths: readonly string[]
   /** Carrières gate state and inline listings. */
   readonly careers: ScenarioCareers
+  /**
+   * Homepage hero state of this corpus: `true` when the content carries a
+   * rights-cleared documentary image, `false` for the typographic fallback
+   * (the launch state — no licensed photograph exists yet, #23).
+   */
+  readonly heroImage: boolean
 }
 
 /** The five P1 rubriques — CDC order, Accueil first. */
@@ -134,7 +142,10 @@ const P1_DOMAINS = [
 ] as const
 
 /** The two gated domains. */
-const GATED_DOMAINS = ["energies-renouvelables", "fourniture-equipements"] as const
+const GATED_DOMAINS = [
+  "energies-renouvelables",
+  "fourniture-equipements",
+] as const
 
 /** The five P1 rubriques' routes. */
 const P1_ROUTES = P1_NAVIGATION.map((item) => item.href)
@@ -143,7 +154,10 @@ const P1_ROUTES = P1_NAVIGATION.map((item) => item.href)
  * The legal utility pages are P1 pages delivered by #28; an email-first contact
  * page must link the privacy policy, so they are published in every scenario.
  */
-const LEGAL_ROUTES = ["/mentions-legales", "/politique-de-confidentialite"] as const
+const LEGAL_ROUTES = [
+  "/mentions-legales",
+  "/politique-de-confidentialite",
+] as const
 
 /**
  * Carrières is a footer-only utility page (IA §Navigation): it is part of the
@@ -160,7 +174,10 @@ const CAREERS_UTILITY: ExpectedNavItem = {
 const UTILITIES: readonly ExpectedNavItem[] = [
   CAREERS_UTILITY,
   { label: "Mentions légales", href: "/mentions-legales" },
-  { label: "Politique de confidentialité", href: "/politique-de-confidentialite" },
+  {
+    label: "Politique de confidentialité",
+    href: "/politique-de-confidentialite",
+  },
 ]
 
 /** Approved Carrières metadata title (SEO doc §3.3, one brand suffix). */
@@ -258,10 +275,15 @@ function sitemapPathsFor(
   pageRoutes: readonly string[],
   domains: readonly string[]
 ): readonly string[] {
-  return [...pageRoutes.map((route) => (route === "/" ? "" : route)), ...domains.map(domainPath)]
+  return [
+    ...pageRoutes.map((route) => (route === "/" ? "" : route)),
+    ...domains.map(domainPath),
+  ]
 }
 
-export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> = {
+const BASE_EXPECTATIONS: Readonly<
+  Record<Exclude<ScenarioName, "p1-hero-image">, ScenarioExpectation>
+> = {
   /*
    * P1 launch state: five nav items, three domains, the Carrières utility page
    * and the legal utilities published (#27/#28). No opening is confirmed by the
@@ -291,6 +313,7 @@ export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> =
       [...P1_DOMAINS]
     ),
     careers: CAREERS_PENDING,
+    heroImage: false,
   },
 
   /*
@@ -318,6 +341,7 @@ export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> =
       [...P1_DOMAINS, ...GATED_DOMAINS]
     ),
     careers: CAREERS_PENDING_WITH_OPENINGS,
+    heroImage: false,
   },
 
   /*
@@ -343,6 +367,7 @@ export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> =
       [...P1_DOMAINS, ...GATED_DOMAINS]
     ),
     careers: CAREERS_PENDING_WITH_OPENINGS,
+    heroImage: false,
   },
 
   /*
@@ -384,6 +409,7 @@ export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> =
       ["installations-electriques", "infrastructures-reseaux-electriques"]
     ),
     careers: CAREERS_PENDING,
+    heroImage: false,
   },
 
   /*
@@ -416,8 +442,27 @@ export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> =
       [...P1_DOMAINS]
     ),
     careers: CAREERS_LIVE,
+    heroImage: false,
   },
 }
+
+export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> =
+  {
+    ...BASE_EXPECTATIONS,
+
+    /*
+     * #23 hero image state: the P1 launch gates with a cleared documentary image
+     * supplied through the content seam (see content/fixtures/scenarios/
+     * p1-hero-image.json). No licensed photograph exists at launch, so this
+     * test-only corpus is how the image path is proven; `p1` keeps the
+     * typographic fallback.
+     */
+    "p1-hero-image": {
+      ...BASE_EXPECTATIONS.p1,
+      name: "p1-hero-image",
+      heroImage: true,
+    },
+  }
 
 export const scenario: ScenarioExpectation = EXPECTATIONS[SCENARIO]
 

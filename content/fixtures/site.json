@@ -1,8 +1,102 @@
 {
-  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy; gate states live in content/fixtures/scenarios/*.json. #22 delivered the domain index and the three published domain pages (CDC trame, DEV-006 omissions; CFO/CFA and postes de transformation are prestations, not domains). #25 delivered the À propos page (identity, perimeter, mission/vision/values, compliance). #26 delivered the email-first Contact page (gated channels behind the seam, no form). #27 delivered the Carrières page document (hero and culture intro only: openings are the jobs records below, never page blocks) and the job records the openings seam filters. #28 delivers the two legal utility pages: their identity block and approved copy are code-owned in lib/legal/ (never CMS-editable), so their page documents only register the route for the sitemap and the gate, with no blocks, title or description.",
+  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy; gate states live in content/fixtures/scenarios/*.json. #22 delivered the domain index and the three published domain pages (CDC trame, DEV-006 omissions; CFO/CFA and postes de transformation are prestations, not domains). #23 delivered the homepage trame (hero typographic fallback, intro, domain blocks, repères, réalisations teaser, engagements, contact CTA). #25 delivered the À propos page (identity, perimeter, mission/vision/values, compliance). #26 delivered the email-first Contact page (gated channels behind the seam, no form). #27 delivered the Carrières page document (hero and culture intro only: openings are the jobs records below, never page blocks) and the job records the openings seam filters. #28 delivers the two legal utility pages: their identity block and approved copy are code-owned in lib/legal/ (never CMS-editable), so their page documents only register the route for the sitemap and the gate, with no blocks, title or description.",
   "pages": {
     "accueil": {
-      "blocks": []
+      "title": "Éclairage public et électrification à Rabat",
+      "description": "Entreprise d’éclairage public et d’électrification HTA/MT, MT/BT, postes de transformation et CFO/CFA à Rabat. Plus de 10 ans d’expérience. Études et travaux.",
+      "blocks": [
+        {
+          "kind": "hero",
+          "headline": "Éclairage public et électrification à Rabat",
+          "tagline": "Depuis plus de 10 ans, HAY2010 accompagne les collectivités et les entreprises dans leurs projets d’éclairage public et d’électrification.",
+          "links": [
+            {
+              "label": "Nos réalisations",
+              "href": "/realisations"
+            },
+            {
+              "label": "Nous contacter",
+              "href": "/contact"
+            }
+          ]
+        },
+        {
+          "kind": "intro",
+          "paragraphs": [
+            "HAY2010 est une entreprise d’électricité et d’éclairage public à Rabat. Nous réalisons des études et des travaux pour les collectivités et les entreprises.",
+            "De l’étude à la réception, nous suivons le même fil\u00a0: comprendre le besoin, dimensionner juste, exécuter proprement et rendre compte."
+          ]
+        },
+        {
+          "kind": "domaines",
+          "title": "Nos domaines d’activité"
+        },
+        {
+          "kind": "reperes",
+          "items": [
+            {
+              "label": "Expérience",
+              "value": "Plus de 10 ans d’expérience"
+            },
+            {
+              "label": "Base",
+              "value": "Rabat — Maroc"
+            },
+            {
+              "label": "Métier",
+              "value": "Éclairage public"
+            },
+            {
+              "label": "Métier",
+              "value": "Réseaux HTA/MT & MT/BT"
+            },
+            {
+              "label": "Métier",
+              "value": "Postes de transformation"
+            },
+            {
+              "label": "Métier",
+              "value": "CFO/CFA"
+            }
+          ]
+        },
+        {
+          "kind": "credentials",
+          "statement": "Références sur demande.",
+          "body": "Nos références sont transmises sur demande, après accord des maîtres d’ouvrage.",
+          "items": [],
+          "link": {
+            "label": "Voir nos réalisations",
+            "href": "/realisations"
+          }
+        },
+        {
+          "kind": "engagements",
+          "items": [
+            {
+              "title": "Qualité",
+              "body": "Des ouvrages conformes aux prescriptions du marché, contrôlés et essayés avant mise en service. Les écarts sont traités et documentés avant réception."
+            },
+            {
+              "title": "Sécurité",
+              "body": "Chaque intervention est préparée\u00a0: analyse des risques, consignations et coordination avec les autres intervenants présents sur le site."
+            },
+            {
+              "title": "Délais",
+              "body": "Le planning arrêté avec le donneur d’ordre est suivi jusqu’à la livraison, et les écarts sont expliqués."
+            }
+          ]
+        },
+        {
+          "kind": "contact-cta",
+          "title": "Un projet d’éclairage public ou d’électrification\u00a0?",
+          "body": "Décrivez-nous votre besoin\u00a0: nous vous répondrons sur le périmètre, la méthode et les délais.",
+          "link": {
+            "label": "Nous contacter",
+            "href": "/contact"
+          }
+        }
+      ]
     },
     "a-propos": {
       "title": "À propos",

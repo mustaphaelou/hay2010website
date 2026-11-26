@@ -17,6 +17,7 @@ import p2Scenario from "@/content/fixtures/scenarios/p2.json"
 import p3Scenario from "@/content/fixtures/scenarios/p3.json"
 import p1GatesClosedScenario from "@/content/fixtures/scenarios/p1-gates-closed.json"
 import p1RecrutementScenario from "@/content/fixtures/scenarios/p1-recrutement.json"
+import p1HeroImageScenario from "@/content/fixtures/scenarios/p1-hero-image.json"
 
 import type {
   ActualiteDocument,
@@ -36,7 +37,8 @@ import type {
  * One gate scenario: the publish state of every rubrique, domain and job
  * opening, plus the simulated F-113 careers channel state. Everything here is
  * gate data, never copy — a scenario opens or closes a gate, it does not write
- * the page.
+ * the page. The one test-only exception is the hero media hook (#23), which
+ * exists solely to prove the image path while no licensed photo exists.
  */
 interface ScenarioFixture {
   readonly tier: Tier
@@ -44,6 +46,16 @@ interface ScenarioFixture {
   readonly domains: Readonly<Record<string, PublishState>>
   readonly jobs?: Readonly<Record<string, PublishState>>
   readonly careers?: CareersChannel
+  /**
+   * Test-only content variant (#23): the cleared media id a page's hero must
+   * carry in this corpus. Scenarios are gate maps; this single hook exists
+   * because no licensed hero photograph exists at launch, so the image path is
+   * proven by the `p1-hero-image` corpus instead of by the launch fixture. The
+   * launch scenarios omit it and render the typographic fallback.
+   */
+  readonly heroMedia?: Readonly<Record<string, string>>
+  /** Test-only media records supplied by the scenario (cleared ones only). */
+  readonly media?: readonly MediaRecord[]
 }
 
 /** A job record as stored in the fixture corpus (state + opening metadata). */
@@ -92,6 +104,9 @@ const SCENARIOS: Readonly<Record<string, ScenarioFixture>> = {
   p3: p3Scenario as unknown as ScenarioFixture,
   "p1-gates-closed": p1GatesClosedScenario as unknown as ScenarioFixture,
   "p1-recrutement": p1RecrutementScenario as unknown as ScenarioFixture,
+  // Test-only hero image corpus (#23): the launch state plus one cleared hero
+  // media record, proving the image path without shipping unlicensed imagery.
+  "p1-hero-image": p1HeroImageScenario as unknown as ScenarioFixture,
 }
 
 const DEFAULT_SCENARIO = "p1"
@@ -106,7 +121,9 @@ let resolvedScenarioName: string | null = null
 function getScenario(): ScenarioFixture {
   if (resolvedScenario) return resolvedScenario
 
-  const name = (process.env.CONTENT_SCENARIO ?? DEFAULT_SCENARIO).trim() || DEFAULT_SCENARIO
+  const name =
+    (process.env.CONTENT_SCENARIO ?? DEFAULT_SCENARIO).trim() ||
+    DEFAULT_SCENARIO
   const scenario = SCENARIOS[name]
   if (!scenario) {
     throw new Error(
@@ -135,6 +152,27 @@ function toPageDocument(key: RubriqueKey): PageDocument | null {
     title: page.title,
     description: page.description,
     blocks: page.blocks,
+  }
+}
+
+/**
+ * Apply the scenario's test-only hero media hook, if any (#23).
+ *
+ * Only the `heroMedia` entry of the active scenario changes a document; every
+ * other scenario returns the shared corpus untouched, so the launch build keeps
+ * the typographic fallback.
+ */
+function withScenarioHeroMedia(
+  key: RubriqueKey,
+  page: PageDocument
+): PageDocument {
+  const mediaId = getScenario().heroMedia?.[key]
+  if (!mediaId) return page
+  return {
+    ...page,
+    blocks: page.blocks.map((block) =>
+      block.kind === "hero" ? { ...block, mediaId } : block
+    ),
   }
 }
 
@@ -184,13 +222,22 @@ function isMediaCleared(media: MediaRecord): boolean {
   const rights = media.rights
   if (rights.status !== "cleared") return false
   if (rights.peoplePresent && rights.releaseStatus !== "cleared") return false
-  if (rights.clientMarks && !(rights.clientPermission && rights.trademarkPermission)) return false
+  if (
+    rights.clientMarks &&
+    !(rights.clientPermission && rights.trademarkPermission)
+  )
+    return false
   return true
 }
 
 const fixtureSource: ContentSource = {
   async getPublishState(key: RubriqueKey): Promise<PublishState> {
-    return getScenario().rubriques[key] ?? { published: false, reason: "Rubrique inconnue du scénario." }
+    return (
+      getScenario().rubriques[key] ?? {
+        published: false,
+        reason: "Rubrique inconnue du scénario.",
+      }
+    )
   },
 
   async listPublishedRubriques(): Promise<readonly RubriqueKey[]> {
@@ -201,7 +248,8 @@ const fixtureSource: ContentSource = {
   },
 
   async getPage(key: RubriqueKey): Promise<PageDocument | null> {
-    return toPageDocument(key)
+    const page = toPageDocument(key)
+    return page ? withScenarioHeroMedia(key, page) : null
   },
 
   async listPublishedDomains(): Promise<readonly DomainDocument[]> {
@@ -248,7 +296,11 @@ const fixtureSource: ContentSource = {
   },
 
   async getMedia(id: string): Promise<MediaRecord | null> {
-    const media = SITE.media.find((candidate) => candidate.id === id)
+    // The scenario's test-only corpus wins, so a build can prove the hero image
+    // path without putting unlicensed photography in the launch fixture (#23).
+    const media =
+      getScenario().media?.find((candidate) => candidate.id === id) ??
+      SITE.media.find((candidate) => candidate.id === id)
     if (!media || !isMediaCleared(media)) return null
     return media
   },

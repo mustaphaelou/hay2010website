@@ -23,7 +23,7 @@ port (`31NN`), never 3000. Without it the runner defaults to 3100.
 ### What the command does
 
 `scripts/test-http.mjs` runs the suite once **per fixture scenario**
-(`p1`, `p2`, `p3`, `p1-gates-closed`, `p1-recrutement`):
+(`p1`, `p2`, `p3`, `p1-gates-closed`, `p1-recrutement`, `p1-hero-image`):
 
 1. removes `.next` and runs `next build` with
    `CONTENT_SOURCE=fixture CONTENT_SCENARIO=<scenario>` — the build is the
@@ -74,6 +74,7 @@ rule) — so fixture data and the spec cannot drift silently.
 | `p3` | 8 rubriques | Actualités inserted; published-but-unbuilt page stays out of the sitemap |
 | `p1-gates-closed` | P1 minus À propos and Éclairage public | closing a gate removes it from every surface and makes its existing route 404; Carrières stays open with its empty state |
 | `p1-recrutement` | P1 plus the F-113 channel live | the careers mailbox is published, CVs are invited by e-mail and the approved notice renders with a (fictitious) CNDP reference; never a production corpus |
+| `p1-hero-image` | P1 launch state plus a cleared hero photograph in the corpus | the homepage image path (#23): the hero renders the supplied documentary image with explicit dimensions and alt, while `p1` proves the typographic fallback because no licensed photograph exists at launch |
 
 The same test bodies run in every scenario, so a gate is always observed from
 both sides: `p1` asserts `/a-propos` 200 and present; `p1-gates-closed` asserts
@@ -90,8 +91,8 @@ import a component and never assert class names or call order.
   (`#contenu`, focusable) and one `<footer>` contentinfo, skip link first;
 - French metadata: HAY2010 title and the approved positioning description,
   within the SEO length bounds;
-- empty homepage: the shell renders around an empty `<main>` (homepage sections
-  are #23);
+- homepage shell: the one banner/main/contentinfo pair surrounds the homepage
+  trame, with the page `h1` under the one `<main>`;
 - published rubriques only: the header row follows the scenario's published set
   in CDC order; the footer links come from the same set; no undeclared or gated
   internal link;
@@ -133,6 +134,35 @@ import a component and never assert class names or call order.
 - links back to every published main rubrique (derived from the registry);
 - no gated rubrique suggested.
 
+`tests/http/homepage.test.ts` (#23)
+
+- the seven CDC sections render once each, in the decided order: hero → intro →
+  domain blocks → repères → réalisations teaser → engagements → contact CTA,
+  each section labelled by its own heading; one `h1`, the SEO query phrase;
+- hero: the typographic ink fallback when the corpus carries no licensed image
+  (no `img`/`picture`/`figure`/video, approved positioning line, CTAs to
+  Réalisations and Contact); in the `p1-hero-image` corpus, exactly one supplied
+  documentary image with French alt, intrinsic `width`/`height` (no layout
+  shift) and no remote/stock URL;
+- domain blocks link exactly the scenario's published domain pages in CDC order
+  and never a gated domain or a non-domain route; the intro links À propos only
+  while that gate is open;
+- repères: only the cleared facts (experience line, Rabat base, the four
+  approved service words) — no invented counts, percentage, financial figure,
+  ranking, certification or founding year, and no ONEE wording;
+- réalisations teaser: `Références sur demande` fallback + approved supporting
+  line, link to `/realisations`, no project cards, detail links or photography;
+- engagements are text-only (qualité, sécurité, délais) with no equipment or
+  certification claim; no careers teaser, no news teaser, no video band and no
+  selected-project cards;
+- the last section is the contact CTA, phrased as the decided question and
+  linking only the published `/contact`;
+- hero motion is guarded by `prefers-reduced-motion` (animation only under
+  `no-preference`, disabled under `reduce`);
+- unique title (the homepage `title.absolute`) and 120–160 character
+  description, one apex canonical, unique against the other built pages; no
+  form, analytics or consent surface; no placeholder copy.
+
 `tests/http/domaines.test.ts` (#22)
 
 - the index serves a canonical document and links exactly the published domains
@@ -167,11 +197,11 @@ import a component and never assert class names or call order.
   person named, exactly once);
 - no link to `/references-et-partenaires` while that P2 rubrique is unpublished
   (the page keeps a documented extension point that renders the canonical link
-  only when the rubrique is published *and* has a page document);
+  only when the rubrique is published _and_ has a page document);
 - unique title and description across the scenario's published routes, within
   the SEO length bounds; no form, analytics, consent banner or tracking cookie;
   no placeholder copy.
-`tests/http/contact.test.ts` (#26)
+  `tests/http/contact.test.ts` (#26)
 
 - one canonical French document with one `h1` (`Contact`), served with 200;
 - the primary action is the cleared mailbox as a bare `mailto:`; no other or
@@ -191,7 +221,7 @@ import a component and never assert class names or call order.
   response time or free-quote promise;
 - metadata: unique French title and 120–170 character description, unique
   against the other built pages of the scenario.
-`tests/http/legal.test.ts` (#28)
+  `tests/http/legal.test.ts` (#28)
 
 - `/mentions-legales` carries the exact facts-register identity block and the
   approved §4.2 sections, with no publication director, host line, phone,
@@ -273,6 +303,7 @@ preemptively (spec: "Deferred").
 | `tests/http/scenarios.ts` | spec-derived expected public shape per scenario |
 | `tests/http/surfaces.ts` | link/nav/drawer/footer assertions |
 | `tests/http/shell.test.ts` | #20 shell acceptance (scenario-aware) |
+| `tests/http/homepage.test.ts` | #23 homepage trame, hero states, cleared facts, exclusive teasers, motion guard, unique metadata |
 | `tests/http/navigation.test.ts` | registry-driven nav, drawer, footer |
 | `tests/http/gates.test.ts` | publication gates, internal-link and sitemap leaks |
 | `tests/http/not-found.test.ts` | real 404 status/document/links back |
