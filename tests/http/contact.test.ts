@@ -3,6 +3,7 @@ import type { HTMLElement } from "node-html-parser"
 
 import {
   assertCanonicalDocument,
+  visibleTextOf,
   fetchPage,
   findAnalyticsSignals,
   findConsentBanners,
@@ -274,7 +275,9 @@ describe(`contact page: email-first (${scenario.name})`, () => {
 
   it("keeps every gated claim out of the page", async () => {
     const canonical = await fetchContact()
-    const text = textOf(canonical.body)
+    // Visible copy only: the JSON-LD graph legitimately carries the cleared
+    // RC/ICE identifiers and the Organization entity (SEO §5.2).
+    const text = visibleTextOf(canonical.body)
 
     // Facts register §2.2/§3: these may never render while their gates are
     // closed, and none of them belongs on a contact page.

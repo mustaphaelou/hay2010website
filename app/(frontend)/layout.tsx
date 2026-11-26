@@ -1,24 +1,79 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import type { ReactNode } from "react"
 
 import { SiteFooter } from "@/components/site/site-footer"
 import { SiteHeader } from "@/components/site/site-header"
 import { SkipLink } from "@/components/site/skip-link"
+import { PAGE_SEO } from "@/lib/seo"
+import { SITE, SITE_URL } from "@/lib/seo/site"
 import { poppins } from "@/lib/site/fonts"
 import { cn } from "@/lib/utils"
 
 import "./globals.css"
 
 /**
- * French metadata holding the approved positioning. The full SEO system
- * (title template, canonical, Open Graph, JSON-LD) lands in #32; these are the
- * decided launch defaults from docs/seo/seo-metadata.md §3.3.
+ * The site-wide crawler defaults (ticket #32; docs/seo/seo-metadata.md §2.4,
+ * §3.2, §3.6, §4.2):
+ *
+ * - `metadataBase` is mandatory and code-owned: the canonical apex (or the
+ *   staging origin via `NEXT_PUBLIC_SERVER_URL`), never localhost;
+ * - `title.template` appends the single `— HAY2010` suffix; pages supply the
+ *   keyword-led phrase only, and the homepage uses `title.absolute`;
+ * - the default Open Graph/Twitter block is complete, because Next's metadata
+ *   merge is shallow — each page's helper re-spreads the full object;
+ * - `lang` is `fr` on the document below; `robots`, `formatDetection` and the
+ *   viewport export are the decided baseline.
+ *
+ * Icons are gated by #4 (logo ownership): no placeholder icon is added here.
  */
+const homepage = PAGE_SEO["/"]
+const homepageTitle = `HAY2010 — ${homepage.phrase}`
+
 export const metadata: Metadata = {
-  title: "HAY2010 — Éclairage public et électrification à Rabat",
-  description:
-    "Entreprise d’éclairage public et d’électrification HTA/MT, MT/BT, postes de transformation et CFO/CFA à Rabat. Plus de 10 ans d’expérience. Études et travaux.",
-  applicationName: "HAY2010",
+  metadataBase: SITE_URL,
+  title: {
+    template: "%s — HAY2010",
+    default: homepageTitle,
+  },
+  description: homepage.description,
+  applicationName: SITE.name,
+  referrer: "origin-when-cross-origin",
+  formatDetection: { telephone: false, email: false, address: false },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    title: homepageTitle,
+    description: homepage.description,
+    url: SITE.url,
+    siteName: SITE.name,
+    locale: SITE.locale,
+    images: [SITE.ogImage],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: homepageTitle,
+    description: homepage.description,
+    images: [SITE.ogImage],
+  },
+}
+
+/** Theme/viewport are the `viewport` export, not deprecated metadata fields. */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  // Light theme only in v1 (#4 §2.2); paper is the brand background.
+  colorScheme: "light",
+  themeColor: "#F7F6F1",
 }
 
 /**
