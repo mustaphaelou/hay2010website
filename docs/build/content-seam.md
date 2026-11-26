@@ -259,10 +259,21 @@ It never renders hollow content.
 
 ### Adding a gated dynamic route family
 
-When a ticket adds a gated dynamic route (e.g. `/realisations/{slug}` in #24),
-extend `resolveRouteGate()` so the family gets the server-rendered 404 too, and
-add its closed paths to the matching scenario expectation in
-`tests/http/scenarios.ts`.
+When a ticket adds a gated dynamic route, extend `resolveRouteGate()` so the
+family gets the server-rendered 404 too, add the route's render-side guard as
+its first statement, and add its closed paths to the matching scenario
+expectation in `tests/http/scenarios.ts`.
+
+Worked example — `/realisations/{slug}` (#24): the family gate is code-owned,
+not a fixture tier flag (`CASE_STUDIES_LIVE` in `lib/site/realisations.ts`,
+false until three approved named case studies exist). While closed,
+`resolveRouteGate()` returns `closed` for every one-level child of the
+`/realisations` rubrique route, so `proxy.ts` serves the branded 404; the route
+file still calls `requirePublishedCaseStudy()` first as the render half of the
+contract; and `GATED_CASE_STUDY_ROUTES` in `tests/http/scenarios.ts` asserts the
+family is 404 and absent from nav, footer, sitemap and internal links in every
+scenario. The seam types carry the record model (`CaseStudyDocument`) so #30 can
+add the collection without reopening the route contract.
 
 ---
 
