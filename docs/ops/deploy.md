@@ -128,7 +128,7 @@ BACKUP_RCLONE_REMOTE=r2:hay2010-backups/postgres \
 
 **Migrations never run on application start.** With `output: "standalone"` the
 runtime image contains only traced files — no Payload CLI, no `payload.config.ts`.
-The planned path (decision §6.3, note §7): build the Dockerfile `migrator` stage as a
+The `migrator` stage exists in the `Dockerfile` (verified 2026-11-26): build it as a
 separate tag and run it once, before the new app container takes traffic:
 
 ```bash
@@ -136,7 +136,11 @@ docker build --target migrator -t <image>:<sha>-migrate .
 docker run --rm --env-file /path/to/app.env <image>:<sha>-migrate npx payload migrate
 ```
 
-CI wiring for that belongs to #29/#30.
+**Status: no CI job runs this yet** (`.github/workflows/ci.yml` has no migration step, checked
+2026-11-26). Running the migrator before the tag PATCH/deploy is therefore an **explicit operator
+step**, not something the pipeline does for you. Run `npm run migrate:status` with the deployment's
+`DATABASE_URL` afterwards and confirm every row shows `Ran = Yes`. Do not pin the new image tag before
+the migration succeeded, and never run two versions concurrently against a half-migrated schema.
 
 ## 5. Coolify application configuration (operator, one-time)
 
@@ -160,7 +164,11 @@ Recorded in [`docs/ops/external-steps.md`](external-steps.md) §2. Summary:
 2. `GET /api/health` → 200, `"status":"ok"`, `"version"` = the deployed sha.
 3. `GET /` → 200 with `X-Robots-Tag: noindex, nofollow`.
 4. `GET /robots.txt` → `User-agent: *` / `Disallow: /`.
-5. The site renders (header, main, footer) — a full content check is #33.
+5. The site renders (header, main, footer) — the full content/accessibility/performance check is the
+   P1 audit, [`docs/build/p1-audit.md`](../build/p1-audit.md) (ticket #33); read it before public launch.
+
+Handover context (training, editor guide, ownership record, remaining human actions):
+[`docs/handover/README.md`](../handover/README.md) and [runbook §8](runbook.md).
 
 ## 7. What is verified, what is not (this repository, 2026-11-26)
 
