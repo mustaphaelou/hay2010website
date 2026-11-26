@@ -1,0 +1,35 @@
+{
+  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy: at #21 the pages are skeletons (no blocks) and page tickets #22–#28 fill them. Gate states live in content/fixtures/scenarios/*.json.",
+  "pages": {
+    "accueil": { "blocks": [] },
+    "a-propos": { "blocks": [] },
+    "domaines-activite": { "blocks": [] },
+    "realisations": { "blocks": [] },
+    "contact": { "blocks": [] }
+  },
+  "domains": [
+    { "slug": "eclairage-public", "title": "Éclairage public", "blocks": [] },
+    {
+      "slug": "installations-electriques",
+      "title": "Installations électriques",
+      "blocks": []
+    },
+    {
+      "slug": "infrastructures-reseaux-electriques",
+      "title": "Infrastructures et réseaux électriques",
+      "blocks": []
+    },
+    {
+      "slug": "energies-renouvelables",
+      "title": "Énergies renouvelables et solaire",
+      "blocks": []
+    },
+    {
+      "slug": "fourniture-equipements",
+      "title": "Fourniture d’équipements et de matériel",
+      "blocks": []
+    }
+  ],
+  "actualites": [],
+  "media": []
+}

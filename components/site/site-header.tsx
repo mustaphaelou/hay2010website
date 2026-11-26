@@ -1,18 +1,23 @@
 import Link from "next/link"
 
 import { SiteLogo } from "@/components/site/site-logo"
-import { MAIN_NAVIGATION } from "@/lib/site/navigation"
+import { SiteNavigation } from "@/components/site/site-navigation"
+import { CONTACT_MAILTO, COMPANY } from "@/lib/site/company"
+import { getPublishedNavigation, getPublishedUtilities } from "@/lib/site/rubriques"
 
 /**
- * Sticky solid-white header (brand direction §2.4 and homepage README §3.2):
- * 76 px high, 52 px badge linking home, horizontal rubrique row from 1024 px.
+ * Site header (brand direction §2.4, homepage README §3.2): sticky solid-white
+ * bar, 76 px high, 52 px badge linking home, horizontal rubrique row from
+ * 1024 px, full-screen drawer below.
  *
- * Below 1024 px the header shows the logo only. Ticket #21 adds the mobile
- * drawer: it mounts its trigger in the `header-actions` slot and its overlay
- * after the bar, without rewriting this component. The P1 row has no contact
- * button by decision.
+ * The item list is derived from the rubrique registry through the content
+ * seam, so a closed gate disappears from the row, the drawer and the footer at
+ * once. No dropdowns, no separate contact button (spec decision).
  */
-export function SiteHeader() {
+export async function SiteHeader() {
+  const navigation = await getPublishedNavigation()
+  const utilities = await getPublishedUtilities()
+
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-surface">
       <div className="mx-auto flex h-[76px] max-w-[1440px] items-center justify-between gap-8 px-5 lg:px-10">
@@ -25,23 +30,13 @@ export function SiteHeader() {
         </Link>
 
         <div className="flex items-center gap-8">
-          <nav
-            aria-label="Navigation principale"
-            className="hidden items-center gap-7 lg:flex"
-          >
-            {MAIN_NAVIGATION.map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                className="text-[13px] font-medium text-body transition-colors hover:text-ink"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-
-          {/* #21 mounts the mobile drawer trigger here; the drawer is not built yet. */}
-          <div data-slot="header-actions" className="flex items-center gap-3" />
+          <SiteNavigation
+            items={navigation}
+            utilities={utilities}
+            contactEmail={COMPANY.email}
+            contactMailto={CONTACT_MAILTO}
+            base={COMPANY.base}
+          />
         </div>
       </div>
     </header>

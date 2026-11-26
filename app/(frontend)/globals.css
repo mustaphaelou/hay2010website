@@ -107,6 +107,11 @@
   }
 }
 
+/* Full-screen mobile drawer: native <dialog> styled to cover the viewport. */
+dialog.site-drawer::backdrop {
+  background: rgb(17 18 23 / 0.4);
+}
+
 /* Motion respects the visitor's preference (brand direction §2.7). */
 @media (prefers-reduced-motion: reduce) {
   *,

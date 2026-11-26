@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest"
-import type { HTMLElement } from "node-html-parser"
 
 import {
   assertCanonicalDocument,
@@ -13,17 +12,7 @@ import {
   isFrench,
   textOf,
 } from "./helpers"
-
-/** The five P1 rubriques decided in docs/spec/p1-website-build.md. */
-const P1_NAV = [
-  { label: "Accueil", href: "/" },
-  { label: "À propos", href: "/a-propos" },
-  { label: "Domaines d’activité", href: "/domaines-activite" },
-  { label: "Réalisations", href: "/realisations" },
-  { label: "Contact", href: "/contact" },
-] as const
-
-const P1_ROUTES = new Set<string>(P1_NAV.map((item) => item.href))
+import { scenario } from "./scenarios"
 
 /** Assert a regex against a large served artifact without dumping it on failure. */
 function expectMatch(haystack: string, pattern: RegExp, description: string) {
@@ -32,15 +21,14 @@ function expectMatch(haystack: string, pattern: RegExp, description: string) {
   )
 }
 
-/** Links read from a nav region, in document order. */
-function navLinks(container: HTMLElement) {
-  return container.querySelectorAll("nav a").map((anchor) => ({
-    label: textOf(anchor),
-    href: anchor.getAttribute("href") ?? "",
-  }))
-}
-
-describe("root shell over HTTP", () => {
+/**
+ * The shell suite (#20, extended by #21).
+ *
+ * It runs for every fixture scenario, so the nav/footer assertions follow the
+ * published set of that scenario (5 items at P1, 4 with a closed P1 rubrique,
+ * 7/8 at P2/P3) instead of a hardcoded launch list.
+ */
+describe(`root shell over HTTP (${scenario.name})`, () => {
   it("serves / as an HTML document", async () => {
     const page = await fetchPage("/")
     expect(page.status).toBe(200)
@@ -96,21 +84,32 @@ describe("root shell over HTTP", () => {
     expect(logoLink?.getAttribute("href")).toBe("/")
   })
 
-  it("renders the five P1 rubriques in the header, in order", async () => {
+  it("renders the published rubriques in the header, in CDC order", async () => {
     const page = await fetchPage("/")
     const { header } = assertCanonicalDocument(page)
-    expect(navLinks(header)).toEqual(P1_NAV)
+    const nav = header.querySelector('nav[aria-label="Navigation principale"]')
+    expect(nav, "the header must render the desktop navigation").not.toBeNull()
+    if (!nav) return
+
+    const links = nav.querySelectorAll("a[href]").map((anchor) => ({
+      label: textOf(anchor),
+      href: anchor.getAttribute("href") ?? "",
+    }))
+    expect(links).toEqual(
+      scenario.navigation.map((item) => ({ label: item.label, href: item.href }))
+    )
   })
 
-  it("adds no footer links to routes that do not exist yet", async () => {
+  it("lists the footer links from the same published set", async () => {
     const page = await fetchPage("/")
     const { footer } = assertCanonicalDocument(page)
     const hrefs = footer
       .querySelectorAll("a[href]")
       .map((anchor) => anchor.getAttribute("href") ?? "")
-    // Until #21 (rubrique registry and gates) and #28 (legal pages) land, the
-    // footer only offers the cleared contact channel.
-    expect(hrefs).toEqual(["mailto:contact@hay2010.ma"])
+      .filter((href) => href.startsWith("/"))
+    expect(hrefs).toEqual(
+      [...scenario.navigation, ...scenario.utilities].map((item) => item.href)
+    )
   })
 
   it("renders the footer identity, mailbox and legal line", async () => {
@@ -155,18 +154,32 @@ describe("root shell over HTTP", () => {
     expect(footerText).not.toMatch(/recrutement@/i)
   })
 
-  it("only links to the declared P1 routes or contact channels", async () => {
+  it("only links to the declared published routes or contact channels", async () => {
     const page = await fetchPage("/")
+    const allowed = new Set([
+      ...scenario.navigation.map((item) => item.href),
+      ...scenario.utilities.map((item) => item.href),
+    ])
     const hrefs = page.document
       .querySelectorAll("a[href]")
       .map((anchor) => anchor.getAttribute("href") ?? "")
     const undeclared = [...new Set(hrefs)].filter(
       (href) =>
-        !P1_ROUTES.has(href) &&
+        !allowed.has(href) &&
         !href.startsWith("#") &&
         !href.startsWith("mailto:")
     )
     expect(undeclared).toEqual([])
+  })
+
+  it("only links to published routes, never to a closed gate", async () => {
+    const page = await fetchPage("/")
+    const gated = new Set(scenario.gatedRoutes)
+    const gatedHrefs = page.document
+      .querySelectorAll("a[href]")
+      .map((anchor) => anchor.getAttribute("href") ?? "")
+      .filter((href) => gated.has(href))
+    expect(gatedHrefs).toEqual([])
   })
 
   it("removes the framework template demo content", async () => {
@@ -182,6 +195,16 @@ describe("root shell over HTTP", () => {
     const { html } = assertCanonicalDocument(page)
     expect(html.getAttribute("class") ?? "").not.toMatch(/(^|\s)dark(\s|$)/)
     expect(page.html).not.toContain("next-themes")
+  })
+
+  it("keeps the homepage prototype route working and noindex", async () => {
+    const page = await fetchPage("/prototype/homepage")
+    expect(page.status).toBe(200)
+    const robots = page.document
+      .querySelector('meta[name="robots"]')
+      ?.getAttribute("content")
+      ?.toLowerCase()
+    expect(robots ?? "").toContain("noindex")
   })
 })
 

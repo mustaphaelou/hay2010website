@@ -1,0 +1,48 @@
+{
+  "$comment": "P1 launch state: the five CDC rubriques, three published domains, no utility page yet (Carrières #27, legal #28 flip their state here).",
+  "tier": "P1",
+  "rubriques": {
+    "accueil": { "published": true },
+    "a-propos": { "published": true },
+    "domaines-activite": { "published": true },
+    "realisations": { "published": true },
+    "moyens-et-competences": {
+      "published": false,
+      "reason": "Palier P2 — inventaire matériel, photographique et RH de l’owner requis (CDC §11)."
+    },
+    "references-et-partenaires": {
+      "published": false,
+      "reason": "Palier P2 — autorisations clients, partenaires et certifications requises (CDC §11)."
+    },
+    "actualites": {
+      "published": false,
+      "reason": "Palier P3 — au moins une actualité approuvée requise."
+    },
+    "contact": { "published": true },
+    "carrieres": {
+      "published": false,
+      "reason": "Page livrée par le ticket #27."
+    },
+    "mentions-legales": {
+      "published": false,
+      "reason": "Page livrée par le ticket #28."
+    },
+    "politique-de-confidentialite": {
+      "published": false,
+      "reason": "Page livrée par le ticket #28."
+    }
+  },
+  "domains": {
+    "eclairage-public": { "published": true },
+    "installations-electriques": { "published": true },
+    "infrastructures-reseaux-electriques": { "published": true },
+    "energies-renouvelables": {
+      "published": false,
+      "reason": "Périmètre réel à confirmer par écrit par l’owner (CDC §4.3)."
+    },
+    "fourniture-equipements": {
+      "published": false,
+      "reason": "Catalogue et autorisations de distribution et de marque manquants (CDC §4.5)."
+    }
+  }
+}
