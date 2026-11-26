@@ -26,7 +26,7 @@ import {
   readPublishedOrStaff,
   updateContent,
 } from "../access/roles"
-import { richTextField, seoField, textareaField, textField, uploadField } from "../lib/payload/fields"
+import { richTextField, seoField, textField, uploadField } from "../lib/payload/fields"
 import {
   preventEditorPublish,
   publishedMediaRightsHook,

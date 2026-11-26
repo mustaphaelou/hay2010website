@@ -18,7 +18,7 @@
  * The owner drafts; permanent deletion stays developer-only (unpublish instead).
  */
 import { ValidationError } from "payload"
-import type { CollectionBeforeValidateHook, CollectionConfig, PayloadRequest } from "payload"
+import type { CollectionBeforeValidateHook, CollectionConfig } from "payload"
 
 import {
   canAccessAdmin,
