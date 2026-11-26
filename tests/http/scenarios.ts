@@ -119,6 +119,16 @@ const GATED_UTILITY_ROUTES = ["/carrieres"] as const
 
 const domainPath = (slug: string) => `/domaines-activite/${slug}`
 
+/**
+ * The named-case-study family `/realisations/{slug}` is gated at every tier
+ * until three approved named case studies exist (realisations strategy §4,
+ * spec §"Réalisations"). The gate is code-owned (`CASE_STUDIES_LIVE`), not a
+ * fixture tier flag, so the same closed paths are expected in every scenario.
+ */
+export const GATED_CASE_STUDY_ROUTES = [
+  "/realisations/projet-non-publie",
+] as const
+
 /** Sitemap: published rubriques with a page document + published domains. */
 function sitemapPathsFor(
   pageRoutes: readonly string[],
@@ -146,6 +156,7 @@ export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> =
       "/references-et-partenaires",
       "/actualites",
       ...GATED_UTILITY_ROUTES,
+      ...GATED_CASE_STUDY_ROUTES,
     ],
     sitemapPaths: sitemapPathsFor([...P1_ROUTES, ...LEGAL_ROUTES], [...P1_DOMAINS]),
   },
@@ -166,7 +177,7 @@ export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> =
       ...LEGAL_ROUTES,
       ...[...P1_DOMAINS, ...GATED_DOMAINS].map(domainPath),
     ],
-    gatedRoutes: ["/actualites", ...GATED_UTILITY_ROUTES],
+    gatedRoutes: ["/actualites", ...GATED_UTILITY_ROUTES, ...GATED_CASE_STUDY_ROUTES],
     sitemapPaths: sitemapPathsFor(
       [...P1_ROUTES, ...LEGAL_ROUTES],
       [...P1_DOMAINS, ...GATED_DOMAINS]
@@ -188,7 +199,7 @@ export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> =
       ...LEGAL_ROUTES,
       ...[...P1_DOMAINS, ...GATED_DOMAINS].map(domainPath),
     ],
-    gatedRoutes: [...GATED_UTILITY_ROUTES],
+    gatedRoutes: [...GATED_UTILITY_ROUTES, ...GATED_CASE_STUDY_ROUTES],
     sitemapPaths: sitemapPathsFor(
       [...P1_ROUTES, ...LEGAL_ROUTES],
       [...P1_DOMAINS, ...GATED_DOMAINS]
@@ -220,6 +231,7 @@ export const EXPECTATIONS: Readonly<Record<ScenarioName, ScenarioExpectation>> =
       domainPath("eclairage-public"),
       ...GATED_DOMAINS.map(domainPath),
       ...GATED_UTILITY_ROUTES,
+      ...GATED_CASE_STUDY_ROUTES,
     ],
     sitemapPaths: sitemapPathsFor(
       ["/", "/domaines-activite", "/realisations", "/contact", ...LEGAL_ROUTES],
