@@ -11,7 +11,8 @@
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "node scripts/test-http.mjs",
     "typecheck": "tsc --noEmit",
-    "check:ops": "node scripts/check-ops.mjs"
+    "check:ops": "node scripts/check-ops.mjs",
+    "rehearse:backup": "bash scripts/rehearse-backup-restore.sh"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
