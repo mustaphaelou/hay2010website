@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
+import { PageJsonLd } from "@/components/seo/page-json-ld"
 import { HomePage } from "@/components/home/home-page"
 import { getContentSource } from "@/lib/content"
 import type { ContentLink, HeroBlock, PageDocument } from "@/lib/content/types"
@@ -8,7 +9,7 @@ import { getPublishedDomains } from "@/lib/site/domaines"
 import { requirePublishedRubrique } from "@/lib/site/gates"
 import { getPageDocument } from "@/lib/site/page-content"
 import { getPublishedRubriques } from "@/lib/site/rubriques"
-import { SITE_URL } from "@/lib/site/site"
+import { pageMetadata, resolvePageSeo } from "@/lib/seo"
 
 /**
  * Accueil — the homepage (ticket #23).
@@ -51,17 +52,16 @@ async function getHomepageDocument(): Promise<PageDocument | null> {
 /**
  * Unique homepage metadata. SEO §3.2/§3.3 fix the homepage title as an absolute
  * brand-first string (`HAY2010 — <phrase>`) and a 120–160 character
- * description; #32 owns the full metadata system (metadataBase, OG, JSON-LD)
- * and will take this over. The phrase and the description are content-owned.
+ * description. The phrase and the description come from the page model; the
+ * template, canonical, Open Graph and robots rules are `lib/seo`'s (#32).
  */
-export async function generateMetadata(): Promise<Metadata> {
+async function homepageSeo() {
   const page = requireCopy(await getHomepageDocument())
+  return resolvePageSeo({ path: "/", phrase: page.title, description: page.description })
+}
 
-  return {
-    title: { absolute: `HAY2010 — ${page.title}` },
-    description: page.description,
-    alternates: { canonical: SITE_URL },
-  }
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await homepageSeo())
 }
 
 export default async function Page() {
@@ -95,11 +95,14 @@ export default async function Page() {
     : null
 
   return (
-    <HomePage
-      page={homepage}
-      domains={domains}
-      heroMedia={heroMedia}
-      aProposLink={aProposLink}
-    />
+    <>
+      <PageJsonLd seo={await homepageSeo()} />
+      <HomePage
+        page={homepage}
+        domains={domains}
+        heroMedia={heroMedia}
+        aProposLink={aProposLink}
+      />
+    </>
   )
 }

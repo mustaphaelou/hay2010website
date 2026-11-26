@@ -2,14 +2,15 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { CareersPage } from "@/components/careers/careers-page"
+import { PageJsonLd } from "@/components/seo/page-json-ld"
 import { getContentSource } from "@/lib/content"
 import {
-  CAREERS_METADATA,
   getCareersApplicationState,
   getCareersMetadataDescription,
   getOpenJobs,
   isPrivacyPolicyPublished,
 } from "@/lib/site/careers"
+import { pageMetadata, resolvePageSeo } from "@/lib/seo"
 import { requirePublishedRubrique } from "@/lib/site/gates"
 
 /**
@@ -28,12 +29,21 @@ import { requirePublishedRubrique } from "@/lib/site/gates"
  * description that invites a spontaneous application only renders once the gate
  * is open, so the head never carries a gated claim.
  */
-export async function generateMetadata(): Promise<Metadata> {
+/**
+ * Unique metadata (#32): the approved title and the description for the
+ * current F-113 gate state (SEO §3.3, forms doc §4.9). The live description
+ * invites a spontaneous application, so it only renders once the gate is open.
+ */
+async function careersSeo() {
   const application = await getCareersApplicationState()
-  return {
-    title: CAREERS_METADATA.title,
+  return resolvePageSeo({
+    path: "/carrieres",
     description: getCareersMetadataDescription(application),
-  }
+  })
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await careersSeo())
 }
 
 export default async function Page() {
@@ -53,11 +63,14 @@ export default async function Page() {
   if (!document) notFound()
 
   return (
-    <CareersPage
-      document={document}
-      jobs={jobs}
-      application={application}
-      privacyPublished={privacyPublished}
-    />
+    <>
+      <PageJsonLd seo={await careersSeo()} />
+      <CareersPage
+        document={document}
+        jobs={jobs}
+        application={application}
+        privacyPublished={privacyPublished}
+      />
+    </>
   )
 }

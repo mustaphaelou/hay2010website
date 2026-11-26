@@ -1,8 +1,10 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
+import { PageJsonLd } from "@/components/seo/page-json-ld"
 import { ContactPage } from "@/components/site/contact-page"
 import { getContentSource } from "@/lib/content"
+import { pageMetadata, resolvePageSeo } from "@/lib/seo"
 import { requirePublishedRubrique } from "@/lib/site/gates"
 
 /**
@@ -18,17 +20,15 @@ import { requirePublishedRubrique } from "@/lib/site/gates"
  * content-seam contract (docs/build/content-seam.md §"Gate semantics").
  */
 
-export async function generateMetadata(): Promise<Metadata> {
+/** Unique metadata (#32): the decided title and the page model's description. */
+async function contactSeo() {
   const source = await getContentSource()
   const page = await source.getPage("contact")
+  return resolvePageSeo({ path: "/contact", description: page?.description })
+}
 
-  return {
-    // docs/seo/seo-metadata.md §3.3 fixes this title for /contact; #32 owns the
-    // metadata system and will move the pattern into lib/seo. `absolute` keeps
-    // the title exact once that template lands.
-    title: { absolute: "Contact à Rabat — HAY2010" },
-    description: page?.description,
-  }
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await contactSeo())
 }
 
 export default async function Page() {
@@ -38,5 +38,10 @@ export default async function Page() {
   const page = await source.getPage("contact")
   if (!page) notFound()
 
-  return <ContactPage page={page} />
+  return (
+    <>
+      <PageJsonLd seo={await contactSeo()} />
+      <ContactPage page={page} />
+    </>
+  )
 }

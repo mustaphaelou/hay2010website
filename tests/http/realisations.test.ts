@@ -421,10 +421,16 @@ describe(`réalisations page: credentials-led (${scenario.name})`, () => {
 
     // JSON-LD is #32's; this ticket adds no structured-data type (SEO §9: no
     // ItemList/CreativeWork/Review until three published projects).
-    expect(
-      page.document.querySelectorAll('script[type="application/ld+json"]'),
-      "no structured data may be added by this ticket"
-    ).toHaveLength(0)
+    // #24 shipped no structured data of its own; #32 adds the site-wide
+    // Organization/WebPage graph. This page must still never publish a
+    // catalogue/creative-work type it cannot evidence.
+    const graphs = page.document.querySelectorAll(
+      'script[type="application/ld+json"]'
+    )
+    expect(graphs, "exactly one @graph block").toHaveLength(1)
+    expect(graphs[0].text).not.toMatch(
+      /"@type"\s*:\s*"(?:ItemList|CreativeWork|Review|AggregateRating|LocalBusiness|JobPosting|BreadcrumbList)"/
+    )
 
     // Unique against every other published page of the scenario.
     for (const route of scenario.openRoutes) {
