@@ -266,12 +266,16 @@ describe("/mentions-legales — ticket #28", () => {
     expect(findBannerSignals(page)).toEqual([])
     expect(findAnalyticsSignals(page)).toEqual([])
     expect(findTrackingCookies(page.headers)).toEqual([])
-    for (const selector of ["form", "input", "textarea", "select", "button"]) {
+    for (const selector of ["form", "input", "textarea", "select"]) {
       expect(
-        canonical.main.querySelectorAll(selector),
-        `a legal page carries no <${selector}>`
+        canonical.body.querySelectorAll(selector),
+        `a legal page carries no <${selector}> anywhere`
       ).toHaveLength(0)
     }
+    expect(
+      canonical.main.querySelectorAll("button"),
+      "the legal copy offers no form control"
+    ).toHaveLength(0)
   })
 })
 
@@ -469,12 +473,16 @@ describe("/politique-de-confidentialite — ticket #28", () => {
     expect(findBannerSignals(page)).toEqual([])
     expect(findAnalyticsSignals(page)).toEqual([])
     expect(findTrackingCookies(page.headers)).toEqual([])
-    for (const selector of ["form", "input", "textarea", "select", "button"]) {
+    for (const selector of ["form", "input", "textarea", "select"]) {
       expect(
-        canonical.main.querySelectorAll(selector),
-        `the policy carries no <${selector}>`
+        canonical.body.querySelectorAll(selector),
+        `the policy carries no <${selector}> anywhere`
       ).toHaveLength(0)
     }
+    expect(
+      canonical.main.querySelectorAll("button"),
+      "the policy offers no form control"
+    ).toHaveLength(0)
   })
 })
 

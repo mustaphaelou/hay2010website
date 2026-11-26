@@ -3,6 +3,7 @@ import {
   CNDP_WEBSITE_LINK,
   CONTACT_EMAIL_LINK,
   DATA_EMAIL_LINK,
+  POLICY_COOKIES_LINK,
   SITE_LINK,
 } from "./links"
 import type { LegalDocument, LegalParagraph } from "./types"
@@ -208,16 +209,7 @@ export const POLITIQUE_DE_CONFIDENTIALITE: LegalDocument = {
             {
               kind: "paragraphs",
               items: [
-                [
-                  "Voir la section ",
-                  {
-                    link: {
-                      label: "Cookies",
-                      href: "/politique-de-confidentialite#cookies",
-                    },
-                  },
-                  ".",
-                ],
+                ["Voir la section ", { link: POLICY_COOKIES_LINK }, "."],
               ],
             },
           ],
@@ -271,6 +263,10 @@ export const POLITIQUE_DE_CONFIDENTIALITE: LegalDocument = {
           ],
         },
       ],
+      // EXTENSION POINT (#14/#16): the approved §4.3 sentence “Ces transferts
+      // sont encadrés par l’autorisation de la CNDP n° [●] du [●/●/●].” is
+      // published only once the F-118 authorisation exists — a blank or “en
+      // cours” reference is forbidden by the publication rules.
     },
     {
       heading: "Combien de temps conservons-nous vos données ?",
@@ -302,6 +298,9 @@ export const POLITIQUE_DE_CONFIDENTIALITE: LegalDocument = {
             ],
           ],
         },
+        // EXTENSION POINT (#14/#16): the approved sentence “Ces durées sont
+        // identiques à celles déclarées à la CNDP.” returns with the F-211 and
+        // F-113 receipts; there is no CNDP declaration to point at yet.
       ],
     },
     {
@@ -432,6 +431,10 @@ export const POLITIQUE_DE_CONFIDENTIALITE: LegalDocument = {
         },
       ],
     },
+    // EXTENSION POINT (#14/#16): approved §4.3 “10. Références CNDP” is omitted
+    // entirely while no receipt exists — only filled entries render, never a
+    // blank “n° …”. It comes back before Contact, keeping the cookies section
+    // at §7.
     {
       heading: "Contact",
       blocks: [
