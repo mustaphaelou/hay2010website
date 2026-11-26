@@ -1,6 +1,6 @@
 import { Client } from "pg"
 
-import { isFormsEnabled } from "@/lib/config/features"
+import { formsEnabled } from "@/lib/flags"
 
 /**
  * `/api/health` — the liveness/readiness probe used by the container
@@ -68,8 +68,12 @@ export async function GET(): Promise<Response> {
 
   const report = {
     status: healthy ? "ok" : "error",
+    // Identifies the running image; the CI deploy pins the commit sha as the tag
+    // and passes it as APP_VERSION (Docker build arg), so a rollback is visible.
+    service: "hay2010-website",
+    version: process.env.APP_VERSION ?? "dev",
     checks: { app: "ok", database },
-    features: { forms: isFormsEnabled() },
+    features: { forms: formsEnabled() },
     timestamp: new Date().toISOString(),
   }
 

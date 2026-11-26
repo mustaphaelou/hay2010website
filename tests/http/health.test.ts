@@ -14,6 +14,8 @@ import { baseUrl } from "./helpers"
 
 interface HealthBody {
   status: string
+  service: string
+  version: string
   checks: { app: string; database: string }
   features: { forms: boolean }
 }
@@ -57,6 +59,16 @@ describe("/api/health over HTTP", () => {
     // The harness starts the server without DATABASE_URL: the report must say
     // so rather than pretend a database was checked.
     expect(health.body.checks.database).toBe("skipped")
+  })
+
+  it("identifies the service and the running version", async () => {
+    const health = await fetchHealth()
+
+    // The CI deploy pins the commit sha as the image tag and APP_VERSION, so the
+    // probe tells an operator which release is actually serving.
+    expect(health.body.service).toBe("hay2010-website")
+    expect(typeof health.body.version).toBe("string")
+    expect(health.body.version.length).toBeGreaterThan(0)
   })
 
   it("is never cached by a proxy or the browser", async () => {

@@ -195,11 +195,40 @@ async function get(pathname) {
 async function scenarioDefault() {
   log(`scenario default environment on ${baseUrl}`)
   await withServer({}, async () => {
-    await check("standalone runtime artefact exists (.next/standalone/server.js)", () => {
+    // `output: "standalone"` is conditional on NEXT_STANDALONE=1 (the Docker
+    // build), because Next 16 does not support `next start` with standalone
+    // output and this harness uses `next start`. The image job proves the
+    // standalone server at runtime; here we additionally assert the artefact
+    // whenever the build asked for it.
+    const standaloneServer = path.join(
+      projectRoot,
+      ".next",
+      "standalone",
+      "server.js"
+    )
+    if (process.env.EXPECT_STANDALONE === "1") {
+      await check(
+        "standalone runtime artefact exists (.next/standalone/server.js)",
+        () => {
+          assert(
+            `missing ${standaloneServer}: a NEXT_STANDALONE=1 build must emit it`,
+            existsSync(standaloneServer)
+          )
+        }
+      )
+    } else if (existsSync(standaloneServer)) {
+      pass("standalone runtime artefact exists (.next/standalone/server.js)")
+    } else {
+      log(
+        "SKIP  standalone artefact (build made without NEXT_STANDALONE=1; the Docker image job verifies it)"
+      )
+    }
+
+    await check("responses do not advertise the framework", async () => {
+      const page = await get("/")
       assert(
-        `missing ${path.join(projectRoot, ".next", "standalone", "server.js")}: ` +
-          `next.config.ts must set output: "standalone" and the build must have run`,
-        existsSync(path.join(projectRoot, ".next", "standalone", "server.js"))
+        `x-powered-by must be absent, got ${JSON.stringify(page.headers.get("x-powered-by"))}`,
+        page.headers.get("x-powered-by") === null
       )
     })
 
@@ -267,6 +296,23 @@ async function scenarioStaging() {
       assert(
         `expected "noindex, nofollow", got ${JSON.stringify(health.headers.get("x-robots-tag"))}`,
         (health.headers.get("x-robots-tag") ?? "").replace(/\s+/g, " ").trim() === "noindex, nofollow"
+      )
+    })
+
+    await check("staging serves a disallow-all /robots.txt", async () => {
+      const robots = await get("/robots.txt")
+      assert(`expected 200, got ${robots.status}`, robots.status === 200)
+      assert(
+        `expected text/plain, got ${robots.headers.get("content-type")}`,
+        /^text\/plain/.test(robots.headers.get("content-type") ?? "")
+      )
+      assert(
+        `expected a disallow-all body, got ${JSON.stringify(robots.text)}`,
+        /^User-agent: \*\nDisallow: \/\s*$/.test(robots.text)
+      )
+      assert(
+        "the staging robots response must also carry the noindex header",
+        (robots.headers.get("x-robots-tag") ?? "").includes("noindex")
       )
     })
   })
