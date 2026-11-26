@@ -1,22 +1,42 @@
 {
-  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy: at #21 the pages are skeletons (no blocks) and page tickets #22–#28 fill them. Gate states live in content/fixtures/scenarios/*.json.",
+  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy: at #21 the pages were skeletons (no blocks); page tickets #22–#28 fill them. Gate states live in content/fixtures/scenarios/*.json. #22 delivered the domain index and the three published domain pages (CDC trame, DEV-006 omissions).",
   "pages": {
     "accueil": { "blocks": [] },
     "a-propos": { "blocks": [] },
-    "domaines-activite": { "blocks": [] },
+    "domaines-activite": {
+      "title": "Nos domaines d’activité",
+      "description": "Les domaines d’activité de HAY2010 à Rabat : éclairage public, installations électriques CFO/CFA et réseaux HTA/MT et MT/BT avec postes de transformation.",
+      "blocks": [
+        {
+          "kind": "intro",
+          "paragraphs": [
+            "HAY2010 est une entreprise d’éclairage public et d’électrification basée à Rabat. Nos domaines d’activité couvrent les travaux d’éclairage public, les installations électriques et les infrastructures de réseaux électriques.",
+            "Chaque domaine dispose de sa propre page : prestations confirmées, méthode de travail, moyens et compétences, puis un contact direct pour votre projet."
+          ]
+        },
+        { "kind": "domaines" }
+      ]
+    },
     "realisations": { "blocks": [] },
     "contact": { "blocks": [] }
   },
   "domains": [
-    { "slug": "eclairage-public", "title": "Éclairage public", "blocks": [] },
+    {
+      "slug": "eclairage-public",
+      "title": "Éclairage public",
+      "summary": "Les travaux d’éclairage public, de l’étude d’exécution à la mise en service des installations.",
+      "blocks": []
+    },
     {
       "slug": "installations-electriques",
       "title": "Installations électriques",
+      "summary": "Les installations électriques CFO/CFA : tableaux, distribution, protection, câblage et mise en service.",
       "blocks": []
     },
     {
       "slug": "infrastructures-reseaux-electriques",
       "title": "Infrastructures et réseaux électriques",
+      "summary": "Les réseaux HTA/MT et MT/BT et les postes de transformation, de l’étude à la réception.",
       "blocks": []
     },
     {
