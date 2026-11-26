@@ -190,6 +190,21 @@ import a component and never assert class names or call order.
   response time or free-quote promise;
 - metadata: unique French title and 120–170 character description, unique
   against the other built pages of the scenario.
+`tests/http/legal.test.ts` (#28)
+
+- `/mentions-legales` carries the exact facts-register identity block and the
+  approved §4.2 sections, with no publication director, host line, phone,
+  representative or blank CNDP field;
+- `/politique-de-confidentialite` carries the §4.3 copy: controller identity,
+  processing register (2.1–2.6), recipients, transfers, the §5.3 retention
+  table and the §5.4 rights procedure at `donnees@hay2010.ma`;
+- cookies are §7 of the policy (anchor `#cookies`, launch-state table, no
+  banner, no analytics paragraph) and there is no separate `/cookies` route;
+- both pages render no form, banner, analytics or tracking cookie, declare a
+  self-referencing canonical and unique title/description, and are linked from
+  the footer of every published page and of the 404 document;
+- the identity and approved copy are code-owned (`lib/legal/`), absent from the
+  content corpus, and never read through the content seam.
 
 `tests/architecture.test.ts` (structural guards, not HTTP)
 
@@ -244,7 +259,8 @@ preemptively (spec: "Deferred").
 | `tests/http/en-reserved.test.ts` | `/en` reserved, French prefix-free |
 | `tests/http/a-propos.test.ts` | #25 institutional trame, gated claims, unique metadata |
 | `tests/http/domaines.test.ts` | #22 domain index, CDC trame pages, DEV-006 omissions, gated-domain/claim absence, unique metadata |
-| `tests/architecture.test.ts` | seam/layout guards: no direct CMS import, no root `app/layout.tsx`, every page gated |
+| `tests/http/legal.test.ts` | #28 legal pages: code-owned identity/copy, cookies, retention, rights, footer links, metadata |
+| `tests/architecture.test.ts` | seam/layout/legal-ownership guards: no direct CMS import, no root `app/layout.tsx`, every page gated, legal copy code-owned |
 
 ## Extending it (later tickets)
 
