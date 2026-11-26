@@ -138,6 +138,17 @@ import a component and never assert class names or call order.
 - French routes stay prefix-free (`/fr` 404, `/` 200);
 - no hreflang alternates and no English document language at P1.
 
+`tests/architecture.test.ts` (structural guards, not HTTP)
+
+- no file outside `lib/content/providers/` imports Payload — the CMS stays
+  behind the adapter (#29 must keep this);
+- only `lib/content/` imports a provider directly — rendering code goes through
+  `getContentSource()`;
+- every frontend page calls `requirePublishedRubrique()` /
+  `requirePublishedDomain()`;
+- there is no root `app/layout.tsx` (the embedded Payload admin needs its own
+  root layout) and `app/global-not-found.tsx` exists.
+
 ## Gate semantics and why there is a `proxy.ts`
 
 A gated route returns the branded 404 page with a 404 status. In Next 16.4.x a
@@ -178,6 +189,7 @@ preemptively (spec: "Deferred").
 | `tests/http/gates.test.ts` | publication gates, internal-link and sitemap leaks |
 | `tests/http/not-found.test.ts` | real 404 status/document/links back |
 | `tests/http/en-reserved.test.ts` | `/en` reserved, French prefix-free |
+| `tests/architecture.test.ts` | seam/layout guards: no direct CMS import, no root `app/layout.tsx`, every page gated |
 
 ## Extending it (later tickets)
 
