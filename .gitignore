@@ -39,3 +39,6 @@ pnpm-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local git worktrees used by the build agent
+/.worktrees/
