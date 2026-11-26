@@ -1,6 +1,8 @@
 import type { HTMLElement } from "node-html-parser"
 import { describe, expect, it } from "vitest"
 
+import { scenario, UNKNOWN_ROUTE } from "./scenarios"
+
 import {
   assertCanonicalDocument,
   assertNotFoundDocument,
@@ -472,6 +474,82 @@ describe("/politique-de-confidentialite — ticket #28", () => {
         canonical.main.querySelectorAll(selector),
         `the policy carries no <${selector}>`
       ).toHaveLength(0)
+    }
+  })
+})
+
+describe("legal pages across the P1 site — ticket #28", () => {
+  it("links both legal pages from the footer of every published page", async () => {
+    const routes = ["/", ...scenario.openRoutes.filter((route) => route !== "/")]
+
+    for (const route of routes) {
+      const page = await fetchPage(route)
+      expect(page.status, `${route} must be served`).toBe(200)
+      const canonical = assertCanonicalDocument(page)
+      const footerHrefs = canonical.footer
+        .querySelectorAll("a[href]")
+        .map((anchor) => anchor.getAttribute("href") ?? "")
+
+      expect(
+        footerHrefs,
+        `${route} must link the mentions légales from its footer`
+      ).toContain(MENTIONS_PATH)
+      expect(
+        footerHrefs,
+        `${route} must link the policy from its footer`
+      ).toContain(POLICY_PATH)
+    }
+  })
+
+  it("keeps the legal links in the 404 document footer", async () => {
+    const notFound = await fetchPage(UNKNOWN_ROUTE)
+    expect(notFound.status).toBe(404)
+    const footer = notFound.document.querySelector("footer")
+    expect(footer, "the 404 document keeps the site footer").not.toBeNull()
+    if (!footer) return
+
+    const footerHrefs = footer
+      .querySelectorAll("a[href]")
+      .map((anchor) => anchor.getAttribute("href") ?? "")
+    expect(footerHrefs).toContain(MENTIONS_PATH)
+    expect(footerHrefs).toContain(POLICY_PATH)
+  })
+
+  it("keeps titles, descriptions and canonicals unique across the published site", async () => {
+    const home = assertCanonicalDocument(await fetchPage("/"))
+    const mentions = assertCanonicalDocument(await fetchPage(MENTIONS_PATH))
+    const policy = assertCanonicalDocument(await fetchPage(POLICY_PATH))
+
+    const titles = [home.title, mentions.title, policy.title]
+    expect(new Set(titles).size, "titles must be unique").toBe(titles.length)
+
+    const descriptions = [home.description, mentions.description, policy.description]
+    expect(
+      new Set(descriptions).size,
+      "descriptions must be unique"
+    ).toBe(descriptions.length)
+
+    for (const canonical of [mentions, policy]) {
+      const href = canonicalHrefOf(canonical)
+      expect(href, "canonical must be absolute on the apex origin").toMatch(
+        /^https:\/\/hay2010\.ma\/[a-z-]+$/
+      )
+      const count = canonical.head.querySelectorAll('link[rel="canonical"]').length
+      expect(count, "exactly one canonical per legal page").toBe(1)
+    }
+  })
+
+  it("lists both legal pages in the sitemap exactly once", async () => {
+    const sitemap = await fetchPage("/sitemap.xml")
+    expect(sitemap.status).toBe(200)
+    const locations = [...sitemap.html.matchAll(/<loc>([^<]+)<\/loc>/g)].map(
+      (match) => match[1].trim()
+    )
+    for (const path of [MENTIONS_PATH, POLICY_PATH]) {
+      const matches = locations.filter(
+        (location) => new URL(location).pathname === path
+      )
+      expect(matches, `${path} must appear once in the sitemap`).toHaveLength(1)
     }
   })
 })
