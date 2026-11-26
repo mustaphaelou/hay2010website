@@ -1,0 +1,224 @@
+/**
+ * Media rights — the "no image on published content until its permission is
+ * recorded" rule (content model §7, ticket #29).
+ *
+ * Three independent layers, on purpose:
+ *
+ * 1. `validateMediaRights` (media `beforeChange`): a media record cannot be
+ *    saved as `cleared` unless the evidence is coherent — a rights reference,
+ *    a signed release when people are identifiable, client AND trademark
+ *    permission when client marks are visible;
+ * 2. `publishedMediaRightsHook` (the referencing collection's `beforeValidate`,
+ *    applied here to `pages.cover`): publishing a document whose upload is not
+ *    cleared is rejected with a validation error. It merges `originalDoc` with
+ *    the incoming update because an update payload is a *delta*: a
+ *    `_status: 'published'` PATCH carries no cover field at all, and an upload
+ *    relation arrives as an id, not a populated document;
+ * 3. the content adapter (lib/content/providers/cms.ts) only returns cleared
+ *    media, and the media collection's public read access filters anonymous
+ *    reads to `rightsStatus: cleared`, so a revocation hides the image on the
+ *    next render even if a hook missed a path.
+ */
+import { Forbidden, ValidationError } from "payload"
+import type {
+  CollectionBeforeChangeHook,
+  CollectionBeforeValidateHook,
+  PayloadRequest,
+} from "payload"
+
+/** The rights fields of a media record (content model §5.2 `media`). */
+export interface MediaRightsValues {
+  readonly rightsStatus?: string | null
+  readonly rightsReference?: string | null
+  readonly peoplePresent?: boolean | null
+  readonly releaseStatus?: string | null
+  readonly clientMarks?: boolean | null
+  readonly clientPermission?: boolean | null
+  readonly trademarkPermission?: boolean | null
+}
+
+/** A validation problem, shaped for Payload's `ValidationError`. */
+export interface RightsProblem {
+  readonly field: string
+  readonly message: string
+}
+
+/**
+ * Problems that make a rights status incoherent. Empty for a non-cleared
+ * record (a pending image is a valid state and simply cannot be published).
+ */
+export function mediaRightsProblems(media: MediaRightsValues): RightsProblem[] {
+  if (media.rightsStatus !== "cleared") return []
+
+  const problems: RightsProblem[] = []
+
+  if (!media.rightsReference?.trim()) {
+    problems.push({
+      field: "rightsReference",
+      message:
+        "Référence des droits requise : une image « cleared » doit porter la licence, l’autorisation ou la preuve de propriété.",
+    })
+  }
+
+  if (media.peoplePresent === true && media.releaseStatus !== "cleared") {
+    problems.push({
+      field: "releaseStatus",
+      message:
+        "Personnes identifiables : l’autorisation de diffusion doit être enregistrée (« cleared ») avant de déclarer l’image utilisable.",
+    })
+  }
+
+  if (
+    media.clientMarks === true &&
+    !(media.clientPermission === true && media.trademarkPermission === true)
+  ) {
+    problems.push({
+      field: "clientPermission",
+      message:
+        "Marques client : l’autorisation du client et celle du titulaire de la marque sont toutes deux requises.",
+    })
+  }
+
+  return problems
+}
+
+/**
+ * The single definition of "this image may appear on the public site". The
+ * content adapter applies the same rule to records it reads, so the seam and
+ * the admin can never disagree.
+ */
+export function mediaIsCleared(media: MediaRightsValues): boolean {
+  return media.rightsStatus === "cleared" && mediaRightsProblems(media).length === 0
+}
+
+/** Throw a Payload `ValidationError` for coherent rights evidence. */
+function throwRightsProblems(problems: readonly RightsProblem[]): void {
+  if (!problems.length) return
+  throw new ValidationError({
+    errors: problems.map((problem) => ({ message: problem.message, path: problem.field })),
+  })
+}
+
+/** `media` beforeChange: no incoherent `cleared` record can be saved. */
+export const validateMediaRights: CollectionBeforeChangeHook = ({ data, originalDoc }) => {
+  const merged: MediaRightsValues = {
+    ...((originalDoc ?? {}) as unknown as MediaRightsValues),
+    ...((data ?? {}) as unknown as MediaRightsValues),
+  }
+  throwRightsProblems(mediaRightsProblems(merged))
+  return data
+}
+
+/** Resolve an upload relation value (id or populated document) to rights values. */
+async function resolveMediaValue(
+  value: unknown,
+  req: PayloadRequest
+): Promise<MediaRightsValues | null> {
+  if (value === null || value === undefined || value === "") return null
+
+  if (typeof value === "object") {
+    const document = value as Record<string, unknown>
+    if (typeof document.rightsStatus === "string") return document as MediaRightsValues
+    const id = document.id
+    if (id === undefined || id === null) return null
+    return resolveMediaValue(id, req)
+  }
+
+  if (typeof value !== "number" && typeof value !== "string") return null
+
+  const media = await req.payload.findByID({
+    collection: "media",
+    id: value,
+    depth: 0,
+    overrideAccess: true,
+    req,
+  })
+  return media as unknown as MediaRightsValues
+}
+
+interface PublishedMediaCheck {
+  readonly data?: Record<string, unknown> | null
+  readonly originalDoc?: Record<string, unknown> | null
+  readonly req: PayloadRequest
+  /** Top-level upload fields of the referencing document. */
+  readonly uploadFields: readonly string[]
+}
+
+/**
+ * Reject publishing a document whose upload fields are not rights-cleared.
+ *
+ * The effective status is read from the merged record, because a publish PATCH
+ * sends only `_status`: `data._status` alone is not the stored status, and
+ * `data[field]` alone is empty on updates — the naive check silently publishes
+ * uncleared media (verified in #29 research).
+ */
+export async function enforcePublishedMediaRights({
+  data,
+  originalDoc,
+  req,
+  uploadFields,
+}: PublishedMediaCheck): Promise<void> {
+  if (!data) return
+
+  const merged: Record<string, unknown> = { ...(originalDoc ?? {}), ...data }
+  if (merged._status !== "published") return
+
+  const errors: Array<{ message: string; path: string }> = []
+
+  for (const field of uploadFields) {
+    const value = merged[field]
+    if (value === null || value === undefined || value === "") continue
+
+    const media = await resolveMediaValue(value, req)
+    if (!media) {
+      errors.push({ message: "Média introuvable.", path: field })
+      continue
+    }
+    if (!mediaIsCleared(media)) {
+      errors.push({
+        message:
+          "Image sans droits enregistrés : la publication est bloquée tant que sa permission n’est pas « cleared ».",
+        path: field,
+      })
+    }
+  }
+
+  if (errors.length) throw new ValidationError({ errors })
+}
+
+/** Build the referencing collection's `beforeValidate` hook. */
+export function publishedMediaRightsHook(
+  uploadFields: readonly string[]
+): CollectionBeforeValidateHook {
+  return async ({ data, originalDoc, req }) => {
+    await enforcePublishedMediaRights({
+      data: data as Record<string, unknown> | undefined,
+      originalDoc: originalDoc as Record<string, unknown> | undefined,
+      req,
+      uploadFields,
+    })
+    return data
+  }
+}
+
+/**
+ * Editor publish lock (content model §4: the editor creates and edits drafts,
+ * never publishes).
+ *
+ * A query constraint on `update` hides the Publish button and scopes which
+ * documents are updatable, but an API PATCH with `{ "_status": "published" }`
+ * still succeeds; this hook is the enforcement. `Forbidden` is what the REST
+ * layer turns into a 403.
+ */
+export const preventEditorPublish: CollectionBeforeChangeHook = ({ data, originalDoc, req }) => {
+  const role = (req.user as { role?: string } | null | undefined)?.role
+  if (role !== "editor") return data
+
+  const target = (data as { _status?: string } | undefined)?._status
+  const current = (originalDoc as { _status?: string } | undefined)?._status
+  if (target === "published" || (target === undefined && current === "published")) {
+    throw new Forbidden(req.t)
+  }
+
+  return data
+}
