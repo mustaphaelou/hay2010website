@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "og:generate": "node scripts/generate-og-card.mjs",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "node scripts/test-http.mjs",
     "typecheck": "tsc --noEmit",
