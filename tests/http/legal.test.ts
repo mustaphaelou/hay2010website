@@ -1,13 +1,15 @@
+import type { HTMLElement } from "node-html-parser"
 import { describe, expect, it } from "vitest"
 
 import {
   assertCanonicalDocument,
+  assertNotFoundDocument,
   fetchPage,
   findAnalyticsSignals,
-  findConsentBanners,
   findTrackingCookies,
   textOf,
   type CanonicalDocument,
+  type PageDocument,
 } from "./helpers"
 
 /**
@@ -49,6 +51,47 @@ function canonicalHrefOf(canonical: CanonicalDocument): string {
       ?.getAttribute("href")
       ?.trim() ?? ""
   )
+}
+
+/**
+ * Consent-banner signals on a legal page.
+ *
+ * The generic `findConsentBanners` helper matches any attribute carrying the
+ * word “cookie”, which is right for the homepage but would flag the legitimate
+ * `#cookies` section this ticket must publish. A real banner shows up as a
+ * dialog/overlay, a consent-manager component, or accept/refuse copy — assert
+ * those markers instead.
+ */
+function findBannerSignals(page: PageDocument): string[] {
+  const signals: string[] = []
+  for (const element of page.document.querySelectorAll("body *")) {
+    const role = element.getAttribute("role")
+    const modal = element.getAttribute("aria-modal")
+    const markers = ["id", "class", "aria-label", "data-testid"]
+      .map((attribute) => element.getAttribute(attribute))
+      .filter((value): value is string => Boolean(value))
+      .join(" ")
+    if (role === "dialog" || role === "alertdialog" || modal === "true") {
+      signals.push(`overlay <${element.tagName.toLowerCase()}>`)
+    }
+    if (
+      /consent|gdpr|tarteaucitron|axeptio|didomi|onetrust|usercentrics|klaro|borlabs|cookiebot|cookie-banner|cookie-notice/i.test(
+        markers
+      )
+    ) {
+      signals.push(`consent component <${element.tagName.toLowerCase()} ${markers}>`)
+    }
+  }
+  const body = page.document.querySelector("body")
+  const text = body ? textOf(body as HTMLElement) : ""
+  if (
+    /gérer mes cookies|tout accepter|accepter tous les cookies|refuser les cookies|j’accepte les cookies/i.test(
+      text
+    )
+  ) {
+    signals.push("consent-banner copy")
+  }
+  return signals
 }
 
 /** Every heading text of the main landmark, in document order. */
@@ -218,13 +261,216 @@ describe("/mentions-legales — ticket #28", () => {
       )
     }
 
-    expect(findConsentBanners(page)).toEqual([])
+    expect(findBannerSignals(page)).toEqual([])
     expect(findAnalyticsSignals(page)).toEqual([])
     expect(findTrackingCookies(page.headers)).toEqual([])
     for (const selector of ["form", "input", "textarea", "select", "button"]) {
       expect(
         canonical.main.querySelectorAll(selector),
         `a legal page carries no <${selector}>`
+      ).toHaveLength(0)
+    }
+  })
+})
+
+/**
+ * Placeholders that must never ship on a public legal page: an unfilled CNDP
+ * reference, a pending provider country, a publication director, a host line.
+ * Publication rules, decision §4.3: empty fields are omitted, not printed.
+ */
+const FORBIDDEN_ON_POLICY = [
+  /\[●\]|à confirmer|à compléter|en cours de déclaration/i,
+  /directeur\s+(?:de\s+la\s+)?publication/i,
+  /\[Hébergeur|Hébergeur du VPS/i,
+  /récépissé n°|autorisation n°|CNDP n°/i,
+  /\bF-\d{3}\b|D-\d{3}-\d{4}/,
+  /n°\s*(?:…|\.{3}|\[)/,
+  /lorem ipsum|à venir|coming soon/i,
+] as const
+
+describe("/politique-de-confidentialite — ticket #28", () => {
+  it("serves the page as a canonical French document", async () => {
+    const page = await fetchPage(POLICY_PATH)
+    expect(page.status, "the privacy policy must be published at P1").toBe(200)
+
+    const canonical = assertCanonicalDocument(page)
+    expect(canonical.html.getAttribute("lang")).toBe("fr")
+
+    const headings = canonical.main.querySelectorAll("h1")
+    expect(headings, "exactly one h1 per legal page").toHaveLength(1)
+    expect(textOf(headings[0])).toMatch(/politique de confidentialité/i)
+  })
+
+  it("carries the code-owned controller identity block", async () => {
+    const canonical = assertCanonicalDocument(await fetchPage(POLICY_PATH))
+    const text = mainTextOf(canonical)
+
+    for (const value of IDENTITY_VALUES) {
+      expect(
+        text,
+        `the controller block must publish exactly "${value}"`
+      ).toContain(value)
+    }
+
+    const mailtos = canonical.main
+      .querySelectorAll('a[href^="mailto:"]')
+      .map((link) => link.getAttribute("href"))
+    expect(
+      mailtos,
+      "the policy must publish the cleared general mailbox"
+    ).toContain("mailto:contact@hay2010.ma")
+    expect(
+      mailtos,
+      "the rights procedure must publish donnees@hay2010.ma"
+    ).toContain("mailto:donnees@hay2010.ma")
+  })
+
+  it("renders the approved sections in the approved order", async () => {
+    const canonical = assertCanonicalDocument(await fetchPage(POLICY_PATH))
+    const headings = headingTexts(canonical)
+
+    const expectedSections = [
+      /responsable du traitement/i,
+      /quelles données, pour quelles finalités et sur quelle base/i,
+      /qui reçoit vos données/i,
+      /transférées hors du maroc/i,
+      /combien de temps conservons-nous/i,
+      /quels sont vos droits/i,
+      /cookies/i,
+      /sécurité/i,
+      /modifications/i,
+      /contact/i,
+    ]
+    expect(
+      headings,
+      "the approved policy sections must render, numbered, in order"
+    ).toHaveLength(expectedSections.length)
+    expectedSections.forEach((pattern, index) => {
+      expect(headings[index], `section ${index + 1} heading`).toMatch(pattern)
+    })
+
+    // §2 is the processing register: 2.1 … 2.6, numbered by the renderer.
+    const subsections = canonical.main
+      .querySelectorAll("h3")
+      .map((heading) => textOf(heading))
+    expect(subsections.length).toBeGreaterThanOrEqual(6)
+    expect(subsections[0]).toMatch(/^2\.1\s+demandes de contact et de devis/i)
+    expect(subsections[1]).toMatch(/^2\.2\s+candidatures/i)
+    expect(subsections[2]).toMatch(/^2\.3\s+sécurité et journaux serveur/i)
+    expect(subsections[3]).toMatch(/^2\.4\s+mesure d’audience/i)
+    expect(subsections[4]).toMatch(/^2\.5\s+administration du site/i)
+    expect(subsections[5]).toMatch(/^2\.6\s+cookies/i)
+
+    expect(bodyTextOf(canonical)).toMatch(/dernière mise à jour\s*:\s*\d{1,2}\s+\S+\s+\d{4}/i)
+  })
+
+  it("carries cookies as a section of this page, with the launch-state table", async () => {
+    const page = await fetchPage(POLICY_PATH)
+    const canonical = assertCanonicalDocument(page)
+
+    // §4.1: the anchor `/politique-de-confidentialite#cookies` must resolve.
+    const cookiesSection = canonical.main.querySelector("#cookies")
+    expect(cookiesSection, "the cookies section must carry its anchor").not.toBeNull()
+    if (!cookiesSection) return
+
+    expect(textOf(cookiesSection)).toMatch(/^7\.\s*cookies/i)
+
+    const cookiesText = textOf(cookiesSection)
+    for (const cookie of ["__cf_bm", "cf_clearance", "_cfuvid", "payload-token"]) {
+      expect(cookiesText, `the launch cookie table must list ${cookie}`).toContain(
+        cookie
+      )
+    }
+    expect(cookiesText).toMatch(/aucun cookie de mesure d’audience/i)
+    expect(cookiesText).toMatch(/ne requièrent pas de consentement/i)
+    expect(cookiesText).toMatch(/ne bloque pas l’accès/i)
+
+    // The analytics activation paragraph is state 2 of §4.4: not at launch.
+    expect(cookiesText).not.toMatch(/lorsque cloudflare web analytics est activé/i)
+
+    // No separate cookie page: the page tree fixes cookies inside the policy.
+    assertNotFoundDocument(await fetchPage("/cookies"))
+  })
+
+  it("publishes the retention periods and the rights procedure", async () => {
+    const canonical = assertCanonicalDocument(await fetchPage(POLICY_PATH))
+    const text = bodyTextOf(canonical)
+
+    for (const period of [
+      "12 mois après le dernier échange",
+      "6 mois après la décision",
+      "12 mois maximum dans la CVthèque",
+      "Journaux serveur et sécurité",
+      "Compte d’administration",
+      "Durée légale de conservation applicable",
+    ]) {
+      expect(text, `the retention table must state "${period}"`).toContain(period)
+    }
+
+    const mailtos = canonical.main
+      .querySelectorAll('a[href^="mailto:"]')
+      .map((link) => link.getAttribute("href"))
+    expect(mailtos, "rights are exercised at donnees@hay2010.ma").toContain(
+      "mailto:donnees@hay2010.ma"
+    )
+
+    for (const right of [
+      /accès à vos données/i,
+      /rectification des données inexactes ou incomplètes, dans un délai de 10 jours/i,
+      /effacement et verrouillage/i,
+      /opposition, pour des raisons légitimes/i,
+      /retrait de votre consentement/i,
+    ]) {
+      expect(text, `the rights list must state ${right}`).toMatch(right)
+    }
+    expect(text).toMatch(/10 jours pour les rectifications/i)
+    expect(text).toContain("www.cndp.ma")
+    expect(text, "analytics is explicitly off at launch").toMatch(
+      /mesure d’audience est désactivée à la mise en ligne/i
+    )
+  })
+
+  it("publishes no placeholder, blank CNDP reference or internal filing code", async () => {
+    const canonical = assertCanonicalDocument(await fetchPage(POLICY_PATH))
+    const text = bodyTextOf(canonical)
+
+    for (const forbidden of FORBIDDEN_ON_POLICY) {
+      expect(text, `the policy must not render ${forbidden}`).not.toMatch(
+        forbidden
+      )
+    }
+  })
+
+  it("declares its own canonical metadata, unique across the legal pages", async () => {
+    const policy = assertCanonicalDocument(await fetchPage(POLICY_PATH))
+    const mentions = assertCanonicalDocument(await fetchPage(MENTIONS_PATH))
+
+    expect(policy.title).toBe("Politique de confidentialité — HAY2010")
+    expect(policy.description.length).toBeGreaterThanOrEqual(120)
+    expect(policy.description.length).toBeLessThanOrEqual(160)
+    expect(policy.description).toContain("SOCIETE HAY 2010")
+    expect(canonicalHrefOf(policy)).toBe(
+      "https://hay2010.ma/politique-de-confidentialite"
+    )
+
+    expect(policy.title, "titles must be unique").not.toBe(mentions.title)
+    expect(policy.description, "descriptions must be unique").not.toBe(
+      mentions.description
+    )
+    expect(canonicalHrefOf(policy)).not.toBe(canonicalHrefOf(mentions))
+  })
+
+  it("renders no consent banner, form or analytics", async () => {
+    const page = await fetchPage(POLICY_PATH)
+    const canonical = assertCanonicalDocument(page)
+
+    expect(findBannerSignals(page)).toEqual([])
+    expect(findAnalyticsSignals(page)).toEqual([])
+    expect(findTrackingCookies(page.headers)).toEqual([])
+    for (const selector of ["form", "input", "textarea", "select", "button"]) {
+      expect(
+        canonical.main.querySelectorAll(selector),
+        `the policy carries no <${selector}>`
       ).toHaveLength(0)
     }
   })

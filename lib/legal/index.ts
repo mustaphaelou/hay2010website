@@ -13,6 +13,7 @@
  */
 export { LEGAL_IDENTITY, LAST_REVIEWED, LAST_REVIEWED_LABEL } from "./identity"
 export { MENTIONS_LEGALES } from "./mentions-legales"
+export { POLITIQUE_DE_CONFIDENTIALITE } from "./politique-de-confidentialite"
 export {
   mentionsLegalesMetadata,
   politiqueDeConfidentialiteMetadata,
