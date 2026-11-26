@@ -247,9 +247,16 @@ describe(`carrieres (${scenario.name})`, () => {
     // Facts register §2.3/§3: phone, socials and the private Gmail are gated.
     expect(page.html).not.toMatch(/\+212|\btéléphone\b|\btél\./i)
     expect(page.html).not.toMatch(/gmail/i)
-    expect(page.html).not.toMatch(
-      /facebook|linkedin|instagram|twitter|x\.com|youtube|tiktok/i
-    )
+    // No social profile link. (The Open Graph/Twitter *card* metadata required
+    // by SEO §4.2 legitimately mentions the Twitter card; the gate is about
+    // profile links and handles, asserted in the SEO suite.)
+    const socialLinks = page.document
+      .querySelectorAll("a[href]")
+      .map((anchor) => anchor.getAttribute("href") ?? "")
+      .filter((href) =>
+        /facebook|linkedin|instagram|twitter|x\.com|youtube|tiktok/i.test(href)
+      )
+    expect(socialLinks).toEqual([])
     // No unverified certification, client or salary claim.
     expect(page.html).not.toMatch(/ONEE|agrément|certifié|certification/i)
     expect(page.html).not.toMatch(/client|référence sur demande/i)

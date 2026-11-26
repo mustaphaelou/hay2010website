@@ -277,6 +277,20 @@ export function textOf(element: HTMLElement): string {
   return element.text.replace(/\s+/g, " ").trim()
 }
 
+/**
+ * Visible text of a document region, excluding non-rendered content: script
+ * text (including the JSON-LD graph) and style/template contents are data, not
+ * page copy, so claim scans must look at what a visitor can read.
+ */
+export function visibleTextOf(element: HTMLElement): string {
+  const rendered = element.outerHTML
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, "")
+    .replace(/<template\b[^>]*>[\s\S]*?<\/template>/gi, "")
+    .replace(/<noscript\b[^>]*>[\s\S]*?<\/noscript>/gi, "")
+  return textOf(parse(rendered))
+}
+
 /** The public origin of the site (SEO §6.2: absolute, HTTPS, apex, no slash). */
 export const SITEMAP_ORIGIN = "https://hay2010.ma"
 

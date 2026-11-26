@@ -1,10 +1,11 @@
 import type { Metadata } from "next"
 
 import { RealisationsPage } from "@/components/realisations/realisations-page"
+import { PageJsonLd } from "@/components/seo/page-json-ld"
 import type { PageDocument } from "@/lib/content/types"
+import { pageMetadata, resolvePageSeo } from "@/lib/seo"
 import { getPublishedDomains } from "@/lib/site/domaines"
 import { requirePublishedRubrique } from "@/lib/site/gates"
-import { pageMetadata } from "@/lib/site/metadata"
 import { getPageDocument } from "@/lib/site/page-content"
 
 /**
@@ -28,19 +29,17 @@ const KEY = "realisations" as const
 const HREF = "/realisations"
 
 /**
- * Unique metadata: docs/seo/seo-metadata.md §3.3 fixes the title, and the
+ * Unique metadata (#32): docs/seo/seo-metadata.md §3.3 fixes the title and the
  * `agrementLive: false` description variant ships until both ONEE certificates
- * are filed. #32 owns the metadata system and will move the values into
- * `lib/seo`; until then the page supplies its own decided pair so the head is
- * already unique and truthful.
+ * are filed; the description is the page model's decided copy.
  */
-export async function generateMetadata(): Promise<Metadata> {
+async function realisationsSeo() {
   const page = requireCopy(await getPageDocument(KEY))
-  return pageMetadata({
-    title: "Réalisations et références",
-    description: page.description,
-    path: HREF,
-  })
+  return resolvePageSeo({ path: HREF, description: page.description })
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await realisationsSeo())
 }
 
 /**
@@ -69,5 +68,10 @@ export default async function Page() {
     getPublishedDomains(),
   ])
 
-  return <RealisationsPage page={requireCopy(page)} domains={domains} />
+  return (
+    <>
+      <PageJsonLd seo={await realisationsSeo()} />
+      <RealisationsPage page={requireCopy(page)} domains={domains} />
+    </>
+  )
 }

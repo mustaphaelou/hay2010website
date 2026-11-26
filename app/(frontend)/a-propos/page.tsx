@@ -1,8 +1,10 @@
 import type { Metadata } from "next"
 
 import { AProposChapter, AProposContactCta, AProposIdentity } from "./sections"
+import { PageJsonLd } from "@/components/seo/page-json-ld"
 import { getContentSource } from "@/lib/content"
 import type { ContentLink, PageDocument, SectionsBlock } from "@/lib/content/types"
+import { pageMetadata, resolvePageSeo } from "@/lib/seo"
 import { requirePublishedRubrique } from "@/lib/site/gates"
 import { getRubrique } from "@/lib/site/rubriques"
 
@@ -72,17 +74,17 @@ async function getCertificationsLink(): Promise<ContentLink | null> {
 }
 
 /**
- * Unique metadata for the page. #32 completes the site-wide metadata system;
- * until then the page supplies its own keyword-led title and description from
- * the document, so the rendered head is already unique and truthful.
+ * Unique metadata for the page (#32). The keyword-led title phrase is the
+ * code-owned launch default (SEO §3.3 adapted to `/a-propos`); the description
+ * is the page model's decided copy.
  */
-export async function generateMetadata(): Promise<Metadata> {
+async function aProposSeo() {
   const page = requireCopy(await getAProposDocument())
+  return resolvePageSeo({ path: "/a-propos", description: page.description })
+}
 
-  return {
-    title: `${page.title} — HAY2010`,
-    description: page.description,
-  }
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await aProposSeo())
 }
 
 /** A chapter block that can actually render (DEV-006: never a placeholder). */
@@ -108,6 +110,7 @@ export default async function Page() {
 
   return (
     <>
+      <PageJsonLd seo={await aProposSeo()} />
       {page.blocks.map((block, blockIndex) => {
         if (block.kind === "intro") {
           return (

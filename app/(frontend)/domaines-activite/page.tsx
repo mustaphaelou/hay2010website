@@ -2,22 +2,23 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 import { DomaineIndex } from "@/components/domaines/domaine-index"
+import { PageJsonLd } from "@/components/seo/page-json-ld"
+import { pageMetadata, resolvePageSeo } from "@/lib/seo"
 import { getPublishedDomains } from "@/lib/site/domaines"
-import { pageMetadata } from "@/lib/site/metadata"
 import { requirePublishedRubrique } from "@/lib/site/gates"
 import { getPageDocument } from "@/lib/site/page-content"
 
 /** Canonical route of the domain index (code-owned). */
 const HREF = "/domaines-activite"
 
-/** Unique title, description and canonical URL for the index (#22 acceptance). */
-export async function generateMetadata(): Promise<Metadata> {
+/** Unique title, description and canonical URL for the index (#22, #32). */
+async function indexSeo() {
   const page = await getPageDocument("domaines-activite")
-  return pageMetadata({
-    title: page?.title ?? "Nos domaines d’activité",
-    description: page?.description,
-    path: HREF,
-  })
+  return resolvePageSeo({ path: HREF, description: page?.description })
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await indexSeo())
 }
 
 /**
@@ -37,5 +38,10 @@ export default async function Page() {
   ])
   if (!page) notFound()
 
-  return <DomaineIndex page={page} domains={domains} />
+  return (
+    <>
+      <PageJsonLd seo={await indexSeo()} />
+      <DomaineIndex page={page} domains={domains} />
+    </>
+  )
 }

@@ -1,10 +1,9 @@
 import type { Metadata } from "next"
 
+import { PageJsonLd } from "@/components/seo/page-json-ld"
 import { LegalPage } from "@/components/site/legal-document"
-import {
-  POLITIQUE_DE_CONFIDENTIALITE,
-  politiqueDeConfidentialiteMetadata,
-} from "@/lib/legal"
+import { POLITIQUE_DE_CONFIDENTIALITE } from "@/lib/legal"
+import { pageMetadata, resolvePageSeo } from "@/lib/seo"
 import { requirePublishedRubrique } from "@/lib/site/gates"
 
 /**
@@ -14,9 +13,17 @@ import { requirePublishedRubrique } from "@/lib/site/gates"
  * There is no separate cookie page, no banner and no form. The gate runs first
  * (content-seam §5).
  */
-export const metadata: Metadata = politiqueDeConfidentialiteMetadata()
+/** Unique metadata (#32): code-owned title, description and WebPage type. */
+const seo = resolvePageSeo({ path: "/politique-de-confidentialite" })
+
+export const metadata: Metadata = pageMetadata(seo)
 
 export default async function Page() {
   await requirePublishedRubrique("politique-de-confidentialite")
-  return <LegalPage document={POLITIQUE_DE_CONFIDENTIALITE} />
+  return (
+    <>
+      <PageJsonLd seo={seo} />
+      <LegalPage document={POLITIQUE_DE_CONFIDENTIALITE} />
+    </>
+  )
 }

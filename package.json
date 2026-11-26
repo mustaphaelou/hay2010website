@@ -15,6 +15,7 @@
     "migrate:status": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:status",
     "seed": "cross-env NODE_OPTIONS=--no-deprecation payload run scripts/seed.ts",
     "lint": "eslint",
+    "og:generate": "node scripts/generate-og-card.mjs",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "node scripts/test-http.mjs",
     "typecheck": "tsc --noEmit",

@@ -360,7 +360,8 @@ appears there.
   - contact. Same published set, so gates cannot diverge.
 - `app/(frontend)/sitemap.ts`: published rubriques **with a page document**
   (i.e. built) + published domains, absolute `https://hay2010.ma` URLs, no
-  trailing slash. #32 takes over `lastModified`/robots policy via `lib/site/site.ts`.
+  trailing slash. #32 took over the origin and crawler policy in `lib/seo` (see
+  [`crawler-surface.md`](./crawler-surface.md)).
 - 404 links: see §6.
 
 Interactive drawer behaviour (focus trap, Escape, scroll lock) is implemented in
