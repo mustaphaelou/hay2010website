@@ -240,9 +240,18 @@ request reaches the origin it serves the router's branded 404, never a 200.
 
 ### 7.4 Guarantees and non-interference
 
-- Every 301 target returns 200, is not gated, and is not `/en`, `/admin`, `/api`
-  or `/preview`. No redirect loop, no chain beyond the generic normalisation, no
-  410 on a new route.
+- Every 301 target is the decided P1 route and returns 200 in the launch state;
+  no target is a permanently gated URL (P2/P3 tier gate, the case-study family,
+  `/en`, `/admin`, `/api`, `/preview`). No redirect loop, no chain beyond the
+  generic normalisation, no 410 on a new route.
+  Caveat, stated because the suite runs it: the `p1-gates-closed` fixture
+  scenario deliberately unpublishes one P1 page (a content-unpublish simulation,
+  not a tier gate). The code-owned redirect map still points at that page's
+  decided route, so in that simulation a legacy URL resolves to the branded 404
+  until the page is republished; the suite asserts exactly that instead of
+  pretending the map is gate-aware. Making the 301 map gate-aware would need a
+  proxy-level redirect (redirects run before the proxy), which the decision
+  keeps out of the request path.
 - `/api` and `/admin` are never intercepted by the legacy logic: `/api/health`
   keeps answering JSON and Payload's admin keeps its own auth/route behaviour;
   they only gain the `X-Robots-Tag` defense-in-depth header.

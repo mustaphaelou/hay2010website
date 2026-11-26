@@ -29,6 +29,20 @@ interface Redirect {
   readonly target: string
 }
 
+/**
+ * The decided 301 targets. These are all P1 launch routes/files: any of them can
+ * be *temporarily* unpublished by a gate simulation (`p1-gates-closed`), but
+ * none of them is a permanently gated URL (P2/P3, case study, /en, admin).
+ */
+const P1_LAUNCH_TARGETS = new Set([
+  "/a-propos",
+  "/domaines-activite",
+  "/realisations",
+  "/contact",
+  "/sitemap.xml",
+  "/robots.txt",
+])
+
 /** §7.2 equivalent paths that keep value — 301, slash/no-slash and case. */
 const REDIRECTS_301: readonly Redirect[] = [
   // Pages
@@ -240,9 +254,19 @@ describe(`legacy WordPress URL map (${scenario.name})`, () => {
       ).toBe(true)
       expect(location.search, `${source} redirect target keeps no query`).toBe("")
 
-      // A 301 must land on a 200, never on a 404/410, a chain or a gated page.
+      // A 301 lands on a 200 in the launch state. `p1-gates-closed` deliberately
+      // unpublishes one P1 page: the code-owned map still targets its decided
+      // route (a content-unpublish simulation, never a permanent gate).
       const destination = await fetchPage(target)
-      expect(destination.status, `301 target ${target} must return 200`).toBe(200)
+      if (scenario.openRoutes.includes(target)) {
+        expect(destination.status, `301 target ${target} must return 200`).toBe(200)
+      } else {
+        expect(
+          P1_LAUNCH_TARGETS.has(target),
+          `${source} must not redirect to a permanently gated URL`
+        ).toBe(true)
+        expect(destination.status, `${target} is closed in this scenario`).toBe(404)
+      }
     }
   })
 
@@ -303,11 +327,13 @@ describe(`legacy WordPress URL map (${scenario.name})`, () => {
     }
   })
 
-  it("leaves tracking parameters alone: 200 with the page, not a redirect", async () => {
+  it("leaves tracking parameters alone: the page renders, not a redirect", async () => {
     for (const path of TRACKING_QUERIES) {
       const response = await fetch(`${baseUrl}${path}`, { redirect: "manual" })
-      expect(response.status, `${path} must render the page`).toBe(200)
-      expect(response.headers.get("location")).toBeNull()
+      expect(response.headers.get("location"), `${path} must not redirect`).toBeNull()
+      const route = path.split("?")[0]
+      const expected = scenario.openRoutes.includes(route) ? 200 : 404
+      expect(response.status, `${path} status`).toBe(expected)
     }
   })
 
@@ -321,10 +347,12 @@ describe(`legacy WordPress URL map (${scenario.name})`, () => {
       ).toContain(observed.status)
       const location = observed.location as URL
       expect(pathOf(location), `${path} normalises`).toBe(path.replace(/\/$/, ""))
+      const route = path.replace(/\/$/, "")
+      const expected = scenario.openRoutes.includes(route) ? 200 : 404
       expect(
-        (await fetchPage(path.replace(/\/$/, ""))).status,
-        `${path} target must be 200`
-      ).toBe(200)
+        (await fetchPage(route)).status,
+        `${path} target status`
+      ).toBe(expected)
     }
 
     // A gated route keeps its 404 after normalisation: never a redirect to a
@@ -336,14 +364,24 @@ describe(`legacy WordPress URL map (${scenario.name})`, () => {
   })
 
   it("never redirects to a gated URL", async () => {
-    const gated = new Set(scenario.gatedRoutes)
+    // A content-unpublish simulation (`p1-gates-closed`) closes a P1 route; the
+    // permanent gates are the P2/P3 tier rubriques, the case-study family,
+    // /en and the admin/API surfaces. The code-owned map must never point at a
+    // permanent gate.
+    const permanentlyGated = new Set(
+      scenario.gatedRoutes.filter((route) => !P1_LAUNCH_TARGETS.has(route))
+    )
     for (const source of REDIRECTS_301.map((redirect) => redirect.source)) {
       const observed = await observe(source)
       const location = observed.location as URL
       expect(
-        gated.has(pathOf(location)),
-        `${source} must not redirect to a gated route`
+        permanentlyGated.has(pathOf(location)),
+        `${source} must not redirect to a permanently gated route`
       ).toBe(false)
+      expect(
+        P1_LAUNCH_TARGETS.has(pathOf(location)),
+        `${source} must redirect to a known public target`
+      ).toBe(true)
       expect(pathOf(location), "no redirect to the reserved /en").not.toMatch(
         /^\/en(\/|$)/
       )
