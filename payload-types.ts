@@ -69,7 +69,10 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    pages: Page;
+    domaines: Domaine;
+    projects: Project;
+    jobs: Job;
+    communiques: Communique;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -79,7 +82,10 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    pages: PagesSelect<false> | PagesSelect<true>;
+    domaines: DomainesSelect<false> | DomainesSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    jobs: JobsSelect<false> | JobsSelect<true>;
+    communiques: CommuniquesSelect<false> | CommuniquesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -89,8 +95,24 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    homepage: Homepage;
+    entreprise: Entreprise;
+    metiers: Metier;
+    realisations: Realisation;
+    contact: Contact;
+    carrieres: Carriere;
+    actualites: Actualite;
+  };
+  globalsSelect: {
+    homepage: HomepageSelect<false> | HomepageSelect<true>;
+    entreprise: EntrepriseSelect<false> | EntrepriseSelect<true>;
+    metiers: MetiersSelect<false> | MetiersSelect<true>;
+    realisations: RealisationsSelect<false> | RealisationsSelect<true>;
+    contact: ContactSelect<false> | ContactSelect<true>;
+    carrieres: CarrieresSelect<false> | CarrieresSelect<true>;
+    actualites: ActualitesSelect<false> | ActualitesSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -243,52 +265,407 @@ export interface Media {
   };
 }
 /**
- * Pages du site, adressées par leur clé de rubrique. Les champs de structure (clé, blocs) restent au développeur ; le propriétaire édite le texte, les images et publie.
+ * Fiches des domaines d’activité (route /domaines-activite/{slug}). La clé de route est code-owned ; deux domaines restent fermés par une barrière code-owned.
  *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
+ * via the `definition` "domaines".
  */
-export interface Page {
+export interface Domaine {
   id: number;
   /**
-   * Identifiant de la rubrique (code-owned). Détermine la route, la navigation et les barrières de publication : un changement de clé est un changement de code.
+   * Identifiant code-owned de la route et de la barrière de publication : le changer est un changement de code, pas une édition de contenu.
    */
-  key:
-    | 'accueil'
-    | 'a-propos'
-    | 'domaines-activite'
-    | 'realisations'
-    | 'moyens-et-competences'
-    | 'references-et-partenaires'
-    | 'actualites'
-    | 'contact'
-    | 'carrieres'
-    | 'mentions-legales'
-    | 'politique-de-confidentialite';
+  slug:
+    | 'eclairage-public'
+    | 'installations-electriques'
+    | 'infrastructures-reseaux-electriques'
+    | 'energies-renouvelables'
+    | 'fourniture-equipements';
   /**
-   * Titre de la page (h1) et base du titre de l’onglet.
+   * Titre du CDC, affiché en h1.
    */
   title: string;
   /**
-   * 120 à 160 caractères, en français. Utilisée comme description de la page ; les pages sans description héritent du modèle SEO (#32).
+   * Une phrase, affichée dans l’index des domaines et les listes.
    */
-  description?: string | null;
+  summary?: string | null;
+  presentation?: {
+    title?: string | null;
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
   /**
-   * Blocs structurés au format ContentBlock[] de lib/content/types.ts — champ transitoire de la fondation #29 ; le ticket #30 le remplace par des champs typés.
+   * Uniquement des prestations confirmées : jamais une capacité supposée ni un agrément gated.
    */
-  blocks?:
-    | {
+  prestations?: {
+    title?: string | null;
+    items?:
+      | {
+          label: string;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  methods?: {
+    title?: string | null;
+    items?:
+      | {
+          title: string;
+          body?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Bandeau de clôture de la fiche domaine.
+   */
+  contactCta: {
+    title: string;
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    /**
+     * Texte affiché ; la destination est une route code-owned choisie ci-dessous.
+     */
+    ctaLabel?: string | null;
+    /**
+     * Liste fermée des routes internes approuvées (une page fermée n’est jamais liée).
+     */
+    ctaTarget?:
+      | (
+          | 'accueil'
+          | 'a-propos'
+          | 'domaines-activite'
+          | 'realisations'
+          | 'contact'
+          | 'carrieres'
+          | 'contact-mailto'
+          | 'references-mailto'
+        )
+      | null;
+  };
+  /**
+   * Copie approuvée des métadonnées. Les modèles et valeurs par défaut restent code-owned (#32) : ce groupe ne les remplace pas.
+   */
+  seo?: {
+    /**
+     * Sans le suffixe de marque « — HAY2010 », ajouté par le code. Laisser vide pour utiliser le titre de la page.
+     */
+    title?: string | null;
+    /**
+     * Décrit la page en français, sans jargon ni promesse non vérifiable. Une page publiée doit en avoir une.
+     */
+    description?: string | null;
+    /**
+     * Optionnelle. Sans droits validés, elle n’est jamais publiée.
+     */
+    ogImage?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Études de cas nommées, famille fermée par la barrière code-owned `caseStudiesLive`. Une étude nommée n’est publiable qu’avec l’autorisation écrite du client ; une carte anonymisée exige une référence de preuve.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  /**
+   * Objet de l’étude de cas, sans nom de client inventé.
+   */
+  title: string;
+  /**
+   * Réservé à la future route de fiche ; la famille /realisations/{slug} reste fermée.
+   */
+  slug: string;
+  /**
+   * Un ou plusieurs domaines publiés.
+   */
+  services: (number | Domaine)[];
+  /**
+   * Région par défaut ; une ville seulement si elle n’identifie pas le client.
+   */
+  location?: string | null;
+  year?: number | null;
+  /**
+   * Ne s’affiche qu’avec l’autorisation écrite du client. Laisser vide pour une carte anonymisée.
+   */
+  clientName?: string | null;
+  /**
+   * Obligatoire pour publier un nom de client (content model §9.3).
+   */
+  clientPermission?: boolean | null;
+  clientPermissionRef?: string | null;
+  scope?: string | null;
+  challenge?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
         [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  solution?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  results?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   /**
-   * Une image dont les droits ne sont pas validés bloque la publication de la page (c’est la règle des droits, indépendante du rôle).
+   * Optionnelle pour une carte anonymisée (repli typographique). Une image sans droits validés bloque la publication.
    */
   cover?: (number | null) | Media;
+  gallery?:
+    | {
+        /**
+         * Droits validés requis.
+         */
+        image?: (number | null) | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  peopleRelease?: boolean | null;
+  peopleReleaseRef?: string | null;
+  testimonial?: string | null;
+  testimonialPermission?: boolean | null;
+  testimonialPermissionRef?: string | null;
+  /**
+   * Contrat ou procès-verbal de réception (obligatoire pour une carte anonymisée).
+   */
+  evidenceReference?: string | null;
+  featured?: boolean | null;
+  publishedAt?: string | null;
+  /**
+   * Copie approuvée des métadonnées. Les modèles et valeurs par défaut restent code-owned (#32) : ce groupe ne les remplace pas.
+   */
+  seo?: {
+    /**
+     * Sans le suffixe de marque « — HAY2010 », ajouté par le code. Laisser vide pour utiliser le titre de la page.
+     */
+    title?: string | null;
+    /**
+     * Décrit la page en français, sans jargon ni promesse non vérifiable. Une page publiée doit en avoir une.
+     */
+    description?: string | null;
+    /**
+     * Optionnelle. Sans droits validés, elle n’est jamais publiée.
+     */
+    ogImage?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Offres affichées en ligne sur /carrieres (aucune fiche détail, aucun formulaire, aucun CV stocké). Publier rend l’offre visible ; fermer ou dépublier la retire.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobs".
+ */
+export interface Job {
+  id: number;
+  title: string;
+  /**
+   * Réservé à une future fiche détail : aucun chemin public n’existe au lancement.
+   */
+  slug: string;
+  /**
+   * Une offre fermée n’est jamais listée, même publiée. Le brouillon Payload (« Enregistrer comme brouillon ») est l’autre état.
+   */
+  openingStatus: 'open' | 'closed';
+  contractType: 'CDI' | 'CDD' | 'Stage' | 'Alternance';
+  /**
+   * Rabat par défaut.
+   */
+  location?: string | null;
+  department?: string | null;
+  experienceLevel?: string | null;
+  /**
+   * Deux à trois lignes.
+   */
+  summary: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  responsibilities?:
+    | {
+        item?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  requirements?:
+    | {
+        item?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  postedAt?: string | null;
+  /**
+   * Au-delà de cette date, l’offre disparaît du site automatiquement.
+   */
+  closingAt?: string | null;
+  /**
+   * Code-owned (F-113) : recrutement@hay2010.ma uniquement quand l’autorisation CNDP couvre la boîte ; contact@hay2010.ma d’ici là.
+   */
+  applicationEmail?: string | null;
+  featured?: boolean | null;
+  /**
+   * Copie approuvée des métadonnées. Les modèles et valeurs par défaut restent code-owned (#32) : ce groupe ne les remplace pas.
+   */
+  seo?: {
+    /**
+     * Sans le suffixe de marque « — HAY2010 », ajouté par le code. Laisser vide pour utiliser le titre de la page.
+     */
+    title?: string | null;
+    /**
+     * Décrit la page en français, sans jargon ni promesse non vérifiable. Une page publiée doit en avoir une.
+     */
+    description?: string | null;
+    /**
+     * Optionnelle. Sans droits validés, elle n’est jamais publiée.
+     */
+    ogImage?: (number | null) | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Communiqués d’entreprise (rubrique publique « Actualités »). La route /actualites et le lien de navigation restent fermés par la barrière code-owned `actualitesLive` : le contenu est éditable, pas publiable publiquement depuis l’admin.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "communiques".
+ */
+export interface Communique {
+  id: number;
+  title: string;
+  /**
+   * Réservé à la future route d’article.
+   */
+  slug: string;
+  /**
+   * Deux phrases, utilisées sur la liste et comme description de repli.
+   */
+  excerpt?: string | null;
+  /**
+   * Compte pour le plafond de six communiqués par année civile.
+   */
+  publishedAt?: string | null;
+  /**
+   * Optionnelle. Une image sans droits validés bloque la publication.
+   */
+  cover?: (number | null) | Media;
+  body?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Développeur uniquement : obligatoire avant la première publication (relecture par un conseil marocain).
+   */
+  legalReviewed?: boolean | null;
+  legalReviewRef?: string | null;
+  featured?: boolean | null;
+  /**
+   * Copie approuvée des métadonnées. Les modèles et valeurs par défaut restent code-owned (#32) : ce groupe ne les remplace pas.
+   */
+  seo?: {
+    /**
+     * Sans le suffixe de marque « — HAY2010 », ajouté par le code. Laisser vide pour utiliser le titre de la page.
+     */
+    title?: string | null;
+    /**
+     * Décrit la page en français, sans jargon ni promesse non vérifiable. Une page publiée doit en avoir une.
+     */
+    description?: string | null;
+    /**
+     * Optionnelle. Sans droits validés, elle n’est jamais publiée.
+     */
+    ogImage?: (number | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -326,8 +703,20 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
-        relationTo: 'pages';
-        value: number | Page;
+        relationTo: 'domaines';
+        value: number | Domaine;
+      } | null)
+    | ({
+        relationTo: 'projects';
+        value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'jobs';
+        value: number | Job;
+      } | null)
+    | ({
+        relationTo: 'communiques';
+        value: number | Communique;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -477,14 +866,167 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages_select".
+ * via the `definition` "domaines_select".
  */
-export interface PagesSelect<T extends boolean = true> {
-  key?: T;
+export interface DomainesSelect<T extends boolean = true> {
+  slug?: T;
   title?: T;
-  description?: T;
-  blocks?: T;
+  summary?: T;
+  presentation?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+      };
+  prestations?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              label?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  methods?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+      };
+  contactCta?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        ctaLabel?: T;
+        ctaTarget?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  services?: T;
+  location?: T;
+  year?: T;
+  clientName?: T;
+  clientPermission?: T;
+  clientPermissionRef?: T;
+  scope?: T;
+  challenge?: T;
+  solution?: T;
+  results?: T;
   cover?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  peopleRelease?: T;
+  peopleReleaseRef?: T;
+  testimonial?: T;
+  testimonialPermission?: T;
+  testimonialPermissionRef?: T;
+  evidenceReference?: T;
+  featured?: T;
+  publishedAt?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "jobs_select".
+ */
+export interface JobsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  openingStatus?: T;
+  contractType?: T;
+  location?: T;
+  department?: T;
+  experienceLevel?: T;
+  summary?: T;
+  description?: T;
+  responsibilities?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  requirements?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  postedAt?: T;
+  closingAt?: T;
+  applicationEmail?: T;
+  featured?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "communiques_select".
+ */
+export interface CommuniquesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  publishedAt?: T;
+  cover?: T;
+  body?: T;
+  legalReviewed?: T;
+  legalReviewRef?: T;
+  featured?: T;
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -528,6 +1070,1123 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Page d’accueil : bandeau d’ouverture, introduction, section domaines, renvoi réalisations, engagements et bandeau contact. Les repères chiffrés et les libellés de section sont code-owned et restent hors de l’admin.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage".
+ */
+export interface Homepage {
+  id: number;
+  /**
+   * Le titre est le h1 de la page. Sans image aux droits validés, le bandeau s’affiche en typographie sur fond encre (jamais une image de remplacement).
+   */
+  hero: {
+    title: string;
+    subtitle?: string | null;
+    /**
+     * Optionnelle. Une image dont les droits ne sont pas validés bloque la publication.
+     */
+    image?: (number | null) | Media;
+    /**
+     * Texte affiché ; la destination est une route code-owned choisie ci-dessous.
+     */
+    primaryCtaLabel?: string | null;
+    /**
+     * Liste fermée des routes internes approuvées (une page fermée n’est jamais liée).
+     */
+    primaryCtaTarget?:
+      | (
+          | 'accueil'
+          | 'a-propos'
+          | 'domaines-activite'
+          | 'realisations'
+          | 'contact'
+          | 'carrieres'
+          | 'contact-mailto'
+          | 'references-mailto'
+        )
+      | null;
+    /**
+     * Texte affiché ; la destination est une route code-owned choisie ci-dessous.
+     */
+    secondaryCtaLabel?: string | null;
+    /**
+     * Liste fermée des routes internes approuvées (une page fermée n’est jamais liée).
+     */
+    secondaryCtaTarget?:
+      | (
+          | 'accueil'
+          | 'a-propos'
+          | 'domaines-activite'
+          | 'realisations'
+          | 'contact'
+          | 'carrieres'
+          | 'contact-mailto'
+          | 'references-mailto'
+        )
+      | null;
+  };
+  intro?: {
+    /**
+     * « Qui sommes-nous » : le premier paragraphe est le chapô.
+     */
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  servicesBand?: {
+    /**
+     * La liste elle-même vient des domaines publiés : un domaine fermé n’apparaît jamais.
+     */
+    title?: string | null;
+  };
+  referencesTeaser?: {
+    /**
+     * Formulation approuvée tant qu’aucune étude de cas n’est publiée.
+     */
+    fallbackText?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    body?: string | null;
+    /**
+     * Texte affiché ; la destination est une route code-owned choisie ci-dessous.
+     */
+    linkLabel?: string | null;
+    /**
+     * Liste fermée des routes internes approuvées (une page fermée n’est jamais liée).
+     */
+    linkTarget?:
+      | (
+          | 'accueil'
+          | 'a-propos'
+          | 'domaines-activite'
+          | 'realisations'
+          | 'contact'
+          | 'carrieres'
+          | 'contact-mailto'
+          | 'references-mailto'
+        )
+      | null;
+  };
+  /**
+   * Qualité, sécurité, délais : texte uniquement, aucune promesse d’équipement ou de certification.
+   */
+  engagements?:
+    | {
+        title: string;
+        body?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bandeau orange de clôture : appelle au contact sans formulaire.
+   */
+  contactCta: {
+    title: string;
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    /**
+     * Texte affiché ; la destination est une route code-owned choisie ci-dessous.
+     */
+    ctaLabel?: string | null;
+    /**
+     * Liste fermée des routes internes approuvées (une page fermée n’est jamais liée).
+     */
+    ctaTarget?:
+      | (
+          | 'accueil'
+          | 'a-propos'
+          | 'domaines-activite'
+          | 'realisations'
+          | 'contact'
+          | 'carrieres'
+          | 'contact-mailto'
+          | 'references-mailto'
+        )
+      | null;
+  };
+  /**
+   * Copie approuvée des métadonnées. Les modèles et valeurs par défaut restent code-owned (#32) : ce groupe ne les remplace pas.
+   */
+  seo: {
+    /**
+     * Sans le suffixe de marque « — HAY2010 », ajouté par le code. Laisser vide pour utiliser le titre de la page.
+     */
+    title?: string | null;
+    /**
+     * Décrit la page en français, sans jargon ni promesse non vérifiable. Une page publiée doit en avoir une.
+     */
+    description: string;
+    /**
+     * Optionnelle. Sans droits validés, elle n’est jamais publiée.
+     */
+    ogImage?: (number | null) | Media;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Page À propos : introduction identitaire et chapitres (activité et périmètre, mission/vision/valeurs, qualité/sécurité/conformité). L’identité légale et les agréments restent code-owned.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "entreprise".
+ */
+export interface Entreprise {
+  id: number;
+  /**
+   * Le titre est le h1 de la page. Aucune photo d’équipe ni aucun récit de fondation n’est modélisé (registre des faits).
+   */
+  hero: {
+    title: string;
+  };
+  intro?: {
+    /**
+     * Le premier paragraphe est le chapô. Pas d’année de fondation, pas de chiffre non approuvé.
+     */
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  /**
+   * L’ordre des chapitres est celui du rendu : activité et périmètre, mission/vision/valeurs, qualité/sécurité/conformité.
+   */
+  chapters?:
+    | {
+        title: string;
+        items?:
+          | {
+              title: string;
+              body?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bandeau de clôture vers la page Contact.
+   */
+  contactCta: {
+    title: string;
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    /**
+     * Texte affiché ; la destination est une route code-owned choisie ci-dessous.
+     */
+    ctaLabel?: string | null;
+    /**
+     * Liste fermée des routes internes approuvées (une page fermée n’est jamais liée).
+     */
+    ctaTarget?:
+      | (
+          | 'accueil'
+          | 'a-propos'
+          | 'domaines-activite'
+          | 'realisations'
+          | 'contact'
+          | 'carrieres'
+          | 'contact-mailto'
+          | 'references-mailto'
+        )
+      | null;
+  };
+  /**
+   * Copie approuvée des métadonnées. Les modèles et valeurs par défaut restent code-owned (#32) : ce groupe ne les remplace pas.
+   */
+  seo: {
+    /**
+     * Sans le suffixe de marque « — HAY2010 », ajouté par le code. Laisser vide pour utiliser le titre de la page.
+     */
+    title?: string | null;
+    /**
+     * Décrit la page en français, sans jargon ni promesse non vérifiable. Une page publiée doit en avoir une.
+     */
+    description: string;
+    /**
+     * Optionnelle. Sans droits validés, elle n’est jamais publiée.
+     */
+    ogImage?: (number | null) | Media;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Page index des domaines : titre et introduction. La liste des domaines est dérivée des fiches publiées ; elle ne s’édite pas ici.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "metiers".
+ */
+export interface Metier {
+  id: number;
+  title: string;
+  intro?: {
+    /**
+     * Présente les domaines ; ne cite jamais un domaine fermé.
+     */
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  /**
+   * Copie approuvée des métadonnées. Les modèles et valeurs par défaut restent code-owned (#32) : ce groupe ne les remplace pas.
+   */
+  seo: {
+    /**
+     * Sans le suffixe de marque « — HAY2010 », ajouté par le code. Laisser vide pour utiliser le titre de la page.
+     */
+    title?: string | null;
+    /**
+     * Décrit la page en français, sans jargon ni promesse non vérifiable. Une page publiée doit en avoir une.
+     */
+    description: string;
+    /**
+     * Optionnelle. Sans droits validés, elle n’est jamais publiée.
+     */
+    ogImage?: (number | null) | Media;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Page Réalisations : formulation « Références sur demande », bloc références, règles de documentation, méthode et bandeau contact. Les qualifications et les fiches détaillées restent gated (code-owned).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "realisations".
+ */
+export interface Realisation {
+  id: number;
+  title: string;
+  hero: {
+    /**
+     * Formulation approuvée affichée sous le titre (« Références sur demande. »).
+     */
+    title: string;
+    subtitle?: string | null;
+    /**
+     * Texte affiché ; la destination est une route code-owned choisie ci-dessous.
+     */
+    primaryCtaLabel?: string | null;
+    /**
+     * Liste fermée des routes internes approuvées (une page fermée n’est jamais liée).
+     */
+    primaryCtaTarget?:
+      | (
+          | 'accueil'
+          | 'a-propos'
+          | 'domaines-activite'
+          | 'realisations'
+          | 'contact'
+          | 'carrieres'
+          | 'contact-mailto'
+          | 'references-mailto'
+        )
+      | null;
+    /**
+     * Texte affiché ; la destination est une route code-owned choisie ci-dessous.
+     */
+    secondaryCtaLabel?: string | null;
+    /**
+     * Liste fermée des routes internes approuvées (une page fermée n’est jamais liée).
+     */
+    secondaryCtaTarget?:
+      | (
+          | 'accueil'
+          | 'a-propos'
+          | 'domaines-activite'
+          | 'realisations'
+          | 'contact'
+          | 'carrieres'
+          | 'contact-mailto'
+          | 'references-mailto'
+        )
+      | null;
+  };
+  intro?: {
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    /**
+     * Texte affiché ; la destination est une route code-owned choisie ci-dessous.
+     */
+    linkLabel?: string | null;
+    /**
+     * Liste fermée des routes internes approuvées (une page fermée n’est jamais liée).
+     */
+    linkTarget?:
+      | (
+          | 'accueil'
+          | 'a-propos'
+          | 'domaines-activite'
+          | 'realisations'
+          | 'contact'
+          | 'carrieres'
+          | 'contact-mailto'
+          | 'references-mailto'
+        )
+      | null;
+  };
+  servicesBand?: {
+    /**
+     * Les lignes viennent des domaines publiés.
+     */
+    title?: string | null;
+  };
+  qualifications?: {
+    /**
+     * Le contenu du bloc (position honnête ou agréments approuvés) est code-owned et suit la barrière `agrementLive`.
+     */
+    title?: string | null;
+  };
+  references?: {
+    title?: string | null;
+    /**
+     * Formulation approuvée, affichée en grand.
+     */
+    fallbackText?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    body?: string | null;
+    /**
+     * Objet, lieu et année, périmètre, pièces du dossier.
+     */
+    items?:
+      | {
+          label: string;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Texte affiché ; la destination est une route code-owned choisie ci-dessous.
+     */
+    linkLabel?: string | null;
+    /**
+     * Liste fermée des routes internes approuvées (une page fermée n’est jamais liée).
+     */
+    linkTarget?:
+      | (
+          | 'accueil'
+          | 'a-propos'
+          | 'domaines-activite'
+          | 'realisations'
+          | 'contact'
+          | 'carrieres'
+          | 'contact-mailto'
+          | 'references-mailto'
+        )
+      | null;
+  };
+  documentation?: {
+    title?: string | null;
+    items?:
+      | {
+          title: string;
+          body?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  method?: {
+    title?: string | null;
+    items?:
+      | {
+          title: string;
+          body?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Bandeau de clôture vers la page Contact.
+   */
+  contactCta: {
+    title: string;
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    /**
+     * Texte affiché ; la destination est une route code-owned choisie ci-dessous.
+     */
+    ctaLabel?: string | null;
+    /**
+     * Liste fermée des routes internes approuvées (une page fermée n’est jamais liée).
+     */
+    ctaTarget?:
+      | (
+          | 'accueil'
+          | 'a-propos'
+          | 'domaines-activite'
+          | 'realisations'
+          | 'contact'
+          | 'carrieres'
+          | 'contact-mailto'
+          | 'references-mailto'
+        )
+      | null;
+  };
+  /**
+   * Copie approuvée des métadonnées. Les modèles et valeurs par défaut restent code-owned (#32) : ce groupe ne les remplace pas.
+   */
+  seo: {
+    /**
+     * Sans le suffixe de marque « — HAY2010 », ajouté par le code. Laisser vide pour utiliser le titre de la page.
+     */
+    title?: string | null;
+    /**
+     * Décrit la page en français, sans jargon ni promesse non vérifiable. Une page publiée doit en avoir une.
+     */
+    description: string;
+    /**
+     * Optionnelle. Sans droits validés, elle n’est jamais publiée.
+     */
+    ogImage?: (number | null) | Media;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Page Contact e-mail d’abord : aucun formulaire, aucun stockage de message. L’adresse, l’identité et la mention légale courte sont code-owned.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact".
+ */
+export interface Contact {
+  id: number;
+  title: string;
+  intro?: {
+    /**
+     * Ne promet jamais de délai de réponse ni de formulaire.
+     */
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  /**
+   * Le bouton e-mail et l’adresse sont code-owned : ce bandeau ne porte que le titre et le texte.
+   */
+  contactCta: {
+    title: string;
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  sections?: {
+    title?: string | null;
+    items?:
+      | {
+          title: string;
+          body?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  steps?: {
+    title?: string | null;
+    items?:
+      | {
+          title: string;
+          body?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Copie approuvée des métadonnées. Les modèles et valeurs par défaut restent code-owned (#32) : ce groupe ne les remplace pas.
+   */
+  seo: {
+    /**
+     * Sans le suffixe de marque « — HAY2010 », ajouté par le code. Laisser vide pour utiliser le titre de la page.
+     */
+    title?: string | null;
+    /**
+     * Décrit la page en français, sans jargon ni promesse non vérifiable. Une page publiée doit en avoir une.
+     */
+    description: string;
+    /**
+     * Optionnelle. Sans droits validés, elle n’est jamais publiée.
+     */
+    ogImage?: (number | null) | Media;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Page Carrières (pied de page) : ouverture et introduction culture. Les offres sont des fiches « Offres d’emploi » ; la boîte recrutement@ reste fermée par la barrière F-113 code-owned.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "carrieres".
+ */
+export interface Carriere {
+  id: number;
+  hero: {
+    title: string;
+    subtitle?: string | null;
+  };
+  intro?: {
+    /**
+     * Présente les métiers et les chantiers ; n’invite jamais à envoyer un CV avant l’ouverture F-113.
+     */
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  /**
+   * Copie approuvée des métadonnées. Les modèles et valeurs par défaut restent code-owned (#32) : ce groupe ne les remplace pas.
+   */
+  seo?: {
+    /**
+     * Sans le suffixe de marque « — HAY2010 », ajouté par le code. Laisser vide pour utiliser le titre de la page.
+     */
+    title?: string | null;
+    /**
+     * Décrit la page en français, sans jargon ni promesse non vérifiable. Une page publiée doit en avoir une.
+     */
+    description?: string | null;
+    /**
+     * Optionnelle. Sans droits validés, elle n’est jamais publiée.
+     */
+    ogImage?: (number | null) | Media;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * Modèle de la page Actualités. La rubrique est au palier P3 et `actualitesLive` est false (code-owned) : ce contenu est éditable mais ne peut pas être rendu publiquement depuis l’admin.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "actualites".
+ */
+export interface Actualite {
+  id: number;
+  hero?: {
+    title?: string | null;
+    subtitle?: string | null;
+  };
+  intro?: {
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+  };
+  /**
+   * Copie approuvée des métadonnées. Les modèles et valeurs par défaut restent code-owned (#32) : ce groupe ne les remplace pas.
+   */
+  seo?: {
+    /**
+     * Sans le suffixe de marque « — HAY2010 », ajouté par le code. Laisser vide pour utiliser le titre de la page.
+     */
+    title?: string | null;
+    /**
+     * Décrit la page en français, sans jargon ni promesse non vérifiable. Une page publiée doit en avoir une.
+     */
+    description?: string | null;
+    /**
+     * Optionnelle. Sans droits validés, elle n’est jamais publiée.
+     */
+    ogImage?: (number | null) | Media;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage_select".
+ */
+export interface HomepageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+        image?: T;
+        primaryCtaLabel?: T;
+        primaryCtaTarget?: T;
+        secondaryCtaLabel?: T;
+        secondaryCtaTarget?: T;
+      };
+  intro?:
+    | T
+    | {
+        body?: T;
+      };
+  servicesBand?:
+    | T
+    | {
+        title?: T;
+      };
+  referencesTeaser?:
+    | T
+    | {
+        fallbackText?: T;
+        body?: T;
+        linkLabel?: T;
+        linkTarget?: T;
+      };
+  engagements?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  contactCta?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        ctaLabel?: T;
+        ctaTarget?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "entreprise_select".
+ */
+export interface EntrepriseSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        title?: T;
+      };
+  intro?:
+    | T
+    | {
+        body?: T;
+      };
+  chapters?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  contactCta?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        ctaLabel?: T;
+        ctaTarget?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "metiers_select".
+ */
+export interface MetiersSelect<T extends boolean = true> {
+  title?: T;
+  intro?:
+    | T
+    | {
+        body?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "realisations_select".
+ */
+export interface RealisationsSelect<T extends boolean = true> {
+  title?: T;
+  hero?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+        primaryCtaLabel?: T;
+        primaryCtaTarget?: T;
+        secondaryCtaLabel?: T;
+        secondaryCtaTarget?: T;
+      };
+  intro?:
+    | T
+    | {
+        body?: T;
+        linkLabel?: T;
+        linkTarget?: T;
+      };
+  servicesBand?:
+    | T
+    | {
+        title?: T;
+      };
+  qualifications?:
+    | T
+    | {
+        title?: T;
+      };
+  references?:
+    | T
+    | {
+        title?: T;
+        fallbackText?: T;
+        body?: T;
+        items?:
+          | T
+          | {
+              label?: T;
+              description?: T;
+              id?: T;
+            };
+        linkLabel?: T;
+        linkTarget?: T;
+      };
+  documentation?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+      };
+  method?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+      };
+  contactCta?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        ctaLabel?: T;
+        ctaTarget?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact_select".
+ */
+export interface ContactSelect<T extends boolean = true> {
+  title?: T;
+  intro?:
+    | T
+    | {
+        body?: T;
+      };
+  contactCta?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+      };
+  sections?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+      };
+  steps?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "carrieres_select".
+ */
+export interface CarrieresSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+      };
+  intro?:
+    | T
+    | {
+        body?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "actualites_select".
+ */
+export interface ActualitesSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+      };
+  intro?:
+    | T
+    | {
+        body?: T;
+      };
+  seo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

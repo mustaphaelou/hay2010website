@@ -26,6 +26,7 @@ import {
   ownerOrDeveloperField,
 } from "../access/roles"
 import { validateMediaRights } from "../lib/payload/media-rights"
+import { CONTENT_TAGS, invalidateContent } from "../lib/payload/revalidate"
 
 /**
  * Repository `media/` directory of the local-disk fallback (gitignored).
@@ -72,6 +73,19 @@ export const Media: CollectionConfig = {
   },
   hooks: {
     beforeChange: [validateMediaRights],
+    // A rights change (clearance or revocation) hides/shows the image on every
+    // published page that references it: invalidate the whole frontend layout.
+    afterChange: [
+      async ({ doc }) => {
+        invalidateContent({ tags: [CONTENT_TAGS.media] })
+        return doc
+      },
+    ],
+    afterDelete: [
+      async () => {
+        invalidateContent({ tags: [CONTENT_TAGS.media] })
+      },
+    ],
   },
   fields: [
     {

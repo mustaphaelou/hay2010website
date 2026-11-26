@@ -1,24 +1,32 @@
 #!/usr/bin/env node
 /**
- * `npm run test:cms` — the CMS acceptance check for ticket #29.
+ * `npm run test:cms` — the CMS acceptance check for tickets #29 and #30.
  *
  * It proves, by running rather than by reading:
  *
  * 1. a clean database can be prepared with ONE documented command
- *    (`npm run migrate` applies the committed migrations from empty);
- * 2. the idempotent dev seed creates the accounts, the media records and the
- *    P1 pages the adapter needs;
+ *    (`npm run migrate` applies the committed migrations from empty) and the
+ *    seed is idempotent (a second run is a no-op);
+ * 2. the fixture build and the seeded CMS build render the **same P1 site**:
+ *    the parity phase captures the P1 route matrix from a fixture build (the
+ *    merge-gate default) and from the CMS build, then compares statuses,
+ *    metadata, normalised structure/text, navigation/footer links and the
+ *    sitemap (`scripts/parity.mjs`). This is the ticket #30 acceptance check for
+ *    "the seed reproduces the fixture corpus and the rendered site matches".
  * 3. a production build made with `CONTENT_SOURCE=cms` succeeds against that
  *    database (pages are prerendered from the CMS);
- * 4. the embedded Payload admin serves on the same origin, in French;
- * 5. the role matrix, the media rights gate and the CMS-backed P1 route behave
- *    as specified — asserted over HTTP by `tests/cms/**` through Vitest;
+ * 4. the embedded Payload admin serves on the same origin, in French, with the
+ *    read-only gate/constants panels;
+ * 5. the content-model, roles, gate-visibility, media-rights (including a
+ *    revocation), revalidation and gated-families behaviour is asserted over
+ *    HTTP by `tests/cms/**` through Vitest;
  * 6. everything disposable is removed afterwards: the Postgres container, the
- *    local-disk uploads, the CMS build and the server.
+ *    local-disk uploads, the builds and the servers.
  *
  * Requires: Docker with `postgres:16-alpine` (already cached on this host).
- * Uses container `hay2010-pg-29` on port 5529 and HTTP port 3129 — the ticket's
- * dedicated, never-shared names. Never touches `eguidar-*` containers or 3000.
+ * Uses container `hay2010-pg-30` on port 5530, the fixture server on 3129 and
+ * the CMS server on 3130 (the ticket's dedicated, never-shared ports). Never
+ * touches `eguidar-*` containers or 3000.
  *
  * `npm test` (the merge gate) stays database-free: this script is separate and
  * never runs in it.
@@ -28,35 +36,55 @@ import fs from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
+import { captureMatrix, compareMatrices } from "./parity.mjs"
+
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
-const port = process.env.TEST_CMS_HTTP_PORT ?? "3129"
 const hostname = "127.0.0.1"
-const baseUrl = `http://${hostname}:${port}`
-const PG_CONTAINER = "hay2010-pg-29"
-const PG_PORT = process.env.TEST_CMS_PG_PORT ?? "5529"
+const CMS_PORT = process.env.TEST_CMS_HTTP_PORT ?? "3130"
+const FIXTURE_PORT = process.env.TEST_CMS_FIXTURE_HTTP_PORT ?? "3129"
+const cmsBaseUrl = `http://${hostname}:${CMS_PORT}`
+const fixtureBaseUrl = `http://${hostname}:${FIXTURE_PORT}`
+const PG_CONTAINER = "hay2010-pg-30"
+const PG_PORT = process.env.TEST_CMS_PG_PORT ?? "5530"
 const PG_IMAGE = "postgres:16-alpine"
 const DATABASE_URL = `postgres://postgres:postgres@127.0.0.1:${PG_PORT}/hay2010`
 const PAYLOAD_SECRET = "hay2010-test-cms-only-not-a-secret"
 const MEDIA_DIR = path.join(projectRoot, "media")
 const NEXT_DIR = path.join(projectRoot, ".next")
+const PARITY_DIR = path.join(NEXT_DIR, "parity")
 
 const nextBin = path.join(projectRoot, "node_modules", "next", "dist", "bin", "next")
 const vitestBin = path.join(projectRoot, "node_modules", "vitest", "vitest.mjs")
 const npmBin = process.platform === "win32" ? "npm.cmd" : "npm"
 
-/** Environment every app command uses: CMS source, disposable database. */
-const cmsEnv = {
+/** Base environment of every app command. */
+const baseEnv = {
   ...process.env,
   NODE_ENV: "production",
   NODE_OPTIONS: process.env.NODE_OPTIONS ?? "--max-old-space-size=4096",
-  DATABASE_URL,
-  PAYLOAD_SECRET,
-  CONTENT_SOURCE: "cms",
-  NEXT_PUBLIC_SERVER_URL: baseUrl,
   SITE_ENV: "production",
 }
 
-const READINESS_TIMEOUT_MS = 90_000
+/** The fixture build — the merge-gate default, no database. */
+const fixtureEnv = {
+  ...baseEnv,
+  CONTENT_SOURCE: "fixture",
+  CONTENT_SCENARIO: "p1",
+  NEXT_PUBLIC_SERVER_URL: fixtureBaseUrl,
+  DATABASE_URL: "",
+  PAYLOAD_SECRET: "",
+}
+
+/** The CMS build and server — disposable database, embedded admin. */
+const cmsEnv = {
+  ...baseEnv,
+  DATABASE_URL,
+  PAYLOAD_SECRET,
+  CONTENT_SOURCE: "cms",
+  NEXT_PUBLIC_SERVER_URL: cmsBaseUrl,
+}
+
+const READINESS_TIMEOUT_MS = 120_000
 const POSTGRES_TIMEOUT_MS = 60_000
 
 /** @param {string} message */
@@ -78,7 +106,7 @@ function run(command, args, options = {}) {
     cwd: projectRoot,
     stdio: options.capture ? ["ignore", "pipe", "pipe"] : "inherit",
     encoding: "utf8",
-    env: { ...cmsEnv, ...options.env },
+    env: { ...baseEnv, ...options.env },
   })
   if (result.error) throw result.error
   return {
@@ -95,13 +123,13 @@ function run(command, args, options = {}) {
  */
 function runScript(script, options = {}) {
   log(`npm run ${script}`)
-  const result = run(npmBin, ["run", script], { env: options.env, capture: options.capture })
+  const result = run(npmBin, ["run", script], options)
   if (result.status !== 0) throw new Error(`npm run ${script} failed with status ${result.status}`)
   return result
 }
 
-/** Is something already answering on the CMS HTTP port? */
-async function isPortServing() {
+/** Is something already answering on one of the test HTTP ports? */
+async function isPortServing(baseUrl) {
   try {
     await fetch(`${baseUrl}/`, { signal: AbortSignal.timeout(1_500) })
     return true
@@ -148,14 +176,14 @@ async function waitForPostgres() {
   throw new Error(`Postgres did not become ready within ${POSTGRES_TIMEOUT_MS}ms`)
 }
 
-/** Start the production server built from the CMS. */
-async function startServer() {
-  log(`starting the production server on ${baseUrl} (CONTENT_SOURCE=cms)`)
+/** Start the production server built for one content source. */
+async function startServer(env, baseUrl, label) {
+  log(`starting the production server on ${baseUrl} (${label})`)
   let stderr = ""
-  const server = spawn(process.execPath, [nextBin, "start", "-p", port, "-H", hostname], {
+  const server = spawn(process.execPath, [nextBin, "start", "-p", new URL(baseUrl).port, "-H", hostname], {
     cwd: projectRoot,
     stdio: ["ignore", "ignore", "pipe"],
-    env: cmsEnv,
+    env: { ...baseEnv, ...env },
   })
   server.stderr?.setEncoding("utf8")
   server.stderr?.on("data", (chunk) => {
@@ -193,7 +221,14 @@ async function stopServer(server) {
   }
 }
 
-/** Remove the disposable database, uploads and (on success) the CMS build. */
+/** Build the app once, from a clean `.next`, with the given environment. */
+function build(env, label) {
+  log(`rm -rf .next && npm run build (${label})`)
+  fs.rmSync(NEXT_DIR, { recursive: true, force: true })
+  runScript("build", { env })
+}
+
+/** Remove the disposable database, uploads and (on success) the builds. */
 function cleanup({ keepBuild }) {
   run("docker", ["rm", "-f", PG_CONTAINER], { capture: true })
   fs.rmSync(MEDIA_DIR, { recursive: true, force: true })
@@ -221,11 +256,34 @@ function assertSchemaIsStorageIndependent() {
   }
 }
 
+/**
+ * Capture the P1 route matrix under one provider.
+ * @param {NodeJS.ProcessEnv} env
+ * @param {string} baseUrl
+ * @param {string} label
+ * @param {string} captureFile
+ */
+async function captureProviderMatrix(env, baseUrl, label, captureFile) {
+  build(env, label)
+  const running = await startServer(env, baseUrl, label)
+  try {
+    log(`capturing the P1 route matrix from ${baseUrl} (${label})`)
+    const matrix = await captureMatrix(baseUrl)
+    fs.mkdirSync(path.dirname(captureFile), { recursive: true })
+    fs.writeFileSync(captureFile, JSON.stringify(matrix, null, 2))
+    return matrix
+  } finally {
+    await stopServer(running.server)
+  }
+}
+
 async function main() {
-  if (await isPortServing()) {
-    throw new Error(
-      `something is already serving ${baseUrl}; stop it or set TEST_CMS_HTTP_PORT to another 312x port`
-    )
+  for (const baseUrl of [fixtureBaseUrl, cmsBaseUrl]) {
+    if (await isPortServing(baseUrl)) {
+      throw new Error(
+        `something is already serving ${baseUrl}; stop it or set the TEST_CMS_*_PORT variables to other 31xx ports`
+      )
+    }
   }
   const docker = run("docker", ["version", "--format", "{{.Server.Version}}"], { capture: true })
   if (docker.status !== 0) throw new Error("Docker is not available; `npm run test:cms` needs a disposable Postgres")
@@ -246,30 +304,53 @@ async function main() {
     await waitForPostgres()
 
     // 1. migrations from an empty database — the documented one-command setup.
-    runScript("migrate")
-    const status = runScript("migrate:status", { capture: true })
+    runScript("migrate", { env: cmsEnv })
+    const status = runScript("migrate:status", { env: cmsEnv, capture: true })
     const statusOutput = `${status.stdout}${status.stderr}`
     if (!/Ran[\s\S]*Yes|Yes[\s\S]*Ran/u.test(statusOutput.replace(/\u001b\[[0-9;]*m/gu, ""))) {
       throw new Error(`migrate:status did not report a ran migration:\n${statusOutput}`)
     }
     // Re-running must be a no-op: migrations are forward-only and applied once.
-    runScript("migrate")
+    runScript("migrate", { env: cmsEnv })
 
-    // 2. idempotent dev seed (accounts, media rights fixtures, P1 pages).
-    runScript("seed")
+    // 2. idempotent seed — the fixture corpus; a second run must be a no-op.
+    runScript("seed", { env: cmsEnv })
+    const secondSeed = runScript("seed", { env: cmsEnv, capture: true })
+    if (!`${secondSeed.stdout}${secondSeed.stderr}`.includes("déjà")) {
+      throw new Error("the seed is not idempotent: the second run did not report existing records")
+    }
 
-    // 3. production build from the CMS (pages are prerendered from Postgres).
-    log("rm -rf .next && npm run build (CONTENT_SOURCE=cms)")
-    fs.rmSync(NEXT_DIR, { recursive: true, force: true })
-    runScript("build")
+    // 3. fixture-vs-CMS parity on the P1 route matrix. Both builds are made
+    // from a clean `.next`; the parity captures are kept under `.next/parity/`
+    // so a failure can be diffed, and removed with the build on success.
+    const fixtureMatrix = await captureProviderMatrix(
+      fixtureEnv,
+      fixtureBaseUrl,
+      "fixture provider, p1 scenario",
+      path.join(PARITY_DIR, "fixture-matrix.json")
+    )
 
-    // 4. boot and run the HTTP assertions.
-    const running = await startServer()
+    build(cmsEnv, "CMS provider, seeded database")
+    fs.mkdirSync(PARITY_DIR, { recursive: true })
+    const running = await startServer(cmsEnv, cmsBaseUrl, "CMS provider, seeded database")
     server = running.server
-    log(`running tests/cms against ${baseUrl}`)
+
+    log(`capturing the P1 route matrix from ${cmsBaseUrl} (CMS provider)`)
+    const cmsMatrix = await captureMatrix(cmsBaseUrl)
+    fs.writeFileSync(path.join(PARITY_DIR, "cms-matrix.json"), JSON.stringify(cmsMatrix, null, 2))
+
+    log("comparing fixture and CMS route matrices")
+    const parity = compareMatrices(fixtureMatrix, cmsMatrix)
+    console.log(
+      `[cms-test] parity OK — ${parity.routes} routes (${parity.openRoutes} published, ${parity.gatedRoutes} gated), ` +
+        `${parity.sitemapPaths.length} sitemap URLs identical under both providers`
+    )
+
+    // 4. HTTP assertions against the CMS build (they mutate the seeded corpus,
+    // which is why the parity phase runs first).
+    log(`running tests/cms against ${cmsBaseUrl}`)
     const tests = run(process.execPath, [vitestBin, "run", "--config", "vitest.cms.config.ts"], {
-      capture: false,
-      env: { ...process.env, CMS_TEST_BASE_URL: baseUrl },
+      env: { ...cmsEnv, CMS_TEST_BASE_URL: cmsBaseUrl },
     })
     if (tests.status !== 0) throw new Error("tests/cms failed")
   } catch (error) {
@@ -283,7 +364,7 @@ async function main() {
 
 main()
   .then(() => {
-    log("CMS verification passed — disposable container and uploads removed")
+    log("CMS verification passed — parity, HTTP suite, disposable container and uploads removed")
     process.exitCode = 0
   })
   .catch((error) => {
