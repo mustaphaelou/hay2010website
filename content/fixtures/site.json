@@ -1,8 +1,12 @@
 {
   "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy: at #21 the pages were skeletons (no blocks); page tickets #22–#28 fill them. Gate states live in content/fixtures/scenarios/*.json. #22 delivered the domain index and the three published domain pages (CDC trame, DEV-006 omissions). Domain copy is drafted from the information architecture and the facts register; CFO/CFA and postes de transformation are prestations, not domains.",
   "pages": {
-    "accueil": { "blocks": [] },
-    "a-propos": { "blocks": [] },
+    "accueil": {
+      "blocks": []
+    },
+    "a-propos": {
+      "blocks": []
+    },
     "domaines-activite": {
       "title": "Nos domaines d’activité",
       "description": "Les domaines d’activité de HAY2010 à Rabat : éclairage public, installations électriques CFO/CFA et réseaux HTA/MT et MT/BT avec postes de transformation.",
@@ -14,25 +18,31 @@
             "Chaque domaine dispose de sa propre page : prestations confirmées, méthode de travail, moyens et compétences, puis un contact direct pour votre projet."
           ]
         },
-        { "kind": "domaines" }
+        {
+          "kind": "domaines"
+        }
       ]
     },
-    "realisations": { "blocks": [] },
-    "contact": { "blocks": [] }
+    "realisations": {
+      "blocks": []
+    },
+    "contact": {
+      "blocks": []
+    }
   },
   "domains": [
     {
       "slug": "eclairage-public",
       "title": "Éclairage public",
       "summary": "Les travaux d’éclairage public, de l’étude d’exécution à la mise en service des installations.",
-      "description": "HAY2010 réalise les travaux d’éclairage public à Rabat\u00a0: études, installation et mise en service des ouvrages, pour les collectivités et les entreprises.",
+      "description": "HAY2010 réalise les travaux d’éclairage public à Rabat : études, installation et mise en service des ouvrages, pour les collectivités et les entreprises.",
       "blocks": [
         {
           "kind": "presentation",
           "title": "Présentation et besoins",
           "paragraphs": [
-            "L’éclairage public organise la vie nocturne d’un territoire\u00a0: il éclaire les voies, sécurise les déplacements et accompagne l’image des espaces publics. Ces installations sont aussi des ouvrages électriques, qui demandent une conception rigoureuse et une exécution soignée.",
-            "HAY2010 réalise les travaux d’éclairage public\u00a0: études d’exécution, réalisation des installations et mise en service, en coordination avec le maître d’ouvrage et les intervenants du chantier."
+            "L’éclairage public organise la vie nocturne d’un territoire : il éclaire les voies, sécurise les déplacements et accompagne l’image des espaces publics. Ces installations sont aussi des ouvrages électriques, qui demandent une conception rigoureuse et une exécution soignée.",
+            "HAY2010 réalise les travaux d’éclairage public : études d’exécution, réalisation des installations et mise en service, en coordination avec le maître d’ouvrage et les intervenants du chantier."
           ]
         },
         {
@@ -45,7 +55,7 @@
             },
             {
               "label": "Travaux d’éclairage public",
-              "description": "Réalisation des installations d’éclairage public\u00a0: alimentation, câblage, raccordement et pose des ouvrages."
+              "description": "Réalisation des installations d’éclairage public : alimentation, câblage, raccordement et pose des ouvrages."
             },
             {
               "label": "Essais et mise en service",
@@ -77,9 +87,12 @@
         },
         {
           "kind": "contact-cta",
-          "title": "Un projet d’éclairage public\u00a0?",
-          "body": "Décrivez votre besoin d’éclairage public\u00a0; nous vous répondrons par e-mail.",
-          "link": { "label": "Nous contacter", "href": "/contact" }
+          "title": "Un projet d’éclairage public ?",
+          "body": "Décrivez votre besoin d’éclairage public ; nous vous répondrons par e-mail.",
+          "link": {
+            "label": "Nous contacter",
+            "href": "/contact"
+          }
         }
       ]
     },
@@ -87,14 +100,14 @@
       "slug": "installations-electriques",
       "title": "Installations électriques",
       "summary": "Les installations électriques CFO/CFA : tableaux, distribution, protection, câblage et mise en service.",
-      "description": "HAY2010 réalise les installations électriques CFO/CFA\u00a0: tableaux, distribution, protection, câblage et mise en service, pour les collectivités et les entreprises.",
+      "description": "HAY2010 réalise les installations électriques CFO/CFA : tableaux, distribution, protection, câblage et mise en service, pour collectivités et entreprises.",
       "blocks": [
         {
           "kind": "presentation",
           "title": "Présentation et besoins",
           "paragraphs": [
             "Les installations électriques d’un bâtiment ou d’un site d’activité doivent distribuer l’énergie de façon sûre et lisible. Tableaux, circuits de distribution, protections et câblage forment un ensemble qui se conçoit dès l’étude et se vérifie à la mise en service.",
-            "HAY2010 réalise les installations électriques en courants forts et courants faibles (CFO/CFA)\u00a0: études d’exécution, réalisation, câblage et mise en service, en coordination avec les autres corps d’état."
+            "HAY2010 réalise les installations électriques en courants forts et courants faibles (CFO/CFA) : études d’exécution, réalisation, câblage et mise en service, en coordination avec les autres corps d’état."
           ]
         },
         {
@@ -103,7 +116,7 @@
           "items": [
             {
               "label": "Courants forts et courants faibles (CFO/CFA)",
-              "description": "Installations CFO/CFA\u00a0: distribution, protection et câblage des courants forts et des courants faibles."
+              "description": "Installations CFO/CFA : distribution, protection et câblage des courants forts et des courants faibles."
             },
             {
               "label": "Tableaux et distribution",
@@ -139,9 +152,12 @@
         },
         {
           "kind": "contact-cta",
-          "title": "Une installation électrique à réaliser\u00a0?",
-          "body": "Décrivez votre installation\u00a0; nous vous répondrons par e-mail.",
-          "link": { "label": "Nous contacter", "href": "/contact" }
+          "title": "Une installation électrique à réaliser ?",
+          "body": "Décrivez votre installation ; nous vous répondrons par e-mail.",
+          "link": {
+            "label": "Nous contacter",
+            "href": "/contact"
+          }
         }
       ]
     },
@@ -155,8 +171,8 @@
           "kind": "presentation",
           "title": "Présentation et besoins",
           "paragraphs": [
-            "Les réseaux électriques HTA/MT et MT/BT constituent l’ossature d’un territoire ou d’un site\u00a0: ils transportent l’énergie jusqu’aux postes de transformation, puis la distribuent aux installations. Leur réalisation demande des études précises, une exécution coordonnée et des essais avant la mise en service.",
-            "HAY2010 réalise les infrastructures et réseaux électriques, ainsi que les postes de transformation\u00a0: études, travaux, essais et réception, en coordination avec le maître d’ouvrage et les intervenants du chantier."
+            "Les réseaux électriques HTA/MT et MT/BT constituent l’ossature d’un territoire ou d’un site : ils transportent l’énergie jusqu’aux postes de transformation, puis la distribuent aux installations. Leur réalisation demande des études précises, une exécution coordonnée et des essais avant la mise en service.",
+            "HAY2010 réalise les infrastructures et réseaux électriques, ainsi que les postes de transformation : études, travaux, essais et réception, en coordination avec le maître d’ouvrage et les intervenants du chantier."
           ]
         },
         {
@@ -165,11 +181,11 @@
           "items": [
             {
               "label": "Réseaux HTA/MT",
-              "description": "Électrification des réseaux HTA/MT\u00a0: travaux et mise en service."
+              "description": "Électrification des réseaux HTA/MT : travaux et mise en service."
             },
             {
               "label": "Réseaux MT/BT",
-              "description": "Électrification des réseaux MT/BT\u00a0: travaux et mise en service."
+              "description": "Électrification des réseaux MT/BT : travaux et mise en service."
             },
             {
               "label": "Postes de transformation",
@@ -201,9 +217,12 @@
         },
         {
           "kind": "contact-cta",
-          "title": "Un réseau ou un poste de transformation à réaliser\u00a0?",
-          "body": "Décrivez votre projet de réseau ou de poste\u00a0; nous vous répondrons par e-mail.",
-          "link": { "label": "Nous contacter", "href": "/contact" }
+          "title": "Un réseau ou un poste de transformation à réaliser ?",
+          "body": "Décrivez votre projet de réseau ou de poste ; nous vous répondrons par e-mail.",
+          "link": {
+            "label": "Nous contacter",
+            "href": "/contact"
+          }
         }
       ]
     },

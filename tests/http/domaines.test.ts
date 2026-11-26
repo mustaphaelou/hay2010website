@@ -1,7 +1,14 @@
 import type { HTMLElement } from "node-html-parser"
 import { describe, expect, it } from "vitest"
 
-import { assertCanonicalDocument, fetchPage, textOf } from "./helpers"
+import {
+  assertCanonicalDocument,
+  fetchPage,
+  fetchSitemapPaths,
+  isFrench,
+  SITEMAP_ORIGIN,
+  textOf,
+} from "./helpers"
 import { scenario } from "./scenarios"
 import { internalHrefs, linksIn } from "./surfaces"
 
@@ -274,6 +281,118 @@ describe(`domaine pages — CDC trame (${scenario.name})`, () => {
         textOf(main),
         `${slug} must not fill the omitted blocks with placeholder copy`
       ).not.toMatch(/bientôt|à venir|prochainement|lorem ipsum|placeholder|en construction/i)
+    }
+  })
+})
+
+describe(`domaines d’activité — gates, claims and metadata (${scenario.name})`, () => {
+  it("gives the index and each published domain page a unique title, description and canonical URL", async () => {
+    const paths = [
+      DOMAINES_INDEX,
+      ...publishedContentDomains().map(domainPath),
+    ]
+    const titles: string[] = []
+    const descriptions: string[] = []
+    const canonicals: string[] = []
+
+    for (const path of paths) {
+      const page = await fetchPage(path)
+      expect(page.status, `${path} must be served`).toBe(200)
+      const document = assertCanonicalDocument(page)
+
+      // One canonical, absolute, on the apex origin, without a trailing slash.
+      const canonicalLinks = page.document.querySelectorAll('link[rel="canonical"]')
+      expect(canonicalLinks, `${path} must carry exactly one canonical`).toHaveLength(1)
+      const href = canonicalLinks[0].getAttribute("href") ?? ""
+      expect(href, `${path} canonical must be the apex URL`).toBe(
+        `${SITEMAP_ORIGIN}${path}`
+      )
+      expect(href.endsWith("/"), `${path} canonical must not end with a slash`).toBe(
+        false
+      )
+
+      // One HAY2010 suffix, French, within the SEO title bound (#32 completes).
+      expect(document.title, `${path} title must carry the brand`).toContain("HAY2010")
+      expect(document.title.length, `${path} title length`).toBeLessThanOrEqual(65)
+      expect(isFrench(document.title), `${path} title must be French`).toBe(true)
+
+      // Description: unique, French, within the SEO length bounds.
+      expect(document.description.length, `${path} description length`).toBeGreaterThanOrEqual(
+        100
+      )
+      expect(
+        document.description.length,
+        `${path} description length`
+      ).toBeLessThanOrEqual(170)
+      expect(isFrench(document.description), `${path} description must be French`).toBe(
+        true
+      )
+
+      titles.push(document.title)
+      descriptions.push(document.description)
+      canonicals.push(href)
+    }
+
+    expect(new Set(titles).size, "titles must be unique per page").toBe(paths.length)
+    expect(
+      new Set(descriptions).size,
+      "descriptions must be unique per page"
+    ).toBe(paths.length)
+    expect(new Set(canonicals).size, "canonicals must be unique per page").toBe(
+      paths.length
+    )
+  })
+
+  it("prints no ONEE agrément wording on any published page while the certificate gate is closed", async () => {
+    // The fact is approved but gated: it may appear only once both ONEE
+    // certificates are filed (facts register §2.2/§8, seo doc §3.3). This walks
+    // the whole published route matrix so a later page ticket cannot leak it.
+    for (const route of scenario.openRoutes) {
+      const page = await fetchPage(route)
+      expect(page.status, `${route} must be served`).toBe(200)
+      const { main } = assertCanonicalDocument(page)
+
+      expect(
+        textOf(main),
+        `${route} must not print the gated ONEE agrément claim`
+      ).not.toMatch(/ONEE|agrément|entreprise agréée/i)
+    }
+  })
+
+  it("keeps gated domains out of the sitemap and the published ones in it", async () => {
+    const paths = await fetchSitemapPaths()
+
+    // Every published content domain page is listed…
+    for (const slug of publishedContentDomains()) {
+      expect(paths, `${slug} belongs in the sitemap`).toContain(domainPath(slug))
+    }
+    // …the index too…
+    expect(paths, "the domain index belongs in the sitemap").toContain(DOMAINES_INDEX)
+
+    // …and a domain whose gate is closed is never listed.
+    for (const slug of TIER_GATED_DOMAINS) {
+      if (scenario.publishedDomains.includes(slug)) continue
+      expect(paths, `gated domain ${slug} must stay out of the sitemap`).not.toContain(
+        domainPath(slug)
+      )
+    }
+  })
+
+  it("keeps the gated claims vocabulary out of the published domain pages", async () => {
+    // The tier-gated domains are a P2 simulation in p2/p3; the vocabulary is
+    // gated only while those domains are actually withheld (DEV-005).
+    const tierGatesClosed = TIER_GATED_DOMAINS.every(
+      (slug) => !scenario.publishedDomains.includes(slug)
+    )
+    if (!tierGatesClosed) return
+
+    const routes = [DOMAINES_INDEX, ...publishedContentDomains().map(domainPath)]
+    for (const route of routes) {
+      const page = await fetchPage(route)
+      const text = textOf(page.document.querySelector("main") as HTMLElement)
+      expect(text, `${route} must not mention Solaire while gated`).not.toMatch(
+        /solaire|photovoltaïque|énergies renouvelables/i
+      )
     }
   })
 })

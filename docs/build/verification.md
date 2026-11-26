@@ -132,6 +132,19 @@ import a component and never assert class names or call order.
 - links back to every published main rubrique (derived from the registry);
 - no gated rubrique suggested.
 
+`tests/http/domaines.test.ts` (#22)
+
+- the index serves a canonical document and links exactly the published domains
+  in CDC order; a gated domain is absent from the list, the links and the copy;
+- each published domain page renders the CDC trame in order (presentation and
+  needs → prestations → methods/means/competences → contact CTA), with named
+  prestations and CFO/CFA / postes de transformation in their own domain;
+- the photo and associated-réalisations blocks are absent, not placeholders;
+- no ONEE agrément wording on any published page while the certificate gate is
+  closed, and no Solaire vocabulary while the P2 domains are gated;
+- the index and the three domain pages each carry a unique title, description
+  and canonical apex URL without a trailing slash.
+
 `tests/http/en-reserved.test.ts` (#21)
 
 - `/en` returns 404 (no redirect, no route);
@@ -189,6 +202,7 @@ preemptively (spec: "Deferred").
 | `tests/http/gates.test.ts` | publication gates, internal-link and sitemap leaks |
 | `tests/http/not-found.test.ts` | real 404 status/document/links back |
 | `tests/http/en-reserved.test.ts` | `/en` reserved, French prefix-free |
+| `tests/http/domaines.test.ts` | #22 domain index, CDC trame pages, DEV-006 omissions, gated-domain/claim absence, unique metadata |
 | `tests/architecture.test.ts` | seam/layout guards: no direct CMS import, no root `app/layout.tsx`, every page gated |
 
 ## Extending it (later tickets)
