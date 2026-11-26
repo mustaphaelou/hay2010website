@@ -164,6 +164,49 @@ export interface ContactCtaBlock {
   readonly link?: ContentLink
 }
 
+/**
+ * A cleared optional contact channel row (phone number, opening-hours line).
+ *
+ * The channel value is content so the owner can clear it as a data change; the
+ * primary mailbox and the registered address stay code-owned in
+ * `lib/site/company.ts` (content model §3 "one fact, one source").
+ */
+export interface ContactChannelValue {
+  readonly label: string
+  readonly value: string
+  /** `tel:` href for a cleared phone number; omitted for plain values. */
+  readonly href?: string
+}
+
+/**
+ * Contact page: optional channels that stay gated until the facts register
+ * clears them — phone, opening hours, map and social profiles are absent at
+ * P1 (facts register §2.3, spec "Static rubriques" Contact).
+ *
+ * The block is omitted from the document while nothing is cleared (DEV-006);
+ * when the owner clears a channel it is added here as a data change and the
+ * renderer switches the block on with no refactor.
+ */
+export interface ContactChannelsBlock {
+  readonly kind: "contact-channels"
+  readonly title?: string
+  /** Cleared phone numbers only; never a number the register has not confirmed. */
+  readonly phones?: readonly ContactChannelValue[]
+  /** Cleared opening hours only. */
+  readonly openingHours?: readonly ContactChannelValue[]
+  /** A cleared public map/reception link; no embedded third-party map. */
+  readonly map?: ContentLink
+  /** Cleared official social profiles only. */
+  readonly social?: readonly ContentLink[]
+}
+
+/** An ordered sequence of steps, e.g. « Ce qui se passe ensuite ». */
+export interface StepsBlock {
+  readonly kind: "steps"
+  readonly title?: string
+  readonly items: readonly TitledItem[]
+}
+
 /** Generic titled prose sections (À propos, legal pages, careers intro). */
 export interface SectionsBlock {
   readonly kind: "sections"
@@ -195,7 +238,9 @@ export type ContentBlock =
   | EngagementsBlock
   | CredentialsBlock
   | ContactCtaBlock
+  | ContactChannelsBlock
   | SectionsBlock
+  | StepsBlock
   | OpeningsBlock
 
 /** A page document, addressed by its rubrique key. */
