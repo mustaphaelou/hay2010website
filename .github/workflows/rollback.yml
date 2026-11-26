@@ -1,0 +1,108 @@
+# Manual rollback by image tag (ticket #31).
+#
+# The image tag is the rollback unit (docs/ops/deploy.md "Rollback by tag"). A
+# previous release is restored by pinning its full commit sha on the Coolify
+# application and redeploying; this workflow is that procedure, for a second
+# operator, without shell access to the VPS.
+#
+# Caveat: an image rollback does NOT reverse a database migration. If the failed
+# release contained an incompatible migration, restore the pre-migration dump
+# first (docs/ops/runbook.md "Restore"). There are no migrations before #29/#30.
+
+name: Rollback staging image
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Full commit SHA of the release to restore (a GHCR tag built by CI)"
+        required: true
+        type: string
+      reason:
+        description: "Why the rollback is needed (recorded in the deployment history)"
+        required: true
+        type: string
+  # Also reachable from CI when a deploy needs an automatic revert.
+  workflow_call:
+    inputs:
+      image_tag:
+        description: "Full commit SHA to restore"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rollback-staging
+  cancel-in-progress: false
+
+jobs:
+  rollback:
+    name: Pin the previous image tag and redeploy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment:
+      name: staging
+      url: ${{ vars.STAGING_URL }}
+    steps:
+      - name: Pin the image tag and redeploy
+        env:
+          COOLIFY_API_URL: ${{ vars.COOLIFY_API_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          IMAGE_TAG: ${{ inputs.image_tag }}
+        run: |
+          set -euo pipefail
+          if [ -z "${COOLIFY_API_URL}" ] || [ -z "${COOLIFY_APP_UUID}" ] || [ -z "${COOLIFY_API_TOKEN}" ]; then
+            echo "::error::Coolify is not configured (vars.COOLIFY_API_URL, secrets.COOLIFY_APP_UUID, secrets.COOLIFY_API_TOKEN)."
+            exit 1
+          fi
+          if ! [[ "${IMAGE_TAG}" =~ ^[0-9a-f]{7,64}$ ]]; then
+            echo "::error::image_tag must be a commit sha built by CI, got '${IMAGE_TAG}'."
+            exit 1
+          fi
+          curl --fail --silent --show-error \
+            --request PATCH "${COOLIFY_API_URL}/api/v1/applications/${COOLIFY_APP_UUID}" \
+            --header "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            --header "Content-Type: application/json" \
+            --data "$(jq -n --arg tag "${IMAGE_TAG}" '{docker_registry_image_tag: $tag}')"
+          response="$(curl --fail --silent --show-error \
+            --request POST "${COOLIFY_API_URL}/api/v1/deploy?uuid=${COOLIFY_APP_UUID}" \
+            --header "Authorization: Bearer ${COOLIFY_API_TOKEN}")"
+          echo "$response"
+          deployment_uuid="$(jq -r '.deployments[0].deployment_uuid // empty' <<<"$response")"
+          if [ -z "$deployment_uuid" ]; then
+            echo "::error::Coolify did not queue the rollback deployment: $response"
+            exit 1
+          fi
+          for _ in $(seq 1 90); do
+            status="$(curl --fail --silent --show-error \
+              --header "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+              "${COOLIFY_API_URL}/api/v1/deployments/${deployment_uuid}" | jq -r '.status')"
+            case "$status" in
+              finished)
+                echo "::notice::Rollback to ${IMAGE_TAG} finished (deployment ${deployment_uuid})"
+                exit 0
+                ;;
+              failed|cancelled-by-user)
+                echo "::error::Rollback deployment ${deployment_uuid} ended with ${status}"
+                exit 1
+                ;;
+            esac
+            sleep 10
+          done
+          echo "::error::Rollback deployment did not finish in 15 minutes"
+          exit 1
+
+      - name: Record the rollback
+        if: always()
+        run: |
+          {
+            echo "### Rollback to \`${{ inputs.image_tag }}\`"
+            echo ""
+            echo "Reason: ${{ inputs.reason }}"
+            echo ""
+            echo "Verify \`GET /api/health\` reports \`version\` = the rolled-back sha, then follow"
+            echo "docs/ops/runbook.md (post-rollback checks)."
+          } >> "$GITHUB_STEP_SUMMARY"

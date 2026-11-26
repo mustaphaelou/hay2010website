@@ -1,0 +1,34 @@
+# Keep the build context to what `next build` needs. Anything excluded here is
+# also absent from the image, because only the traced standalone output is copied
+# into the runtime stage — secrets and repository metadata must never leak in.
+
+# dependencies and build output
+node_modules
+.next
+out
+build
+coverage
+*.tsbuildinfo
+
+# repository and CI
+.git
+.github
+.gitignore
+.dockerignore
+.scratch
+
+# local env and secrets
+.env
+.env.*
+
+# docs and editor files never needed to build or run the app
+docs
+*.md
+README.md
+AGENTS.md
+CLAUDE.md
+GLOSSARY.md
+.vscode
+.idea
+.DS_Store
+npm-debug.log*

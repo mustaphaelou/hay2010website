@@ -1,0 +1,160 @@
+# Nightly backup rehearsal and off-site dump watchdog (ticket #31).
+#
+# Decision: docs/hosting/deployment-decision.md §3.5 / §4.5. The *production*
+# dumps are produced by Coolify's own Postgres backup schedule directly into
+# Cloudflare R2 (`hay2010-backups`) — documented in docs/ops/runbook.md
+# "Backups", because a GitHub runner cannot reach the internal-only database.
+# This workflow adds the two things GitHub Actions is good at:
+#
+#   rehearsal — nightly, disposable Postgres 16 + `rclone serve s3` (a real S3
+#               endpoint with SigV4 and path-style requests, no container image):
+#               run scripts/backup-postgres.sh, upload through an rclone S3
+#               remote, restore with scripts/restore-postgres.sh into a scratch
+#               database containing a conflicting table, verify the rows.
+#               Catches script regression before an incident needs them.
+#   watchdog  — nightly, read-only: the newest non-empty object under
+#               `postgres/` in the real R2 bucket must be younger than 36 h. A
+#               failed scheduled run is the "backup failure reaches a human"
+#               alert required by the decision.
+#
+# Secrets/variables the watchdog needs (docs/ops/external-steps.md §4):
+#   secrets.R2_BACKUP_READ_KEY_ID / R2_BACKUP_READ_SECRET  (read-only R2 token)
+#   vars.R2_BACKUP_ENDPOINT / vars.R2_BACKUP_BUCKET
+# Missing configuration is a notice, not a failure, until the bucket exists.
+
+name: Backup rehearsal and watchdog
+
+on:
+  schedule:
+    - cron: "17 3 * * *" # UTC, after the server-time nightly dump
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/backup-postgres.sh"
+      - "scripts/restore-postgres.sh"
+      - "scripts/rehearse-backup-restore.sh"
+      - ".github/workflows/backup.yml"
+
+permissions:
+  contents: read
+
+env:
+  # Do not name this RCLONE_VERSION: rclone reads RCLONE_* env vars as flags and
+  # parses --version as a boolean (CI run 45880447618 failed on exactly that).
+  RCLONE_PINNED_VERSION: "1.76.0"
+
+jobs:
+  rehearsal:
+    name: Dump → object storage → restore rehearsal
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install rclone (pinned)
+        run: |
+          set -euo pipefail
+          case "$(uname -m)" in
+            aarch64|arm64) ARCH=arm64 ;;
+            *) ARCH=amd64 ;;
+          esac
+          curl -fsSL -o /tmp/rclone.zip \
+            "https://downloads.rclone.org/v${RCLONE_PINNED_VERSION}/rclone-v${RCLONE_PINNED_VERSION}-linux-${ARCH}.zip"
+          unzip -q /tmp/rclone.zip -d /tmp
+          echo "/tmp/rclone-v${RCLONE_PINNED_VERSION}-linux-${ARCH}" >> "$GITHUB_PATH"
+
+      # `rclone serve s3` is the S3 stand-in: a real S3 endpoint (SigV4,
+      # path-style) served from a local directory by the rclone binary already
+      # installed above. No container image is pulled, so the rehearsal does not
+      # depend on a registry: `minio/minio` is no longer published on Docker Hub
+      # and a private/pinned registry is not acceptable for a public CI job.
+      - name: Rehearse backup and restore against real object storage
+        env:
+          RCLONE_CONFIG: /tmp/rehearsal-rclone.conf
+          REHEARSAL_RCLONE_REMOTE: rehearsal:hay2010-backups/postgres
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/s3-rehearsal-data
+          cat > "$RCLONE_CONFIG" <<'EOF'
+          [rehearsal]
+          type = s3
+          provider = Other
+          access_key_id = rehearsal
+          secret_access_key = rehearsal-not-a-secret
+          endpoint = http://127.0.0.1:9000
+          region = us-east-1
+          force_path_style = true
+          EOF
+          rclone serve s3 /tmp/s3-rehearsal-data \
+            --addr 127.0.0.1:9000 \
+            --auth-key "rehearsal,rehearsal-not-a-secret" \
+            --log-level INFO > /tmp/s3-serve.log 2>&1 &
+          serve_pid=$!
+          trap 'kill "$serve_pid" >/dev/null 2>&1 || true' EXIT
+          for _ in $(seq 1 30); do
+            if rclone lsd rehearsal: >/dev/null 2>&1; then
+              break
+            fi
+            sleep 1
+          done
+          rclone mkdir rehearsal:hay2010-backups
+          bash scripts/rehearse-backup-restore.sh
+
+      - name: Upload the S3 server log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s3-rehearsal-server-${{ github.run_id }}
+          path: /tmp/s3-serve.log
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Upload rehearsal evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backup-rehearsal-${{ github.run_id }}
+          path: |
+            /tmp/hay2010-rehearsal*/backup.log
+            /tmp/hay2010-rehearsal*/restore.log
+          if-no-files-found: ignore
+          retention-days: 30
+
+  watchdog:
+    name: Newest off-site dump is fresh
+    needs: rehearsal
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check the newest object in the backup bucket
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_BACKUP_READ_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_BACKUP_READ_SECRET }}
+          AWS_DEFAULT_REGION: auto
+          R2_ENDPOINT: ${{ vars.R2_BACKUP_ENDPOINT }}
+          BACKUP_BUCKET: ${{ vars.R2_BACKUP_BUCKET }}
+          PREFIX: postgres/
+          MAX_AGE_HOURS: "36"
+        run: |
+          set -euo pipefail
+          if [ -z "${AWS_ACCESS_KEY_ID}" ] || [ -z "${R2_ENDPOINT}" ] || [ -z "${BACKUP_BUCKET}" ]; then
+            echo "::notice title=Backup watchdog not configured::Set secrets.R2_BACKUP_READ_KEY_ID, secrets.R2_BACKUP_READ_SECRET, vars.R2_BACKUP_ENDPOINT and vars.R2_BACKUP_BUCKET (docs/ops/external-steps.md §4)."
+            exit 0
+          fi
+          listing="$(aws s3api list-objects-v2 \
+            --endpoint-url "$R2_ENDPOINT" \
+            --bucket "$BACKUP_BUCKET" \
+            --prefix "$PREFIX" \
+            --output json)"
+          key="$(jq -r '[.Contents[]? | select(.Size > 0)] | sort_by(.LastModified) | last | .Key // empty' <<<"$listing")"
+          modified="$(jq -r '[.Contents[]? | select(.Size > 0)] | sort_by(.LastModified) | last | .LastModified // empty' <<<"$listing")"
+          if [ -z "$key" ] || [ -z "$modified" ]; then
+            echo "::error::No non-empty backup object under ${PREFIX} in ${BACKUP_BUCKET}"
+            exit 1
+          fi
+          age_hours=$(( ( $(date -u +%s) - $(date -u -d "$modified" +%s) ) / 3600 ))
+          echo "newest: ${key} (${age_hours}h old)"
+          if [ "$age_hours" -gt "$MAX_AGE_HOURS" ]; then
+            echo "::error::Newest backup is ${age_hours}h old (limit ${MAX_AGE_HOURS}h)"
+            exit 1
+          fi
