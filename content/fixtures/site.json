@@ -2,7 +2,20 @@
   "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy: at #21 the pages are skeletons (no blocks) and page tickets #22–#28 fill them. Gate states live in content/fixtures/scenarios/*.json.",
   "pages": {
     "accueil": { "blocks": [] },
-    "a-propos": { "blocks": [] },
+    "a-propos": {
+      "title": "À propos",
+      "description": "HAY2010, société d’électricité et d’éclairage public à Rabat\u00a0: plus de 10 ans d’expérience au service des collectivités et des entreprises. Études et travaux.",
+      "blocks": [
+        {
+          "kind": "intro",
+          "paragraphs": [
+            "Depuis plus de 10 ans, HAY2010 accompagne les collectivités et les entreprises dans leurs projets d’éclairage public et d’électrification.",
+            "HAY2010 est une entreprise d’électricité et d’éclairage public. Nous réalisons des études et des travaux pour les collectivités et les entreprises, sur des ouvrages qui doivent tenir dans le temps.",
+            "Notre siège est à Rabat\u00a0: c’est de là que sont conduits nos études et nos chantiers. De l’étude à la réception, nous suivons le même fil\u00a0: comprendre le besoin, dimensionner juste, exécuter proprement et rendre compte."
+          ]
+        }
+      ]
+    },
     "domaines-activite": { "blocks": [] },
     "realisations": { "blocks": [] },
     "contact": { "blocks": [] }
