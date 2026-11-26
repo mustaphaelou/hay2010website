@@ -203,7 +203,6 @@ describe(`réalisations page: credentials-led (${scenario.name})`, () => {
 
   it("provides no catalogue surface: no grid, filters or pagination", async () => {
     const canonical = await fetchOpen()
-    const page = canonical.page
     const mainText = textOf(canonical.main)
 
     // No interactive catalogue control in the page content (the shell keeps
