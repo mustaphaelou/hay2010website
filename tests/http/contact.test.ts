@@ -305,8 +305,13 @@ describe(`contact page: email-first (${scenario.name})`, () => {
     expect(page.document.querySelectorAll("title")).toHaveLength(1)
     expect(canonical.title).not.toMatch(/HAY2010 — HAY2010|— —/)
 
-    // Unique against the layout default and the other built P1 pages.
-    for (const route of ["/", "/a-propos", "/domaines-activite"]) {
+    // Unique against the layout default and the other pages actually built in
+    // this scenario (a scenario may close one of them, e.g. p1-gates-closed).
+    const comparableRoutes = [
+      "/",
+      ...scenario.openRoutes.filter((route) => route !== "/" && route !== "/contact"),
+    ].slice(0, 3)
+    for (const route of comparableRoutes) {
       const other = await fetchPage(route)
       expect(other.status, `${route} must be served`).toBe(200)
       const otherTitle =

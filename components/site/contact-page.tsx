@@ -144,7 +144,10 @@ function ContactSection({
   const headingId = `contact-section-${index}`
 
   return (
-    <section aria-labelledby={headingId} className="border-b border-line">
+    <section
+      aria-labelledby={block.title ? headingId : undefined}
+      className="border-b border-line"
+    >
       <div className="mx-auto max-w-[1440px] px-5 py-14 sm:py-16 lg:px-10 lg:py-20">
         {block.title ? (
           <h2
@@ -189,7 +192,10 @@ function ContactSteps({
   const headingId = `contact-steps-${index}`
 
   return (
-    <section aria-labelledby={headingId} className="border-b border-line bg-paper">
+    <section
+      aria-labelledby={block.title ? headingId : undefined}
+      className="border-b border-line bg-paper"
+    >
       <div className="mx-auto max-w-[1440px] px-5 py-14 sm:py-16 lg:px-10 lg:py-20">
         {block.title ? (
           <h2
@@ -251,7 +257,10 @@ function ContactChannels({
   const headingId = `contact-channels-${index}`
 
   return (
-    <section aria-labelledby={headingId} className="border-b border-line">
+    <section
+      aria-labelledby={block.title ? headingId : undefined}
+      className="border-b border-line"
+    >
       <div className="mx-auto max-w-[1440px] px-5 py-14 sm:py-16 lg:px-10 lg:py-20">
         {block.title ? (
           <h2
