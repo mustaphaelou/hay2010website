@@ -23,8 +23,9 @@
 # Object storage:
 #   - default: a directory under a temporary path, used through rclone's local
 #     backend. The rclone command path is identical; only the backend differs;
-#   - CI: REHEARSAL_RCLONE_REMOTE points at a MinIO bucket with a generated
-#     rclone config, so the S3 code path runs on every nightly rehearsal;
+#   - CI: REHEARSAL_RCLONE_REMOTE points at a bucket served by `rclone serve s3`
+#     (a real S3 endpoint, SigV4 + path-style, no container image needed), so the
+#     S3 code path runs on every nightly rehearsal;
 #   - production R2: the same script with the real rclone remote (operator).
 #
 # Environment (all optional):
