@@ -2,7 +2,88 @@
   "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy: at #21 the pages are skeletons (no blocks) and page tickets #22–#28 fill them. Gate states live in content/fixtures/scenarios/*.json.",
   "pages": {
     "accueil": { "blocks": [] },
-    "a-propos": { "blocks": [] },
+    "a-propos": {
+      "title": "À propos",
+      "description": "HAY2010, société d’électricité et d’éclairage public à Rabat\u00a0: plus de 10 ans d’expérience au service des collectivités et des entreprises. Études et travaux.",
+      "blocks": [
+        {
+          "kind": "intro",
+          "paragraphs": [
+            "Depuis plus de 10 ans, HAY2010 accompagne les collectivités et les entreprises dans leurs projets d’éclairage public et d’électrification.",
+            "HAY2010 est une entreprise d’électricité et d’éclairage public. Nous réalisons des études et des travaux pour les collectivités et les entreprises, sur des ouvrages qui doivent tenir dans le temps.",
+            "Notre siège est à Rabat\u00a0: c’est de là que sont conduits nos études et nos chantiers. De l’étude à la réception, nous suivons le même fil\u00a0: comprendre le besoin, dimensionner juste, exécuter proprement et rendre compte."
+          ]
+        },
+        {
+          "kind": "sections",
+          "title": "Activité et périmètre",
+          "items": [
+            {
+              "title": "Périmètre d’intervention",
+              "body": "Notre activité couvre quatre familles de travaux\u00a0: l’éclairage public, les réseaux HTA/MT et MT/BT, les postes de transformation et le CFO/CFA. Nous les conduisons de l’étude à la réception, depuis notre siège de Rabat, pour les collectivités et les entreprises."
+            },
+            {
+              "title": "Éclairage public",
+              "body": "Études et travaux d’éclairage public, jusqu’à la mise en service des installations."
+            },
+            {
+              "title": "Réseaux HTA/MT et MT/BT",
+              "body": "Études et travaux sur les réseaux de distribution\u00a0: tracés, câblage, raccordements et mise en service."
+            },
+            {
+              "title": "Postes de transformation",
+              "body": "Études et travaux de postes de transformation, de la préparation du site aux essais de mise en service."
+            },
+            {
+              "title": "CFO/CFA",
+              "body": "Courants forts et courants faibles\u00a0: tableaux, distribution et protection, câblage et mise en service."
+            }
+          ]
+        },
+        {
+          "kind": "sections",
+          "title": "Mission, vision et valeurs",
+          "items": [
+            {
+              "title": "Notre mission",
+              "body": "Réaliser des ouvrages électriques fiables et sûrs pour les collectivités et les entreprises qui en dépendent au quotidien. Éclairer une rue, alimenter un bâtiment, raccorder un réseau\u00a0: chaque ouvrage a un usage, et cet usage commande notre exigence."
+            },
+            {
+              "title": "Notre vision",
+              "body": "Faire de HAY2010 une entreprise jugée sur ses ouvrages et sur la tenue de ses engagements, chantier après chantier. Nous préférons un périmètre tenu à une promesse large."
+            },
+            {
+              "title": "Nos valeurs",
+              "body": "La qualité d’exécution, la sécurité des intervenants et des tiers, le respect des délais et la conformité aux prescriptions. Elles se traduisent par des études détaillées, des approvisionnements contrôlés, des interventions préparées et des comptes rendus écrits."
+            }
+          ]
+        },
+        {
+          "kind": "sections",
+          "title": "Qualité, sécurité et conformité",
+          "items": [
+            {
+              "title": "Qualité",
+              "body": "Un périmètre technique écrit avant travaux, des matériaux conformes aux prescriptions du marché, des contrôles et des essais avant mise en service. Les écarts sont traités et documentés avant réception, et le planning arrêté avec le donneur d’ordre est suivi jusqu’à la livraison."
+            },
+            {
+              "title": "Sécurité",
+              "body": "Chaque intervention est préparée\u00a0: analyse des risques, consignations, équipements de protection individuelle et collective, coordination avec les autres intervenants présents sur le site."
+            },
+            {
+              "title": "Conformité",
+              "body": "Des travaux conduits selon les règles de l’art et les prescriptions du marché. Chaque ouvrage est livré avec ses documents de traçabilité\u00a0: plans, fiches techniques, procès-verbaux d’essais et de réception."
+            }
+          ]
+        },
+        {
+          "kind": "contact-cta",
+          "title": "Un projet d’éclairage public ou d’électrification\u00a0?",
+          "body": "Décrivez-nous votre besoin\u00a0: nous vous répondrons sur le périmètre, la méthode et les délais.",
+          "link": { "label": "Nous contacter", "href": "/contact" }
+        }
+      ]
+    },
     "domaines-activite": { "blocks": [] },
     "realisations": { "blocks": [] },
     "contact": { "blocks": [] }

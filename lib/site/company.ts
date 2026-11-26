@@ -15,6 +15,12 @@ export const COMPANY = {
   base: "Rabat — Maroc",
   /** Approved experience line, no founding year (facts register §2.2). */
   experienceLine: "Plus de 10 ans d’expérience",
+  /**
+   * Direction line, name and title only (facts register §2.1/§5.3). It is a
+   * cleared claim, so it is code-owned like the rest of the identity block:
+   * never CMS-editable. No photo, quote, biography or dedicated page.
+   */
+  gerantLine: "Gérant\u00a0: Rahhal Essamlali",
   /** Footer legal line, fixed wording (brand direction §2.4). */
   legalLine: "© 2026 SOCIETE HAY 2010 — Tous droits réservés",
 } as const
