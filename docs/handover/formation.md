@@ -130,8 +130,7 @@ Cocher chaque point ; la séance est validée quand tout est coché et signé e
 
 ## 7. Enregistrement et conservation
 
-- L’enregistrement est **facultatif** mais demandé par le ticket ; il suppose le consentement écrit du
-  propriétaire (image et voix, usage interne de formation).
+- L’enregistrement est demandé par le ticket ; il suppose le consentement écrit du propriétaire (image et voix, usage interne de formation).
 - Il est stocké **hors du dépôt** (le dépôt est public), par exemple dans l’espace de stockage de
   HAY2010, avec accès limité au propriétaire et au développeur.
 - La fiche de séance §6 est conservée avec les autres preuves de remise ; elle peut être copiée dans le
