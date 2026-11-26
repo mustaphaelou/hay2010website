@@ -39,7 +39,9 @@ permissions:
   contents: read
 
 env:
-  RCLONE_VERSION: "1.76.0"
+  # Do not name this RCLONE_VERSION: rclone reads RCLONE_* env vars as flags and
+  # parses --version as a boolean (CI run 45880447618 failed on exactly that).
+  RCLONE_PINNED_VERSION: "1.76.0"
 
 jobs:
   rehearsal:
@@ -57,9 +59,9 @@ jobs:
             *) ARCH=amd64 ;;
           esac
           curl -fsSL -o /tmp/rclone.zip \
-            "https://downloads.rclone.org/v${RCLONE_VERSION}/rclone-v${RCLONE_VERSION}-linux-${ARCH}.zip"
+            "https://downloads.rclone.org/v${RCLONE_PINNED_VERSION}/rclone-v${RCLONE_PINNED_VERSION}-linux-${ARCH}.zip"
           unzip -q /tmp/rclone.zip -d /tmp
-          echo "/tmp/rclone-v${RCLONE_VERSION}-linux-${ARCH}" >> "$GITHUB_PATH"
+          echo "/tmp/rclone-v${RCLONE_PINNED_VERSION}-linux-${ARCH}" >> "$GITHUB_PATH"
 
       # `rclone serve s3` is the S3 stand-in: a real S3 endpoint (SigV4,
       # path-style) served from a local directory by the rclone binary already
