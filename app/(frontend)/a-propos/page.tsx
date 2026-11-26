@@ -44,7 +44,8 @@ function requireCopy(
 }
 
 /**
- * Extension point — the canonical certifications link (documented for #24/#32).
+ * Extension point — the canonical certifications link (documented for the P2
+ * « Références et partenaires » ticket).
  *
  * IA §Références et partenaires: certifications and agréments live canonically
  * in that P2 rubrique, and À propos carries a short link to it. At P1 the
