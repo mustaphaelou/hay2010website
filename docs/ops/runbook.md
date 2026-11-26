@@ -123,7 +123,8 @@ databases → `hay2010`* (custom `pg_dump` format), **Enable S3** → storage
 **GitHub Actions adds what CI is good at** (`.github/workflows/backup.yml`,
 nightly 03:17 UTC):
 
-1. **Rehearsal** — disposable `postgres:16-alpine` + MinIO: dump → rclone upload →
+1. **Rehearsal** — disposable `postgres:16-alpine` + `rclone serve s3` (a real
+   S3 endpoint with SigV4, no container image to pull): dump → rclone upload →
    restore into a scratch database with a conflicting table → verify the rows.
    This proves the scripts still work, every night.
 2. **Watchdog** — reads the real R2 bucket with a read-only token and fails when
@@ -186,7 +187,7 @@ pre-restore conflicting row survives `--clean --if-exists`.
 
 | Date (UTC) | Environment | Result |
 |---|---|---|
-| 2026-11-26T16:59:11Z | local host, `postgres:16-alpine`, rclone local backend standing in for R2 | **PASS** — 3/3 rows restored, md5 fingerprint identical, stale pre-restore row removed, dump 3 266 bytes, `pg_restore 16.15`. Object store leg repeated nightly in CI against MinIO (`.github/workflows/backup.yml`). |
+| 2026-11-26T16:59:11Z | local host, `postgres:16-alpine`, rclone local backend standing in for R2 | **PASS** — 3/3 rows restored, md5 fingerprint identical, stale pre-restore row removed, dump 3 266 bytes, `pg_restore 16.15`. Object store leg repeated nightly in CI against a real S3 endpoint (`rclone serve s3`, `.github/workflows/backup.yml`). |
 
 Exact recorded output of that run:
 
@@ -204,7 +205,7 @@ PASSED  date_utc=2026-11-26T16:59:11Z  postgres_image=postgres:16-alpine
 
 Gaps for that record: the local run used rclone's **local** backend for the
 object-storage leg (no R2 credentials on this host); the CI nightly runs the same
-script against MinIO's S3 API. A rehearsal against the real `hay2010-backups`
+script against an S3 API endpoint (`rclone serve s3`). A rehearsal against the real `hay2010-backups`
 bucket and a restore into a **Postgres 17** database are still operator actions.
 
 ---

@@ -6,11 +6,12 @@
 # "Backups", because a GitHub runner cannot reach the internal-only database.
 # This workflow adds the two things GitHub Actions is good at:
 #
-#   rehearsal — nightly, disposable Postgres 16 + MinIO (S3-compatible stand-in
-#               for R2): run scripts/backup-postgres.sh, upload through rclone,
-#               restore with scripts/restore-postgres.sh into a scratch database
-#               containing a conflicting table, verify the rows. Catches script
-#               regression before an incident needs them.
+#   rehearsal — nightly, disposable Postgres 16 + `rclone serve s3` (a real S3
+#               endpoint with SigV4 and path-style requests, no container image):
+#               run scripts/backup-postgres.sh, upload through an rclone S3
+#               remote, restore with scripts/restore-postgres.sh into a scratch
+#               database containing a conflicting table, verify the rows.
+#               Catches script regression before an incident needs them.
 #   watchdog  — nightly, read-only: the newest non-empty object under
 #               `postgres/` in the real R2 bucket must be younger than 36 h. A
 #               failed scheduled run is the "backup failure reaches a human"
@@ -60,43 +61,51 @@ jobs:
           unzip -q /tmp/rclone.zip -d /tmp
           echo "/tmp/rclone-v${RCLONE_VERSION}-linux-${ARCH}" >> "$GITHUB_PATH"
 
-      - name: Start MinIO (S3-compatible stand-in for R2)
+      # `rclone serve s3` is the S3 stand-in: a real S3 endpoint (SigV4,
+      # path-style) served from a local directory by the rclone binary already
+      # installed above. No container image is pulled, so the rehearsal does not
+      # depend on a registry: `minio/minio` is no longer published on Docker Hub
+      # and a private/pinned registry is not acceptable for a public CI job.
+      - name: Rehearse backup and restore against real object storage
+        env:
+          RCLONE_CONFIG: /tmp/rehearsal-rclone.conf
+          REHEARSAL_RCLONE_REMOTE: rehearsal:hay2010-backups/postgres
         run: |
           set -euo pipefail
-          docker run -d --name backup-rehearsal-minio \
-            -p 9000:9000 \
-            -e MINIO_ROOT_USER=rehearsal \
-            -e MINIO_ROOT_PASSWORD=rehearsal-not-a-secret \
-            minio/minio:latest server /data
-          for _ in $(seq 1 30); do
-            if curl -fsS http://127.0.0.1:9000/minio/health/live >/dev/null 2>&1; then
-              exit 0
-            fi
-            sleep 1
-          done
-          echo "::error::MinIO did not become ready"
-          exit 1
-
-      - name: Configure the rclone S3 remote
-        run: |
-          set -euo pipefail
-          cat > /tmp/rehearsal-rclone.conf <<'EOF'
+          mkdir -p /tmp/s3-rehearsal-data
+          cat > "$RCLONE_CONFIG" <<'EOF'
           [rehearsal]
           type = s3
-          provider = Minio
+          provider = Other
           access_key_id = rehearsal
           secret_access_key = rehearsal-not-a-secret
           endpoint = http://127.0.0.1:9000
           region = us-east-1
           force_path_style = true
           EOF
-          RCLONE_CONFIG=/tmp/rehearsal-rclone.conf rclone mkdir rehearsal:hay2010-backups
+          rclone serve s3 /tmp/s3-rehearsal-data \
+            --addr 127.0.0.1:9000 \
+            --auth-key "rehearsal,rehearsal-not-a-secret" \
+            --log-level INFO > /tmp/s3-serve.log 2>&1 &
+          serve_pid=$!
+          trap 'kill "$serve_pid" >/dev/null 2>&1 || true' EXIT
+          for _ in $(seq 1 30); do
+            if rclone lsd rehearsal: >/dev/null 2>&1; then
+              break
+            fi
+            sleep 1
+          done
+          rclone mkdir rehearsal:hay2010-backups
+          bash scripts/rehearse-backup-restore.sh
 
-      - name: Rehearse backup and restore against real object storage
-        env:
-          RCLONE_CONFIG: /tmp/rehearsal-rclone.conf
-          REHEARSAL_RCLONE_REMOTE: rehearsal:hay2010-backups/postgres
-        run: bash scripts/rehearse-backup-restore.sh
+      - name: Upload the S3 server log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: s3-rehearsal-server-${{ github.run_id }}
+          path: /tmp/s3-serve.log
+          if-no-files-found: ignore
+          retention-days: 7
 
       - name: Upload rehearsal evidence
         if: always()
@@ -108,10 +117,6 @@ jobs:
             /tmp/hay2010-rehearsal*/restore.log
           if-no-files-found: ignore
           retention-days: 30
-
-      - name: Clean up MinIO
-        if: always()
-        run: docker rm -f backup-rehearsal-minio >/dev/null 2>&1 || true
 
   watchdog:
     name: Newest off-site dump is fresh
