@@ -10,7 +10,9 @@
     "lint": "eslint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
     "test": "node scripts/test-http.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check:ops": "node scripts/check-ops.mjs",
+    "rehearse:backup": "bash scripts/rehearse-backup-restore.sh"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
@@ -19,6 +21,7 @@
     "class-variance-authority": "^0.7.1",
     "cn": "^0.5.2",
     "next": "^16.4.6",
+    "pg": "^8.23.1",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "shadcn": "^4.23.0",
@@ -27,6 +30,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^22.20.7",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
