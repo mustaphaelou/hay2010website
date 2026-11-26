@@ -60,7 +60,9 @@ fixed trames: `hero`, `intro`, `presentation`, `prestations`, `methods`,
 `photos`, `associees`, `domaines`, `reperes`, `engagements`, `credentials`,
 `contact-cta`, `sections`, `openings`. **A block is optional**: a renderer omits
 an absent block, it never fills a placeholder (DEV-006). Page tickets may add
-block kinds, but must keep the existing ones working.
+block kinds, but must keep the existing ones working. The `openings` block
+predates the jobs collection: jobs are content documents returned by
+`getOpenJobs()` and rendered inline (below), not a page-document block.
 
 `PageDocument` / `DomainDocument` carry `title` and `description` for the page
 h1 and metadata; page tickets add the decided copy, #32 wires metadata.
