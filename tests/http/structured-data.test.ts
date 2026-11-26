@@ -211,6 +211,11 @@ describe(`structured data (${scenario.name})`, () => {
     const gatedUrls =
       /"(?:https?:\/\/hay2010\.ma)?(?:\/moyens-et-competences|\/references-et-partenaires|\/actualites|\/realisations\/[^"]+|\/en)(?:\/|")/
 
+    // The gated-claim denylist is the P1 launch set: the P2/P3 simulation
+    // scenarios open gated domain documents whose words are test fixtures, not
+    // publishable copy (the gates themselves are covered by gates.test.ts).
+    const p1Routes = scenario.openRoutes.filter((route) => route in P1_PAGE_SEO)
+
     for (const route of scenario.openRoutes) {
       const graph = readGraph(await fetchPage(route))
       const text = graphText(graph["@graph"])
@@ -220,6 +225,7 @@ describe(`structured data (${scenario.name})`, () => {
       expect(text, `${route} must not reference a gated URL`).not.toMatch(
         gatedUrls
       )
+      if (!p1Routes.includes(route)) continue
       for (const pattern of GATED_METADATA_PATTERNS) {
         expect(
           pattern.test(text),
