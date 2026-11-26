@@ -99,6 +99,8 @@ export interface IntroBlock {
 /** Domain page first block: presentation and needs. */
 export interface PresentationBlock {
   readonly kind: "presentation"
+  /** Section heading (CDC trame wording), content-owned. */
+  readonly title?: string
   readonly paragraphs: readonly string[]
 }
 
@@ -220,6 +222,8 @@ export interface DomainDocument {
   readonly slug: DomainSlug
   /** Full CDC title, e.g. « Éclairage public ». */
   readonly title: string
+  /** One-line presentation used by the domain index (added by #22). */
+  readonly summary?: string
   /** Meta description, 120–160 characters (added by the domain page ticket). */
   readonly description?: string
   readonly blocks: readonly ContentBlock[]
