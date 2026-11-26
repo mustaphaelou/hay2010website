@@ -13,7 +13,7 @@
  * S3 plugin config lives in `lib/payload/storage.ts` so the schema stays
  * identical in every environment.
  */
-import { fileURLToPath } from "node:url"
+import path from "node:path"
 
 import type { CollectionConfig } from "payload"
 
@@ -27,8 +27,15 @@ import {
 } from "../access/roles"
 import { validateMediaRights } from "../lib/payload/media-rights"
 
-/** Repository `media/` directory of the local-disk fallback (gitignored). */
-const LOCAL_UPLOADS_DIR = fileURLToPath(new URL("../media", import.meta.url))
+/**
+ * Repository `media/` directory of the local-disk fallback (gitignored).
+ *
+ * Resolved from `process.cwd()` at runtime (the app root for `next start` and
+ * `payload run`); production uses object storage, so this path is dev/test only.
+ * Keep it a plain path string: a `new URL(..., import.meta.url)` here makes
+ * Turbopack treat it as a module to resolve and fails the build.
+ */
+const LOCAL_UPLOADS_DIR = path.join(process.cwd(), "media")
 
 export const Media: CollectionConfig = {
   slug: "media",

@@ -12,6 +12,9 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["tests/**/*.test.ts"],
+    // `npm run test:cms` owns this directory: it needs a disposable Postgres and
+    // a CMS build, so it must never run in the database-free merge gate.
+    exclude: ["**/node_modules/**", "tests/cms/**"],
     testTimeout: 20_000,
     hookTimeout: 20_000,
     // Every suite talks to the same already-running production server.

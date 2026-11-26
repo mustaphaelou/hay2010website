@@ -40,6 +40,17 @@ function allSourceFiles(): string[] {
 
 /** `from "payload"`, `from "@payloadcms/next"`, etc. */
 const CMS_IMPORT = /\bfrom\s+["'](?:payload|@payloadcms\/[^"']*)["']/
+
+/**
+ * Payload-owned modules (ticket #29), exempt from the "no CMS import" rule
+ * because they are the CMS side, not rendering code:
+ * - the content provider that implements the seam;
+ * - the admin/config helpers (`lib/payload/`) and the collections/access files
+ *   are loaded by `payload.config.ts` only;
+ * - `app/(payload)` is Payload's own admin and REST/GraphQL surface.
+ * No `app/(frontend)`, component or other lib file may be added here.
+ */
+const CMS_OWNED_PREFIXES = ["lib/content/providers/", "lib/payload/", "app/(payload)/"]
 /** A direct import of a provider, which only the adapter may do. */
 const PROVIDER_IMPORT = /\bfrom\s+["']@\/lib\/content\/providers\//
 
@@ -47,8 +58,8 @@ describe("content seam architecture", () => {
   it("keeps the CMS behind the content-source adapter", () => {
     const offenders = allSourceFiles()
       .map((file) => ({ file, content: readFileSync(path.join(ROOT, file), "utf8") }))
-      // The CMS provider is the one place allowed to talk to Payload (#29).
-      .filter(({ file }) => !file.startsWith("lib/content/providers/"))
+      // The CMS provider and the Payload-owned admin/config surface (#29).
+      .filter(({ file }) => !CMS_OWNED_PREFIXES.some((prefix) => file.startsWith(prefix)))
       .filter(({ content }) => CMS_IMPORT.test(content))
       .map(({ file }) => file)
 

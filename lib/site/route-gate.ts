@@ -2,6 +2,7 @@
  * Pre-render gate resolution for proxy.ts — pure routing data, no
  * `next/navigation` import, so the proxy bundle stays minimal.
  */
+import { getContentProviderName } from "@/lib/content"
 import { getPublishedDomain, DOMAINES_ROUTE } from "@/lib/site/domaines"
 import { getPublishState, RUBRIQUES } from "@/lib/site/rubriques"
 
@@ -36,6 +37,18 @@ function domainSlugFromPath(pathname: string): string {
  */
 export async function resolveRouteGate(pathname: string): Promise<RouteGate> {
   const path = normalizePath(pathname)
+
+  /**
+   * CMS mode (#29): the proxy must stay cheap and database-free. The CMS gate
+   * is resolved by layer 2 instead — `requirePublishedRubrique()` /
+   * `requirePublishedDomain()` in the page files, at build time for the
+   * statically rendered pages and per request for dynamic routes. Pages built
+   * with `CONTENT_SOURCE=cms` bake their publish state exactly like the fixture
+   * build bakes its scenario (docs/build/content-seam.md §9.6).
+   *
+   * The fixture path is untouched: it keeps the fast proxy 404 rewrite.
+   */
+  if (getContentProviderName() === "cms") return "unknown"
 
   const rubrique = RUBRIQUES.find((entry) => entry.href === path)
   if (rubrique) {

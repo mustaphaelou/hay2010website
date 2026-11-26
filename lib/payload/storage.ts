@@ -15,13 +15,20 @@
  */
 import type { S3StorageOptions } from "@payloadcms/storage-s3"
 
+/**
+ * Environment shape: only string values are read, and every variable is
+ * optional. Kept structural (not `NodeJS.ProcessEnv`) so the mapping is a pure,
+ * testable function.
+ */
+export type StorageEnv = Readonly<Record<string, string | undefined>>
+
 /** Is object storage configured for this process? */
-export function isObjectStorageEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
+export function isObjectStorageEnabled(env: StorageEnv = process.env): boolean {
   return Boolean(env.S3_BUCKET?.trim())
 }
 
 /** Public base URL of the bucket (custom domain, no trailing slash). */
-function publicBaseUrl(env: NodeJS.ProcessEnv): string {
+function publicBaseUrl(env: StorageEnv): string {
   return (env.S3_PUBLIC_URL?.trim() ?? "").replace(/\/+$/, "")
 }
 
@@ -38,7 +45,7 @@ function objectKey(filename: string, prefix?: string | null): string {
  * buckets are private, so the adapter must not serve through the Payload route
  * (`disablePayloadAccessControl: true`) but generate the public CDN URL.
  */
-export function s3StorageOptions(env: NodeJS.ProcessEnv = process.env): S3StorageOptions {
+export function s3StorageOptions(env: StorageEnv = process.env): S3StorageOptions {
   const bucket = env.S3_BUCKET?.trim() ?? ""
   const baseUrl = publicBaseUrl(env)
 
