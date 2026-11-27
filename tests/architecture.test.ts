@@ -3,6 +3,9 @@ import path from "node:path"
 
 import { describe, expect, it } from "vitest"
 
+import { RUBRIQUE_LABELS, RUBRIQUE_TIERS } from "../lib/payload/content-map"
+import { RUBRIQUE_REGISTRY } from "../lib/site/rubrique-registry"
+
 /**
  * Architecture guards for the content seam and the layout constraint.
  *
@@ -117,8 +120,79 @@ describe("content seam architecture", () => {
   })
 })
 
-describe("root layout constraint (#29)", () => {
-  it("has no app/layout.tsx, so the Payload admin can own a root layout", () => {
+/**
+ * The rubrique registry is the single source of the Payload content map (#30).
+ *
+ * The CMS side must stay loadable by the Payload CLI without the app graph, so
+ * it cannot import the seam-backed registry in `lib/site/rubriques.ts`. It
+ * derives its admin labels and tier gates from the pure registry
+ * (`lib/site/rubrique-registry.ts`) instead. These guards fail if a literal
+ * mirror is reintroduced — the previous comment-only claim let the two copies
+ * drift with nothing in the database-free gate to catch it.
+ */
+describe("rubrique registry single source", () => {
+  it("derives the Payload content map from the pure registry", () => {
+    const keys = RUBRIQUE_REGISTRY.map((entry) => entry.key)
+    expect(Object.keys(RUBRIQUE_TIERS)).toEqual(keys)
+    expect(Object.keys(RUBRIQUE_LABELS)).toEqual(keys)
+
+    for (const entry of RUBRIQUE_REGISTRY) {
+      expect(RUBRIQUE_TIERS[entry.key], `tier of ${entry.key}`).toBe(entry.tier)
+      expect(RUBRIQUE_LABELS[entry.key], `admin label of ${entry.key}`).toBe(
+        entry.adminLabel
+      )
+    }
+  })
+
+  it("keeps the registry the one literal definition", () => {
+    const registry = readFileSync(
+      path.join(ROOT, "lib", "site", "rubrique-registry.ts"),
+      "utf8"
+    )
+    // Pure data module: no Next/Payload import and no content-seam door.
+    expect(registry, "the registry must stay Next-free").not.toMatch(
+      /\bfrom\s+["']next(?:\/|["'])/
+    )
+    expect(registry, "the registry must stay Payload-free").not.toMatch(
+      /\bfrom\s+["'](?:payload|@payloadcms\/)/
+    )
+    expect(registry, "the registry must not open the content seam").not.toMatch(
+      /\bgetContentSource\b/
+    )
+
+    const rubriques = readFileSync(
+      path.join(ROOT, "lib", "site", "rubriques.ts"),
+      "utf8"
+    )
+    expect(
+      rubriques,
+      "lib/site/rubriques.ts must derive from the registry"
+    ).toMatch(/from\s+["']@\/lib\/site\/rubrique-registry["']/)
+    expect(
+      rubriques,
+      "RUBRIQUES must reference the registry, not a literal copy"
+    ).not.toMatch(/export const RUBRIQUES[^=]*=\s*\[/)
+
+    const contentMap = readFileSync(
+      path.join(ROOT, "lib", "payload", "content-map.ts"),
+      "utf8"
+    )
+    expect(
+      contentMap,
+      "the Payload content map must derive from the registry"
+    ).toMatch(/from\s+["']\.\.\/site\/rubrique-registry["']/)
+    expect(
+      contentMap,
+      "RUBRIQUE_TIERS must be derived, never a literal mirror"
+    ).not.toMatch(/RUBRIQUE_TIERS[^=]*=\s*\{/)
+    expect(
+      contentMap,
+      "RUBRIQUE_LABELS must be derived, never a literal mirror"
+    ).not.toMatch(/RUBRIQUE_LABELS[^=]*=\s*\{/)
+  })
+})
+
+describe("root layout constraint (#29)", () => {  it("has no app/layout.tsx, so the Payload admin can own a root layout", () => {
     const rootLayout = path.join(ROOT, "app", "layout.tsx")
     expect(
       (() => {

@@ -1,13 +1,16 @@
 /**
- * Code-owned content map — the literal contract between the Payload schema and
- * the frontend trames (ticket #30).
+ * Code-owned content map — the Payload side of the literal contract between the
+ * CMS schema and the frontend trames (ticket #30).
  *
  * This module is deliberately dependency-free (no import of the content seam,
  * the fixture corpus or the frontend) so `payload.config.ts` can be loaded by
  * the Payload CLI (`migrate`, `seed`, `generate:types`) without pulling the app
- * graph in. `tests/architecture.test.ts` asserts the literals below still match
- * the runtime registry (`lib/site/rubriques.ts`), so drift is a red test rather
- * than a silent divergence.
+ * graph in. The rubrique metadata it needs (keys, titles, nav labels, admin
+ * labels, routes, tiers) is imported from the one pure registry,
+ * `lib/site/rubrique-registry.ts`; this file derives from it and never mirrors
+ * it. `tests/architecture.test.ts` asserts that the registry stays the single
+ * definition (and that no literal copy creeps back here), so drift is a red
+ * gate test rather than a silent divergence.
  *
  * What lives here:
  * - which rubrique is stored in which global (the page-trame mapping);
@@ -20,6 +23,7 @@
  * from the admin because it is not part of the Payload schema at all.
  */
 import type { RubriqueKey, Tier } from "../content/types"
+import { RUBRIQUE_REGISTRY } from "../site/rubrique-registry"
 
 /** Payload global slug that stores one page trame (content model §5.1). */
 export type PageGlobalSlug =
@@ -32,34 +36,16 @@ export type PageGlobalSlug =
   | "actualites"
 
 /** French admin labels for the code-owned rubrique keys (registry §Navigation). */
-export const RUBRIQUE_LABELS: Readonly<Record<RubriqueKey, string>> = {
-  accueil: "Accueil",
-  "a-propos": "À propos",
-  "domaines-activite": "Domaines d’activité",
-  realisations: "Réalisations",
-  "moyens-et-competences": "Moyens et compétences",
-  "references-et-partenaires": "Références et partenaires",
-  actualites: "Actualités",
-  contact: "Contact",
-  carrieres: "Carrières",
-  "mentions-legales": "Mentions légales",
-  "politique-de-confidentialite": "Politique de confidentialité",
-}
+export const RUBRIQUE_LABELS: Readonly<Record<RubriqueKey, string>> =
+  Object.fromEntries(
+    RUBRIQUE_REGISTRY.map((rubrique) => [rubrique.key, rubrique.adminLabel])
+  ) as Record<RubriqueKey, string>
 
-/** Registry/tier snapshot — mirrors `lib/site/rubriques.ts` (asserted by tests). */
-export const RUBRIQUE_TIERS: Readonly<Record<RubriqueKey, Tier>> = {
-  accueil: "P1",
-  "a-propos": "P1",
-  "domaines-activite": "P1",
-  realisations: "P1",
-  "moyens-et-competences": "P2",
-  "references-et-partenaires": "P2",
-  actualites: "P3",
-  contact: "P1",
-  carrieres: "P1",
-  "mentions-legales": "P1",
-  "politique-de-confidentialite": "P1",
-}
+/** Registry/tier snapshot, derived from the one registry (never a mirror). */
+export const RUBRIQUE_TIERS: Readonly<Record<RubriqueKey, Tier>> =
+  Object.fromEntries(
+    RUBRIQUE_REGISTRY.map((rubrique) => [rubrique.key, rubrique.tier])
+  ) as Record<RubriqueKey, Tier>
 
 /**
  * Rubrique → global that stores its copy. The legal utility pages are absent on

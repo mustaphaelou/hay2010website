@@ -1,136 +1,35 @@
 /**
- * The rubrique registry — the single source of navigation truth (spec:
- * "Rubriques, gates and navigation"). It is code-owned: keys, CDC titles, nav
- * short labels, routes, tiers and the navigation/utility split never come from
- * the CMS (content model §3).
+ * The rubrique registry's seam half — published derivations over the one
+ * code-owned registry (`lib/site/rubrique-registry.ts`).
  *
- * What is *not* code-owned here: the open/closed state of a gate. That comes
- * from the content source (`getPublishState` / `listPublishedRubriques`), so a
- * fixture scenario or the CMS can close a page without touching this file.
+ * The registry itself is pure data (keys, CDC titles, nav/admin labels, routes,
+ * tiers) so the Payload content map can derive from it without importing this
+ * module or the content seam. This file adds the published derivations every
+ * surface uses: they read the gate through the content source
+ * (`getPublishState` / `listPublishedRubriques`), so a fixture scenario or the
+ * CMS can close a page without touching the registry.
  *
  * Rendering code must never read `RUBRIQUES` directly to build a menu: use the
  * published derivations below (or `requirePublishedRubrique` from
  * `lib/site/gates.ts`). They are the only functions that apply the gate.
  */
 import { getContentSource } from "@/lib/content"
-import type { PublishState, RubriqueKey, Tier } from "@/lib/content/types"
+import type { PublishState, RubriqueKey } from "@/lib/content/types"
+import {
+  RUBRIQUE_REGISTRY,
+  type RubriqueEntry,
+} from "@/lib/site/rubrique-registry"
 
-/** Kind of registry entry: a CDC rubrique or a P1 utility page. */
-export type RubriqueKind = "rubrique" | "utility"
-
-export interface RubriqueEntry {
-  /** Stable code-owned identifier, also the content document key. */
-  readonly key: RubriqueKey
-  /** Full title, CDC wording (used as the default h1/metadata source). */
-  readonly title: string
-  /** Short label for the desktop row and the drawer (CDC wording). */
-  readonly navLabel: string
-  /** Canonical route, French at the root, no trailing slash. */
-  readonly href: string
-  /** Delivery tier — code-owned; P2/P3 entries stay closed at launch. */
-  readonly tier: Tier
-  /** Rubriques are navigation entries; utilities are footer/drawer links only. */
-  readonly kind: RubriqueKind
-}
+export type {
+  RubriqueEntry,
+  RubriqueKind,
+} from "@/lib/site/rubrique-registry"
 
 /**
- * The eight CDC rubriques in navigation order, then the utility pages.
- *
- * Navigation order is CDC order: Accueil first, Contact last, P2 (Moyens,
- * Références) and P3 (Actualités) inserted before Contact as their tier opens.
- * Utilities are never in the desktop row: Carrières is footer-only and the
- * legal pages sit in the footer/drawer.
+ * The registry, re-exported under its historical name. It is a reference to the
+ * single definition in `lib/site/rubrique-registry.ts`, never a copy.
  */
-export const RUBRIQUES: readonly RubriqueEntry[] = [
-  {
-    key: "accueil",
-    title: "Accueil",
-    navLabel: "Accueil",
-    href: "/",
-    tier: "P1",
-    kind: "rubrique",
-  },
-  {
-    key: "a-propos",
-    title: "À propos",
-    navLabel: "À propos",
-    href: "/a-propos",
-    tier: "P1",
-    kind: "rubrique",
-  },
-  {
-    key: "domaines-activite",
-    title: "Nos domaines d’activité",
-    navLabel: "Domaines d’activité",
-    href: "/domaines-activite",
-    tier: "P1",
-    kind: "rubrique",
-  },
-  {
-    key: "realisations",
-    title: "Nos réalisations",
-    navLabel: "Réalisations",
-    href: "/realisations",
-    tier: "P1",
-    kind: "rubrique",
-  },
-  {
-    key: "moyens-et-competences",
-    title: "Nos moyens et compétences",
-    navLabel: "Moyens",
-    href: "/moyens-et-competences",
-    tier: "P2",
-    kind: "rubrique",
-  },
-  {
-    key: "references-et-partenaires",
-    title: "Références et partenaires",
-    navLabel: "Références",
-    href: "/references-et-partenaires",
-    tier: "P2",
-    kind: "rubrique",
-  },
-  {
-    key: "actualites",
-    title: "Actualités",
-    navLabel: "Actualités",
-    href: "/actualites",
-    tier: "P3",
-    kind: "rubrique",
-  },
-  {
-    key: "contact",
-    title: "Contact",
-    navLabel: "Contact",
-    href: "/contact",
-    tier: "P1",
-    kind: "rubrique",
-  },
-  {
-    key: "carrieres",
-    title: "Carrières",
-    navLabel: "Carrières",
-    href: "/carrieres",
-    tier: "P1",
-    kind: "utility",
-  },
-  {
-    key: "mentions-legales",
-    title: "Mentions légales",
-    navLabel: "Mentions légales",
-    href: "/mentions-legales",
-    tier: "P1",
-    kind: "utility",
-  },
-  {
-    key: "politique-de-confidentialite",
-    title: "Politique de confidentialité",
-    navLabel: "Politique de confidentialité",
-    href: "/politique-de-confidentialite",
-    tier: "P1",
-    kind: "utility",
-  },
-] as const
+export const RUBRIQUES = RUBRIQUE_REGISTRY
 
 /** Flat link shape handed to the client navigation and the footer. */
 export interface NavigationItem {
