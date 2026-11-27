@@ -343,11 +343,12 @@ import a component and never assert class names or call order.
 `tests/http/legacy-urls.test.ts` (#32)
 
 - table-driven SEO §7 map: every legacy equivalent (pages, service children,
-  portfolio archive, sitemap files, file-path slashes) is a single-hop 301 to
-  its decided new route, whose target returns 200; the old shortlink/search
-  queries 301 to the homepage with the query dropped; demo posts/archives,
-  portfolio records, members, taxonomies, author, feeds, WooCommerce, WP assets,
-  the sitemap stylesheet, filler page, pagination, search and `/blog/` are 410
+  portfolio archive, file-path slashes) is a single-hop 301 to its decided new
+  route, whose target returns 200; the old shortlink/search queries 301 to the
+  homepage with the query dropped; demo posts/archives, portfolio records,
+  members, taxonomies, author, feeds, WooCommerce, WP assets, the six old
+  WordPress sitemap files (410 per the spec, not a 301), the sitemap
+  stylesheet, filler page, pagination, search and `/blog/` are 410
   (no `Location`, noindex, minimal French HTML with a home link and no
   canonical); the other WP query parameters are 410 while tracking parameters
   render 200; case variants 301; every trailing-slash variant normalises

@@ -109,6 +109,14 @@ const GONE_PATH_PATTERNS: readonly RegExp[] = [
   /^\/wp-content(?:\/.*)?$/,
   /^\/wp-includes(?:\/.*)?$/,
   /^\/sitemaps\.xsl$/,
+  // Old WordPress sitemap files (spec §"SEO, metadata and redirects"): retired
+  // with 410, never redirected to the new `/sitemap.xml`.
+  /^\/sitemaps\.xml$/,
+  /^\/sitemap_index\.xml$/,
+  /^\/wp-sitemap\.xml$/,
+  /^\/page-sitemap1\.xml$/,
+  /^\/post-sitemap1\.xml$/,
+  /^\/category-sitemap1\.xml$/,
   /^\/sample-page$/,
   // Pagination at the root and old search routes.
   /^\/page\/\d+$/,
