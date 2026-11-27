@@ -8,17 +8,12 @@ import {
   domainGateOpen,
 } from "@/lib/payload/content-map"
 import { getPublishedDomain, DOMAINES_ROUTE } from "@/lib/site/domaines"
+import { normalisePathname } from "@/lib/site/paths"
 import { caseStudiesLive } from "@/lib/site/realisations"
 import { getPublishState, RUBRIQUES } from "@/lib/site/rubriques"
 
 /** Result of pre-render gate resolution for one pathname. */
 export type RouteGate = "open" | "closed" | "unknown"
-
-/** Strip the trailing slash (Next normalises to the no-slash canonical form). */
-function normalizePath(pathname: string): string {
-  if (pathname.length > 1 && pathname.endsWith("/")) return pathname.replace(/\/+$/, "")
-  return pathname
-}
 
 function isDomainChild(pathname: string): boolean {
   return (
@@ -56,7 +51,7 @@ function isChildOf(pathname: string, route: string): boolean {
  *   page guarded by `requirePublished*` handles it).
  */
 export async function resolveRouteGate(pathname: string): Promise<RouteGate> {
-  const path = normalizePath(pathname)
+  const path = normalisePathname(pathname)
 
   /**
    * CMS mode (#29): the proxy stays database-free, but the **code-owned** gates
