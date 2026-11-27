@@ -116,7 +116,6 @@ const SITE = siteFixture as unknown as SiteFixture
 
 /** Resolved once per server process; scenarios never change at request time. */
 let resolvedScenario: ScenarioFixture | null = null
-let resolvedScenarioName: string | null = null
 
 function getScenario(): ScenarioFixture {
   if (resolvedScenario) return resolvedScenario
@@ -132,14 +131,7 @@ function getScenario(): ScenarioFixture {
   }
 
   resolvedScenario = scenario
-  resolvedScenarioName = name
   return scenario
-}
-
-/** Name of the active fixture scenario — useful in docs/tests, never rendered. */
-export function getScenarioName(): string {
-  getScenario()
-  return resolvedScenarioName ?? DEFAULT_SCENARIO
 }
 
 const PAGE_KEYS = new Set(Object.keys(SITE.pages))

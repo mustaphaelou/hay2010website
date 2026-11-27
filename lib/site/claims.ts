@@ -43,8 +43,3 @@ export function getLiveClaimsForDomain(domainSlug: string): ApprovedClaim[] {
     (claim) => claim.live && claim.domains.includes(domainSlug)
   )
 }
-
-/** Is a claim's publication gate open? */
-export function isClaimLive(key: ApprovedClaim["key"]): boolean {
-  return APPROVED_CLAIMS.some((claim) => claim.key === key && claim.live)
-}

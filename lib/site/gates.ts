@@ -20,11 +20,7 @@
 import { notFound } from "next/navigation"
 
 import { getPublishState, getRubrique, type RubriqueEntry } from "@/lib/site/rubriques"
-import {
-  getDomainPath,
-  getPublishedDomain,
-  getPublishedDomains,
-} from "@/lib/site/domaines"
+import { getPublishedDomain } from "@/lib/site/domaines"
 import type { DomainDocument } from "@/lib/content/types"
 
 /**
@@ -66,10 +62,4 @@ export async function requirePublishedDomain(slug: string): Promise<DomainDocume
  */
 export async function requirePublishedCaseStudy(): Promise<never> {
   notFound()
-}
-
-/** Every published domain route, for the sitemap. */
-export async function listPublishedDomainPaths(): Promise<string[]> {
-  const domains = await getPublishedDomains()
-  return domains.map((domain) => getDomainPath(domain.slug))
 }
