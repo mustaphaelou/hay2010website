@@ -1,0 +1,210 @@
+
+> hay2010website@0.0.1 test:cms
+> node scripts/test-cms.mjs
+
+
+[cms-test] checking the committed migration keeps the storage column in every environment
+
+[cms-test] starting postgres:16-alpine as hay2010-pg-30 on port 5530
+7176d75a0b11c303dcb9a1099d1505e575a288eb74f1593ff60d33d3513b7604
+
+[cms-test] npm run migrate
+
+> hay2010website@0.0.1 migrate
+> cross-env NODE_OPTIONS=--no-deprecation payload migrate
+
+[09:03:01] WARN: No email adapter provided. Email will be written to console. More info at https://payloadcms.com/docs/email/overview.
+[09:03:01] INFO: Reading migration files from /home/eloaurdi/codeprojects/hay2010website/.worktrees/ticket-33/migrations
+[09:03:01] INFO: Migrating: 20261126_214945_initial_cms_content_types
+[09:03:02] INFO: Migrated:  20261126_214945_initial_cms_content_types (937ms)
+[09:03:02] INFO: Done.
+
+[cms-test] npm run migrate:status
+
+[cms-test] npm run migrate
+
+> hay2010website@0.0.1 migrate
+> cross-env NODE_OPTIONS=--no-deprecation payload migrate
+
+[09:03:06] WARN: No email adapter provided. Email will be written to console. More info at https://payloadcms.com/docs/email/overview.
+[09:03:06] INFO: Reading migration files from /home/eloaurdi/codeprojects/hay2010website/.worktrees/ticket-33/migrations
+[09:03:06] INFO: Done.
+
+[cms-test] npm run seed
+
+> hay2010website@0.0.1 seed
+> cross-env NODE_OPTIONS=--no-deprecation payload run scripts/seed.ts
+
+[09:03:08] WARN: No email adapter provided. Email will be written to console. More info at https://payloadcms.com/docs/email/overview.
+seed: compte developpeur@hay2010.test créé (developer)
+seed: compte proprietaire@hay2010.test créé (owner)
+seed: compte contributeur@hay2010.test créé (editor)
+seed: média media-droits-en-attente.png créé (1600×1200)
+seed: média media-droits-valides.png créé (1200×800)
+seed: global homepage créé (published)
+seed: global entreprise créé (published)
+seed: global metiers créé (published)
+seed: global realisations créé (published)
+seed: global contact créé (published)
+seed: global carrieres créé (published)
+seed: domaine eclairage-public créé (published)
+seed: domaine installations-electriques créé (published)
+seed: domaine infrastructures-reseaux-electriques créé (published)
+seed: domaine energies-renouvelables créé (draft)
+seed: domaine fourniture-equipements créé (draft)
+seed: offre electricien-hta-bt créée (draft)
+seed: offre chef-de-chantier-eclairage-public créée (draft)
+seed: offre technicien-cfo-cfa créée (draft)
+seed: terminé — corpus du fixture p1 reproduit
+
+[cms-test] npm run seed
+
+[cms-test] rm -rf .next && npm run build (fixture provider, p1 scenario)
+
+[cms-test] npm run build
+
+> hay2010website@0.0.1 build
+> next build
+
+▲ Next.js 16.4.6 (Turbopack)
+✓ Running next.config.ts took 45ms
+- Experiments (use with caution):
+  ✓ globalNotFound
+  ⨯ turbopackServerFastRefresh
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 20.5s
+  Running TypeScript ...
+  Finished TypeScript in 14.2s ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/19) ...
+  Generating static pages using 11 workers (4/19) 
+  Generating static pages using 11 workers (9/19) 
+  Generating static pages using 11 workers (14/19) 
+✓ Generating static pages using 11 workers (19/19) in 962ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /a-propos
+├ ƒ /admin/[[...segments]]
+├ ƒ /api/[...slug]
+├ ƒ /api/graphql
+├ ƒ /api/graphql-playground
+├ ƒ /api/health
+├ ○ /carrieres
+├ ○ /contact
+├ ○ /domaines-activite
+├   /domaines-activite/[slug]
+│ ├ ● /domaines-activite/eclairage-public
+│ ├ ● /domaines-activite/installations-electriques
+│ └ ● /domaines-activite/infrastructures-reseaux-electriques
+├ ○ /mentions-legales
+├ ○ /politique-de-confidentialite
+├ ƒ /prototype/homepage
+├ ○ /realisations
+├ ƒ /realisations/[slug]
+├ ○ /robots.txt
+└ ○ /sitemap.xml
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
+
+[cms-test] starting the production server on http://127.0.0.1:3129 (fixture provider, p1 scenario)
+
+[cms-test] capturing the P1 route matrix from http://127.0.0.1:3129 (fixture provider, p1 scenario)
+
+[cms-test] rm -rf .next && npm run build (CMS provider, seeded database)
+
+[cms-test] npm run build
+
+> hay2010website@0.0.1 build
+> next build
+
+▲ Next.js 16.4.6 (Turbopack)
+✓ Running next.config.ts took 41ms
+- Experiments (use with caution):
+  ✓ globalNotFound
+  ⨯ turbopackServerFastRefresh
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 23.8s
+  Running TypeScript ...
+  Finished TypeScript in 9.7s ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/19) ...
+  Generating static pages using 11 workers (4/19) 
+  Generating static pages using 11 workers (9/19) 
+  Generating static pages using 11 workers (14/19) 
+✓ Generating static pages using 11 workers (19/19) in 2.1s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /a-propos
+├ ƒ /admin/[[...segments]]
+├ ƒ /api/[...slug]
+├ ƒ /api/graphql
+├ ƒ /api/graphql-playground
+├ ƒ /api/health
+├ ○ /carrieres
+├ ○ /contact
+├ ○ /domaines-activite
+├   /domaines-activite/[slug]
+│ ├ ● /domaines-activite/eclairage-public
+│ ├ ● /domaines-activite/installations-electriques
+│ └ ● /domaines-activite/infrastructures-reseaux-electriques
+├ ○ /mentions-legales
+├ ○ /politique-de-confidentialite
+├ ƒ /prototype/homepage
+├ ○ /realisations
+├ ƒ /realisations/[slug]
+├ ○ /robots.txt
+└ ○ /sitemap.xml
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand
+
+
+[cms-test] starting the production server on http://127.0.0.1:3130 (CMS provider, seeded database)
+
+[cms-test] capturing the P1 route matrix from http://127.0.0.1:3130 (CMS provider)
+
+[cms-test] comparing fixture and CMS route matrices
+[cms-test] parity OK — 18 routes (11 published, 7 gated), 11 sitemap URLs identical under both providers
+
+[cms-test] running tests/cms against http://127.0.0.1:3130
+
+ RUN  v5.1.2 /home/eloaurdi/codeprojects/hay2010website/.worktrees/ticket-33
+
+ ✓ tests/cms/cms.test.ts (28 tests) 5644ms
+   ✓ embedded admin and gate visibility (3)
+     ✓ serves the admin login page on the same origin, in French 608ms
+   ✓ the owner edits, publishes and unpublishes content (6)
+     ✓ edits page copy and it appears without a rebuild (revalidation) 515ms
+     ✓ edits a domaine and its prestations, then unpublishes without deleting 431ms
+     ✓ publishes and closes a job opening 527ms
+   ✓ gated families cannot be opened from the admin (4)
+     ✓ keeps a published code-gated domain hidden from the public site 402ms
+     ✓ publishes a communiqué only with the legal review, and keeps /actualites closed 321ms
+ ✓ tests/cms/schema.test.ts (5 tests) 7ms
+ ✓ tests/cms/storage-config.test.ts (2 tests) 5ms
+
+ Test Files  3 passed (3)
+      Tests  35 passed (35)
+   Start at  09:04:37
+   Duration  6.06s (tests 99%, import 1%, transform 1%)
+
+
+[cms-test] CMS verification passed — parity, HTTP suite, disposable container and uploads removed
