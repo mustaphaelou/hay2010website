@@ -24,7 +24,7 @@ export const CONTACT_NOTICE = {
    * sends the message, the site stores nothing and measures nothing.
    */
   noCollection:
-    "Le site ne comporte ni formulaire de contact, ni base de données des messages, ni mesure d’audience : aucun message n’y est stocké et aucun cookie de suivi n’est déposé.",
+    "Le site ne comporte ni formulaire de contact, ni base de données des messages, ni mesure d’audience\u00a0: aucun message n’y est stocké et aucun cookie de suivi n’est déposé.",
 } as const
 
 /**

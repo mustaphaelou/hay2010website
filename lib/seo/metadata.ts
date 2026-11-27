@@ -86,7 +86,7 @@ function optional(value: string | undefined): string | undefined {
  * and it stays inside the hard length bounds.
  */
 function fallbackDescription(phrase: string): string {
-  return `HAY2010, entreprise d’éclairage public et d’électrification à Rabat. ${phrase} : études, travaux et mise en service.`
+  return `HAY2010, entreprise d’éclairage public et d’électrification à Rabat. ${phrase}\u00a0: études, travaux et mise en service.`
 }
 
 /** Validate and resolve the metadata of one page. */

@@ -5,7 +5,7 @@
     "accueil": { "published": true },
     "a-propos": {
       "published": false,
-      "reason": "Scénario de test : fermeture d’une rubrique P1 pour prouver l’application du gate."
+      "reason": "Scénario de test\u00a0: fermeture d’une rubrique P1 pour prouver l’application du gate."
     },
     "domaines-activite": { "published": true },
     "realisations": { "published": true },
@@ -29,7 +29,7 @@
   "domains": {
     "eclairage-public": {
       "published": false,
-      "reason": "Scénario de test : fermeture d’un domaine P1 pour prouver l’application du gate."
+      "reason": "Scénario de test\u00a0: fermeture d’un domaine P1 pour prouver l’application du gate."
     },
     "installations-electriques": { "published": true },
     "infrastructures-reseaux-electriques": { "published": true },
