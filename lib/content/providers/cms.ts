@@ -36,6 +36,7 @@
  * - the F-113 careers channel and the legal pages' publish state;
  * - link destinations (the admin stores a target enum, `lib/payload/link-targets.ts`).
  */
+import { mediaRightsCleared } from "@/lib/content/media-rights"
 import type { Payload } from "payload"
 import type { Config } from "@/payload-types"
 import type {
@@ -163,13 +164,6 @@ function toMediaRecord(media: {
   clientPermission?: boolean | null
   trademarkPermission?: boolean | null
 }): MediaRecord | null {
-  const cleared =
-    media.rightsStatus === "cleared" &&
-    (!media.peoplePresent || media.releaseStatus === "cleared") &&
-    (!media.clientMarks ||
-      (media.clientPermission === true && media.trademarkPermission === true))
-  if (!cleared) return null
-
   const basis: MediaRecord["rights"]["basis"] =
     media.rightsBasis === "client-supplied"
       ? "authorised"
@@ -179,22 +173,33 @@ function toMediaRecord(media: {
           ? "company-owned"
           : "unknown"
 
+  const rights: MediaRecord["rights"] = {
+    status:
+      media.rightsStatus === "cleared"
+        ? "cleared"
+        : media.rightsStatus === "revoked"
+          ? "revoked"
+          : "pending",
+    basis,
+    permissionReference: media.rightsReference ?? undefined,
+    peoplePresent: media.peoplePresent === true,
+    releaseStatus:
+      (media.releaseStatus as MediaRecord["rights"]["releaseStatus"]) ?? "not-required",
+    clientMarks: media.clientMarks === true,
+    clientPermission: media.clientPermission === true,
+    trademarkPermission: media.trademarkPermission === true,
+  }
+
+  // The seam and the admin apply the same rule: only a cleared record leaves.
+  if (!mediaRightsCleared(rights)) return null
+
   return {
     id: String(media.id),
     src: normalizeMediaUrl(media.url),
     alt: media.alt,
     width: media.width ?? undefined,
     height: media.height ?? undefined,
-    rights: {
-      status: "cleared",
-      basis,
-      permissionReference: media.rightsReference ?? undefined,
-      peoplePresent: media.peoplePresent === true,
-      releaseStatus: (media.releaseStatus as MediaRecord["rights"]["releaseStatus"]) ?? "not-required",
-      clientMarks: media.clientMarks === true,
-      clientPermission: media.clientPermission === true,
-      trademarkPermission: media.trademarkPermission === true,
-    },
+    rights,
   }
 }
 

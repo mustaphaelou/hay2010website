@@ -19,6 +19,7 @@ import p1GatesClosedScenario from "@/content/fixtures/scenarios/p1-gates-closed.
 import p1RecrutementScenario from "@/content/fixtures/scenarios/p1-recrutement.json"
 import p1HeroImageScenario from "@/content/fixtures/scenarios/p1-hero-image.json"
 
+import { mediaRightsCleared } from "@/lib/content/media-rights"
 import type {
   ActualiteDocument,
   CareersChannel,
@@ -210,18 +211,6 @@ function toJobOpening(job: JobFixture): JobOpening {
   }
 }
 
-function isMediaCleared(media: MediaRecord): boolean {
-  const rights = media.rights
-  if (rights.status !== "cleared") return false
-  if (rights.peoplePresent && rights.releaseStatus !== "cleared") return false
-  if (
-    rights.clientMarks &&
-    !(rights.clientPermission && rights.trademarkPermission)
-  )
-    return false
-  return true
-}
-
 const fixtureSource: ContentSource = {
   async getPublishState(key: RubriqueKey): Promise<PublishState> {
     return (
@@ -293,7 +282,7 @@ const fixtureSource: ContentSource = {
     const media =
       getScenario().media?.find((candidate) => candidate.id === id) ??
       SITE.media.find((candidate) => candidate.id === id)
-    if (!media || !isMediaCleared(media)) return null
+    if (!media || !mediaRightsCleared(media.rights)) return null
     return media
   },
 }

@@ -102,6 +102,31 @@ describe("content seam architecture", () => {
     ).toEqual([])
   })
 
+  it("defines the public-media rights rule once", () => {
+    // One predicate, used by both providers and by the Payload publish hook:
+    // the seam and the admin must never disagree about what may be published.
+    const definers = allSourceFiles().filter((file) =>
+      /export function mediaRightsCleared\b/.test(
+        readFileSync(path.join(ROOT, file), "utf8")
+      )
+    )
+    expect(
+      definers,
+      "the media-rights predicate must have exactly one definition"
+    ).toEqual([path.join("lib", "content", "media-rights.ts")])
+
+    for (const file of [
+      path.join("lib", "content", "providers", "fixture.ts"),
+      path.join("lib", "content", "providers", "cms.ts"),
+      path.join("lib", "payload", "media-rights.ts"),
+    ]) {
+      expect(
+        readFileSync(path.join(ROOT, file), "utf8"),
+        `${file} must use the shared media-rights predicate`
+      ).toMatch(/mediaRightsCleared/)
+    }
+  })
+
   it("keeps every frontend page behind a publication gate", () => {
     const publicPages = sourceFiles(path.join("app", "(frontend)")).filter((file) =>
       file.endsWith(`${path.sep}page.tsx`)
