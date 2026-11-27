@@ -1,0 +1,169 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+ * HAY2010 brand tokens — docs/brand/brand-direction.md §2.2.
+ *
+ * The palette is the only source of colour for the UI: components use these
+ * tokens (ink, paper, surface, body, line, orange, copper), never raw hex.
+ * Logo blue and red stay inside the badge and are not UI colours.
+ * `@theme static` keeps the full palette in the served stylesheet even when a
+ * token is not used by a utility yet.
+ */
+@theme static {
+  --color-ink: #111217;
+  --color-paper: #f7f6f1;
+  --color-surface: #ffffff;
+  --color-body: #5e6067;
+  --color-line: #deddd5;
+  --color-orange: #e97425;
+  --color-copper: #9a5a15;
+}
+
+/*
+ * Light theme only (brand direction §2.2). The `dark:` utilities that ship
+ * inside shadcn primitives stay inert: no `.dark` class is ever set.
+ */
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Semantic names read by shadcn primitives. They are mapped onto the brand
+ * palette so a primitive never introduces a colour of its own.
+ */
+:root {
+  --background: var(--color-paper);
+  --foreground: var(--color-ink);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-ink);
+  --popover: var(--color-surface);
+  --popover-foreground: var(--color-ink);
+  --primary: var(--color-ink);
+  --primary-foreground: var(--color-surface);
+  --secondary: var(--color-paper);
+  --secondary-foreground: var(--color-ink);
+  --muted: var(--color-line);
+  --muted-foreground: var(--color-body);
+  --accent: var(--color-orange);
+  --accent-foreground: var(--color-ink);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: var(--color-line);
+  --input: var(--color-line);
+  --ring: var(--color-ink);
+  --radius: 0.875rem;
+}
+
+@theme inline {
+  --font-sans:
+    var(--font-poppins), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --font-heading:
+    var(--font-poppins), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    @apply bg-background font-sans text-foreground;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Visible keyboard focus everywhere (brand direction §2.4: 2 px, 2 px offset). */
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+}
+
+/* Full-screen mobile drawer: native <dialog> styled to cover the viewport. */
+dialog.site-drawer::backdrop {
+  background: rgb(17 18 23 / 0.4);
+}
+
+/*
+ * Homepage hero motion (brand direction §2.7): one Ken Burns pass on the hero
+ * photograph (22 s) and a single rise on the hero copy (700 ms). Motion is
+ * opt-in: the animation is only declared inside `prefers-reduced-motion:
+ * no-preference`, and the reduce query switches it off outright, so the content
+ * is visible immediately for visitors who ask for reduced motion.
+ */
+@keyframes accueil-ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes accueil-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .accueil-hero-media img {
+    animation: accueil-ken-burns 22s ease-out 1 both;
+  }
+
+  .accueil-hero-copy {
+    animation: accueil-rise 700ms ease-out 1 both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accueil-hero-media img,
+  .accueil-hero-copy {
+    animation: none;
+  }
+}
+
+/* Motion respects the visitor's preference (brand direction §2.7). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

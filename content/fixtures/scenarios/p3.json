@@ -1,0 +1,30 @@
+{
+  "$comment": "P3 gate simulation: Actualités open (8-item row). Actualités has no page document yet, so it stays out of the sitemap until its route and content ship. /carrières keeps the populated openings and the F-113-closed channel from p2. The legal utility pages are published (#28).",
+  "tier": "P3",
+  "rubriques": {
+    "accueil": { "published": true },
+    "a-propos": { "published": true },
+    "domaines-activite": { "published": true },
+    "realisations": { "published": true },
+    "moyens-et-competences": { "published": true },
+    "references-et-partenaires": { "published": true },
+    "actualites": { "published": true },
+    "contact": { "published": true },
+    "carrieres": { "published": true },
+    "mentions-legales": { "published": true },
+    "politique-de-confidentialite": { "published": true }
+  },
+  "domains": {
+    "eclairage-public": { "published": true },
+    "installations-electriques": { "published": true },
+    "infrastructures-reseaux-electriques": { "published": true },
+    "energies-renouvelables": { "published": true },
+    "fourniture-equipements": { "published": true }
+  },
+  "jobs": {
+    "electricien-hta-bt": { "published": true },
+    "chef-de-chantier-eclairage-public": { "published": true },
+    "technicien-cfo-cfa": { "published": true }
+  },
+  "careers": { "recruitmentMailboxLive": false }
+}

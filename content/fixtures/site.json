@@ -1,0 +1,647 @@
+{
+  "$comment": "Fixture corpus shared by every scenario. Documents carry only decided copy; gate states live in content/fixtures/scenarios/*.json. #22 delivered the domain index and the three published domain pages (CDC trame, DEV-006 omissions; CFO/CFA and postes de transformation are prestations, not domains). #23 delivered the homepage trame (hero typographic fallback, intro, domain blocks, repères, réalisations teaser, engagements, contact CTA). #24 delivered the credentials-led Réalisations page (références sur demande, qualification position, method; no cards, no published detail routes) and its gated named-case-study family: `/realisations/{slug}` is closed at every tier by the code-owned CASE_STUDIES_LIVE gate, absent from navigation, footer, sitemap and every internal link; its page block set is hero, intro, domaines, qualifications, credentials, sections, steps and contact-cta. #25 delivered the À propos page (identity, perimeter, mission/vision/values, compliance). #26 delivered the email-first Contact page (gated channels behind the seam, no form). #27 delivered the Carrières page document (hero and culture intro only: openings are the jobs records below, never page blocks) and the job records the openings seam filters. #28 delivers the two legal utility pages: their identity block and approved copy are code-owned in lib/legal/ (never CMS-editable), so their page documents only register the route for the sitemap and the gate, with no blocks, title or description. #29 embeds Payload 3 as the CMS behind the same content seam: the fixture corpus stays the default source and is unchanged; only the provider behind `CONTENT_SOURCE=cms` is new, with its admin (`/admin`), collections, roles and media rights.",
+  "pages": {
+    "accueil": {
+      "title": "Éclairage public et électrification à Rabat",
+      "description": "Entreprise d’éclairage public et d’électrification HTA/MT, MT/BT, postes de transformation et CFO/CFA à Rabat. Plus de 10 ans d’expérience. Études et travaux.",
+      "blocks": [
+        {
+          "kind": "hero",
+          "headline": "Éclairage public et électrification à Rabat",
+          "tagline": "Depuis plus de 10 ans, HAY2010 accompagne les collectivités et les entreprises dans leurs projets d’éclairage public et d’électrification.",
+          "links": [
+            {
+              "label": "Nos réalisations",
+              "href": "/realisations"
+            },
+            {
+              "label": "Nous contacter",
+              "href": "/contact"
+            }
+          ]
+        },
+        {
+          "kind": "intro",
+          "paragraphs": [
+            "HAY2010 est une entreprise d’électricité et d’éclairage public à Rabat. Nous réalisons des études et des travaux pour les collectivités et les entreprises.",
+            "De l’étude à la réception, nous suivons le même fil\u00a0: comprendre le besoin, dimensionner juste, exécuter proprement et rendre compte."
+          ]
+        },
+        {
+          "kind": "domaines",
+          "title": "Nos domaines d’activité"
+        },
+        {
+          "kind": "reperes",
+          "items": [
+            {
+              "label": "Expérience",
+              "value": "Plus de 10 ans d’expérience"
+            },
+            {
+              "label": "Base",
+              "value": "Rabat — Maroc"
+            },
+            {
+              "label": "Métier",
+              "value": "Éclairage public"
+            },
+            {
+              "label": "Métier",
+              "value": "Réseaux HTA/MT & MT/BT"
+            },
+            {
+              "label": "Métier",
+              "value": "Postes de transformation"
+            },
+            {
+              "label": "Métier",
+              "value": "CFO/CFA"
+            }
+          ]
+        },
+        {
+          "kind": "credentials",
+          "statement": "Références sur demande.",
+          "body": "Nos références sont transmises sur demande, après accord des maîtres d’ouvrage.",
+          "items": [],
+          "link": {
+            "label": "Voir nos réalisations",
+            "href": "/realisations"
+          }
+        },
+        {
+          "kind": "engagements",
+          "items": [
+            {
+              "title": "Qualité",
+              "body": "Des ouvrages conformes aux prescriptions du marché, contrôlés et essayés avant mise en service. Les écarts sont traités et documentés avant réception."
+            },
+            {
+              "title": "Sécurité",
+              "body": "Chaque intervention est préparée\u00a0: analyse des risques, consignations et coordination avec les autres intervenants présents sur le site."
+            },
+            {
+              "title": "Délais",
+              "body": "Le planning arrêté avec le donneur d’ordre est suivi jusqu’à la livraison, et les écarts sont expliqués."
+            }
+          ]
+        },
+        {
+          "kind": "contact-cta",
+          "title": "Un projet d’éclairage public ou d’électrification\u00a0?",
+          "body": "Décrivez-nous votre besoin\u00a0: nous vous répondrons sur le périmètre, la méthode et les délais.",
+          "link": {
+            "label": "Nous contacter",
+            "href": "/contact"
+          }
+        }
+      ]
+    },
+    "a-propos": {
+      "title": "À propos",
+      "description": "HAY2010, société d’électricité et d’éclairage public à Rabat : plus de 10 ans d’expérience au service des collectivités et des entreprises. Études et travaux.",
+      "blocks": [
+        {
+          "kind": "intro",
+          "paragraphs": [
+            "Depuis plus de 10 ans, HAY2010 accompagne les collectivités et les entreprises dans leurs projets d’éclairage public et d’électrification.",
+            "HAY2010 est une entreprise d’électricité et d’éclairage public. Nous réalisons des études et des travaux pour les collectivités et les entreprises, sur des ouvrages qui doivent tenir dans le temps.",
+            "Notre siège est à Rabat : c’est de là que sont conduits nos études et nos chantiers. De l’étude à la réception, nous suivons le même fil : comprendre le besoin, dimensionner juste, exécuter proprement et rendre compte."
+          ]
+        },
+        {
+          "kind": "sections",
+          "title": "Activité et périmètre",
+          "items": [
+            {
+              "title": "Périmètre d’intervention",
+              "body": "Notre activité couvre quatre familles de travaux : l’éclairage public, les réseaux HTA/MT et MT/BT, les postes de transformation et le CFO/CFA. Nous les conduisons de l’étude à la réception, depuis notre siège de Rabat, pour les collectivités et les entreprises."
+            },
+            {
+              "title": "Éclairage public",
+              "body": "Études et travaux d’éclairage public, jusqu’à la mise en service des installations."
+            },
+            {
+              "title": "Réseaux HTA/MT et MT/BT",
+              "body": "Études et travaux sur les réseaux de distribution : tracés, câblage, raccordements et mise en service."
+            },
+            {
+              "title": "Postes de transformation",
+              "body": "Études et travaux de postes de transformation, de la préparation du site aux essais de mise en service."
+            },
+            {
+              "title": "CFO/CFA",
+              "body": "Courants forts et courants faibles : tableaux, distribution et protection, câblage et mise en service."
+            }
+          ]
+        },
+        {
+          "kind": "sections",
+          "title": "Mission, vision et valeurs",
+          "items": [
+            {
+              "title": "Notre mission",
+              "body": "Réaliser des ouvrages électriques fiables et sûrs pour les collectivités et les entreprises qui en dépendent au quotidien. Éclairer une rue, alimenter un bâtiment, raccorder un réseau : chaque ouvrage a un usage, et cet usage commande notre exigence."
+            },
+            {
+              "title": "Notre vision",
+              "body": "Faire de HAY2010 une entreprise jugée sur ses ouvrages et sur la tenue de ses engagements, chantier après chantier. Nous préférons un périmètre tenu à une promesse large."
+            },
+            {
+              "title": "Nos valeurs",
+              "body": "La qualité d’exécution, la sécurité des intervenants et des tiers, le respect des délais et la conformité aux prescriptions. Elles se traduisent par des études détaillées, des approvisionnements contrôlés, des interventions préparées et des comptes rendus écrits."
+            }
+          ]
+        },
+        {
+          "kind": "sections",
+          "title": "Qualité, sécurité et conformité",
+          "items": [
+            {
+              "title": "Qualité",
+              "body": "Un périmètre technique écrit avant travaux, des matériaux conformes aux prescriptions du marché, des contrôles et des essais avant mise en service. Les écarts sont traités et documentés avant réception, et le planning arrêté avec le donneur d’ordre est suivi jusqu’à la livraison."
+            },
+            {
+              "title": "Sécurité",
+              "body": "Chaque intervention est préparée : analyse des risques, consignations, équipements de protection individuelle et collective, coordination avec les autres intervenants présents sur le site."
+            },
+            {
+              "title": "Conformité",
+              "body": "Des travaux conduits selon les règles de l’art et les prescriptions du marché. Chaque ouvrage est livré avec ses documents de traçabilité : plans, fiches techniques, procès-verbaux d’essais et de réception."
+            }
+          ]
+        },
+        {
+          "kind": "contact-cta",
+          "title": "Un projet d’éclairage public ou d’électrification ?",
+          "body": "Décrivez-nous votre besoin : nous vous répondrons sur le périmètre, la méthode et les délais.",
+          "link": {
+            "label": "Nous contacter",
+            "href": "/contact"
+          }
+        }
+      ]
+    },
+    "domaines-activite": {
+      "title": "Nos domaines d’activité",
+      "description": "Les domaines d’activité de HAY2010 à Rabat\u00a0: éclairage public, installations électriques CFO/CFA et réseaux HTA/MT et MT/BT avec postes de transformation.",
+      "blocks": [
+        {
+          "kind": "intro",
+          "paragraphs": [
+            "HAY2010 est une entreprise d’éclairage public et d’électrification basée à Rabat. Nos domaines d’activité couvrent les travaux d’éclairage public, les installations électriques et les infrastructures de réseaux électriques.",
+            "Chaque domaine dispose de sa propre page\u00a0: prestations confirmées, méthode de travail, moyens et compétences, puis un contact direct pour votre projet."
+          ]
+        },
+        {
+          "kind": "domaines"
+        }
+      ]
+    },
+    "realisations": {
+      "title": "Réalisations",
+      "description": "Références de HAY2010 en éclairage public et électrification\u00a0: méthode de projet et références transmises sur demande. Plus de 10 ans d’expérience.",
+      "blocks": [
+        {
+          "kind": "hero",
+          "headline": "Références sur demande.",
+          "links": [
+            {
+              "label": "Demander nos références",
+              "href": "mailto:contact@hay2010.ma?subject=Demande%20de%20r%C3%A9f%C3%A9rences"
+            },
+            {
+              "label": "Découvrir nos domaines d’activité",
+              "href": "/domaines-activite"
+            }
+          ]
+        },
+        {
+          "kind": "intro",
+          "paragraphs": [
+            "Depuis plus de 10 ans, HAY2010 accompagne les collectivités et les entreprises dans leurs projets d’éclairage public et d’électrification.",
+            "Nos références sont transmises sur demande, après accord des maîtres d’ouvrage."
+          ],
+          "link": {
+            "label": "Nos domaines d’activité",
+            "href": "/domaines-activite"
+          }
+        },
+        {
+          "kind": "domaines",
+          "title": "Ce que nous réalisons"
+        },
+        {
+          "kind": "qualifications",
+          "title": "Nos qualifications"
+        },
+        {
+          "kind": "credentials",
+          "title": "Références",
+          "statement": "Références sur demande.",
+          "body": "Nos références sont transmises sur demande, après accord des maîtres d’ouvrage.",
+          "items": [
+            {
+              "label": "Objet et service",
+              "description": "L’objet des travaux réalisés et le domaine d’activité concerné."
+            },
+            {
+              "label": "Lieu et année",
+              "description": "La région et l’année de réalisation ou de contrat."
+            },
+            {
+              "label": "Périmètre",
+              "description": "Le périmètre des travaux, en une ligne."
+            },
+            {
+              "label": "Pièces du dossier",
+              "description": "Chaque référence transmise s’appuie sur les pièces du dossier\u00a0: contrat ou procès-verbal de réception."
+            }
+          ],
+          "link": {
+            "label": "Demander nos références",
+            "href": "mailto:contact@hay2010.ma?subject=Demande%20de%20r%C3%A9f%C3%A9rences"
+          }
+        },
+        {
+          "kind": "sections",
+          "title": "Comment un projet est documenté",
+          "items": [
+            {
+              "title": "Nom du maître d’ouvrage",
+              "body": "Le nom d’un client ne figure sur le site qu’après son autorisation écrite."
+            },
+            {
+              "title": "Photographies",
+              "body": "Une photographie de chantier n’est publiée qu’avec l’autorisation écrite du site et les droits du photographe. Toute personne identifiable fait l’objet d’une autorisation propre."
+            },
+            {
+              "title": "Témoignages",
+              "body": "Un témoignage n’est publié qu’avec l’accord écrit de son auteur, sur un texte qu’il a approuvé."
+            },
+            {
+              "title": "Fiche détaillée",
+              "body": "Un projet ne dispose d’une fiche détaillée qu’une fois ces autorisations réunies."
+            }
+          ]
+        },
+        {
+          "kind": "steps",
+          "title": "De l’étude à la réception",
+          "items": [
+            {
+              "title": "Étude et dimensionnement",
+              "body": "Études techniques et photométriques, plans d’exécution."
+            },
+            {
+              "title": "Chiffrage et approvisionnement",
+              "body": "Chiffrage, achats et logistique du matériel."
+            },
+            {
+              "title": "Exécution et coordination",
+              "body": "Travaux, coordination de chantier et contrôle de conformité."
+            },
+            {
+              "title": "Réception et mise en service",
+              "body": "Essais, réception et mise en service."
+            }
+          ]
+        },
+        {
+          "kind": "contact-cta",
+          "title": "Un projet d’éclairage public ou d’électrification ?",
+          "body": "Écrivez-nous pour présenter votre projet ou demander nos références.",
+          "link": {
+            "label": "Nous contacter",
+            "href": "/contact"
+          }
+        }
+      ]
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Contactez HAY2010 à Rabat\u00a0: Local N° 21, Hay El Manzeh, Hay Er-Riad. Écrivez-nous pour vos projets d’éclairage public. Devis sur demande.",
+      "blocks": [
+        {
+          "kind": "intro",
+          "paragraphs": [
+            "Un projet d’éclairage public, de réseaux HTA/BT ou de CFO/CFA\u00a0? Décrivez votre besoin\u00a0; nous vous répondrons par e-mail.",
+            "Le site ne comporte pas de formulaire. Votre message part de votre logiciel de messagerie vers contact@hay2010.ma\u00a0: il n’est pas enregistré par le site."
+          ]
+        },
+        {
+          "kind": "contact-cta",
+          "title": "Écrivez-nous",
+          "body": "Un e-mail suffit pour démarrer un échange. Le bouton ouvre votre logiciel de messagerie avec l’adresse de contact déjà renseignée\u00a0; l’adresse reste lisible et sélectionnable comme texte."
+        },
+        {
+          "kind": "sections",
+          "title": "Ce que votre e-mail doit contenir",
+          "items": [
+            {
+              "title": "Votre demande",
+              "body": "Indiquez s’il s’agit d’une demande de renseignement ou d’une demande de devis, et exposez votre besoin en quelques phrases."
+            },
+            {
+              "title": "Le lieu et les travaux",
+              "body": "Précisez la commune ou le site concerné, et la nature des travaux\u00a0: éclairage public, réseaux HTA/MT et MT/BT, postes de transformation, CFO/CFA."
+            },
+            {
+              "title": "Les documents utiles",
+              "body": "Joignez les plans, photos ou documents dont vous disposez. N’envoyez ni pièce d’identité ni donnée sensible\u00a0: elles ne sont pas nécessaires à l’étude de votre demande."
+            },
+            {
+              "title": "Vos coordonnées",
+              "body": "Un nom, une société si vous écrivez pour une organisation, et une adresse e-mail pour la réponse."
+            }
+          ]
+        },
+        {
+          "kind": "steps",
+          "title": "Ce qui se passe ensuite",
+          "items": [
+            {
+              "title": "Vous nous écrivez",
+              "body": "Votre message part de votre logiciel de messagerie vers l’adresse de contact\u00a0; aucun formulaire ne s’interpose."
+            },
+            {
+              "title": "Nous lisons votre demande",
+              "body": "Le message est reçu dans la boîte de contact, consultée par les services concernés."
+            },
+            {
+              "title": "Nous vous répondons par e-mail",
+              "body": "Nous revenons vers vous par le même canal, avec les éléments utiles à votre demande."
+            }
+          ]
+        }
+      ]
+    },
+    "mentions-legales": { "blocks": [] },
+    "politique-de-confidentialite": { "blocks": [] },
+    "carrieres": {
+      "title": "Carrières",
+      "blocks": [
+        {
+          "kind": "hero",
+          "headline": "Carrières",
+          "tagline": "Les métiers de l’éclairage public et de l’électrification à Rabat.",
+          "links": []
+        },
+        {
+          "kind": "intro",
+          "paragraphs": [
+            "HAY2010 accompagne les collectivités et les entreprises dans leurs projets d’éclairage public et d’électrification. Plus de 10 ans d’expérience, des équipes de terrain et des chantiers suivis de l’étude à la réception.",
+            "Nos équipes interviennent sur les réseaux HTA/MT et MT/BT, les postes de transformation et les installations CFO/CFA, dans le respect des règles de sécurité et de la qualité d’exécution."
+          ]
+        }
+      ]
+    }
+  },
+  "domains": [
+    {
+      "slug": "eclairage-public",
+      "title": "Éclairage public",
+      "summary": "Les travaux d’éclairage public, de l’étude d’exécution à la mise en service des installations.",
+      "description": "HAY2010 réalise les travaux d’éclairage public à Rabat : études, installation et mise en service des ouvrages, pour les collectivités et les entreprises.",
+      "blocks": [
+        {
+          "kind": "presentation",
+          "title": "Présentation et besoins",
+          "paragraphs": [
+            "L’éclairage public organise la vie nocturne d’un territoire : il éclaire les voies, sécurise les déplacements et accompagne l’image des espaces publics. Ces installations sont aussi des ouvrages électriques, qui demandent une conception rigoureuse et une exécution soignée.",
+            "HAY2010 réalise les travaux d’éclairage public : études d’exécution, réalisation des installations et mise en service, en coordination avec le maître d’ouvrage et les intervenants du chantier."
+          ]
+        },
+        {
+          "kind": "prestations",
+          "title": "Prestations confirmées",
+          "items": [
+            {
+              "label": "Études d’exécution",
+              "description": "Études techniques et photométriques, dimensionnement et plans d’exécution des installations d’éclairage public."
+            },
+            {
+              "label": "Travaux d’éclairage public",
+              "description": "Réalisation des installations d’éclairage public : alimentation, câblage, raccordement et pose des ouvrages."
+            },
+            {
+              "label": "Essais et mise en service",
+              "description": "Essais, réception et mise en service des installations réalisées."
+            }
+          ]
+        },
+        {
+          "kind": "methods",
+          "title": "Méthode, moyens et compétences",
+          "items": [
+            {
+              "title": "Étude et implantation",
+              "body": "Études techniques et photométriques, dimensionnement et implantation des installations en fonction des usages et du site."
+            },
+            {
+              "title": "Travaux et coordination",
+              "body": "Réalisation des travaux, coordination de chantier et contrôle de la conformité des ouvrages."
+            },
+            {
+              "title": "Essais et mise en service",
+              "body": "Essais, réception et mise en service des installations d’éclairage public."
+            },
+            {
+              "title": "Moyens d’étude et de suivi",
+              "body": "Études, chiffrage et suivi de chantier assurés en interne, de l’étude à la réception."
+            }
+          ]
+        },
+        {
+          "kind": "contact-cta",
+          "title": "Un projet d’éclairage public ?",
+          "body": "Décrivez votre besoin d’éclairage public ; nous vous répondrons par e-mail.",
+          "link": {
+            "label": "Nous contacter",
+            "href": "/contact"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "installations-electriques",
+      "title": "Installations électriques",
+      "summary": "Les installations électriques CFO/CFA\u00a0: tableaux, distribution, protection, câblage et mise en service.",
+      "description": "HAY2010 réalise les installations électriques CFO/CFA : tableaux, distribution, protection, câblage et mise en service, pour collectivités et entreprises.",
+      "blocks": [
+        {
+          "kind": "presentation",
+          "title": "Présentation et besoins",
+          "paragraphs": [
+            "Les installations électriques d’un bâtiment ou d’un site d’activité doivent distribuer l’énergie de façon sûre et lisible. Tableaux, circuits de distribution, protections et câblage forment un ensemble qui se conçoit dès l’étude et se vérifie à la mise en service.",
+            "HAY2010 réalise les installations électriques en courants forts et courants faibles (CFO/CFA) : études d’exécution, réalisation, câblage et mise en service, en coordination avec les autres intervenants du chantier."
+          ]
+        },
+        {
+          "kind": "prestations",
+          "title": "Prestations confirmées",
+          "items": [
+            {
+              "label": "Courants forts et courants faibles (CFO/CFA)",
+              "description": "Installations CFO/CFA : distribution, protection et câblage des courants forts et des courants faibles."
+            },
+            {
+              "label": "Tableaux et distribution",
+              "description": "Tableaux électriques, circuits de distribution et protections."
+            },
+            {
+              "label": "Câblage et mise en service",
+              "description": "Câblage des installations, essais et mise en service."
+            }
+          ]
+        },
+        {
+          "kind": "methods",
+          "title": "Méthode, moyens et compétences",
+          "items": [
+            {
+              "title": "Études d’exécution",
+              "body": "Plans d’exécution, schémas de distribution et coordination de chantier."
+            },
+            {
+              "title": "Réalisation des installations",
+              "body": "Pose des tableaux, distribution, protection et câblage des installations."
+            },
+            {
+              "title": "Contrôles et essais",
+              "body": "Contrôles et essais des circuits, vérification du fonctionnement avant mise en service."
+            },
+            {
+              "title": "Moyens d’étude et de suivi",
+              "body": "Études, chiffrage et suivi de chantier assurés en interne, jusqu’à la réception."
+            }
+          ]
+        },
+        {
+          "kind": "contact-cta",
+          "title": "Une installation électrique à réaliser ?",
+          "body": "Décrivez votre installation ; nous vous répondrons par e-mail.",
+          "link": {
+            "label": "Nous contacter",
+            "href": "/contact"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "infrastructures-reseaux-electriques",
+      "title": "Infrastructures et réseaux électriques",
+      "summary": "Les réseaux HTA/MT et MT/BT et les postes de transformation, de l’étude à la réception.",
+      "description": "HAY2010 réalise les infrastructures et réseaux électriques HTA/MT et MT/BT, y compris les postes de transformation, pour les collectivités et les entreprises.",
+      "blocks": [
+        {
+          "kind": "presentation",
+          "title": "Présentation et besoins",
+          "paragraphs": [
+            "Les réseaux électriques HTA/MT et MT/BT constituent l’ossature d’un territoire ou d’un site : ils transportent l’énergie jusqu’aux postes de transformation, puis la distribuent aux installations. Leur réalisation demande des études précises, une exécution coordonnée et des essais avant la mise en service.",
+            "HAY2010 réalise les infrastructures et réseaux électriques, ainsi que les postes de transformation : études, travaux, essais et réception, en coordination avec le maître d’ouvrage et les intervenants du chantier."
+          ]
+        },
+        {
+          "kind": "prestations",
+          "title": "Prestations confirmées",
+          "items": [
+            {
+              "label": "Réseaux HTA/MT",
+              "description": "Électrification des réseaux HTA/MT : travaux et mise en service."
+            },
+            {
+              "label": "Réseaux MT/BT",
+              "description": "Électrification des réseaux MT/BT : travaux et mise en service."
+            },
+            {
+              "label": "Postes de transformation",
+              "description": "Réalisation et mise en service des postes de transformation."
+            }
+          ]
+        },
+        {
+          "kind": "methods",
+          "title": "Méthode, moyens et compétences",
+          "items": [
+            {
+              "title": "Études et préparation",
+              "body": "Études techniques, plans d’exécution et préparation des travaux de réseaux et de postes."
+            },
+            {
+              "title": "Travaux de réseaux",
+              "body": "Exécution des travaux HTA/MT et MT/BT, coordination de chantier et contrôle de la conformité des ouvrages."
+            },
+            {
+              "title": "Postes de transformation",
+              "body": "Réalisation et mise en service des postes de transformation, essais et réception compris."
+            },
+            {
+              "title": "Moyens d’étude et de suivi",
+              "body": "Études, chiffrage et suivi de chantier assurés en interne, pour l’ensemble des ouvrages."
+            }
+          ]
+        },
+        {
+          "kind": "contact-cta",
+          "title": "Un réseau ou un poste de transformation à réaliser ?",
+          "body": "Décrivez votre projet de réseau ou de poste ; nous vous répondrons par e-mail.",
+          "link": {
+            "label": "Nous contacter",
+            "href": "/contact"
+          }
+        }
+      ]
+    },
+    {
+      "slug": "energies-renouvelables",
+      "title": "Énergies renouvelables et solaire",
+      "blocks": []
+    },
+    {
+      "slug": "fourniture-equipements",
+      "title": "Fourniture d’équipements et de matériel",
+      "blocks": []
+    }
+  ],
+  "actualites": [],
+  "jobs": [
+    {
+      "slug": "electricien-hta-bt",
+      "title": "Électricien HTA-BT",
+      "contractType": "CDI",
+      "location": "Rabat",
+      "department": "Réseaux électriques",
+      "experience": "2 ans d’expérience",
+      "summary": "Raccordement, pose et mise en service de réseaux HTA-BT\u00a0; lecture de plans et respect des règles de sécurité sur chantier.",
+      "status": "open",
+      "featured": true,
+      "postedAt": "2026-11-02"
+    },
+    {
+      "slug": "chef-de-chantier-eclairage-public",
+      "title": "Chef de chantier éclairage public",
+      "contractType": "CDI",
+      "location": "Rabat",
+      "department": "Éclairage public",
+      "experience": "5 ans d’expérience",
+      "summary": "Encadrement des équipes de pose et suivi des chantiers d’éclairage public, de la préparation à la réception.",
+      "status": "open",
+      "featured": false,
+      "postedAt": "2026-11-10"
+    },
+    {
+      "slug": "technicien-cfo-cfa",
+      "title": "Technicien CFO/CFA",
+      "contractType": "CDD",
+      "location": "Rabat",
+      "summary": "Installation et mise en service de tableaux et de câblages CFO/CFA sur des chantiers de bâtiment.",
+      "status": "open",
+      "featured": false,
+      "postedAt": "2026-01-05",
+      "closingAt": "2026-02-28"
+    }
+  ],
+  "media": []
+}

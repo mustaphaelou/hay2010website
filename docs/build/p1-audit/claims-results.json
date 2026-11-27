@@ -1,0 +1,3876 @@
+{
+  "meta": {
+    "ticket": 33,
+    "commit": "aaf624463fb670ae93ef2e1bef27657967d6a2c3",
+    "timestamp": "2026-11-26T23:15:02.941Z",
+    "node": "v26.13.1",
+    "playwrightCore": "1.65.1",
+    "axeCore": "4.14.1",
+    "chrome": "/home/eloaurdi/.cache/ms-playwright/chromium-1255/chrome-linux64/chrome",
+    "method": "each scenario is built from a clean .next (CONTENT_SCENARIO=<name>) and served with `next start`; every matrix + sitemap route is fetched over HTTP and scanned as served HTML"
+  },
+  "scenarios": {
+    "p1": {
+      "sitemapPaths": [
+        "/",
+        "/a-propos",
+        "/domaines-activite",
+        "/realisations",
+        "/contact",
+        "/carrieres",
+        "/mentions-legales",
+        "/politique-de-confidentialite",
+        "/domaines-activite/eclairage-public",
+        "/domaines-activite/installations-electriques",
+        "/domaines-activite/infrastructures-reseaux-electriques"
+      ],
+      "routesAudited": 19,
+      "statuses": {
+        "/": 200,
+        "/a-propos": 200,
+        "/actualites": 404,
+        "/carrieres": 200,
+        "/cette-page-n-existe-pas": 404,
+        "/contact": 200,
+        "/domaines-activite": 200,
+        "/domaines-activite/eclairage-public": 200,
+        "/domaines-activite/energies-renouvelables": 404,
+        "/domaines-activite/fourniture-equipements": 404,
+        "/domaines-activite/infrastructures-reseaux-electriques": 200,
+        "/domaines-activite/installations-electriques": 200,
+        "/en": 404,
+        "/mentions-legales": 200,
+        "/moyens-et-competences": 404,
+        "/politique-de-confidentialite": 200,
+        "/realisations": 200,
+        "/realisations/projet-non-publie": 404,
+        "/references-et-partenaires": 404
+      },
+      "checks": [
+        {
+          "label": "p1: gate/status matrix",
+          "findings": []
+        },
+        {
+          "label": "p1: gated-claim absence",
+          "findings": []
+        },
+        {
+          "label": "p1: structured-data gated types/properties",
+          "findings": []
+        },
+        {
+          "label": "p1: photograph/logo absence",
+          "findings": []
+        },
+        {
+          "label": "p1: link audit (gated route/phone/social/mailbox)",
+          "findings": []
+        },
+        {
+          "label": "p1: no analytics/consent/form/cookie",
+          "findings": []
+        },
+        {
+          "label": "p1: cleared facts render",
+          "findings": []
+        }
+      ],
+      "claims": {
+        "findings": [],
+        "documentedExceptions": [],
+        "structuredDataFindings": [],
+        "mediaFindings": [],
+        "mediaAllowed": [
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          }
+        ],
+        "linkFindings": [],
+        "linkAllowed": [
+          {
+            "route": "/",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/a-propos",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/a-propos",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/actualites",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/actualites",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/en",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/en",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          }
+        ]
+      },
+      "privacy": {
+        "findings": [],
+        "byRoute": {}
+      },
+      "clearedFactFindings": []
+    },
+    "p2": {
+      "sitemapPaths": [
+        "/",
+        "/a-propos",
+        "/domaines-activite",
+        "/realisations",
+        "/contact",
+        "/carrieres",
+        "/mentions-legales",
+        "/politique-de-confidentialite",
+        "/domaines-activite/eclairage-public",
+        "/domaines-activite/installations-electriques",
+        "/domaines-activite/infrastructures-reseaux-electriques",
+        "/domaines-activite/energies-renouvelables",
+        "/domaines-activite/fourniture-equipements"
+      ],
+      "routesAudited": 19,
+      "statuses": {
+        "/": 200,
+        "/a-propos": 200,
+        "/actualites": 404,
+        "/carrieres": 200,
+        "/cette-page-n-existe-pas": 404,
+        "/contact": 200,
+        "/domaines-activite": 200,
+        "/domaines-activite/eclairage-public": 200,
+        "/domaines-activite/energies-renouvelables": 200,
+        "/domaines-activite/fourniture-equipements": 200,
+        "/domaines-activite/infrastructures-reseaux-electriques": 200,
+        "/domaines-activite/installations-electriques": 200,
+        "/en": 404,
+        "/mentions-legales": 200,
+        "/moyens-et-competences": 404,
+        "/politique-de-confidentialite": 200,
+        "/realisations": 200,
+        "/realisations/projet-non-publie": 404,
+        "/references-et-partenaires": 404
+      },
+      "checks": [
+        {
+          "label": "p2: gate/status matrix",
+          "findings": []
+        },
+        {
+          "label": "p2: gated-claim absence",
+          "findings": []
+        },
+        {
+          "label": "p2: structured-data gated types/properties",
+          "findings": []
+        },
+        {
+          "label": "p2: photograph/logo absence",
+          "findings": []
+        },
+        {
+          "label": "p2: link audit (gated route/phone/social/mailbox)",
+          "findings": []
+        },
+        {
+          "label": "p2: no analytics/consent/form/cookie",
+          "findings": []
+        },
+        {
+          "label": "p2: cleared facts render",
+          "findings": []
+        }
+      ],
+      "claims": {
+        "findings": [],
+        "documentedExceptions": [
+          {
+            "route": "/",
+            "key": "solaire",
+            "label": "gated solaire / ENR vocabulary",
+            "match": "Énergies renouvelables",
+            "context": "…Les réseaux HTA/MT et MT/BT et les postes de transformation, de l'étude à la réception.→04Énergies renouvelables et solaire→05Fourniture d'équipements et de matériel→RepèresExpériencePlus de 10 ans d'ex…"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "solaire",
+            "label": "gated solaire / ENR vocabulary",
+            "match": "Énergies renouvelables",
+            "context": "…→Les réseaux HTA/MT et MT/BT et les postes de transformation, de l'étude à la réception.04Énergies renouvelables et solaire→05Fourniture d'équipements et de matériel→Plus de 10 ans d'expérienceRubriques…"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "solaire",
+            "label": "gated solaire / ENR vocabulary",
+            "match": "Énergies renouvelables",
+            "context": "<!DOCTYPE html> Énergies renouvelables et solaire — HAY2010 Aller au contenuAccueilÀ proposDomaines d'activitéRéalisationsMoyens…"
+          },
+          {
+            "route": "/realisations",
+            "key": "solaire",
+            "label": "gated solaire / ENR vocabulary",
+            "match": "Énergies renouvelables",
+            "context": "…/MT et MT/BT et les postes de transformation, de l'étude à la réception.En savoir plus →04Énergies renouvelables et solaireEn savoir plus →05Fourniture d'équipements et de matérielEn savoir plus →02Nos …"
+          }
+        ],
+        "structuredDataFindings": [],
+        "mediaFindings": [],
+        "mediaAllowed": [
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          }
+        ],
+        "linkFindings": [],
+        "linkAllowed": [
+          {
+            "route": "/",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/a-propos",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/a-propos",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/actualites",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/actualites",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/en",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/en",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          }
+        ]
+      },
+      "privacy": {
+        "findings": [],
+        "byRoute": {}
+      },
+      "clearedFactFindings": []
+    },
+    "p3": {
+      "sitemapPaths": [
+        "/",
+        "/a-propos",
+        "/domaines-activite",
+        "/realisations",
+        "/contact",
+        "/carrieres",
+        "/mentions-legales",
+        "/politique-de-confidentialite",
+        "/domaines-activite/eclairage-public",
+        "/domaines-activite/installations-electriques",
+        "/domaines-activite/infrastructures-reseaux-electriques",
+        "/domaines-activite/energies-renouvelables",
+        "/domaines-activite/fourniture-equipements"
+      ],
+      "routesAudited": 19,
+      "statuses": {
+        "/": 200,
+        "/a-propos": 200,
+        "/actualites": 404,
+        "/carrieres": 200,
+        "/cette-page-n-existe-pas": 404,
+        "/contact": 200,
+        "/domaines-activite": 200,
+        "/domaines-activite/eclairage-public": 200,
+        "/domaines-activite/energies-renouvelables": 200,
+        "/domaines-activite/fourniture-equipements": 200,
+        "/domaines-activite/infrastructures-reseaux-electriques": 200,
+        "/domaines-activite/installations-electriques": 200,
+        "/en": 404,
+        "/mentions-legales": 200,
+        "/moyens-et-competences": 404,
+        "/politique-de-confidentialite": 200,
+        "/realisations": 200,
+        "/realisations/projet-non-publie": 404,
+        "/references-et-partenaires": 404
+      },
+      "checks": [
+        {
+          "label": "p3: gate/status matrix",
+          "findings": []
+        },
+        {
+          "label": "p3: gated-claim absence",
+          "findings": []
+        },
+        {
+          "label": "p3: structured-data gated types/properties",
+          "findings": []
+        },
+        {
+          "label": "p3: photograph/logo absence",
+          "findings": []
+        },
+        {
+          "label": "p3: link audit (gated route/phone/social/mailbox)",
+          "findings": []
+        },
+        {
+          "label": "p3: no analytics/consent/form/cookie",
+          "findings": []
+        },
+        {
+          "label": "p3: cleared facts render",
+          "findings": []
+        }
+      ],
+      "claims": {
+        "findings": [],
+        "documentedExceptions": [
+          {
+            "route": "/",
+            "key": "solaire",
+            "label": "gated solaire / ENR vocabulary",
+            "match": "Énergies renouvelables",
+            "context": "…Les réseaux HTA/MT et MT/BT et les postes de transformation, de l'étude à la réception.→04Énergies renouvelables et solaire→05Fourniture d'équipements et de matériel→RepèresExpériencePlus de 10 ans d'ex…"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "solaire",
+            "label": "gated solaire / ENR vocabulary",
+            "match": "Énergies renouvelables",
+            "context": "…→Les réseaux HTA/MT et MT/BT et les postes de transformation, de l'étude à la réception.04Énergies renouvelables et solaire→05Fourniture d'équipements et de matériel→Plus de 10 ans d'expérienceRubriques…"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "solaire",
+            "label": "gated solaire / ENR vocabulary",
+            "match": "Énergies renouvelables",
+            "context": "<!DOCTYPE html> Énergies renouvelables et solaire — HAY2010 Aller au contenuAccueilÀ proposDomaines d'activitéRéalisationsMoyens…"
+          },
+          {
+            "route": "/realisations",
+            "key": "solaire",
+            "label": "gated solaire / ENR vocabulary",
+            "match": "Énergies renouvelables",
+            "context": "…/MT et MT/BT et les postes de transformation, de l'étude à la réception.En savoir plus →04Énergies renouvelables et solaireEn savoir plus →05Fourniture d'équipements et de matérielEn savoir plus →02Nos …"
+          }
+        ],
+        "structuredDataFindings": [],
+        "mediaFindings": [],
+        "mediaAllowed": [
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          }
+        ],
+        "linkFindings": [],
+        "linkAllowed": [
+          {
+            "route": "/",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/a-propos",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/a-propos",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/actualites",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/actualites",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/en",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/en",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          }
+        ]
+      },
+      "privacy": {
+        "findings": [],
+        "byRoute": {}
+      },
+      "clearedFactFindings": []
+    },
+    "p1-gates-closed": {
+      "sitemapPaths": [
+        "/",
+        "/domaines-activite",
+        "/realisations",
+        "/contact",
+        "/carrieres",
+        "/mentions-legales",
+        "/politique-de-confidentialite",
+        "/domaines-activite/installations-electriques",
+        "/domaines-activite/infrastructures-reseaux-electriques"
+      ],
+      "routesAudited": 19,
+      "statuses": {
+        "/": 200,
+        "/a-propos": 404,
+        "/actualites": 404,
+        "/carrieres": 200,
+        "/cette-page-n-existe-pas": 404,
+        "/contact": 200,
+        "/domaines-activite": 200,
+        "/domaines-activite/eclairage-public": 404,
+        "/domaines-activite/energies-renouvelables": 404,
+        "/domaines-activite/fourniture-equipements": 404,
+        "/domaines-activite/infrastructures-reseaux-electriques": 200,
+        "/domaines-activite/installations-electriques": 200,
+        "/en": 404,
+        "/mentions-legales": 200,
+        "/moyens-et-competences": 404,
+        "/politique-de-confidentialite": 200,
+        "/realisations": 200,
+        "/realisations/projet-non-publie": 404,
+        "/references-et-partenaires": 404
+      },
+      "checks": [
+        {
+          "label": "p1-gates-closed: gate/status matrix",
+          "findings": []
+        },
+        {
+          "label": "p1-gates-closed: gated-claim absence",
+          "findings": []
+        },
+        {
+          "label": "p1-gates-closed: structured-data gated types/properties",
+          "findings": []
+        },
+        {
+          "label": "p1-gates-closed: photograph/logo absence",
+          "findings": []
+        },
+        {
+          "label": "p1-gates-closed: link audit (gated route/phone/social/mailbox)",
+          "findings": []
+        },
+        {
+          "label": "p1-gates-closed: no analytics/consent/form/cookie",
+          "findings": []
+        },
+        {
+          "label": "p1-gates-closed: cleared facts render",
+          "findings": []
+        }
+      ],
+      "claims": {
+        "findings": [],
+        "documentedExceptions": [],
+        "structuredDataFindings": [],
+        "mediaFindings": [],
+        "mediaAllowed": [
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          }
+        ],
+        "linkFindings": [],
+        "linkAllowed": [
+          {
+            "route": "/",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/a-propos",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/a-propos",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/actualites",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/actualites",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/en",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/en",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          }
+        ]
+      },
+      "privacy": {
+        "findings": [],
+        "byRoute": {}
+      },
+      "clearedFactFindings": []
+    },
+    "p1-recrutement": {
+      "sitemapPaths": [
+        "/",
+        "/a-propos",
+        "/domaines-activite",
+        "/realisations",
+        "/contact",
+        "/carrieres",
+        "/mentions-legales",
+        "/politique-de-confidentialite",
+        "/domaines-activite/eclairage-public",
+        "/domaines-activite/installations-electriques",
+        "/domaines-activite/infrastructures-reseaux-electriques"
+      ],
+      "routesAudited": 19,
+      "statuses": {
+        "/": 200,
+        "/a-propos": 200,
+        "/actualites": 404,
+        "/carrieres": 200,
+        "/cette-page-n-existe-pas": 404,
+        "/contact": 200,
+        "/domaines-activite": 200,
+        "/domaines-activite/eclairage-public": 200,
+        "/domaines-activite/energies-renouvelables": 404,
+        "/domaines-activite/fourniture-equipements": 404,
+        "/domaines-activite/infrastructures-reseaux-electriques": 200,
+        "/domaines-activite/installations-electriques": 200,
+        "/en": 404,
+        "/mentions-legales": 200,
+        "/moyens-et-competences": 404,
+        "/politique-de-confidentialite": 200,
+        "/realisations": 200,
+        "/realisations/projet-non-publie": 404,
+        "/references-et-partenaires": 404
+      },
+      "checks": [
+        {
+          "label": "p1-recrutement: gate/status matrix",
+          "findings": []
+        },
+        {
+          "label": "p1-recrutement: gated-claim absence",
+          "findings": []
+        },
+        {
+          "label": "p1-recrutement: structured-data gated types/properties",
+          "findings": []
+        },
+        {
+          "label": "p1-recrutement: photograph/logo absence",
+          "findings": []
+        },
+        {
+          "label": "p1-recrutement: link audit (gated route/phone/social/mailbox)",
+          "findings": []
+        },
+        {
+          "label": "p1-recrutement: no analytics/consent/form/cookie",
+          "findings": []
+        },
+        {
+          "label": "p1-recrutement: cleared facts render",
+          "findings": []
+        }
+      ],
+      "claims": {
+        "findings": [],
+        "documentedExceptions": [
+          {
+            "route": "/carrieres",
+            "key": "cndp-number",
+            "label": "CNDP receipt / authorization number",
+            "match": "autorisation CNDP n°",
+            "context": "…emander leur suppression à tout moment à donnees@hay2010.ma. Ce traitement est soumis à l'autorisation CNDP n° F113-SIMULATION du 01/01/2027. Pour en savoir plus : /politique-de-confidentialite.Politi…"
+          },
+          {
+            "route": "/carrieres",
+            "key": "gated-mailbox",
+            "label": "gated mailbox published",
+            "match": "recrutement@hay2010.ma",
+            "context": "…otre CV et une courte présentation ; nous l'examinerons avec attention.Postuler par e-mailrecrutement@hay2010.maLes candidatures sont reçues à l'adresse indiquée sur cette page. Vos données (CV, lettre …"
+          }
+        ],
+        "structuredDataFindings": [],
+        "mediaFindings": [],
+        "mediaAllowed": [
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          }
+        ],
+        "linkFindings": [],
+        "linkAllowed": [
+          {
+            "route": "/",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/a-propos",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/a-propos",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/actualites",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/actualites",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "fixture-mailbox",
+            "detail": "recrutement@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "fixture-mailbox",
+            "detail": "recrutement@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "fixture-mailbox",
+            "detail": "recrutement@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/en",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/en",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          }
+        ]
+      },
+      "privacy": {
+        "findings": [],
+        "byRoute": {}
+      },
+      "clearedFactFindings": []
+    },
+    "p1-hero-image": {
+      "sitemapPaths": [
+        "/",
+        "/a-propos",
+        "/domaines-activite",
+        "/realisations",
+        "/contact",
+        "/carrieres",
+        "/mentions-legales",
+        "/politique-de-confidentialite",
+        "/domaines-activite/eclairage-public",
+        "/domaines-activite/installations-electriques",
+        "/domaines-activite/infrastructures-reseaux-electriques"
+      ],
+      "routesAudited": 19,
+      "statuses": {
+        "/": 200,
+        "/a-propos": 200,
+        "/actualites": 404,
+        "/carrieres": 200,
+        "/cette-page-n-existe-pas": 404,
+        "/contact": 200,
+        "/domaines-activite": 200,
+        "/domaines-activite/eclairage-public": 200,
+        "/domaines-activite/energies-renouvelables": 404,
+        "/domaines-activite/fourniture-equipements": 404,
+        "/domaines-activite/infrastructures-reseaux-electriques": 200,
+        "/domaines-activite/installations-electriques": 200,
+        "/en": 404,
+        "/mentions-legales": 200,
+        "/moyens-et-competences": 404,
+        "/politique-de-confidentialite": 200,
+        "/realisations": 200,
+        "/realisations/projet-non-publie": 404,
+        "/references-et-partenaires": 404
+      },
+      "checks": [
+        {
+          "label": "p1-hero-image: gate/status matrix",
+          "findings": []
+        },
+        {
+          "label": "p1-hero-image: gated-claim absence",
+          "findings": []
+        },
+        {
+          "label": "p1-hero-image: structured-data gated types/properties",
+          "findings": []
+        },
+        {
+          "label": "p1-hero-image: photograph/logo absence",
+          "findings": []
+        },
+        {
+          "label": "p1-hero-image: link audit (gated route/phone/social/mailbox)",
+          "findings": []
+        },
+        {
+          "label": "p1-hero-image: no analytics/consent/form/cookie",
+          "findings": []
+        },
+        {
+          "label": "p1-hero-image: cleared facts render",
+          "findings": []
+        }
+      ],
+      "claims": {
+        "findings": [],
+        "documentedExceptions": [],
+        "structuredDataFindings": [],
+        "mediaFindings": [],
+        "mediaAllowed": [
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/",
+            "key": "hero-fixture",
+            "detail": "/_next/image?url=%2Fmedia%2Fhero-documentaire-test.jpg&w=3840&q=75"
+          },
+          {
+            "route": "/",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/a-propos",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/actualites",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/carrieres",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/contact",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/en",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "brand-image",
+            "detail": "/brand/hay2010-logo.svg"
+          }
+        ],
+        "linkFindings": [],
+        "linkAllowed": [
+          {
+            "route": "/",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/a-propos",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/a-propos",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/actualites",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/actualites",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/carrieres",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/cette-page-n-existe-pas",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/contact",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/eclairage-public",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/energies-renouvelables",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/fourniture-equipements",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/infrastructures-reseaux-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/domaines-activite/installations-electriques",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/en",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/en",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/mentions-legales",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/moyens-et-competences",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "donnees@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/politique-de-confidentialite",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/realisations/projet-non-publie",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          },
+          {
+            "route": "/references-et-partenaires",
+            "key": "cleared-mailbox",
+            "detail": "contact@hay2010.ma"
+          }
+        ]
+      },
+      "privacy": {
+        "findings": [],
+        "byRoute": {}
+      },
+      "clearedFactFindings": []
+    }
+  },
+  "outOfP1Scope": {
+    "/prototype/homepage?variant=a": {
+      "status": 200,
+      "claimFindings": [],
+      "privacyFindings": [],
+      "note": "/prototype/homepage is the #13 throwaway design prototype: served noindex, unlinked, outside the P1 route matrix and the sitemap."
+    },
+    "/prototype/homepage?variant=b": {
+      "status": 200,
+      "claimFindings": [
+        {
+          "key": "agrement",
+          "label": "agrément / agréé claim",
+          "where": "text",
+          "match": "Agrément",
+          "context": "…s règles de l'art.Découvrir nos métiers→Parler d'un projet→RepèresExpériencePlus de 10 ansAgrémentsONEE — publication en attente des certificatsBaseRabat — MarocTexte et mentions provisoir…"
+        },
+        {
+          "key": "certification",
+          "label": "certification or homologation claim",
+          "where": "text",
+          "match": "certificatsBaseRabat",
+          "context": "…ler d'un projet→RepèresExpériencePlus de 10 ansAgrémentsONEE — publication en attente des certificatsBaseRabat — MarocTexte et mentions provisoires — le bloc agréments n'est publié qu'après dépôt des …"
+        }
+      ],
+      "privacyFindings": [],
+      "note": "/prototype/homepage is the #13 throwaway design prototype: served noindex, unlinked, outside the P1 route matrix and the sitemap."
+    },
+    "/prototype/homepage?variant=c": {
+      "status": 200,
+      "claimFindings": [],
+      "privacyFindings": [],
+      "note": "/prototype/homepage is the #13 throwaway design prototype: served noindex, unlinked, outside the P1 route matrix and the sitemap."
+    }
+  },
+  "pass": true,
+  "summary": {
+    "scenarios": 6,
+    "checks": 42,
+    "passed": 42,
+    "failed": [],
+    "claimFindings": 0,
+    "privacyFindings": 0
+  }
+}

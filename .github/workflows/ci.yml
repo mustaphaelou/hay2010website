@@ -1,0 +1,341 @@
+# CI — the HAY2010 merge gate, ARM64 image and staging deploy (ticket #31).
+#
+# Verified design: /tmp/hay2010-build/notes/deploy-pipeline.md §2, §5, §7.
+#
+#   1. verify  — typecheck, lint, the HTTP acceptance suite (next start), the ops
+#                checks (staging noindex + robots, forms floor, /api/health with
+#                and without a database) and a real Postgres backup/restore
+#                rehearsal. Every merge is blocked on this job.
+#   2. cms     — the CMS acceptance check (`npm run test:cms`): disposable
+#                Postgres, migrations from empty, idempotent seed, fixture-vs-CMS
+#                parity and tests/cms over HTTP. Blocked on `verify`.
+#   3. image   — one ARM64 image per merge, built natively on ubuntu-24.04-arm
+#                (no QEMU, explicit platform linux/arm64), push-only, tagged with
+#                the full commit sha and nothing mutable. The sha tag is the
+#                rollback unit.
+#   4. deploy  — Coolify: PATCH the application's image tag to this sha, POST the
+#                deploy, then poll the deployment until it finishes. The official
+#                deploy webhook cannot pin a sha, hence PATCH-then-deploy.
+#
+# Rollback is .github/workflows/rollback.yml (or the commands in docs/ops/deploy.md).
+# Migrations are never run by this workflow or by the app container — Payload
+# lands in #29/#30 and migrations are an explicit pre-deploy step.
+
+name: CI
+
+on:
+  push:
+    branches: [main, integ/p1-website]
+  pull_request:
+    branches: [main, integ/p1-website]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "22"
+  IMAGE: ghcr.io/${{ github.repository }}
+  # Public, build-time value: canonical site URL used by metadata (#32).
+  NEXT_PUBLIC_SERVER_URL: ${{ vars.NEXT_PUBLIC_SERVER_URL }}
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  verify:
+    name: Verify (typecheck, lint, HTTP suite, ops checks, restore rehearsal)
+    # Same architecture as the VPS: dependency installs resolve the arm64 native
+    # binaries the deployed image will use (decision §5).
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 30
+    services:
+      # Only for the database-up leg of `npm run check:ops`.
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install
+        run: npm ci --no-audit --no-fund
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      # Builds the production app, serves it with `next start`, runs tests/http/**.
+      - name: Build and run the HTTP suite
+        run: TEST_HTTP_PORT=3131 npm test
+
+      # Starts its own servers with the staging/forms/database environments.
+      - name: Ops checks (health, staging noindex + robots, forms floor)
+        env:
+          OPS_CHECK_PORT: "3131"
+          OPS_DATABASE_URL: postgres://postgres:postgres@127.0.0.1:5432/postgres
+        run: npm run check:ops
+
+      - name: Install rclone (pinned, for the backup rehearsal)
+        run: |
+          set -euo pipefail
+          RCLONE_VERSION=1.76.0
+          case "$(uname -m)" in
+            aarch64|arm64) ARCH=arm64 ;;
+            *) ARCH=amd64 ;;
+          esac
+          curl -fsSL -o /tmp/rclone.zip \
+            "https://downloads.rclone.org/v${RCLONE_VERSION}/rclone-v${RCLONE_VERSION}-linux-${ARCH}.zip"
+          unzip -q /tmp/rclone.zip -d /tmp
+          echo "/tmp/rclone-v${RCLONE_VERSION}-linux-${ARCH}" >> "$GITHUB_PATH"
+
+      # Real postgres:16-alpine container, real dump, real restore, verified rows.
+      - name: Backup and restore rehearsal
+        run: bash scripts/rehearse-backup-restore.sh
+
+  cms:
+    name: CMS acceptance (migrations, seed, fixture parity, tests/cms)
+    # The spec's deployment/ownership section and #31's "runs the full suite and
+    # blocks on failure" make the CMS surface part of the merge gate. It runs
+    # after the database-free `verify` job so a red HTTP suite fails fast, and it
+    # needs a Docker daemon for its disposable `postgres:16-alpine` container —
+    # available on GitHub's ARM64 runner, the same architecture as the VPS.
+    needs: verify
+    runs-on: ubuntu-24.04-arm
+    # ~7 min of builds and servers on this host; 30 min leaves headroom for the
+    # Postgres image pull without letting a hung job run for hours.
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install
+        run: npm ci --no-audit --no-fund
+
+      # `npm run test:cms` starts its own disposable Postgres container, applies
+      # the committed migrations from empty, seeds twice (idempotence check),
+      # builds both providers, compares the fixture and CMS route matrices, runs
+      # tests/cms over HTTP, then removes the container, uploads and builds.
+      # No secrets: the database, Payload secret and ports are local and fixed.
+      - name: CMS acceptance
+        run: npm run test:cms
+
+  image:
+    name: Build ARM64 image and push to GHCR
+    needs: verify
+    # One image per merge: PRs verify the code, pushes publish the artefact.
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      ref: ${{ steps.ref.outputs.ref }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: docker/setup-buildx-action@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push (native arm64, no QEMU)
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: Dockerfile
+          # The runner is arm64; naming the platform makes the intent explicit.
+          # Do not add linux/amd64: the VPS cannot run it.
+          platforms: linux/arm64
+          push: true
+          # Immutable tag per commit. Rollback pins a previous tag, never "latest".
+          tags: ${{ env.IMAGE }}:${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.version=${{ github.sha }}
+          build-args: |
+            REQUIRE_ARM64=1
+            APP_VERSION=${{ github.sha }}
+            NEXT_PUBLIC_SERVER_URL=${{ env.NEXT_PUBLIC_SERVER_URL }}
+          cache-from: type=gha,scope=image
+          cache-to: type=gha,mode=max,scope=image
+
+      - name: Record image reference
+        id: ref
+        run: |
+          echo "ref=${IMAGE}:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Image"
+            echo '```'
+            echo "${IMAGE}:${GITHUB_SHA}"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # Pulling the pushed tag proves the registry artefact Coolify will pull, and
+      # the container proves /api/health and the staging protections at runtime.
+      - name: Smoke-test the pushed image
+        run: |
+          set -euo pipefail
+          docker pull "${IMAGE}:${GITHUB_SHA}"
+          docker run -d --name hay2010-web-smoke \
+            -p 3000:3000 \
+            -e SITE_ENV=staging \
+            -e FORMS_ENABLED=true \
+            "${IMAGE}:${GITHUB_SHA}"
+          trap 'docker rm -f hay2010-web-smoke >/dev/null 2>&1 || true' EXIT
+          for _ in $(seq 1 40); do
+            if curl -fsS http://127.0.0.1:3000/api/health > /tmp/health.json 2>/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          echo "health: $(cat /tmp/health.json)"
+          grep -q '"status":"ok"' /tmp/health.json
+          grep -q '"forms":false' /tmp/health.json
+          grep -q "\"version\":\"${GITHUB_SHA}\"" /tmp/health.json
+          headers="$(curl -fsSI http://127.0.0.1:3000/)"
+          echo "$headers"
+          echo "$headers" | grep -qi '^x-robots-tag: noindex, nofollow'
+          robots="$(curl -fsS http://127.0.0.1:3000/robots.txt)"
+          echo "$robots"
+          echo "$robots" | grep -qx 'Disallow: /'
+
+  deploy:
+    name: Deploy to staging (Coolify)
+    needs: image
+    # Staging follows main, per the hosting decision. During the P1 build the
+    # integration branch only builds images; the lead promotes to main.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment:
+      name: staging
+      url: ${{ vars.STAGING_URL }}
+    steps:
+      # Missing Coolify configuration is a notice, not a failure: the repo-side
+      # workflow lands before the VPS exists (docs/ops/external-steps.md §2).
+      - name: Check deployment configuration
+        id: config
+        env:
+          COOLIFY_API_URL: ${{ vars.COOLIFY_API_URL }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          if [ -n "${COOLIFY_API_URL}" ] && [ -n "${COOLIFY_API_TOKEN}" ] && [ -n "${COOLIFY_APP_UUID}" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Coolify not configured::Skipping the staging deploy. Add the vars/secrets listed in docs/ops/external-steps.md §2."
+          fi
+
+      # The deploy webhook can only pull the application's saved tag, so the sha
+      # must be pinned first (PATCH), then deployed (POST) and awaited.
+      - name: Pin the image tag to this commit
+        if: steps.config.outputs.configured == 'true'
+        env:
+          COOLIFY_API_URL: ${{ vars.COOLIFY_API_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error \
+            --request PATCH "${COOLIFY_API_URL}/api/v1/applications/${COOLIFY_APP_UUID}" \
+            --header "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            --header "Content-Type: application/json" \
+            --data "$(jq -n --arg tag "${IMAGE_TAG}" '{docker_registry_image_tag: $tag}')"
+
+      - name: Trigger the deployment and wait for its result
+        if: steps.config.outputs.configured == 'true'
+        env:
+          COOLIFY_API_URL: ${{ vars.COOLIFY_API_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          response="$(curl --fail --silent --show-error \
+            --request POST "${COOLIFY_API_URL}/api/v1/deploy?uuid=${COOLIFY_APP_UUID}&cancel_previous=queued" \
+            --header "Authorization: Bearer ${COOLIFY_API_TOKEN}")"
+          echo "$response"
+          deployment_uuid="$(jq -r '.deployments[0].deployment_uuid // empty' <<<"$response")"
+          if [ -z "$deployment_uuid" ]; then
+            echo "::error::Coolify did not queue a deployment: $response"
+            exit 1
+          fi
+          echo "deployment_uuid=${deployment_uuid}"
+          for _ in $(seq 1 90); do
+            status="$(curl --fail --silent --show-error \
+              --header "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+              "${COOLIFY_API_URL}/api/v1/deployments/${deployment_uuid}" | jq -r '.status')"
+            case "$status" in
+              finished)
+                echo "::notice::Coolify deployment ${deployment_uuid} finished"
+                exit 0
+                ;;
+              failed|cancelled-by-user)
+                echo "::error::Coolify deployment ${deployment_uuid} ended with ${status}"
+                exit 1
+                ;;
+            esac
+            sleep 10
+          done
+          echo "::error::Coolify deployment ${deployment_uuid} did not finish in 15 minutes"
+          exit 1
+
+      # Optional: the deployed staging host must answer 200 over Access and stay
+      # noindex. Needs STAGING_SMOKE_ENABLED=true plus a Cloudflare Access service
+      # token (Access blocks anonymous curl by design).
+      - name: Smoke test through Cloudflare Access
+        if: steps.config.outputs.configured == 'true' && vars.STAGING_SMOKE_ENABLED == 'true'
+        env:
+          STAGING_URL: ${{ vars.STAGING_URL }}
+          CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+        run: |
+          set -euo pipefail
+          headers="$(mktemp)"
+          curl --fail --silent --show-error \
+            --header "CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}" \
+            --header "CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}" \
+            --dump-header "$headers" \
+            "${STAGING_URL}/api/health" >/dev/null
+          grep -qi '^x-robots-tag:.*noindex' "$headers" \
+            || { echo "::error::staging is missing X-Robots-Tag: noindex"; exit 1; }
+          grep -qi '^HTTP/[0-9.]* 200' "$headers" \
+            || { echo "::error::staging health check did not return 200"; exit 1; }
+
+      - name: Summarize
+        if: steps.config.outputs.configured == 'true'
+        run: |
+          {
+            echo "### Deployed \`${{ github.sha }}\`"
+            echo ""
+            echo "Rollback: run the **Rollback staging image** workflow with the previous commit sha,"
+            echo "or follow docs/ops/deploy.md (Rollback by tag)."
+          } >> "$GITHUB_STEP_SUMMARY"

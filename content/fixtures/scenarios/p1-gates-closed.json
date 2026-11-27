@@ -1,0 +1,60 @@
+{
+  "$comment": "Gate regression scenario: the P1 launch state with one P1 rubrique (À propos) and one P1 domain (Éclairage public) closed. The routes exist and return 200 under p1, so the suite proves the gate itself — not a missing file — drives the 404. /carrières stays open like p1 but publishes no opening: the honest empty state (forms doc §4.9), and the legal utilities stay published (#28).",
+  "tier": "P1",
+  "rubriques": {
+    "accueil": { "published": true },
+    "a-propos": {
+      "published": false,
+      "reason": "Scénario de test\u00a0: fermeture d’une rubrique P1 pour prouver l’application du gate."
+    },
+    "domaines-activite": { "published": true },
+    "realisations": { "published": true },
+    "moyens-et-competences": {
+      "published": false,
+      "reason": "Palier P2 — inventaire matériel, photographique et RH de l’owner requis (CDC §11)."
+    },
+    "references-et-partenaires": {
+      "published": false,
+      "reason": "Palier P2 — autorisations clients, partenaires et certifications requises (CDC §11)."
+    },
+    "actualites": {
+      "published": false,
+      "reason": "Palier P3 — au moins une actualité approuvée requise."
+    },
+    "contact": { "published": true },
+    "carrieres": { "published": true },
+    "mentions-legales": { "published": true },
+    "politique-de-confidentialite": { "published": true }
+  },
+  "domains": {
+    "eclairage-public": {
+      "published": false,
+      "reason": "Scénario de test\u00a0: fermeture d’un domaine P1 pour prouver l’application du gate."
+    },
+    "installations-electriques": { "published": true },
+    "infrastructures-reseaux-electriques": { "published": true },
+    "energies-renouvelables": {
+      "published": false,
+      "reason": "Périmètre réel à confirmer par écrit par l’owner (CDC §4.3)."
+    },
+    "fourniture-equipements": {
+      "published": false,
+      "reason": "Catalogue et autorisations de distribution et de marque manquants (CDC §4.5)."
+    }
+  },
+  "jobs": {
+    "electricien-hta-bt": {
+      "published": false,
+      "reason": "Aucune offre confirmée par l’owner au lancement (registre des faits §8)."
+    },
+    "chef-de-chantier-eclairage-public": {
+      "published": false,
+      "reason": "Aucune offre confirmée par l’owner au lancement (registre des faits §8)."
+    },
+    "technicien-cfo-cfa": {
+      "published": false,
+      "reason": "Aucune offre confirmée par l’owner au lancement (registre des faits §8)."
+    }
+  },
+  "careers": { "recruitmentMailboxLive": false }
+}

@@ -1,0 +1,54 @@
+{
+  "$comment": "P1 launch state: the five CDC rubriques, three published domains, the Carrières utility page open in the footer (#27) and the legal utility pages published (#28) so the contact and careers notices can link the privacy policy. No opening has been confirmed by the owner, so the jobs gates are closed and /carrières renders its honest empty state (forms doc §4.9). The F-113 careers channel is closed: contact@ for questions, no CV invitation.",
+  "tier": "P1",
+  "rubriques": {
+    "accueil": { "published": true },
+    "a-propos": { "published": true },
+    "domaines-activite": { "published": true },
+    "realisations": { "published": true },
+    "moyens-et-competences": {
+      "published": false,
+      "reason": "Palier P2 — inventaire matériel, photographique et RH de l’owner requis (CDC §11)."
+    },
+    "references-et-partenaires": {
+      "published": false,
+      "reason": "Palier P2 — autorisations clients, partenaires et certifications requises (CDC §11)."
+    },
+    "actualites": {
+      "published": false,
+      "reason": "Palier P3 — au moins une actualité approuvée requise."
+    },
+    "contact": { "published": true },
+    "carrieres": { "published": true },
+    "mentions-legales": { "published": true },
+    "politique-de-confidentialite": { "published": true }
+  },
+  "domains": {
+    "eclairage-public": { "published": true },
+    "installations-electriques": { "published": true },
+    "infrastructures-reseaux-electriques": { "published": true },
+    "energies-renouvelables": {
+      "published": false,
+      "reason": "Périmètre réel à confirmer par écrit par l’owner (CDC §4.3)."
+    },
+    "fourniture-equipements": {
+      "published": false,
+      "reason": "Catalogue et autorisations de distribution et de marque manquants (CDC §4.5)."
+    }
+  },
+  "jobs": {
+    "electricien-hta-bt": {
+      "published": false,
+      "reason": "Aucune offre confirmée par l’owner au lancement (registre des faits §8)."
+    },
+    "chef-de-chantier-eclairage-public": {
+      "published": false,
+      "reason": "Aucune offre confirmée par l’owner au lancement (registre des faits §8)."
+    },
+    "technicien-cfo-cfa": {
+      "published": false,
+      "reason": "Aucune offre confirmée par l’owner au lancement (registre des faits §8)."
+    }
+  },
+  "careers": { "recruitmentMailboxLive": false }
+}
