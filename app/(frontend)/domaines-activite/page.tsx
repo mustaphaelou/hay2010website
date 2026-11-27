@@ -3,22 +3,19 @@ import { notFound } from "next/navigation"
 
 import { DomaineIndex } from "@/components/domaines/domaine-index"
 import { PageJsonLd } from "@/components/seo/page-json-ld"
-import { pageMetadata, resolvePageSeo } from "@/lib/seo"
+import { pageMetadata } from "@/lib/seo"
 import { getPublishedDomains } from "@/lib/site/domaines"
 import { requirePublishedRubrique } from "@/lib/site/gates"
-import { getPageDocument } from "@/lib/site/page-content"
-
-/** Canonical route of the domain index (code-owned). */
-const HREF = "/domaines-activite"
+import { getRubriquePageContext } from "@/lib/site/page-context"
 
 /** Unique title, description and canonical URL for the index (#22, #32). */
-async function indexSeo() {
-  const page = await getPageDocument("domaines-activite")
-  return resolvePageSeo({ path: HREF, description: page?.description })
+async function indexContext() {
+  return getRubriquePageContext("domaines-activite")
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  return pageMetadata(await indexSeo())
+  const { seo } = await indexContext()
+  return pageMetadata(seo)
 }
 
 /**
@@ -32,15 +29,15 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function Page() {
   await requirePublishedRubrique("domaines-activite")
 
-  const [page, domains] = await Promise.all([
-    getPageDocument("domaines-activite"),
+  const [{ model: page, seo }, domains] = await Promise.all([
+    indexContext(),
     getPublishedDomains(),
   ])
   if (!page) notFound()
 
   return (
     <>
-      <PageJsonLd seo={await indexSeo()} />
+      <PageJsonLd seo={seo} />
       <DomaineIndex page={page} domains={domains} />
     </>
   )

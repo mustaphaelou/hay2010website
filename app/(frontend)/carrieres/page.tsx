@@ -3,15 +3,15 @@ import { notFound } from "next/navigation"
 
 import { CareersPage } from "@/components/careers/careers-page"
 import { PageJsonLd } from "@/components/seo/page-json-ld"
-import { getContentSource } from "@/lib/content"
 import {
   getCareersApplicationState,
   getCareersMetadataDescription,
   getOpenJobs,
   isPrivacyPolicyPublished,
 } from "@/lib/site/careers"
-import { pageMetadata, resolvePageSeo } from "@/lib/seo"
+import { pageMetadata } from "@/lib/seo"
 import { requirePublishedRubrique } from "@/lib/site/gates"
+import { getRubriquePageContext } from "@/lib/site/page-context"
 
 /**
  * Carrières — the footer-only utility page (IA §Navigation). It is never in the
@@ -29,21 +29,23 @@ import { requirePublishedRubrique } from "@/lib/site/gates"
  * description that invites a spontaneous application only renders once the gate
  * is open, so the head never carries a gated claim.
  */
+
 /**
- * Unique metadata (#32): the approved title and the description for the
- * current F-113 gate state (SEO §3.3, forms doc §4.9). The live description
+ * The F-113 application state and the page context (model + metadata), each
+ * read once. The description depends on the gate state: the live variant
  * invites a spontaneous application, so it only renders once the gate is open.
  */
-async function careersSeo() {
+async function careersContext() {
   const application = await getCareersApplicationState()
-  return resolvePageSeo({
-    path: "/carrieres",
+  const page = await getRubriquePageContext("carrieres", {
     description: getCareersMetadataDescription(application),
   })
+  return { application, page }
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  return pageMetadata(await careersSeo())
+  const { page } = await careersContext()
+  return pageMetadata(page.seo)
 }
 
 export default async function Page() {
@@ -51,22 +53,20 @@ export default async function Page() {
   // real 404 document (docs/build/content-seam.md §5).
   await requirePublishedRubrique("carrieres")
 
-  const source = await getContentSource()
-  const [document, jobs, application, privacyPublished] = await Promise.all([
-    source.getPage("carrieres"),
+  const { application, page } = await careersContext()
+  const [jobs, privacyPublished] = await Promise.all([
     getOpenJobs(),
-    getCareersApplicationState(),
     isPrivacyPolicyPublished(),
   ])
 
   // A published route without its document is not renderable: no placeholder.
-  if (!document) notFound()
+  if (!page.model) notFound()
 
   return (
     <>
-      <PageJsonLd seo={await careersSeo()} />
+      <PageJsonLd seo={page.seo} />
       <CareersPage
-        document={document}
+        document={page.model}
         jobs={jobs}
         application={application}
         privacyPublished={privacyPublished}

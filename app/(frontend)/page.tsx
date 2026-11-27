@@ -7,9 +7,9 @@ import { getContentSource } from "@/lib/content"
 import type { ContentLink, HeroBlock, PageDocument } from "@/lib/content/types"
 import { getPublishedDomains } from "@/lib/site/domaines"
 import { requirePublishedRubrique } from "@/lib/site/gates"
-import { getPageDocument } from "@/lib/site/page-content"
+import { getRubriquePageContext } from "@/lib/site/page-context"
 import { getPublishedRubriques } from "@/lib/site/rubriques"
-import { pageMetadata, resolvePageSeo } from "@/lib/seo"
+import { pageMetadata } from "@/lib/seo"
 
 /**
  * Accueil — the homepage (ticket #23).
@@ -44,38 +44,34 @@ function requireCopy(
   }
 }
 
-/** The page document, read through the one content seam. */
-async function getHomepageDocument(): Promise<PageDocument | null> {
-  return getPageDocument(KEY)
-}
-
 /**
- * Unique homepage metadata. SEO §3.2/§3.3 fix the homepage title as an absolute
- * brand-first string (`HAY2010 — <phrase>`) and a 120–160 character
- * description. The phrase and the description come from the page model; the
- * template, canonical, Open Graph and robots rules are `lib/seo`'s (#32).
+ * The page model and its metadata, read once. SEO §3.2/§3.3 fix the homepage
+ * title as an absolute brand-first string (`HAY2010 — <phrase>`) and a 120–160
+ * character description: the phrase and the description come from the page
+ * model, the template/canonical/OG rules are `lib/seo`'s (#32).
  */
-async function homepageSeo() {
-  const page = requireCopy(await getHomepageDocument())
-  return resolvePageSeo({ path: "/", phrase: page.title, description: page.description })
+async function homepageContext() {
+  return getRubriquePageContext(KEY, { path: "/", phraseFromDocument: true })
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  return pageMetadata(await homepageSeo())
+  const { model, seo } = await homepageContext()
+  requireCopy(model)
+  return pageMetadata(seo)
 }
 
 export default async function Page() {
   await requirePublishedRubrique("accueil")
 
   const source = await getContentSource()
-  const [page, domains, rubriques] = await Promise.all([
-    getHomepageDocument(),
+  const [{ model, seo }, domains, rubriques] = await Promise.all([
+    homepageContext(),
     getPublishedDomains(),
     getPublishedRubriques(),
   ])
-  if (!page) notFound()
+  if (!model) notFound()
 
-  const homepage = requireCopy(page)
+  const homepage = requireCopy(model)
   const heroBlock =
     homepage.blocks.find(
       (block): block is HeroBlock => block.kind === "hero"
@@ -96,7 +92,7 @@ export default async function Page() {
 
   return (
     <>
-      <PageJsonLd seo={await homepageSeo()} />
+      <PageJsonLd seo={seo} />
       <HomePage
         page={homepage}
         domains={domains}

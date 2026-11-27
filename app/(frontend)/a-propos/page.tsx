@@ -4,8 +4,9 @@ import { AProposChapter, AProposContactCta, AProposIdentity } from "./sections"
 import { PageJsonLd } from "@/components/seo/page-json-ld"
 import { getContentSource } from "@/lib/content"
 import type { ContentLink, PageDocument, SectionsBlock } from "@/lib/content/types"
-import { pageMetadata, resolvePageSeo } from "@/lib/seo"
+import { pageMetadata } from "@/lib/seo"
 import { requirePublishedRubrique } from "@/lib/site/gates"
+import { getRubriquePageContext } from "@/lib/site/page-context"
 import { getRubrique } from "@/lib/site/rubriques"
 
 /**
@@ -20,12 +21,6 @@ import { getRubrique } from "@/lib/site/rubriques"
  */
 
 const KEY = "a-propos" as const
-
-/** The page document, read through the one content seam. */
-async function getAProposDocument(): Promise<PageDocument | null> {
-  const source = await getContentSource()
-  return source.getPage(KEY)
-}
 
 /**
  * A published page cannot ship without its title and description (SEO §3.5):
@@ -74,17 +69,18 @@ async function getCertificationsLink(): Promise<ContentLink | null> {
 }
 
 /**
- * Unique metadata for the page (#32). The keyword-led title phrase is the
- * code-owned launch default (SEO §3.3 adapted to `/a-propos`); the description
- * is the page model's decided copy.
+ * The page model and its metadata, read once (#32). The keyword-led title
+ * phrase is the code-owned launch default (SEO §3.3 adapted to `/a-propos`);
+ * the description is the page model's decided copy.
  */
-async function aProposSeo() {
-  const page = requireCopy(await getAProposDocument())
-  return resolvePageSeo({ path: "/a-propos", description: page.description })
+async function aProposContext() {
+  return getRubriquePageContext(KEY)
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  return pageMetadata(await aProposSeo())
+  const { model, seo } = await aProposContext()
+  requireCopy(model)
+  return pageMetadata(seo)
 }
 
 /** A chapter block that can actually render (DEV-006: never a placeholder). */
@@ -104,13 +100,16 @@ function isRenderableChapter(
 export default async function Page() {
   await requirePublishedRubrique("a-propos")
 
-  const page = requireCopy(await getAProposDocument())
-  const certificationsLink = await getCertificationsLink()
+  const [{ model, seo }, certificationsLink] = await Promise.all([
+    aProposContext(),
+    getCertificationsLink(),
+  ])
+  const page = requireCopy(model)
   const chapters = page.blocks.filter(isRenderableChapter)
 
   return (
     <>
-      <PageJsonLd seo={await aProposSeo()} />
+      <PageJsonLd seo={seo} />
       {page.blocks.map((block, blockIndex) => {
         if (block.kind === "intro") {
           return (

@@ -3,10 +3,10 @@ import type { Metadata } from "next"
 import { RealisationsPage } from "@/components/realisations/realisations-page"
 import { PageJsonLd } from "@/components/seo/page-json-ld"
 import type { PageDocument } from "@/lib/content/types"
-import { pageMetadata, resolvePageSeo } from "@/lib/seo"
+import { pageMetadata } from "@/lib/seo"
 import { getPublishedDomains } from "@/lib/site/domaines"
 import { requirePublishedRubrique } from "@/lib/site/gates"
-import { getPageDocument } from "@/lib/site/page-content"
+import { getRubriquePageContext } from "@/lib/site/page-context"
 
 /**
  * /realisations — the credentials-led references page (ticket #24).
@@ -26,21 +26,6 @@ import { getPageDocument } from "@/lib/site/page-content"
  */
 
 const KEY = "realisations" as const
-const HREF = "/realisations"
-
-/**
- * Unique metadata (#32): docs/seo/seo-metadata.md §3.3 fixes the title and the
- * `agrementLive: false` description variant ships until both ONEE certificates
- * are filed; the description is the page model's decided copy.
- */
-async function realisationsSeo() {
-  const page = requireCopy(await getPageDocument(KEY))
-  return resolvePageSeo({ path: HREF, description: page.description })
-}
-
-export async function generateMetadata(): Promise<Metadata> {
-  return pageMetadata(await realisationsSeo())
-}
 
 /**
  * A published page cannot ship without its title and description (SEO §3.5):
@@ -60,18 +45,34 @@ function requireCopy(
   }
 }
 
+/**
+ * The page model and its metadata, read once (#32): docs/seo/seo-metadata.md
+ * §3.3 fixes the title and the `agrementLive: false` description variant ships
+ * until both ONEE certificates are filed; the description is the page model's
+ * decided copy.
+ */
+async function realisationsContext() {
+  return getRubriquePageContext(KEY)
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { model, seo } = await realisationsContext()
+  requireCopy(model)
+  return pageMetadata(seo)
+}
+
 export default async function Page() {
   await requirePublishedRubrique("realisations")
 
-  const [page, domains] = await Promise.all([
-    getPageDocument(KEY),
+  const [{ model, seo }, domains] = await Promise.all([
+    realisationsContext(),
     getPublishedDomains(),
   ])
 
   return (
     <>
-      <PageJsonLd seo={await realisationsSeo()} />
-      <RealisationsPage page={requireCopy(page)} domains={domains} />
+      <PageJsonLd seo={seo} />
+      <RealisationsPage page={requireCopy(model)} domains={domains} />
     </>
   )
 }
