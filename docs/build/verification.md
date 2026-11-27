@@ -364,6 +364,11 @@ import a component and never assert class names or call order.
   `getContentSource()`;
 - every frontend page calls its `requirePublishedRubrique()` /
   `requirePublishedDomain()` / `requirePublishedCaseStudy()` guard first;
+- the rubrique registry has one definition: `lib/site/rubriques.ts` and the
+  Payload `lib/payload/content-map.ts` both derive from the pure
+  `lib/site/rubrique-registry.ts`, and no literal mirror may return;
+- the public-media rights rule has one definition (`lib/content/media-rights.ts`)
+  used by both providers and by the Payload publish hook;
 - there is no root `app/layout.tsx` (the embedded Payload admin needs its own
   root layout) and `app/global-not-found.tsx` exists.
 
