@@ -21,6 +21,27 @@ The audit is **not a second gate**. `npm test` remains the single HTTP suite
 `scripts/audit/**` and is run explicitly. The existing HTTP suite was not
 weakened: it is unchanged and green.
 
+## 0. Merge gate — PASS (run on the committed branch tip)
+
+Run from this worktree on the final committed tip of
+`feat/ticket-33-verification`:
+
+```bash
+rm -rf .next && npm run typecheck && npm run lint && TEST_HTTP_PORT=3133 npm test
+```
+
+- `npm run typecheck` — PASS (no diagnostics);
+- `npm run lint` — PASS (no errors/warnings);
+- `TEST_HTTP_PORT=3133 npm test` — **PASS, all 6 scenario groups** (`p1`, `p2`,
+  `p3`, `p1-gates-closed`, `p1-recrutement`, `p1-hero-image`), each from a clean
+  `next build`: 20 test files per scenario, **199 passed / 1 skipped**
+  (`p1-gates-closed`: 187 passed / 13 skipped), suite duration 7.8–8.9 s per
+  scenario. The suite is unchanged and still browser- and database-free.
+
+The committed tip differs from the audited commit only by this report, the
+evidence files and `scripts/audit/lighthouse.mjs` (an audit tool that `npm test`
+never loads); application and test code are identical to the audited tree.
+
 Evidence files committed next to this report:
 
 | File | Contents |
