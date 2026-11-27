@@ -67,23 +67,19 @@ const LEGACY_REDIRECTS: readonly LegacyRedirect[] = [
   { source: "/project/", destination: "/realisations" },
   // Slash variant of the new contact page; `/contact` stays the 200 target.
   { source: "/contact/", destination: "/contact" },
-  // Old sitemap surfaces → the one canonical sitemap.
-  { source: "/sitemaps.xml", destination: "/sitemap.xml" },
-  { source: "/sitemaps.xml/", destination: "/sitemap.xml" },
-  { source: "/sitemap_index.xml", destination: "/sitemap.xml" },
-  { source: "/sitemap_index.xml/", destination: "/sitemap.xml" },
-  { source: "/wp-sitemap.xml", destination: "/sitemap.xml" },
-  { source: "/wp-sitemap.xml/", destination: "/sitemap.xml" },
-  { source: "/page-sitemap1.xml", destination: "/sitemap.xml" },
-  { source: "/page-sitemap1.xml/", destination: "/sitemap.xml" },
-  { source: "/post-sitemap1.xml", destination: "/sitemap.xml" },
-  { source: "/post-sitemap1.xml/", destination: "/sitemap.xml" },
-  { source: "/category-sitemap1.xml", destination: "/sitemap.xml" },
-  { source: "/category-sitemap1.xml/", destination: "/sitemap.xml" },
   // File paths with a trailing slash normalise to the file (§7.5).
   { source: "/robots.txt/", destination: "/robots.txt" },
   { source: "/sitemap.xml/", destination: "/sitemap.xml" },
 ] as const
+
+/*
+ * The old WordPress sitemap files (`/sitemaps.xml`, `/sitemap_index.xml`,
+ * `/wp-sitemap.xml`, `/page-sitemap1.xml`, `/post-sitemap1.xml`,
+ * `/category-sitemap1.xml`) are **410s, not 301s**: the spec
+ * (docs/spec/p1-website-build.md §"SEO, metadata and redirects") retires the
+ * old sitemaps permanently, and a redirect cannot express 410 — they live in
+ * `proxy.ts`'s 410 map like the other dead WordPress structures.
+ */
 
 /*
  * The case variants (`/Company/`, `/SERVICES/`, `/PROJECTS/`, `/CONTACT/`) and

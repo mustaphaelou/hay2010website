@@ -44,7 +44,7 @@ const REGISTERED_ADDRESS = "Local N° 21, Hay El Manzeh, Hay Er-Riad, Rabat — 
 /** The contact page's approved metadata (docs/seo/seo-metadata.md §3.3). */
 const CONTACT_TITLE = "Contact à Rabat — HAY2010"
 const CONTACT_DESCRIPTION =
-  "Contactez HAY2010 à Rabat : Local N° 21, Hay El Manzeh, Hay Er-Riad. Écrivez-nous pour vos projets d’éclairage public. Devis sur demande."
+  "Contactez HAY2010 à Rabat\u00a0: Local N° 21, Hay El Manzeh, Hay Er-Riad. Écrivez-nous pour vos projets d’éclairage public. Devis sur demande."
 
 /** H2 section headings, in served order (generic content-blocks check). */
 const SECTION_HEADINGS = [

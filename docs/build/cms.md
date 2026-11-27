@@ -72,7 +72,9 @@ globals/Carrieres.ts               Carrières trame (openings come from `jobs`)
 globals/Actualites.ts              gated Actualités listing trame (model only)
 access/roles.ts                    Access/FieldAccess predicates (the role matrix)
 lib/payload/media-rights.ts        rights validation + publish media gate (collections & globals)
-lib/payload/content-map.ts         code-owned map: rubrique→global, tiers, gate reasons, domain keys
+lib/site/rubrique-registry.ts      pure rubrique registry: key, title, nav/admin label, route, tier
+lib/payload/content-map.ts         code-owned map: rubrique→global, gate reasons, domain keys; derives
+                                   labels/tiers from the registry
 lib/payload/link-targets.ts        code-owned internal-link enum (no free URLs in the CMS)
 lib/payload/fields.ts              shared field builders (seo group, rich text, CTA, items)
 lib/payload/rich-text.ts           Lexical paragraphs ⇄ plain paragraphs (seed/provider)
@@ -176,7 +178,8 @@ Modelled nowhere in Payload, therefore impossible to edit from the admin:
 - the homepage « repères » band (`lib/site/facts.ts`, injected by the provider);
 - the qualification position and the case-study gate (`lib/site/realisations.ts`);
 - navigation labels/order, routes, tiers and gate reasons
-  (`lib/site/rubriques.ts`, `lib/payload/content-map.ts`);
+  (`lib/site/rubrique-registry.ts`, re-exported by `lib/site/rubriques.ts`;
+  `lib/payload/content-map.ts` derives its labels/tiers from it);
 - SEO patterns/defaults (`lib/seo/*`: canonical origin, title template, launch
   metadata table — #32 delivered the system, the CMS stores no default);
 - the F-113 careers mailbox state and the internal-link destinations
@@ -445,7 +448,8 @@ rewrites a closed route to the branded `/_not-found` document without touching a
 database.
 
 In CMS mode the proxy stays **database-free** and resolves only the
-**code-owned** gates, which are literals in `lib/payload/content-map.ts`:
+**code-owned** gates, whose constants live in `lib/payload/content-map.ts`
+(labels and tiers derived from the pure `lib/site/rubrique-registry.ts`):
 
 - P2/P3 rubrique routes → closed (a CMS record could never open a tier);
 - `/domaines-activite/{slug}` → closed for a code-gated domain or an unknown

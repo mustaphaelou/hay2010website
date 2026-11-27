@@ -199,20 +199,30 @@ scenario (the gate command builds every scenario itself).
 
 ## 4. The rubrique registry
 
-`lib/site/rubriques.ts` — code-owned:
+The registry is split in two, on purpose:
 
-```ts
-RUBRIQUES: readonly RubriqueEntry[]   // 8 CDC rubriques in CDC order + 3 utilities
-getRubrique(key)
-getPublishState(key)                  // through the seam
-getPublishedRubriques()               // ordered, published only
-getPublishedNavigation()              // inNavigation rubriques as NavigationItem[]
-getPublishedUtilities()               // Carrières + legal, published only
-```
+- `lib/site/rubrique-registry.ts` — **pure data** (no Next, no Payload, no
+  content-seam import): `RUBRIQUE_REGISTRY` holds the code-owned keys, CDC
+  titles, nav labels, admin labels, routes and tiers for the 8 CDC rubriques in
+  CDC order + 3 utilities. `lib/payload/content-map.ts` derives the admin labels
+  and tier gates from it, so the CMS side never mirrors a literal copy.
+- `lib/site/rubriques.ts` — the **seam half**: `RUBRIQUES` (the same registry),
+  `getRubrique(key)`, `getPublishState(key)` (through the seam),
+  `getPublishedRubriques()`, `getPublishedNavigation()`,
+  `getPublishedUtilities()`.
 
 Rows are derived, never hardcoded: the P1 row is five items, P2 adds `Moyens`
 and `Références`, P3 adds `Actualités`. A gated entry disappears from every
 surface at once because every surface calls one of these functions.
+
+**Gate policy vs gate state.** The spec's "key, title, label, route, tier and
+gate" is satisfied by the pair: the code-owned registry carries the gate
+*policy* (the tier, plus the code-owned gate reasons the admin shows), while the
+gate *state* comes from the content source — a fixture scenario or the CMS
+publish state — combined with the code-owned tier gates (P2/P3 rubriques and the
+gated domain slugs stay closed whatever the content says). It is
+outcome-equivalent and intentionally split: the CMS can close a published page
+but can never open a code-gated one.
 
 ---
 
@@ -321,7 +331,6 @@ app/
     layout.tsx          ← site root layout: <html lang="fr">, fonts, chrome
     page.tsx            ← /
     a-propos/…  domaines-activite/…  realisations/…  contact/…
-    prototype/homepage/… (kept, noindex)
     sitemap.ts
   (payload)/            ← #29: Payload admin root layout
   global-not-found.tsx  ← full 404 document

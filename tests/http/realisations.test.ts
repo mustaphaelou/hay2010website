@@ -54,7 +54,7 @@ const UNKNOWN_CASE_STUDY = "/realisations/un-autre-projet"
  */
 const TITLE = "Réalisations et références — HAY2010"
 const DESCRIPTION =
-  "Références de HAY2010 en éclairage public et électrification : méthode de projet et références transmises sur demande. Plus de 10 ans d’expérience."
+  "Références de HAY2010 en éclairage public et électrification\u00a0: méthode de projet et références transmises sur demande. Plus de 10 ans d’expérience."
 
 /** Approved reference wording (facts register §2.2, strategy §2.1). */
 const REFERENCES_STATEMENT = "Références sur demande."

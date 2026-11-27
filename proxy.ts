@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server"
 
 import { getContentSource } from "@/lib/content"
 import { isStaging } from "@/lib/flags"
+import { normalisePathname } from "@/lib/site/paths"
 import { resolveRouteGate } from "@/lib/site/route-gate"
 
 /**
@@ -109,19 +110,19 @@ const GONE_PATH_PATTERNS: readonly RegExp[] = [
   /^\/wp-content(?:\/.*)?$/,
   /^\/wp-includes(?:\/.*)?$/,
   /^\/sitemaps\.xsl$/,
+  // Old WordPress sitemap files (spec §"SEO, metadata and redirects"): retired
+  // with 410, never redirected to the new `/sitemap.xml`.
+  /^\/sitemaps\.xml$/,
+  /^\/sitemap_index\.xml$/,
+  /^\/wp-sitemap\.xml$/,
+  /^\/page-sitemap1\.xml$/,
+  /^\/post-sitemap1\.xml$/,
+  /^\/category-sitemap1\.xml$/,
   /^\/sample-page$/,
   // Pagination at the root and old search routes.
   /^\/page\/\d+$/,
   /^\/search(?:\/.*)?$/,
 ]
-
-/** Reduce a pathname to the canonical no-slash form used by the maps. */
-function normalizePathname(pathname: string): string {
-  if (pathname.length > 1 && pathname.endsWith("/")) {
-    return pathname.replace(/\/+$/, "")
-  }
-  return pathname
-}
 
 /** Attach the staging noindex directive to a response when needed. */
 function markStaging(response: NextResponse, staging: boolean): NextResponse {
@@ -193,7 +194,7 @@ async function actualitesLive(): Promise<boolean> {
  */
 function legacyQueryOutcome(request: NextRequest): "home" | "gone" | null {
   const { searchParams } = request.nextUrl
-  const path = normalizePathname(request.nextUrl.pathname)
+  const path = normalisePathname(request.nextUrl.pathname)
 
   // Old home shortlink: keep the value, land on the homepage.
   if (path === "/" && searchParams.get("p") === "143") return "home"
@@ -238,7 +239,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   if (query === "gone") return goneResponse(staging)
 
   // `/blog/` and children: 410 until Actualités is live, then 301 (§7.3).
-  const path = normalizePathname(pathname)
+  const path = normalisePathname(pathname)
   if (path === "/blog" || path.startsWith("/blog/")) {
     if (await actualitesLive()) return permanentRedirect(request, "/actualites")
     return goneResponse(staging)
@@ -256,7 +257,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   if (pathname !== "/" && pathname.endsWith("/")) {
     // Build the absolute string, not a cloned NextURL: its cached slash flag
     // would re-add the trailing slash when the Location header is formatted.
-    const target = `${normalizePathname(pathname)}${request.nextUrl.search}`
+    const target = `${normalisePathname(pathname)}${request.nextUrl.search}`
     return markStaging(
       NextResponse.redirect(new URL(target, request.url), 308),
       staging

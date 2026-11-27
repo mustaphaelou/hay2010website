@@ -11,9 +11,10 @@ import { scenario } from "./scenarios"
  *   WordPress served with 200;
  * - §7.3: demo content and dead structures are **410** (no `Location`, minimal
  *   branded HTML, `X-Robots-Tag: noindex`) — posts, date archives, portfolio
- *   CPT, members, taxonomies, author, feeds, WooCommerce, WP assets, sitemap
- *   stylesheet, filler page, pagination, search and `/blog/` until Actualités
- *   is live;
+ *   CPT, members, taxonomies, author, feeds, WooCommerce, WP assets, the old
+ *   WordPress sitemap files, sitemap stylesheet, filler page, pagination,
+ *   search and `/blog/` until Actualités is live (the spec retires the old
+ *   sitemaps with 410: they have no replacement worth a 301);
  * - §7.5: WordPress query strings are handled (`/?p=143` and `/?s=` → 301
  *   home, the other `?p=`/`?page_id=`/… → 410, tracking parameters untouched);
  * - §2.3/§7.7: generic trailing-slash normalisation is permanent (Next 308)
@@ -71,19 +72,7 @@ const REDIRECTS_301: readonly Redirect[] = [
   { source: "/contact/", target: "/contact" },
   { source: "/CONTACT", target: "/contact" },
   { source: "/CONTACT/", target: "/contact" },
-  // Old sitemap files and the robots file path
-  { source: "/sitemaps.xml", target: "/sitemap.xml" },
-  { source: "/sitemaps.xml/", target: "/sitemap.xml" },
-  { source: "/sitemap_index.xml", target: "/sitemap.xml" },
-  { source: "/sitemap_index.xml/", target: "/sitemap.xml" },
-  { source: "/wp-sitemap.xml", target: "/sitemap.xml" },
-  { source: "/wp-sitemap.xml/", target: "/sitemap.xml" },
-  { source: "/page-sitemap1.xml", target: "/sitemap.xml" },
-  { source: "/page-sitemap1.xml/", target: "/sitemap.xml" },
-  { source: "/post-sitemap1.xml", target: "/sitemap.xml" },
-  { source: "/post-sitemap1.xml/", target: "/sitemap.xml" },
-  { source: "/category-sitemap1.xml", target: "/sitemap.xml" },
-  { source: "/category-sitemap1.xml/", target: "/sitemap.xml" },
+  // The file-path trailing slash normalises to the file.
   { source: "/robots.txt/", target: "/robots.txt" },
   { source: "/sitemap.xml/", target: "/sitemap.xml" },
 ] as const
@@ -131,6 +120,15 @@ const GONE_410: readonly string[] = [
   "/wp-content/uploads/2026/01/demo.jpg",
   "/wp-includes/css/dist/block-library/style.css",
   "/sitemaps.xsl",
+  // Old WordPress sitemap files (spec §"SEO, metadata and redirects"): 410, not
+  // a 301 to the new sitemap — the old surfaces are retired permanently.
+  "/sitemaps.xml",
+  "/sitemaps.xml/",
+  "/sitemap_index.xml",
+  "/wp-sitemap.xml",
+  "/page-sitemap1.xml",
+  "/post-sitemap1.xml",
+  "/category-sitemap1.xml",
   "/sample-page/",
   // Pagination and search
   "/page/2/",

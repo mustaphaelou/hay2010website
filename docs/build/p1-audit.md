@@ -288,13 +288,16 @@ sitemap equals the expected published set exactly (`p1` 11, `p2`/`p3` 13,
 gated route answers **404**, `/en` and the unknown route answer 404, and no
 audited route answers a redirect or 5xx.
 
-**Out-of-P1-scope observation (reported, not hidden).** `/prototype/homepage` is
+**Out-of-P1-scope observation (reported, not hidden).** `/prototype/homepage` was
 the #13 throwaway design prototype: served 200, `noindex,nofollow`, unlinked,
-absent from the sitemap, robots and the P1 matrix. It is outside this ticket's
-route scope, but its `?variant=b` rendering still shows prototype-only
-« Agréments ONEE — publication en attente des certificats » wording. It is a
-**residual to clean up before launch** (removal or replacement is an app-file
-change outside this ticket's review scope; see §8 Gaps).
+absent from the sitemap, robots and the P1 matrix. It was outside this ticket's
+route scope, but its `?variant=b` rendering showed prototype-only
+« Agréments ONEE — publication en attente des certificats » wording. **Removed
+from the shipped app in the review-fix pass** (`fix/p1-review`): it sat outside
+the P1 route set and carried provisional claim wording, so the public app no
+longer serves it. The design prototype itself is preserved in git history and on
+the `prototype/homepage` branch, with its evidence under `docs/homepage/`; the
+claims evidence JSON below predates the removal and is kept as the audit record.
 
 ## 6. No analytics, cookie banner or form element — PASS
 
@@ -392,41 +395,32 @@ Stated so they are not mistaken for failures — and not claimed as passes:
   exists yet; CDN caching, edge analytics absence and production security
   headers were not observed.
 
-## 10. CI: CMS suite wiring decision (documented gap)
+## 10. CI: CMS suite wiring
 
 `docs/build/verification.md` and `docs/build/cms.md` document `npm test` as the
-merge gate and `npm run test:cms` as the separate CMS acceptance check. Ticket
-#33 offered to wire the CMS suite into the GitHub Actions `verify` job
-("GitHub Actions has Docker + the postgres service") if reliable. **It is
-left unwired and documented here instead**, because:
+merge gate and `npm run test:cms` as the separate CMS acceptance check. This
+audit originally left the CMS suite unwired and documented the exact step
+instead (it could not be verified from this environment, and folding two more
+production builds into `verify` risked its 30-minute timeout). The review-fix
+pass wired it as its **own job**, which resolves both concerns:
 
-1. it cannot be verified from this environment — editing `.github/workflows/ci.yml`
-   without running a GitHub runner would ship an untested CI change;
-2. the `verify` job already has a 30-minute timeout with six scenario builds,
-   the ops checks and the backup/restore rehearsal; `npm run test:cms` adds two
-   more production builds plus migrations, seed and the CMS suite (~4–6 min on
-   this host), which is a real timeout risk on a shared ARM runner;
-3. Docker availability in that job is proven (the backup rehearsal runs
-   `postgres:16-alpine`), so the only uncertainty is runtime, not capability.
+- `.github/workflows/ci.yml` has a `cms` job that `needs: verify`, runs on
+  `ubuntu-24.04-arm` (Docker is proven there by the backup rehearsal), does
+  `npm ci` then `npm run test:cms`, and has its own `timeout-minutes: 30`;
+- it adds no secrets and no extra service: the script starts its own disposable
+  `postgres:16-alpine` container on port 5530 and removes it afterwards;
+- the database-free `verify` job stays the fast, first-line gate, and a red CMS
+  suite now blocks the merge instead of being a documented gap.
 
-If the lead accepts the timeout headroom, the exact step to add after "Build
-and run the HTTP suite" is:
-
-```yaml
-      - name: Fixture-vs-CMS parity and CMS acceptance
-        run: npm run test:cms
-```
-
-It needs no extra service (the script starts its own container on port 5530)
-and leaves no artefacts.
+The workflow is validated with `actionlint` (1.7.7) on all three workflow files.
 
 ## 11. Findings carried by this audit
 
 | Finding | Status |
 | --- | --- |
 | Legal-page tables were horizontally scrollable but not keyboard-reachable (axe `scrollable-region-focusable`, 2 nodes) | **Fixed** in the audited tree (`components/site/legal-document.tsx`); 0 axe violations after |
-| `/prototype/homepage?variant=b` renders prototype-only ONEE/agrément wording on a public, `noindex` URL | **Outside the P1 matrix**; flagged for removal/replacement before launch (§5). App-file change not made here |
+| `/prototype/homepage?variant=b` renders prototype-only ONEE/agrément wording on a public, `noindex` URL | **Fixed** in the review-fix pass: the prototype route was removed from the shipped app (outside the P1 route set, provisional claim wording). Preserved in git history / `prototype/homepage` branch |
 | Lab TBT proxy is sensitive to host contention | **Method note**: only the idle-host run is committed (88.5–103.5 ms); field INP must still be measured after launch (§4, §9) |
-| `npm run test:cms` not wired into CI | **Documented gap** with the exact step (§10) |
-| Flaky `tests/cms` media-revalidation assertion (1/35 on one run, clean on rerun) | **Reported** as a #30 test race, not a product regression; parity unaffected (§1) |
+| `npm run test:cms` not wired into CI | **Fixed** in the review-fix pass: dedicated `cms` CI job (`needs: verify`, ARM64 runner, 30 min) — see §10 |
+| Flaky `tests/cms` media-revalidation assertion (1/35 on one run, clean on rerun) | **Fixed** in the review-fix pass: the three media-rights tests poll the served page for a bounded 5 s instead of one immediate GET racing the revalidation hook; the assertions are unchanged |
 | `npm test` unchanged and browser-free; no second runner added; `scripts/audit/**` is committed and explicit | **Done** |

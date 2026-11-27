@@ -18,7 +18,14 @@
  *    media, and the media collection's public read access filters anonymous
  *    reads to `rightsStatus: cleared`, so a revocation hides the image on the
  *    next render even if a hook missed a path.
+ *
+ * The visibility rule itself — "this image may appear on the public site" — is
+ * defined once, at the seam level (`lib/content/media-rights.ts`), and is
+ * applied by both providers and by `mediaIsCleared` below; this module only
+ * adds the admin-side save-time validation and the publish hooks around it.
  */
+import { mediaRightsCleared } from "../content/media-rights"
+import type { MediaRights } from "../content/types"
 import { Forbidden, ValidationError } from "payload"
 import type {
   CollectionBeforeChangeHook,
@@ -84,13 +91,45 @@ export function mediaRightsProblems(media: MediaRightsValues): RightsProblem[] {
   return problems
 }
 
+/** Map the admin's rights fields onto the seam rights model. */
+function toSeamRights(media: MediaRightsValues): MediaRights {
+  return {
+    status:
+      media.rightsStatus === "cleared"
+        ? "cleared"
+        : media.rightsStatus === "revoked"
+          ? "revoked"
+          : "pending",
+    basis: "unknown",
+    permissionReference: media.rightsReference?.trim() || undefined,
+    peoplePresent: media.peoplePresent === true,
+    releaseStatus:
+      media.releaseStatus === "cleared"
+        ? "cleared"
+        : media.releaseStatus === "pending"
+          ? "pending"
+          : "not-required",
+    clientMarks: media.clientMarks === true,
+    clientPermission: media.clientPermission === true,
+    trademarkPermission: media.trademarkPermission === true,
+  }
+}
+
 /**
- * The single definition of "this image may appear on the public site". The
- * content adapter applies the same rule to records it reads, so the seam and
- * the admin can never disagree.
+ * May this media record be attached to published content?
+ *
+ * The visibility rule is the seam predicate (`mediaRightsCleared`,
+ * lib/content/media-rights.ts) — the exact rule the providers apply when they
+ * read media — so the admin and the rendered site can never disagree. On top of
+ * it, the admin requires coherent evidence (`mediaRightsProblems`): a
+ * `cleared` record must name its rights reference, which is a save-time
+ * validation the seam record does not need to judge.
  */
 export function mediaIsCleared(media: MediaRightsValues): boolean {
-  return media.rightsStatus === "cleared" && mediaRightsProblems(media).length === 0
+  return (
+    mediaRightsCleared(toSeamRights(media)) &&
+    mediaRightsProblems(media).length === 0
+  )
 }
 
 /** Throw a Payload `ValidationError` for coherent rights evidence. */

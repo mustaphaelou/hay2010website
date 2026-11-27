@@ -3,9 +3,9 @@ import { notFound } from "next/navigation"
 
 import { PageJsonLd } from "@/components/seo/page-json-ld"
 import { ContactPage } from "@/components/site/contact-page"
-import { getContentSource } from "@/lib/content"
-import { pageMetadata, resolvePageSeo } from "@/lib/seo"
+import { pageMetadata } from "@/lib/seo"
 import { requirePublishedRubrique } from "@/lib/site/gates"
+import { getRubriquePageContext } from "@/lib/site/page-context"
 
 /**
  * /contact — the email-first contact page (ticket #26).
@@ -20,27 +20,25 @@ import { requirePublishedRubrique } from "@/lib/site/gates"
  * content-seam contract (docs/build/content-seam.md §"Gate semantics").
  */
 
-/** Unique metadata (#32): the decided title and the page model's description. */
-async function contactSeo() {
-  const source = await getContentSource()
-  const page = await source.getPage("contact")
-  return resolvePageSeo({ path: "/contact", description: page?.description })
+/** The page model and its metadata, read once (#32: the decided title and the page model's description). */
+async function contactContext() {
+  return getRubriquePageContext("contact")
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  return pageMetadata(await contactSeo())
+  const { seo } = await contactContext()
+  return pageMetadata(seo)
 }
 
 export default async function Page() {
   await requirePublishedRubrique("contact")
 
-  const source = await getContentSource()
-  const page = await source.getPage("contact")
+  const { model: page, seo } = await contactContext()
   if (!page) notFound()
 
   return (
     <>
-      <PageJsonLd seo={await contactSeo()} />
+      <PageJsonLd seo={seo} />
       <ContactPage page={page} />
     </>
   )

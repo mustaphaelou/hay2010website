@@ -2,9 +2,10 @@ import type { Metadata } from "next"
 
 import { DomainePage } from "@/components/domaines/domaine-page"
 import { PageJsonLd } from "@/components/seo/page-json-ld"
-import { pageMetadata, resolvePageSeo } from "@/lib/seo"
-import { getDomainPath, getPublishedDomain, getPublishedDomains } from "@/lib/site/domaines"
+import { pageMetadata } from "@/lib/seo"
+import { getPublishedDomain, getPublishedDomains } from "@/lib/site/domaines"
 import { requirePublishedDomain } from "@/lib/site/gates"
+import { domainPageSeo } from "@/lib/site/page-context"
 
 /**
  * A published domaine d'activité page (ticket #22).
@@ -30,24 +31,14 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
  * The domain document owns the phrase and the decided description; a document
  * without a description falls back to the generated metadata default.
  */
-async function domainSeo(slug: string) {
-  const domain = await getPublishedDomain(slug)
-  if (!domain) return null
-  return resolvePageSeo({
-    path: getDomainPath(slug),
-    phrase: domain.title,
-    description: domain.description,
-  })
-}
-
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   const { slug } = await params
-  const seo = await domainSeo(slug)
-  return seo ? pageMetadata(seo) : {}
+  const domain = await getPublishedDomain(slug)
+  return domain ? pageMetadata(domainPageSeo(domain)) : {}
 }
 
 export default async function Page({
@@ -57,11 +48,11 @@ export default async function Page({
 }) {
   const { slug } = await params
   const domain = await requirePublishedDomain(slug)
-  const seo = await domainSeo(slug)
+  const seo = domainPageSeo(domain)
 
   return (
     <>
-      {seo ? <PageJsonLd seo={seo} /> : null}
+      <PageJsonLd seo={seo} />
       <DomainePage domain={domain} />
     </>
   )

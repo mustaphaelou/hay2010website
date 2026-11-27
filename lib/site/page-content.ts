@@ -1,10 +1,10 @@
 /**
  * Page-document lookup for page tickets — always through the content seam.
  *
- * Page files call this after their gate guard to read their own document
- * (`title`, `description`, `blocks`). It never touches a provider directly:
- * `lib/content/index.ts` remains the only door to content
- * (docs/build/content-seam.md §1).
+ * Page files reach it through `lib/site/page-context.ts` after their gate guard
+ * to read their own document (`title`, `description`, `blocks`). It never
+ * touches a provider directly: `lib/content/index.ts` remains the only door to
+ * content (docs/build/content-seam.md §1).
  */
 import { getContentSource } from "@/lib/content"
 import type { PageDocument, RubriqueKey } from "@/lib/content/types"

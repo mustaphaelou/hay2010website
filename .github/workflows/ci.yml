@@ -6,11 +6,14 @@
 #                checks (staging noindex + robots, forms floor, /api/health with
 #                and without a database) and a real Postgres backup/restore
 #                rehearsal. Every merge is blocked on this job.
-#   2. image   — one ARM64 image per merge, built natively on ubuntu-24.04-arm
+#   2. cms     — the CMS acceptance check (`npm run test:cms`): disposable
+#                Postgres, migrations from empty, idempotent seed, fixture-vs-CMS
+#                parity and tests/cms over HTTP. Blocked on `verify`.
+#   3. image   — one ARM64 image per merge, built natively on ubuntu-24.04-arm
 #                (no QEMU, explicit platform linux/arm64), push-only, tagged with
 #                the full commit sha and nothing mutable. The sha tag is the
 #                rollback unit.
-#   3. deploy  — Coolify: PATCH the application's image tag to this sha, POST the
+#   4. deploy  — Coolify: PATCH the application's image tag to this sha, POST the
 #                deploy, then poll the deployment until it finishes. The official
 #                deploy webhook cannot pin a sha, hence PATCH-then-deploy.
 #
@@ -105,6 +108,37 @@ jobs:
       # Real postgres:16-alpine container, real dump, real restore, verified rows.
       - name: Backup and restore rehearsal
         run: bash scripts/rehearse-backup-restore.sh
+
+  cms:
+    name: CMS acceptance (migrations, seed, fixture parity, tests/cms)
+    # The spec's deployment/ownership section and #31's "runs the full suite and
+    # blocks on failure" make the CMS surface part of the merge gate. It runs
+    # after the database-free `verify` job so a red HTTP suite fails fast, and it
+    # needs a Docker daemon for its disposable `postgres:16-alpine` container —
+    # available on GitHub's ARM64 runner, the same architecture as the VPS.
+    needs: verify
+    runs-on: ubuntu-24.04-arm
+    # ~7 min of builds and servers on this host; 30 min leaves headroom for the
+    # Postgres image pull without letting a hung job run for hours.
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install
+        run: npm ci --no-audit --no-fund
+
+      # `npm run test:cms` starts its own disposable Postgres container, applies
+      # the committed migrations from empty, seeds twice (idempotence check),
+      # builds both providers, compares the fixture and CMS route matrices, runs
+      # tests/cms over HTTP, then removes the container, uploads and builds.
+      # No secrets: the database, Payload secret and ports are local and fixed.
+      - name: CMS acceptance
+        run: npm run test:cms
 
   image:
     name: Build ARM64 image and push to GHCR

@@ -171,8 +171,8 @@ Rules: absolute apex URLs via `absoluteUrl()`, no trailing slash, no query, no
 `lastModified` in P1 (the corpus has no real update date; a build timestamp is
 fake churn), no `changeFrequency`/`priority`, no image/video extension, no
 sitemap index. The gated named-case-study family has no record and therefore no
-entry; `/en`, `/admin`, `/api`, `/preview`, the prototype, redirects, 404s/410s
-and assets are never listed. #30 revalidates `/sitemap.xml` on publish.
+entry; `/en`, `/admin`, `/api`, `/preview`, redirects, 404s/410s and assets are
+never listed. #30 revalidates `/sitemap.xml` on publish.
 
 Expected set by scenario (asserted exactly): `p1`, `p1-gates-closed` and
 `p1-recrutement` list the nine P1 pages + three domains (eleven URLs);
@@ -191,10 +191,17 @@ string, or match case-sensitively).
 
 `/company/` → `/a-propos` · `/services/` and its four demo children →
 `/domaines-activite` · `/projects/`, `/project/` (archive) → `/realisations` ·
-`/contact/` → `/contact` (the 200 target; `/contact` is never a source) · the
-old sitemap files (`/sitemaps.xml`, `/sitemap_index.xml`, `/wp-sitemap.xml`,
-`/page-sitemap1.xml`, `/post-sitemap1.xml`, `/category-sitemap1.xml`) →
-`/sitemap.xml` · `/robots.txt/` and `/sitemap.xml/` → the file path.
+`/contact/` → `/contact` (the 200 target; `/contact` is never a source) ·
+`/robots.txt/` and `/sitemap.xml/` → the file path.
+
+The old WordPress sitemap files (`/sitemaps.xml`, `/sitemap_index.xml`,
+`/wp-sitemap.xml`, `/page-sitemap1.xml`, `/post-sitemap1.xml`,
+`/category-sitemap1.xml`) are **not** in this 301 table: the spec
+(`docs/spec/p1-website-build.md` §"SEO, metadata and redirects") retires old
+sitemaps with **410**, which a Next redirect cannot express, so they live in the
+proxy's 410 map below. That deliberately supersedes the SEO decision record's
+earlier 301 mapping for those six files (§7.2 of `docs/seo/seo-metadata.md`):
+the spec is the governing decision, and `/sitemap.xml` itself still answers 200.
 
 Both slash and no-slash sources are listed, with `statusCode: 301` (not
 `permanent: true`, which emits 308). `skipTrailingSlashRedirect` is enabled so
@@ -209,8 +216,11 @@ Posts and date archives (`/YYYY/…`), `/project/{slug}` records (the archive is
 301), `/member/*`, `/category/*`, `/tag/*`, `/author/*`, feeds
 (`/feed*`, `/comments/feed`), WooCommerce (`/shop*`, `/cart`, `/my-account`,
 `/checkout`, `/product*`, `/product-category*`), WordPress assets
-(`/wp-content/*`, `/wp-includes/*`), `/sitemaps.xsl`, `/sample-page`,
-`/page/:n`, `/search*`, and `/blog/` + children until Actualités is live.
+(`/wp-content/*`, `/wp-includes/*`), the six old WordPress sitemap files
+(`/sitemaps.xml`, `/sitemap_index.xml`, `/wp-sitemap.xml`,
+`/page-sitemap1.xml`, `/post-sitemap1.xml`, `/category-sitemap1.xml`),
+`/sitemaps.xsl`, `/sample-page`, `/page/:n`, `/search*`, and `/blog/` + children
+until Actualités is live.
 
 The 410 response is a minimal branded HTML document (ink/paper, French), status
 410, `X-Robots-Tag: noindex` (staging also `nofollow`), `Cache-Control:

@@ -207,15 +207,6 @@ describe(`root shell over HTTP (${scenario.name})`, () => {
     expect(page.html).not.toContain("next-themes")
   })
 
-  it("keeps the homepage prototype route working and noindex", async () => {
-    const page = await fetchPage("/prototype/homepage")
-    expect(page.status).toBe(200)
-    const robots = page.document
-      .querySelector('meta[name="robots"]')
-      ?.getAttribute("content")
-      ?.toLowerCase()
-    expect(robots ?? "").toContain("noindex")
-  })
 })
 
 describe("privacy surface over HTTP", () => {

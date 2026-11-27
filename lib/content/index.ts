@@ -43,7 +43,3 @@ async function createContentSource(): Promise<ContentSource> {
   return getCmsContentSource()
 }
 
-/** Test seam: drop the resolved source (only used by provider unit checks). */
-export function resetContentSourceForTests(): void {
-  sourcePromise = null
-}

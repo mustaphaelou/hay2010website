@@ -8,9 +8,10 @@
  *   §5: no `localization` config at P1);
  * - the committed migration must be environment-independent (the S3 plugin's
  *   `_objectkey` column is present, #29 rule) and must apply from an empty DB;
- * - the code-owned content map (literals that keep `payload.config.ts` free of
- *   the app graph) must match the runtime rubrique registry, so a tier or label
- *   can never drift silently between the CMS admin and the site navigation;
+ * - the code-owned content map (kept free of the app graph so
+ *   `payload.config.ts` stays loadable by the Payload CLI) derives its labels
+ *   and tier gates from the one pure rubrique registry, so a tier or label can
+ *   never drift silently between the CMS admin and the site navigation;
  * - the seed must reproduce the fixture corpus (it reads
  *   `content/fixtures/site.json` + the `p1` scenario), which is what makes the
  *   parity comparison meaningful.
@@ -91,18 +92,21 @@ describe("Payload schema (#30)", () => {
     }
   })
 
-  it("keeps the code-owned content map in sync with the rubrique registry", () => {
+  it("renders admin labels and tier gates derived from the rubrique registry", () => {
+    // The map now derives from the one pure registry
+    // (`lib/site/rubrique-registry.ts`); `tests/architecture.test.ts` guards the
+    // single definition. This re-checks the derived values the admin renders.
     for (const rubrique of RUBRIQUES) {
       expect(
         RUBRIQUE_TIERS[rubrique.key],
-        `tier drift for ${rubrique.key}: content-map must mirror lib/site/rubriques.ts`
+        `tier drift for ${rubrique.key}: the admin tier must match the registry`
       ).toBe(rubrique.tier)
       // The admin label follows the registry's nav label for P1 pages; P2/P3
       // labels use the longer CDC title because they are not in the P1 row.
       if (rubrique.tier === "P1") {
         expect(
           RUBRIQUE_LABELS[rubrique.key],
-          `label drift for ${rubrique.key}: the admin label must mirror the registry`
+          `label drift for ${rubrique.key}: the P1 admin label must match the nav label`
         ).toBe(rubrique.navLabel)
       } else {
         expect(RUBRIQUE_LABELS[rubrique.key].length).toBeGreaterThan(0)

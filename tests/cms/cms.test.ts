@@ -186,6 +186,28 @@ async function page(path: string): Promise<{ status: number; html: string }> {
   return { status: response.status, html: await response.text() }
 }
 
+/**
+ * Poll a public page until `predicate` holds.
+ *
+ * Payload's `afterChange` hooks revalidate Next's cached route asynchronously:
+ * a PATCH can return before the re-render lands, so one immediate GET can race
+ * the revalidation (observed once in 35 runs of the media-rights tests). A
+ * bounded poll keeps the assertion strict — the expected state must appear
+ * within the bound — instead of sleeping for a fixed delay or weakening it.
+ */
+async function waitForPage(
+  path: string,
+  predicate: (result: { status: number; html: string }) => boolean,
+  { attempts = 20, delayMs = 250 }: { attempts?: number; delayMs?: number } = {}
+): Promise<{ status: number; html: string }> {
+  let result = await page(path)
+  for (let attempt = 0; attempt < attempts && !predicate(result); attempt += 1) {
+    await new Promise((resolve) => setTimeout(resolve, delayMs))
+    result = await page(path)
+  }
+  return result
+}
+
 async function restJson<T>(response: Response): Promise<T> {
   return (await response.json()) as T
 }
@@ -705,7 +727,9 @@ describe("media without a recorded permission cannot reach published content", (
     })
     expect(attach.status).toBe(200)
 
-    const home = await page("/")
+    const home = await waitForPage("/", (result) =>
+      result.html.includes(PENDING_MEDIA_FILENAME)
+    )
     expect(home.status).toBe(200)
     expect(home.html).toContain(PENDING_MEDIA_FILENAME)
   })
@@ -721,7 +745,9 @@ describe("media without a recorded permission cannot reach published content", (
     // Observable behaviour per the decided rule: the image disappears from the
     // published page (the hero falls back to the typographic treatment), without
     // any rebuild — the media afterChange hook invalidated the route.
-    const home = await page("/")
+    const home = await waitForPage("/", (result) =>
+      !result.html.includes(PENDING_MEDIA_FILENAME)
+    )
     expect(home.status).toBe(200)
     expect(home.html).not.toContain(PENDING_MEDIA_FILENAME)
     expect(home.html).toContain(FIXTURE.homepageTitle)
@@ -740,7 +766,10 @@ describe("media without a recorded permission cannot reach published content", (
       _status: "published",
     })
     expect(detach.status).toBe(200)
-    expect((await page("/")).html).not.toContain(PENDING_MEDIA_FILENAME)
+    const restored = await waitForPage("/", (result) =>
+      !result.html.includes(PENDING_MEDIA_FILENAME)
+    )
+    expect(restored.html).not.toContain(PENDING_MEDIA_FILENAME)
   })
 })
 

@@ -98,7 +98,6 @@ import a component and never assert class names or call order.
   internal link;
 - footer identity: badge, registered address, `contact@hay2010.ma`, legal line;
   no phone, social, newsletter or recruitment mailbox;
-- prototype route still served and `noindex`;
 - privacy surface: no form control, no analytics script or API marker, no
   consent banner, no tracking cookie in `Set-Cookie`;
 - brand styling: palette tokens, shadcn semantic mapping, self-hosted Poppins
@@ -337,18 +336,19 @@ import a component and never assert class names or call order.
 - exactly the published, built set of the scenario (derived through the seam),
   one `urlset`, absolute apex HTTPS URLs without slash/query, every entry is the
   canonical 200 page it claims; no gated rubrique/domain, no
-  `/realisations/{slug}` family, no `/en`/admin/API/preview/prototype/legacy or
+  `/realisations/{slug}` family, no `/en`/admin/API/preview/legacy or
   asset URL; no fake `lastmod`, `changefreq`, `priority` or image/video
   extension; crawlable (200, XML, no staging header, referenced by robots.txt).
 
 `tests/http/legacy-urls.test.ts` (#32)
 
 - table-driven SEO §7 map: every legacy equivalent (pages, service children,
-  portfolio archive, sitemap files, file-path slashes) is a single-hop 301 to
-  its decided new route, whose target returns 200; the old shortlink/search
-  queries 301 to the homepage with the query dropped; demo posts/archives,
-  portfolio records, members, taxonomies, author, feeds, WooCommerce, WP assets,
-  the sitemap stylesheet, filler page, pagination, search and `/blog/` are 410
+  portfolio archive, file-path slashes) is a single-hop 301 to its decided new
+  route, whose target returns 200; the old shortlink/search queries 301 to the
+  homepage with the query dropped; demo posts/archives, portfolio records,
+  members, taxonomies, author, feeds, WooCommerce, WP assets, the six old
+  WordPress sitemap files (410 per the spec, not a 301), the sitemap
+  stylesheet, filler page, pagination, search and `/blog/` are 410
   (no `Location`, noindex, minimal French HTML with a home link and no
   canonical); the other WP query parameters are 410 while tracking parameters
   render 200; case variants 301; every trailing-slash variant normalises
@@ -364,6 +364,11 @@ import a component and never assert class names or call order.
   `getContentSource()`;
 - every frontend page calls its `requirePublishedRubrique()` /
   `requirePublishedDomain()` / `requirePublishedCaseStudy()` guard first;
+- the rubrique registry has one definition: `lib/site/rubriques.ts` and the
+  Payload `lib/payload/content-map.ts` both derive from the pure
+  `lib/site/rubrique-registry.ts`, and no literal mirror may return;
+- the public-media rights rule has one definition (`lib/content/media-rights.ts`)
+  used by both providers and by the Payload publish hook;
 - there is no root `app/layout.tsx` (the embedded Payload admin needs its own
   root layout) and `app/global-not-found.tsx` exists.
 

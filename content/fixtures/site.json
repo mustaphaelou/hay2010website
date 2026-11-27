@@ -185,13 +185,13 @@
     },
     "domaines-activite": {
       "title": "Nos domaines d’activité",
-      "description": "Les domaines d’activité de HAY2010 à Rabat : éclairage public, installations électriques CFO/CFA et réseaux HTA/MT et MT/BT avec postes de transformation.",
+      "description": "Les domaines d’activité de HAY2010 à Rabat\u00a0: éclairage public, installations électriques CFO/CFA et réseaux HTA/MT et MT/BT avec postes de transformation.",
       "blocks": [
         {
           "kind": "intro",
           "paragraphs": [
             "HAY2010 est une entreprise d’éclairage public et d’électrification basée à Rabat. Nos domaines d’activité couvrent les travaux d’éclairage public, les installations électriques et les infrastructures de réseaux électriques.",
-            "Chaque domaine dispose de sa propre page : prestations confirmées, méthode de travail, moyens et compétences, puis un contact direct pour votre projet."
+            "Chaque domaine dispose de sa propre page\u00a0: prestations confirmées, méthode de travail, moyens et compétences, puis un contact direct pour votre projet."
           ]
         },
         {
@@ -201,7 +201,7 @@
     },
     "realisations": {
       "title": "Réalisations",
-      "description": "Références de HAY2010 en éclairage public et électrification : méthode de projet et références transmises sur demande. Plus de 10 ans d’expérience.",
+      "description": "Références de HAY2010 en éclairage public et électrification\u00a0: méthode de projet et références transmises sur demande. Plus de 10 ans d’expérience.",
       "blocks": [
         {
           "kind": "hero",
@@ -256,7 +256,7 @@
             },
             {
               "label": "Pièces du dossier",
-              "description": "Chaque référence transmise s’appuie sur les pièces du dossier : contrat ou procès-verbal de réception."
+              "description": "Chaque référence transmise s’appuie sur les pièces du dossier\u00a0: contrat ou procès-verbal de réception."
             }
           ],
           "link": {
@@ -321,19 +321,19 @@
     },
     "contact": {
       "title": "Contact",
-      "description": "Contactez HAY2010 à Rabat : Local N° 21, Hay El Manzeh, Hay Er-Riad. Écrivez-nous pour vos projets d’éclairage public. Devis sur demande.",
+      "description": "Contactez HAY2010 à Rabat\u00a0: Local N° 21, Hay El Manzeh, Hay Er-Riad. Écrivez-nous pour vos projets d’éclairage public. Devis sur demande.",
       "blocks": [
         {
           "kind": "intro",
           "paragraphs": [
-            "Un projet d’éclairage public, de réseaux HTA/BT ou de CFO/CFA ? Décrivez votre besoin ; nous vous répondrons par e-mail.",
-            "Le site ne comporte pas de formulaire. Votre message part de votre logiciel de messagerie vers contact@hay2010.ma : il n’est pas enregistré par le site."
+            "Un projet d’éclairage public, de réseaux HTA/BT ou de CFO/CFA\u00a0? Décrivez votre besoin\u00a0; nous vous répondrons par e-mail.",
+            "Le site ne comporte pas de formulaire. Votre message part de votre logiciel de messagerie vers contact@hay2010.ma\u00a0: il n’est pas enregistré par le site."
           ]
         },
         {
           "kind": "contact-cta",
           "title": "Écrivez-nous",
-          "body": "Un e-mail suffit pour démarrer un échange. Le bouton ouvre votre logiciel de messagerie avec l’adresse de contact déjà renseignée ; l’adresse reste lisible et sélectionnable comme texte."
+          "body": "Un e-mail suffit pour démarrer un échange. Le bouton ouvre votre logiciel de messagerie avec l’adresse de contact déjà renseignée\u00a0; l’adresse reste lisible et sélectionnable comme texte."
         },
         {
           "kind": "sections",
@@ -345,11 +345,11 @@
             },
             {
               "title": "Le lieu et les travaux",
-              "body": "Précisez la commune ou le site concerné, et la nature des travaux : éclairage public, réseaux HTA/MT et MT/BT, postes de transformation, CFO/CFA."
+              "body": "Précisez la commune ou le site concerné, et la nature des travaux\u00a0: éclairage public, réseaux HTA/MT et MT/BT, postes de transformation, CFO/CFA."
             },
             {
               "title": "Les documents utiles",
-              "body": "Joignez les plans, photos ou documents dont vous disposez. N’envoyez ni pièce d’identité ni donnée sensible : elles ne sont pas nécessaires à l’étude de votre demande."
+              "body": "Joignez les plans, photos ou documents dont vous disposez. N’envoyez ni pièce d’identité ni donnée sensible\u00a0: elles ne sont pas nécessaires à l’étude de votre demande."
             },
             {
               "title": "Vos coordonnées",
@@ -363,7 +363,7 @@
           "items": [
             {
               "title": "Vous nous écrivez",
-              "body": "Votre message part de votre logiciel de messagerie vers l’adresse de contact ; aucun formulaire ne s’interpose."
+              "body": "Votre message part de votre logiciel de messagerie vers l’adresse de contact\u00a0; aucun formulaire ne s’interpose."
             },
             {
               "title": "Nous lisons votre demande",
@@ -467,7 +467,7 @@
     {
       "slug": "installations-electriques",
       "title": "Installations électriques",
-      "summary": "Les installations électriques CFO/CFA : tableaux, distribution, protection, câblage et mise en service.",
+      "summary": "Les installations électriques CFO/CFA\u00a0: tableaux, distribution, protection, câblage et mise en service.",
       "description": "HAY2010 réalise les installations électriques CFO/CFA : tableaux, distribution, protection, câblage et mise en service, pour collectivités et entreprises.",
       "blocks": [
         {

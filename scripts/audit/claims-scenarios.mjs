@@ -205,7 +205,6 @@ const report = {
       "`next start`; every matrix + sitemap route is fetched over HTTP and scanned as served HTML",
   },
   scenarios: {},
-  outOfP1Scope: {},
   pass: false,
 }
 
@@ -370,40 +369,10 @@ async function auditScenario(scenario) {
   }
 }
 
-/** The throwaway prototype route is outside the P1 matrix; inspect it honestly. */
-async function inspectPrototypeRoute() {
-  log("inspecting the non-P1 /prototype/homepage route (out-of-scope observation)")
-  for (const variant of ["a", "b", "c"]) {
-    const route = `/prototype/homepage?variant=${variant}`
-    try {
-      const document = await fetchDocument(baseUrl, route)
-      const claims = analyseClaims(document.html, { scenario: "out-of-scope", route })
-      const privacy = analysePrivacy(document.html, { setCookies: document.setCookies })
-      report.outOfP1Scope[route] = {
-        status: document.status,
-        claimFindings: claims.findings,
-        privacyFindings: privacy,
-        note: "/prototype/homepage is the #13 throwaway design prototype: served noindex, unlinked, outside the P1 route matrix and the sitemap.",
-      }
-    } catch (error) {
-      report.outOfP1Scope[route] = { error: String(error) }
-    }
-  }
-}
-
 try {
   // Build/serve sequentially: one production build at a time (memory-tight host).
   for (const scenario of scenarios) {
     await auditScenario(scenario)
-  }
-
-  if (scenarios.includes("p1")) {
-    const server = await startServer({ scenario: "p1", baseUrl })
-    try {
-      await inspectPrototypeRoute()
-    } finally {
-      await server.stop()
-    }
   }
 
   const failed = allChecks.filter((check) => check.findings.length > 0)

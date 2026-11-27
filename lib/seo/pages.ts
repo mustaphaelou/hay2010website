@@ -43,25 +43,25 @@ export const PAGE_SEO: Readonly<Record<string, PageSeoDefault>> = {
   "/a-propos": {
     phrase: "L’Entreprise, électricité et éclairage public",
     description:
-      "HAY2010, société d’électricité et d’éclairage public à Rabat : plus de 10 ans d’expérience au service des collectivités et des entreprises. Études et travaux.",
+      "HAY2010, société d’électricité et d’éclairage public à Rabat\u00a0: plus de 10 ans d’expérience au service des collectivités et des entreprises. Études et travaux.",
     webPageType: "AboutPage",
   },
   "/domaines-activite": {
     phrase: "Éclairage public, réseaux HTA/MT et CFO/CFA",
     description:
-      "Les domaines d’activité de HAY2010 à Rabat : éclairage public, installations électriques CFO/CFA et réseaux HTA/MT et MT/BT avec postes de transformation.",
+      "Les domaines d’activité de HAY2010 à Rabat\u00a0: éclairage public, installations électriques CFO/CFA et réseaux HTA/MT et MT/BT avec postes de transformation.",
     webPageType: "WebPage",
   },
   "/realisations": {
     phrase: "Réalisations et références",
     description:
-      "Références de HAY2010 en éclairage public et électrification : méthode de projet et références transmises sur demande. Plus de 10 ans d’expérience.",
+      "Références de HAY2010 en éclairage public et électrification\u00a0: méthode de projet et références transmises sur demande. Plus de 10 ans d’expérience.",
     webPageType: "CollectionPage",
   },
   "/contact": {
     phrase: "Contact à Rabat",
     description:
-      "Contactez HAY2010 à Rabat : Local N° 21, Hay El Manzeh, Hay Er-Riad. Écrivez-nous pour vos projets d’éclairage public. Devis sur demande.",
+      "Contactez HAY2010 à Rabat\u00a0: Local N° 21, Hay El Manzeh, Hay Er-Riad. Écrivez-nous pour vos projets d’éclairage public. Devis sur demande.",
     webPageType: "ContactPage",
   },
   "/carrieres": {
@@ -73,13 +73,13 @@ export const PAGE_SEO: Readonly<Record<string, PageSeoDefault>> = {
   "/mentions-legales": {
     phrase: "Mentions légales",
     description:
-      "Mentions légales de SOCIETE HAY 2010 (SARL, RC 87305, ICE 001459327000056) : éditeur, propriété intellectuelle, données personnelles et cookies.",
+      "Mentions légales de SOCIETE HAY 2010 (SARL, RC 87305, ICE 001459327000056)\u00a0: éditeur, propriété intellectuelle, données personnelles et cookies.",
     webPageType: "WebPage",
   },
   "/politique-de-confidentialite": {
     phrase: "Politique de confidentialité",
     description:
-      "Politique de confidentialité de SOCIETE HAY 2010 : données traitées, finalités, durées de conservation, droits et cookies. Comment exercer vos droits.",
+      "Politique de confidentialité de SOCIETE HAY 2010\u00a0: données traitées, finalités, durées de conservation, droits et cookies. Comment exercer vos droits.",
     webPageType: "WebPage",
   },
 }

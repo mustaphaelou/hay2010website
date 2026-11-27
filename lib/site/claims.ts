@@ -31,7 +31,7 @@ export const APPROVED_CLAIMS: readonly ApprovedClaim[] = [
     key: "onee-agrements",
     title: "Agréments ONEE",
     wording:
-      "EE HTA-BT : études des électrifications HTA-BT souterraines, BT aériennes et souterraines et bâtiment (02/10/2023 – 30/09/2028) ; HTA-BT3 : construction des réseaux HTA-BT (sans plafond) (25/03/2026 – 31/03/2029)",
+      "EE HTA-BT\u00a0: études des électrifications HTA-BT souterraines, BT aériennes et souterraines et bâtiment (02/10/2023 – 30/09/2028)\u00a0; HTA-BT3\u00a0: construction des réseaux HTA-BT (sans plafond) (25/03/2026 – 31/03/2029)",
     domains: ["infrastructures-reseaux-electriques"],
     live: false,
   },
@@ -42,9 +42,4 @@ export function getLiveClaimsForDomain(domainSlug: string): ApprovedClaim[] {
   return APPROVED_CLAIMS.filter(
     (claim) => claim.live && claim.domains.includes(domainSlug)
   )
-}
-
-/** Is a claim's publication gate open? */
-export function isClaimLive(key: ApprovedClaim["key"]): boolean {
-  return APPROVED_CLAIMS.some((claim) => claim.key === key && claim.live)
 }

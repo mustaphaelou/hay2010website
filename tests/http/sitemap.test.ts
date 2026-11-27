@@ -11,8 +11,8 @@ import { GATED_CASE_STUDY_ROUTES, scenario } from "./scenarios"
  *   trailing slash and no query;
  * - every listed URL is the canonical 200 page it claims to be;
  * - no gated URL ever: gated rubriques/domains, the gated
- *   `/realisations/{slug}` family, `/en`, the admin/API/preview surfaces, the
- *   prototype route, redirects, 404s/410s or assets;
+ *   `/realisations/{slug}` family, `/en`, the admin/API/preview surfaces,
+ *   redirects, 404s/410s or assets;
  * - no fake `lastmod` (the P1 corpus has no real update date), no
  *   `changeFrequency`/`priority`, one sitemap and no image/video extension.
  */
@@ -114,7 +114,6 @@ describe(`sitemap.xml (${scenario.name})`, () => {
         "/admin",
         "/api",
         "/preview",
-        "/prototype",
         "/og",
         "/_next",
         "/blog",

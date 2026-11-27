@@ -48,7 +48,7 @@ export function caseStudiesLive(): boolean {
  * filed. Code-owned so an editorial edit cannot turn it into a claim.
  */
 export const QUALIFICATIONS_POSITION: readonly string[] = [
-  "Nous ne présentons que des qualifications vérifiables : rien n’est affiché que l’entreprise ne puisse justifier.",
+  "Nous ne présentons que des qualifications vérifiables\u00a0: rien n’est affiché que l’entreprise ne puisse justifier.",
   "Aucune qualification ne figure sur cette page à ce jour. L’état à jour des qualifications est communiqué sur demande, avec les références.",
 ]
 
