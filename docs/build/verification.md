@@ -98,7 +98,6 @@ import a component and never assert class names or call order.
   internal link;
 - footer identity: badge, registered address, `contact@hay2010.ma`, legal line;
   no phone, social, newsletter or recruitment mailbox;
-- prototype route still served and `noindex`;
 - privacy surface: no form control, no analytics script or API marker, no
   consent banner, no tracking cookie in `Set-Cookie`;
 - brand styling: palette tokens, shadcn semantic mapping, self-hosted Poppins
@@ -337,7 +336,7 @@ import a component and never assert class names or call order.
 - exactly the published, built set of the scenario (derived through the seam),
   one `urlset`, absolute apex HTTPS URLs without slash/query, every entry is the
   canonical 200 page it claims; no gated rubrique/domain, no
-  `/realisations/{slug}` family, no `/en`/admin/API/preview/prototype/legacy or
+  `/realisations/{slug}` family, no `/en`/admin/API/preview/legacy or
   asset URL; no fake `lastmod`, `changefreq`, `priority` or image/video
   extension; crawlable (200, XML, no staging header, referenced by robots.txt).
 

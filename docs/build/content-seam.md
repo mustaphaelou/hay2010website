@@ -321,7 +321,6 @@ app/
     layout.tsx          ← site root layout: <html lang="fr">, fonts, chrome
     page.tsx            ← /
     a-propos/…  domaines-activite/…  realisations/…  contact/…
-    prototype/homepage/… (kept, noindex)
     sitemap.ts
   (payload)/            ← #29: Payload admin root layout
   global-not-found.tsx  ← full 404 document

@@ -288,13 +288,16 @@ sitemap equals the expected published set exactly (`p1` 11, `p2`/`p3` 13,
 gated route answers **404**, `/en` and the unknown route answer 404, and no
 audited route answers a redirect or 5xx.
 
-**Out-of-P1-scope observation (reported, not hidden).** `/prototype/homepage` is
+**Out-of-P1-scope observation (reported, not hidden).** `/prototype/homepage` was
 the #13 throwaway design prototype: served 200, `noindex,nofollow`, unlinked,
-absent from the sitemap, robots and the P1 matrix. It is outside this ticket's
-route scope, but its `?variant=b` rendering still shows prototype-only
-« Agréments ONEE — publication en attente des certificats » wording. It is a
-**residual to clean up before launch** (removal or replacement is an app-file
-change outside this ticket's review scope; see §8 Gaps).
+absent from the sitemap, robots and the P1 matrix. It was outside this ticket's
+route scope, but its `?variant=b` rendering showed prototype-only
+« Agréments ONEE — publication en attente des certificats » wording. **Removed
+from the shipped app in the review-fix pass** (`fix/p1-review`): it sat outside
+the P1 route set and carried provisional claim wording, so the public app no
+longer serves it. The design prototype itself is preserved in git history and on
+the `prototype/homepage` branch, with its evidence under `docs/homepage/`; the
+claims evidence JSON below predates the removal and is kept as the audit record.
 
 ## 6. No analytics, cookie banner or form element — PASS
 
@@ -425,7 +428,7 @@ and leaves no artefacts.
 | Finding | Status |
 | --- | --- |
 | Legal-page tables were horizontally scrollable but not keyboard-reachable (axe `scrollable-region-focusable`, 2 nodes) | **Fixed** in the audited tree (`components/site/legal-document.tsx`); 0 axe violations after |
-| `/prototype/homepage?variant=b` renders prototype-only ONEE/agrément wording on a public, `noindex` URL | **Outside the P1 matrix**; flagged for removal/replacement before launch (§5). App-file change not made here |
+| `/prototype/homepage?variant=b` renders prototype-only ONEE/agrément wording on a public, `noindex` URL | **Fixed** in the review-fix pass: the prototype route was removed from the shipped app (outside the P1 route set, provisional claim wording). Preserved in git history / `prototype/homepage` branch |
 | Lab TBT proxy is sensitive to host contention | **Method note**: only the idle-host run is committed (88.5–103.5 ms); field INP must still be measured after launch (§4, §9) |
 | `npm run test:cms` not wired into CI | **Documented gap** with the exact step (§10) |
 | Flaky `tests/cms` media-revalidation assertion (1/35 on one run, clean on rerun) | **Reported** as a #30 test race, not a product regression; parity unaffected (§1) |

@@ -100,11 +100,9 @@ describe("content seam architecture", () => {
   })
 
   it("keeps every frontend page behind a publication gate", () => {
-    const pageFiles = sourceFiles(path.join("app", "(frontend)")).filter((file) =>
+    const publicPages = sourceFiles(path.join("app", "(frontend)")).filter((file) =>
       file.endsWith(`${path.sep}page.tsx`)
     )
-    // The prototype is a noindex design artefact, not a public page.
-    const publicPages = pageFiles.filter((file) => !file.includes("prototype"))
 
     expect(publicPages.length, "expected the P1 route pages to exist").toBeGreaterThan(0)
     const unguarded = publicPages.filter((file) => {

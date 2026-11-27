@@ -171,8 +171,8 @@ Rules: absolute apex URLs via `absoluteUrl()`, no trailing slash, no query, no
 `lastModified` in P1 (the corpus has no real update date; a build timestamp is
 fake churn), no `changeFrequency`/`priority`, no image/video extension, no
 sitemap index. The gated named-case-study family has no record and therefore no
-entry; `/en`, `/admin`, `/api`, `/preview`, the prototype, redirects, 404s/410s
-and assets are never listed. #30 revalidates `/sitemap.xml` on publish.
+entry; `/en`, `/admin`, `/api`, `/preview`, redirects, 404s/410s and assets are
+never listed. #30 revalidates `/sitemap.xml` on publish.
 
 Expected set by scenario (asserted exactly): `p1`, `p1-gates-closed` and
 `p1-recrutement` list the nine P1 pages + three domains (eleven URLs);
