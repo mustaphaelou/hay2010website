@@ -1,0 +1,1184 @@
+{
+  "meta": {
+    "ticket": 33,
+    "scenario": "p1",
+    "commit": "aaf624463fb670ae93ef2e1bef27657967d6a2c3",
+    "timestamp": "2026-11-26T23:13:19.262Z",
+    "node": "v26.13.1",
+    "playwrightCore": "1.65.1",
+    "axeCore": "4.14.1",
+    "chrome": "/home/eloaurdi/.cache/ms-playwright/chromium-1255/chrome-linux64/chrome",
+    "baseUrl": "http://127.0.0.1:3133",
+    "method": "production build served with `next start`; Chromium launched by playwright-core (executablePath = cached Playwright Chromium 1255); every assertion runs against the served artefact, never the dev server.",
+    "chromiumVersion": "159.0.8154.6"
+  },
+  "routes": {
+    "sitemapPaths": [
+      "/",
+      "/a-propos",
+      "/domaines-activite",
+      "/realisations",
+      "/contact",
+      "/carrieres",
+      "/mentions-legales",
+      "/politique-de-confidentialite",
+      "/domaines-activite/eclairage-public",
+      "/domaines-activite/installations-electriques",
+      "/domaines-activite/infrastructures-reseaux-electriques"
+    ],
+    "audited": [
+      "/",
+      "/a-propos",
+      "/actualites",
+      "/carrieres",
+      "/cette-page-n-existe-pas",
+      "/contact",
+      "/domaines-activite",
+      "/domaines-activite/eclairage-public",
+      "/domaines-activite/energies-renouvelables",
+      "/domaines-activite/fourniture-equipements",
+      "/domaines-activite/infrastructures-reseaux-electriques",
+      "/domaines-activite/installations-electriques",
+      "/en",
+      "/mentions-legales",
+      "/moyens-et-competences",
+      "/politique-de-confidentialite",
+      "/realisations",
+      "/realisations/projet-non-publie",
+      "/references-et-partenaires"
+    ],
+    "statuses": {
+      "/": {
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/a-propos": {
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/actualites": {
+        "status": 404,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/carrieres": {
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/cette-page-n-existe-pas": {
+        "status": 404,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/contact": {
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/domaines-activite": {
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/domaines-activite/eclairage-public": {
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/domaines-activite/energies-renouvelables": {
+        "status": 404,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/domaines-activite/fourniture-equipements": {
+        "status": 404,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/domaines-activite/infrastructures-reseaux-electriques": {
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/domaines-activite/installations-electriques": {
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/en": {
+        "status": 404,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/mentions-legales": {
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/moyens-et-competences": {
+        "status": 404,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/politique-de-confidentialite": {
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/realisations": {
+        "status": 200,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/realisations/projet-non-publie": {
+        "status": 404,
+        "contentType": "text/html; charset=utf-8"
+      },
+      "/references-et-partenaires": {
+        "status": 404,
+        "contentType": "text/html; charset=utf-8"
+      }
+    }
+  },
+  "claims": {
+    "findings": [],
+    "documentedExceptions": [],
+    "clearedFactsChecked": 19,
+    "structuredDataFindings": [],
+    "mediaFindings": [],
+    "mediaAllowed": [
+      {
+        "route": "/",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/a-propos",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/a-propos",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/a-propos",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/actualites",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/actualites",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/actualites",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/carrieres",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/carrieres",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/carrieres",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/cette-page-n-existe-pas",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/cette-page-n-existe-pas",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/cette-page-n-existe-pas",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/contact",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/contact",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/contact",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite/eclairage-public",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite/eclairage-public",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite/eclairage-public",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite/energies-renouvelables",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite/energies-renouvelables",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite/energies-renouvelables",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite/fourniture-equipements",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite/fourniture-equipements",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite/fourniture-equipements",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite/infrastructures-reseaux-electriques",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite/infrastructures-reseaux-electriques",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite/infrastructures-reseaux-electriques",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite/installations-electriques",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite/installations-electriques",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/domaines-activite/installations-electriques",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/en",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/en",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/en",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/mentions-legales",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/mentions-legales",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/mentions-legales",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/moyens-et-competences",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/moyens-et-competences",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/moyens-et-competences",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/politique-de-confidentialite",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/politique-de-confidentialite",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/politique-de-confidentialite",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/realisations",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/realisations",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/realisations",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/realisations/projet-non-publie",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/realisations/projet-non-publie",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/realisations/projet-non-publie",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/references-et-partenaires",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/references-et-partenaires",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      },
+      {
+        "route": "/references-et-partenaires",
+        "key": "brand-image",
+        "detail": "/brand/hay2010-logo.svg"
+      }
+    ],
+    "linkFindings": []
+  },
+  "privacy": {
+    "byRoute": {},
+    "findings": []
+  },
+  "a11y": {
+    "keyboard": {
+      "skipLink": {
+        "tag": "a",
+        "id": "",
+        "text": "Aller au contenu",
+        "ariaLabel": null,
+        "href": "#contenu",
+        "ariaExpanded": null,
+        "ariaControls": null,
+        "focusVisible": true,
+        "outlineStyle": "solid",
+        "outlineWidth": "3px",
+        "outlineColor": "oklab(0.183424 0.00116234 -0.0102624 / 0.5)",
+        "boxShadow": "none"
+      },
+      "afterSkipLinkEnter": {
+        "id": "contenu",
+        "tag": "main",
+        "hash": "#contenu"
+      },
+      "tabOrder": [
+        {
+          "tag": "a",
+          "id": "",
+          "text": "Aller au contenu",
+          "ariaLabel": null,
+          "href": "#contenu",
+          "ariaExpanded": null,
+          "ariaControls": null,
+          "focusVisible": true,
+          "outlineStyle": "solid",
+          "outlineWidth": "3px",
+          "outlineColor": "oklab(0.183424 0.00116234 -0.0102624 / 0.5)",
+          "boxShadow": "none"
+        },
+        {
+          "tag": "a",
+          "id": "",
+          "text": "",
+          "ariaLabel": "HAY2010 — accueil",
+          "href": "/",
+          "ariaExpanded": null,
+          "ariaControls": null,
+          "focusVisible": true,
+          "outlineStyle": "solid",
+          "outlineWidth": "3px",
+          "outlineColor": "oklab(0.183424 0.00116234 -0.0102624 / 0.5)",
+          "boxShadow": "none"
+        },
+        {
+          "tag": "button",
+          "id": "",
+          "text": "",
+          "ariaLabel": "Ouvrir le menu",
+          "href": null,
+          "ariaExpanded": "false",
+          "ariaControls": "menu-mobile",
+          "focusVisible": true,
+          "outlineStyle": "solid",
+          "outlineWidth": "2px",
+          "outlineColor": "oklab(0.183424 0.00116234 -0.0102624 / 0.5)",
+          "boxShadow": "none"
+        }
+      ],
+      "trigger": {
+        "tag": "button",
+        "id": "",
+        "text": "",
+        "ariaLabel": "Ouvrir le menu",
+        "href": null,
+        "ariaExpanded": "false",
+        "ariaControls": "menu-mobile",
+        "focusVisible": true,
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "oklab(0.183424 0.00116234 -0.0102624 / 0.5)",
+        "boxShadow": "none"
+      },
+      "drawerOpen": {
+        "open": true,
+        "role": "dialog (native)",
+        "ariaLabel": "Menu",
+        "ariaExpanded": "true",
+        "focusInsideDialog": true,
+        "focusId": "",
+        "focusTag": "a",
+        "bodyOverflow": "hidden"
+      },
+      "tabTrap": [
+        {
+          "inside": true,
+          "text": ""
+        },
+        {
+          "inside": true,
+          "text": "Accueil"
+        },
+        {
+          "inside": true,
+          "text": "À propos"
+        },
+        {
+          "inside": true,
+          "text": "Domaines d’activité"
+        },
+        {
+          "inside": true,
+          "text": "Réalisations"
+        },
+        {
+          "inside": true,
+          "text": "Contact"
+        },
+        {
+          "inside": true,
+          "text": "Carrières"
+        },
+        {
+          "inside": true,
+          "text": "Mentions légales"
+        }
+      ],
+      "shiftTabTrap": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "drawerClosed": {
+        "open": false,
+        "ariaExpanded": "false",
+        "focusReturnedToTrigger": true,
+        "focusTag": "button",
+        "bodyOverflow": ""
+      },
+      "spaceOpens": true,
+      "ariaCurrent": {
+        "innerPage": {
+          "row": [
+            {
+              "label": "Domaines d’activité",
+              "href": "/domaines-activite",
+              "current": "page"
+            }
+          ],
+          "drawer": [
+            {
+              "label": "Domaines d’activité",
+              "href": "/domaines-activite",
+              "current": "page"
+            }
+          ]
+        },
+        "home": [
+          {
+            "label": "Accueil",
+            "href": "/",
+            "current": "page"
+          }
+        ]
+      },
+      "overflow": {
+        "scrollWidth": 360,
+        "clientWidth": 360
+      }
+    },
+    "motion": {
+      "reduce": {
+        "reduceMatches": true,
+        "heroCopyAnimations": 0,
+        "heroImageAnimations": null,
+        "heroCopyAnimationName": "none",
+        "heroCopyAnimationDuration": "1e-05s",
+        "linkTransitionDuration": "1e-05s"
+      },
+      "noPreference": {
+        "reduceMatches": false,
+        "heroCopyAnimations": 1,
+        "heroImageAnimations": null,
+        "heroCopyAnimationName": "accueil-rise",
+        "heroCopyAnimationDuration": "0.7s",
+        "linkTransitionDuration": "0.15s"
+      }
+    },
+    "cls": {
+      "/": {
+        "cls": 0,
+        "shifts": []
+      },
+      "/a-propos": {
+        "cls": 0,
+        "shifts": []
+      },
+      "/domaines-activite": {
+        "cls": 0,
+        "shifts": []
+      },
+      "/realisations": {
+        "cls": 0,
+        "shifts": []
+      },
+      "/contact": {
+        "cls": 0,
+        "shifts": []
+      },
+      "/carrieres": {
+        "cls": 0,
+        "shifts": []
+      },
+      "/mentions-legales": {
+        "cls": 0,
+        "shifts": []
+      },
+      "/politique-de-confidentialite": {
+        "cls": 0,
+        "shifts": []
+      },
+      "/domaines-activite/eclairage-public": {
+        "cls": 0,
+        "shifts": []
+      },
+      "/domaines-activite/installations-electriques": {
+        "cls": 0,
+        "shifts": []
+      },
+      "/domaines-activite/infrastructures-reseaux-electriques": {
+        "cls": 0,
+        "shifts": []
+      }
+    },
+    "network": {
+      "/": {
+        "requests": 23,
+        "external": [],
+        "failed": []
+      },
+      "/a-propos": {
+        "requests": 18,
+        "external": [],
+        "failed": []
+      },
+      "/domaines-activite": {
+        "requests": 22,
+        "external": [],
+        "failed": []
+      },
+      "/realisations": {
+        "requests": 20,
+        "external": [],
+        "failed": []
+      },
+      "/contact": {
+        "requests": 18,
+        "external": [],
+        "failed": []
+      },
+      "/carrieres": {
+        "requests": 18,
+        "external": [],
+        "failed": []
+      },
+      "/mentions-legales": {
+        "requests": 18,
+        "external": [],
+        "failed": []
+      },
+      "/politique-de-confidentialite": {
+        "requests": 18,
+        "external": [],
+        "failed": []
+      },
+      "/domaines-activite/eclairage-public": {
+        "requests": 18,
+        "external": [],
+        "failed": []
+      },
+      "/domaines-activite/installations-electriques": {
+        "requests": 18,
+        "external": [],
+        "failed": []
+      },
+      "/domaines-activite/infrastructures-reseaux-electriques": {
+        "requests": 18,
+        "external": [],
+        "failed": []
+      }
+    },
+    "breakpoints": {
+      "widths": [
+        360,
+        768,
+        1024,
+        1440
+      ],
+      "screenshotRoutes": [
+        "/",
+        "/realisations"
+      ],
+      "overflow": {
+        "/@360": {
+          "scrollWidth": 360,
+          "clientWidth": 360
+        },
+        "/a-propos@360": {
+          "scrollWidth": 360,
+          "clientWidth": 360
+        },
+        "/domaines-activite@360": {
+          "scrollWidth": 360,
+          "clientWidth": 360
+        },
+        "/realisations@360": {
+          "scrollWidth": 360,
+          "clientWidth": 360
+        },
+        "/contact@360": {
+          "scrollWidth": 360,
+          "clientWidth": 360
+        },
+        "/carrieres@360": {
+          "scrollWidth": 360,
+          "clientWidth": 360
+        },
+        "/mentions-legales@360": {
+          "scrollWidth": 360,
+          "clientWidth": 360
+        },
+        "/politique-de-confidentialite@360": {
+          "scrollWidth": 360,
+          "clientWidth": 360
+        },
+        "/domaines-activite/eclairage-public@360": {
+          "scrollWidth": 360,
+          "clientWidth": 360
+        },
+        "/domaines-activite/installations-electriques@360": {
+          "scrollWidth": 360,
+          "clientWidth": 360
+        },
+        "/domaines-activite/infrastructures-reseaux-electriques@360": {
+          "scrollWidth": 360,
+          "clientWidth": 360
+        },
+        "/@768": {
+          "scrollWidth": 768,
+          "clientWidth": 768
+        },
+        "/a-propos@768": {
+          "scrollWidth": 768,
+          "clientWidth": 768
+        },
+        "/domaines-activite@768": {
+          "scrollWidth": 768,
+          "clientWidth": 768
+        },
+        "/realisations@768": {
+          "scrollWidth": 768,
+          "clientWidth": 768
+        },
+        "/contact@768": {
+          "scrollWidth": 768,
+          "clientWidth": 768
+        },
+        "/carrieres@768": {
+          "scrollWidth": 768,
+          "clientWidth": 768
+        },
+        "/mentions-legales@768": {
+          "scrollWidth": 768,
+          "clientWidth": 768
+        },
+        "/politique-de-confidentialite@768": {
+          "scrollWidth": 768,
+          "clientWidth": 768
+        },
+        "/domaines-activite/eclairage-public@768": {
+          "scrollWidth": 768,
+          "clientWidth": 768
+        },
+        "/domaines-activite/installations-electriques@768": {
+          "scrollWidth": 768,
+          "clientWidth": 768
+        },
+        "/domaines-activite/infrastructures-reseaux-electriques@768": {
+          "scrollWidth": 768,
+          "clientWidth": 768
+        },
+        "/@1024": {
+          "scrollWidth": 1024,
+          "clientWidth": 1024
+        },
+        "/a-propos@1024": {
+          "scrollWidth": 1024,
+          "clientWidth": 1024
+        },
+        "/domaines-activite@1024": {
+          "scrollWidth": 1024,
+          "clientWidth": 1024
+        },
+        "/realisations@1024": {
+          "scrollWidth": 1024,
+          "clientWidth": 1024
+        },
+        "/contact@1024": {
+          "scrollWidth": 1024,
+          "clientWidth": 1024
+        },
+        "/carrieres@1024": {
+          "scrollWidth": 1024,
+          "clientWidth": 1024
+        },
+        "/mentions-legales@1024": {
+          "scrollWidth": 1024,
+          "clientWidth": 1024
+        },
+        "/politique-de-confidentialite@1024": {
+          "scrollWidth": 1024,
+          "clientWidth": 1024
+        },
+        "/domaines-activite/eclairage-public@1024": {
+          "scrollWidth": 1024,
+          "clientWidth": 1024
+        },
+        "/domaines-activite/installations-electriques@1024": {
+          "scrollWidth": 1024,
+          "clientWidth": 1024
+        },
+        "/domaines-activite/infrastructures-reseaux-electriques@1024": {
+          "scrollWidth": 1024,
+          "clientWidth": 1024
+        },
+        "/@1440": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440
+        },
+        "/a-propos@1440": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440
+        },
+        "/domaines-activite@1440": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440
+        },
+        "/realisations@1440": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440
+        },
+        "/contact@1440": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440
+        },
+        "/carrieres@1440": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440
+        },
+        "/mentions-legales@1440": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440
+        },
+        "/politique-de-confidentialite@1440": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440
+        },
+        "/domaines-activite/eclairage-public@1440": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440
+        },
+        "/domaines-activite/installations-electriques@1440": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440
+        },
+        "/domaines-activite/infrastructures-reseaux-electriques@1440": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440
+        }
+      },
+      "findings": []
+    },
+    "axe": {
+      "/": {
+        "passes": 25,
+        "incomplete": 1,
+        "violations": [],
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "incompleteNodes": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "nodes": 8,
+            "targets": [
+              [
+                ".hover\\:bg-orange > span"
+              ],
+              [
+                ".border-surface\\/40 > span"
+              ],
+              [
+                ".border-ink\\/30 > span"
+              ],
+              [
+                ".border-surface\\/15.border-b:nth-child(1) > .group.gap-6.py-6 > .text-surface\\/40.transition-transform.group-hover\\:translate-x-1"
+              ]
+            ],
+            "html": "<span aria-hidden=\"true\">→</span>"
+          }
+        ]
+      },
+      "/a-propos": {
+        "passes": 23,
+        "incomplete": 1,
+        "violations": [],
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "incompleteNodes": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "nodes": 1,
+            "targets": [
+              [
+                ".px-6 > span"
+              ]
+            ],
+            "html": "<span aria-hidden=\"true\">→</span>"
+          }
+        ]
+      },
+      "/domaines-activite": {
+        "passes": 23,
+        "incomplete": 1,
+        "violations": [],
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "incompleteNodes": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "nodes": 3,
+            "targets": [
+              [
+                ".border-line.border-b:nth-child(1) > .grid-cols-1.py-8.sm\\:gap-4 > h2 > .items-baseline.hover\\:text-copper.gap-3 > .text-base"
+              ],
+              [
+                ".border-line.border-b:nth-child(2) > .grid-cols-1.py-8.sm\\:gap-4 > h2 > .items-baseline.hover\\:text-copper.gap-3 > .text-base"
+              ],
+              [
+                ".border-line.border-b:nth-child(3) > .grid-cols-1.py-8.sm\\:gap-4 > h2 > .items-baseline.hover\\:text-copper.gap-3 > .text-base"
+              ]
+            ],
+            "html": "<span aria-hidden=\"true\" class=\"text-base text-copper\">→</span>"
+          }
+        ]
+      },
+      "/realisations": {
+        "passes": 25,
+        "incomplete": 1,
+        "violations": [],
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "incompleteNodes": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "nodes": 8,
+            "targets": [
+              [
+                "li:nth-child(1) > .hover\\:bg-ink\\/85.min-h-11.px-6 > span"
+              ],
+              [
+                ".border-ink\\/25 > span"
+              ],
+              [
+                ".border-ink\\/30.pb-1[href$=\"domaines-activite\"] > span"
+              ],
+              [
+                ".gap-4.sm\\:grid-cols-\\[3rem_1fr_auto\\].sm\\:items-baseline:nth-child(1) > .border-ink\\/30.pb-1.w-fit > span"
+              ]
+            ],
+            "html": "<span aria-hidden=\"true\">→</span>"
+          }
+        ]
+      },
+      "/contact": {
+        "passes": 25,
+        "incomplete": 0,
+        "violations": [],
+        "incompleteRules": [],
+        "incompleteNodes": []
+      },
+      "/carrieres": {
+        "passes": 24,
+        "incomplete": 0,
+        "violations": [],
+        "incompleteRules": [],
+        "incompleteNodes": []
+      },
+      "/mentions-legales": {
+        "passes": 26,
+        "incomplete": 0,
+        "violations": [],
+        "incompleteRules": [],
+        "incompleteNodes": []
+      },
+      "/politique-de-confidentialite": {
+        "passes": 29,
+        "incomplete": 1,
+        "violations": [],
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "incompleteNodes": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "nodes": 12,
+            "targets": [
+              [
+                "section:nth-child(5) > .overflow-x-auto.mt-6[role=\"region\"] > table > tbody > .last\\:border-b-0:nth-child(1) > td:nth-child(2)"
+              ],
+              [
+                "section:nth-child(5) > .overflow-x-auto.mt-6[role=\"region\"] > table > tbody > .last\\:border-b-0:nth-child(2) > td:nth-child(2)"
+              ],
+              [
+                ".last\\:border-b-0:nth-child(5) > td:nth-child(2)"
+              ],
+              [
+                ".last\\:border-b-0:nth-child(6) > td:nth-child(2)"
+              ]
+            ],
+            "html": "<td class=\"py-3 pr-4 align-top last:pr-0\">12 mois après le dernier échange&nbsp;; durée de la relation contractuelle et délais légaux de conservation comptable si un contrat en découle</td>"
+          }
+        ]
+      },
+      "/domaines-activite/eclairage-public": {
+        "passes": 23,
+        "incomplete": 1,
+        "violations": [],
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "incompleteNodes": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "nodes": 1,
+            "targets": [
+              [
+                ".mt-8 > span"
+              ]
+            ],
+            "html": "<span aria-hidden=\"true\">→</span>"
+          }
+        ]
+      },
+      "/domaines-activite/installations-electriques": {
+        "passes": 23,
+        "incomplete": 1,
+        "violations": [],
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "incompleteNodes": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "nodes": 1,
+            "targets": [
+              [
+                ".mt-8 > span"
+              ]
+            ],
+            "html": "<span aria-hidden=\"true\">→</span>"
+          }
+        ]
+      },
+      "/domaines-activite/infrastructures-reseaux-electriques": {
+        "passes": 23,
+        "incomplete": 1,
+        "violations": [],
+        "incompleteRules": [
+          "color-contrast"
+        ],
+        "incompleteNodes": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "nodes": 1,
+            "targets": [
+              [
+                ".mt-8 > span"
+              ]
+            ],
+            "html": "<span aria-hidden=\"true\">→</span>"
+          }
+        ]
+      }
+    }
+  },
+  "pass": true,
+  "checks": [
+    {
+      "label": "gated-claim absence",
+      "findings": []
+    },
+    {
+      "label": "structured-data gated types/properties",
+      "findings": []
+    },
+    {
+      "label": "photograph/logo absence",
+      "findings": []
+    },
+    {
+      "label": "link audit (gated routes, phone, social, mailboxes)",
+      "findings": []
+    },
+    {
+      "label": "no analytics/consent/form/cookie",
+      "findings": []
+    },
+    {
+      "label": "route status matrix",
+      "findings": []
+    },
+    {
+      "label": "cleared facts render (no false-positive denylist)",
+      "findings": []
+    },
+    {
+      "label": "CLS under 0.1 on every published route",
+      "findings": []
+    },
+    {
+      "label": "no third-party request on any published route",
+      "findings": []
+    },
+    {
+      "label": "no failed request on any published route",
+      "findings": []
+    },
+    {
+      "label": "no horizontal overflow at 360/768/1024/1440 px",
+      "findings": []
+    },
+    {
+      "label": "axe-core WCAG 2.0/2.1 A/AA violations",
+      "findings": []
+    }
+  ]
+}

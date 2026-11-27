@@ -1,0 +1,1096 @@
+{
+  "meta": {
+    "ticket": 33,
+    "commit": "aaf624463fb670ae93ef2e1bef27657967d6a2c3",
+    "timestamp": "2026-11-27T08:51:18.326Z",
+    "scenario": "p1",
+    "site": "http://127.0.0.1:3133",
+    "sitePort": "3133",
+    "debugPort": 9133,
+    "runsPerRoute": 3,
+    "lighthouse": "13.6.0",
+    "playwrightCore": "1.65.1",
+    "chromeExecutable": "/home/eloaurdi/.cache/ms-playwright/chromium-1255/chrome-linux64/chrome",
+    "method": "Lighthouse 13.6.0 attached with --port to our own cached Chromium (WSL chrome-launcher workaround); default mobile emulation + simulated 4G throttling; production build served by `next start`; median of 3 runs per route.",
+    "budgets": {
+      "lcpMs": 2500,
+      "cls": 0.1,
+      "tbtProxyMs": 200
+    },
+    "limitations": [
+      "INP is NOT measured: no field data exists (site not launched, no CrUX/RUM) and Lighthouse does not measure INP. TBT is reported as the lab proxy only.",
+      "LCP is optimistic: the page is served from localhost, so TTFB/TLS/CDN latency of the real host is absent.",
+      "Lab throttling (Lighthouse simulated 4G, 4x CPU) is not a real device or network.",
+      "No Safari/iOS engine was tested; Chromium only."
+    ],
+    "chromiumVersion": "Chrome/159.0.8154.6"
+  },
+  "routes": {
+    "/": {
+      "runs": [
+        {
+          "performanceScore": 98,
+          "accessibilityScore": 100,
+          "lcpMs": 940,
+          "cls": 0,
+          "tbtMs": 155,
+          "fcpMs": 940,
+          "speedIndexMs": 940,
+          "totalByteWeight": 259096,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 768.1,
+          "cls": 0,
+          "tbtMs": 94.5,
+          "fcpMs": 768.1,
+          "speedIndexMs": 768.1,
+          "totalByteWeight": 268726,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 768.2,
+          "cls": 0,
+          "tbtMs": 103.5,
+          "fcpMs": 768.2,
+          "speedIndexMs": 768.2,
+          "totalByteWeight": 268726,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        }
+      ],
+      "medians": {
+        "performanceScore": 99,
+        "accessibilityScore": 100,
+        "lcpMs": 768.2,
+        "cls": 0,
+        "tbtMs": 103.5,
+        "fcpMs": 768.2,
+        "speedIndexMs": 768.2,
+        "totalByteWeight": 268726,
+        "requestCount": null
+      },
+      "spread": {
+        "lcpMs": 171.9,
+        "cls": 0,
+        "tbtMs": 60.5
+      },
+      "budgets": {
+        "lcp": true,
+        "cls": true
+      },
+      "tbtProxyWithinTarget": true,
+      "passes": true
+    },
+    "/a-propos": {
+      "runs": [
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 763.5,
+          "cls": 0,
+          "tbtMs": 94.5,
+          "fcpMs": 763.5,
+          "speedIndexMs": 763.5,
+          "totalByteWeight": 251794,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 763.5,
+          "cls": 0,
+          "tbtMs": 103.5,
+          "fcpMs": 763.5,
+          "speedIndexMs": 763.5,
+          "totalByteWeight": 251794,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 764.4,
+          "cls": 0,
+          "tbtMs": 96.5,
+          "fcpMs": 764.4,
+          "speedIndexMs": 764.4,
+          "totalByteWeight": 251794,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        }
+      ],
+      "medians": {
+        "performanceScore": 99,
+        "accessibilityScore": 100,
+        "lcpMs": 763.5,
+        "cls": 0,
+        "tbtMs": 96.5,
+        "fcpMs": 763.5,
+        "speedIndexMs": 763.5,
+        "totalByteWeight": 251794,
+        "requestCount": null
+      },
+      "spread": {
+        "lcpMs": 0.9,
+        "cls": 0,
+        "tbtMs": 9
+      },
+      "budgets": {
+        "lcp": true,
+        "cls": true
+      },
+      "tbtProxyWithinTarget": true,
+      "passes": true
+    },
+    "/domaines-activite": {
+      "runs": [
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 768.7,
+          "cls": 0,
+          "tbtMs": 109.5,
+          "fcpMs": 768.7,
+          "speedIndexMs": 768.7,
+          "totalByteWeight": 259551,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 100,
+          "accessibilityScore": 100,
+          "lcpMs": 767.2,
+          "cls": 0,
+          "tbtMs": 87.5,
+          "fcpMs": 767.2,
+          "speedIndexMs": 767.2,
+          "totalByteWeight": 259551,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 765.4,
+          "cls": 0,
+          "tbtMs": 95,
+          "fcpMs": 765.4,
+          "speedIndexMs": 765.4,
+          "totalByteWeight": 259551,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        }
+      ],
+      "medians": {
+        "performanceScore": 99,
+        "accessibilityScore": 100,
+        "lcpMs": 767.2,
+        "cls": 0,
+        "tbtMs": 95,
+        "fcpMs": 767.2,
+        "speedIndexMs": 767.2,
+        "totalByteWeight": 259551,
+        "requestCount": null
+      },
+      "spread": {
+        "lcpMs": 3.3,
+        "cls": 0,
+        "tbtMs": 22
+      },
+      "budgets": {
+        "lcp": true,
+        "cls": true
+      },
+      "tbtProxyWithinTarget": true,
+      "passes": true
+    },
+    "/realisations": {
+      "runs": [
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 762.5,
+          "cls": 0,
+          "tbtMs": 95,
+          "fcpMs": 762.5,
+          "speedIndexMs": 762.5,
+          "totalByteWeight": 257207,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 765.1,
+          "cls": 0,
+          "tbtMs": 131.5,
+          "fcpMs": 765.1,
+          "speedIndexMs": 765.1,
+          "totalByteWeight": 257207,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 766.6,
+          "cls": 0,
+          "tbtMs": 102,
+          "fcpMs": 766.6,
+          "speedIndexMs": 766.6,
+          "totalByteWeight": 257207,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        }
+      ],
+      "medians": {
+        "performanceScore": 99,
+        "accessibilityScore": 100,
+        "lcpMs": 765.1,
+        "cls": 0,
+        "tbtMs": 102,
+        "fcpMs": 765.1,
+        "speedIndexMs": 765.1,
+        "totalByteWeight": 257207,
+        "requestCount": null
+      },
+      "spread": {
+        "lcpMs": 4.1,
+        "cls": 0,
+        "tbtMs": 36.5
+      },
+      "budgets": {
+        "lcp": true,
+        "cls": true
+      },
+      "tbtProxyWithinTarget": true,
+      "passes": true
+    },
+    "/contact": {
+      "runs": [
+        {
+          "performanceScore": 100,
+          "accessibilityScore": 100,
+          "lcpMs": 762.6,
+          "cls": 0,
+          "tbtMs": 87,
+          "fcpMs": 762.6,
+          "speedIndexMs": 762.6,
+          "totalByteWeight": 251402,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 761.9,
+          "cls": 0,
+          "tbtMs": 93.5,
+          "fcpMs": 761.9,
+          "speedIndexMs": 761.9,
+          "totalByteWeight": 251402,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 763.5,
+          "cls": 0,
+          "tbtMs": 103,
+          "fcpMs": 763.5,
+          "speedIndexMs": 763.5,
+          "totalByteWeight": 251402,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        }
+      ],
+      "medians": {
+        "performanceScore": 99,
+        "accessibilityScore": 100,
+        "lcpMs": 762.6,
+        "cls": 0,
+        "tbtMs": 93.5,
+        "fcpMs": 762.6,
+        "speedIndexMs": 762.6,
+        "totalByteWeight": 251402,
+        "requestCount": null
+      },
+      "spread": {
+        "lcpMs": 1.6,
+        "cls": 0,
+        "tbtMs": 16
+      },
+      "budgets": {
+        "lcp": true,
+        "cls": true
+      },
+      "tbtProxyWithinTarget": true,
+      "passes": true
+    },
+    "/carrieres": {
+      "runs": [
+        {
+          "performanceScore": 100,
+          "accessibilityScore": 100,
+          "lcpMs": 761.5,
+          "cls": 0,
+          "tbtMs": 89,
+          "fcpMs": 761.5,
+          "speedIndexMs": 761.5,
+          "totalByteWeight": 249661,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 100,
+          "accessibilityScore": 100,
+          "lcpMs": 762.2,
+          "cls": 0,
+          "tbtMs": 88.5,
+          "fcpMs": 762.2,
+          "speedIndexMs": 762.2,
+          "totalByteWeight": 249661,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 100,
+          "accessibilityScore": 100,
+          "lcpMs": 761.6,
+          "cls": 0,
+          "tbtMs": 87,
+          "fcpMs": 761.6,
+          "speedIndexMs": 761.6,
+          "totalByteWeight": 249661,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        }
+      ],
+      "medians": {
+        "performanceScore": 100,
+        "accessibilityScore": 100,
+        "lcpMs": 761.6,
+        "cls": 0,
+        "tbtMs": 88.5,
+        "fcpMs": 761.6,
+        "speedIndexMs": 761.6,
+        "totalByteWeight": 249661,
+        "requestCount": null
+      },
+      "spread": {
+        "lcpMs": 0.7,
+        "cls": 0,
+        "tbtMs": 2
+      },
+      "budgets": {
+        "lcp": true,
+        "cls": true
+      },
+      "tbtProxyWithinTarget": true,
+      "passes": true
+    },
+    "/mentions-legales": {
+      "runs": [
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 769.9,
+          "cls": 0,
+          "tbtMs": 142.5,
+          "fcpMs": 769.9,
+          "speedIndexMs": 769.9,
+          "totalByteWeight": 251442,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 100,
+          "accessibilityScore": 100,
+          "lcpMs": 762.3,
+          "cls": 0,
+          "tbtMs": 82,
+          "fcpMs": 762.3,
+          "speedIndexMs": 762.3,
+          "totalByteWeight": 251442,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 100,
+          "accessibilityScore": 100,
+          "lcpMs": 760.2,
+          "cls": 0,
+          "tbtMs": 91.5,
+          "fcpMs": 760.2,
+          "speedIndexMs": 760.2,
+          "totalByteWeight": 251442,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        }
+      ],
+      "medians": {
+        "performanceScore": 100,
+        "accessibilityScore": 100,
+        "lcpMs": 762.3,
+        "cls": 0,
+        "tbtMs": 91.5,
+        "fcpMs": 762.3,
+        "speedIndexMs": 762.3,
+        "totalByteWeight": 251442,
+        "requestCount": null
+      },
+      "spread": {
+        "lcpMs": 9.7,
+        "cls": 0,
+        "tbtMs": 60.5
+      },
+      "budgets": {
+        "lcp": true,
+        "cls": true
+      },
+      "tbtProxyWithinTarget": true,
+      "passes": true
+    },
+    "/politique-de-confidentialite": {
+      "runs": [
+        {
+          "performanceScore": 100,
+          "accessibilityScore": 100,
+          "lcpMs": 912.4,
+          "cls": 0,
+          "tbtMs": 91.5,
+          "fcpMs": 912.4,
+          "speedIndexMs": 912.4,
+          "totalByteWeight": 259052,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 100,
+          "accessibilityScore": 100,
+          "lcpMs": 913,
+          "cls": 0,
+          "tbtMs": 91.5,
+          "fcpMs": 913,
+          "speedIndexMs": 913,
+          "totalByteWeight": 259052,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 100,
+          "accessibilityScore": 100,
+          "lcpMs": 911.6,
+          "cls": 0,
+          "tbtMs": 88,
+          "fcpMs": 911.6,
+          "speedIndexMs": 911.6,
+          "totalByteWeight": 259052,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        }
+      ],
+      "medians": {
+        "performanceScore": 100,
+        "accessibilityScore": 100,
+        "lcpMs": 912.4,
+        "cls": 0,
+        "tbtMs": 91.5,
+        "fcpMs": 912.4,
+        "speedIndexMs": 912.4,
+        "totalByteWeight": 259052,
+        "requestCount": null
+      },
+      "spread": {
+        "lcpMs": 1.4,
+        "cls": 0,
+        "tbtMs": 3.5
+      },
+      "budgets": {
+        "lcp": true,
+        "cls": true
+      },
+      "tbtProxyWithinTarget": true,
+      "passes": true
+    },
+    "/domaines-activite/eclairage-public": {
+      "runs": [
+        {
+          "performanceScore": 100,
+          "accessibilityScore": 100,
+          "lcpMs": 761.7,
+          "cls": 0,
+          "tbtMs": 87,
+          "fcpMs": 761.7,
+          "speedIndexMs": 761.7,
+          "totalByteWeight": 250891,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 100,
+          "accessibilityScore": 100,
+          "lcpMs": 759.1,
+          "cls": 0,
+          "tbtMs": 88.5,
+          "fcpMs": 759.1,
+          "speedIndexMs": 759.1,
+          "totalByteWeight": 250891,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 760.8,
+          "cls": 0,
+          "tbtMs": 93.5,
+          "fcpMs": 760.8,
+          "speedIndexMs": 760.8,
+          "totalByteWeight": 250891,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        }
+      ],
+      "medians": {
+        "performanceScore": 100,
+        "accessibilityScore": 100,
+        "lcpMs": 760.8,
+        "cls": 0,
+        "tbtMs": 88.5,
+        "fcpMs": 760.8,
+        "speedIndexMs": 760.8,
+        "totalByteWeight": 250891,
+        "requestCount": null
+      },
+      "spread": {
+        "lcpMs": 2.6,
+        "cls": 0,
+        "tbtMs": 6.5
+      },
+      "budgets": {
+        "lcp": true,
+        "cls": true
+      },
+      "tbtProxyWithinTarget": true,
+      "passes": true
+    },
+    "/domaines-activite/installations-electriques": {
+      "runs": [
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 758.6,
+          "cls": 0,
+          "tbtMs": 93.5,
+          "fcpMs": 758.6,
+          "speedIndexMs": 758.6,
+          "totalByteWeight": 250880,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 762.2,
+          "cls": 0,
+          "tbtMs": 95.5,
+          "fcpMs": 762.2,
+          "speedIndexMs": 762.2,
+          "totalByteWeight": 250880,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 100,
+          "accessibilityScore": 100,
+          "lcpMs": 760.3,
+          "cls": 0,
+          "tbtMs": 85,
+          "fcpMs": 760.3,
+          "speedIndexMs": 760.3,
+          "totalByteWeight": 250880,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        }
+      ],
+      "medians": {
+        "performanceScore": 99,
+        "accessibilityScore": 100,
+        "lcpMs": 760.3,
+        "cls": 0,
+        "tbtMs": 93.5,
+        "fcpMs": 760.3,
+        "speedIndexMs": 760.3,
+        "totalByteWeight": 250880,
+        "requestCount": null
+      },
+      "spread": {
+        "lcpMs": 3.6,
+        "cls": 0,
+        "tbtMs": 10.5
+      },
+      "budgets": {
+        "lcp": true,
+        "cls": true
+      },
+      "tbtProxyWithinTarget": true,
+      "passes": true
+    },
+    "/domaines-activite/infrastructures-reseaux-electriques": {
+      "runs": [
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 760.4,
+          "cls": 0,
+          "tbtMs": 113.5,
+          "fcpMs": 760.4,
+          "speedIndexMs": 760.4,
+          "totalByteWeight": 250899,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 100,
+          "accessibilityScore": 100,
+          "lcpMs": 759.9,
+          "cls": 0,
+          "tbtMs": 88.5,
+          "fcpMs": 759.9,
+          "speedIndexMs": 759.9,
+          "totalByteWeight": 250899,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        },
+        {
+          "performanceScore": 99,
+          "accessibilityScore": 100,
+          "lcpMs": 761.4,
+          "cls": 0,
+          "tbtMs": 92,
+          "fcpMs": 761.4,
+          "speedIndexMs": 761.4,
+          "totalByteWeight": 250899,
+          "requestCount": null,
+          "formFactor": "mobile",
+          "throttlingMethod": "simulate",
+          "throttling": {
+            "rttMs": 150,
+            "throughputKbps": 1638.4,
+            "requestLatencyMs": 562.5,
+            "downloadThroughputKbps": 1474.5600000000002,
+            "uploadThroughputKbps": 675,
+            "cpuSlowdownMultiplier": 4
+          },
+          "lighthouseVersion": "13.6.0"
+        }
+      ],
+      "medians": {
+        "performanceScore": 99,
+        "accessibilityScore": 100,
+        "lcpMs": 760.4,
+        "cls": 0,
+        "tbtMs": 92,
+        "fcpMs": 760.4,
+        "speedIndexMs": 760.4,
+        "totalByteWeight": 250899,
+        "requestCount": null
+      },
+      "spread": {
+        "lcpMs": 1.5,
+        "cls": 0,
+        "tbtMs": 25
+      },
+      "budgets": {
+        "lcp": true,
+        "cls": true
+      },
+      "tbtProxyWithinTarget": true,
+      "passes": true
+    }
+  },
+  "failures": [],
+  "warnings": [],
+  "pass": true,
+  "eventTimingProxy": {
+    "route": "/",
+    "interactions": 5,
+    "maxInteractionMs": 56,
+    "events": [
+      {
+        "name": "pointerdown",
+        "durationMs": 56,
+        "interactionId": 8463
+      },
+      {
+        "name": "pointerup",
+        "durationMs": 56,
+        "interactionId": 8463
+      },
+      {
+        "name": "click",
+        "durationMs": 56,
+        "interactionId": 8463
+      },
+      {
+        "name": "keydown",
+        "durationMs": 24,
+        "interactionId": 8470
+      },
+      {
+        "name": "keyup",
+        "durationMs": 24,
+        "interactionId": 8470
+      }
+    ],
+    "caveat": "Synthetic interaction (drawer open + Escape) after load at 4× CPU; a sanity check, NOT a measured INP and not field data."
+  },
+  "summary": {
+    "routes": 11,
+    "runsPerRoute": 3,
+    "allRoutesPass": true,
+    "tbtProxyWithinTargetRoutes": 11,
+    "tbtProxyRouteCount": 11,
+    "worstMedian": {
+      "lcpMs": 912.4,
+      "cls": 0,
+      "tbtMs": 103.5
+    },
+    "medianAcrossRoutes": {
+      "lcpMs": 762.6,
+      "cls": 0,
+      "tbtMs": 93.5,
+      "performanceScore": 99
+    }
+  }
+}

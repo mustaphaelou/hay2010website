@@ -33,6 +33,8 @@ import fs from "node:fs"
 import os from "node:os"
 import path from "node:path"
 
+import { chromium } from "playwright-core"
+
 import {
   AUDIT_DIR,
   CHROME_BIN,
@@ -53,7 +55,12 @@ import {
 
 const SCENARIO = "p1"
 const LIGHTHOUSE_VERSION = "13.6.0"
-const BUDGETS = { lcpMs: 2_500, cls: 0.1, tbtMs: 200 }
+/**
+ * Hard budgets are the measurable half of the acceptance targets (LCP, CLS).
+ * INP has no local field data, so TBT is recorded as a lab proxy *warning*
+ * against 200 ms — it is not a pass/fail assertion for INP.
+ */
+const BUDGETS = { lcpMs: 2_500, cls: 0.1, tbtProxyMs: 200 }
 
 const argv = process.argv.slice(2)
 const argValue = (name) => {
@@ -90,7 +97,7 @@ let server = null
 async function launchBrowserForLighthouse() {
   fs.rmSync(profileDir, { recursive: true, force: true })
   fs.mkdirSync(profileDir, { recursive: true })
-  const chromeLog = fs.openSync(path.join(profileDir, "chrome.log"), "ws")
+  const chromeLog = fs.openSync(path.join(profileDir, "chrome.log"), "w")
   browserProcess = spawn(
     CHROME_BIN,
     [
@@ -171,6 +178,63 @@ function runLighthouse(route) {
   }
 }
 
+/**
+ * Synthetic Event-Timing proxy (sanity check only, never called INP): open the
+ * drawer and close it with Escape at 4× CPU, and report the longest
+ * `interactionId` event duration. There is no field data, so this can only
+ * show that interactions remain responsive after load.
+ */
+async function measureEventTimingProxy(route) {
+  const browser = await chromium.launch({
+    headless: true,
+    executablePath: CHROME_BIN,
+    ...(process.getuid?.() === 0 ? { args: ["--no-sandbox"] } : {}),
+  })
+  try {
+    const context = await browser.newContext({
+      viewport: { width: 412, height: 823 },
+    })
+    const page = await context.newPage()
+    const cdp = await context.newCDPSession(page)
+    await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 })
+    await page.addInitScript(() => {
+      window.__eventTiming = []
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          window.__eventTiming.push({
+            name: entry.name,
+            durationMs: Math.round(entry.duration),
+            interactionId: entry.interactionId,
+          })
+        }
+      }).observe({ type: "event", buffered: true, durationThreshold: 16 })
+    })
+    await page.goto(`${baseUrl}${route}`, { waitUntil: "load" })
+    await page.waitForTimeout(2_500)
+    await page.locator("header button[aria-expanded]").click()
+    await page.waitForTimeout(500)
+    await page.keyboard.press("Escape")
+    await page.waitForTimeout(500)
+    const events = await page.evaluate(() =>
+      window.__eventTiming.filter((entry) => entry.interactionId > 0)
+    )
+    const maxInteractionMs = events.reduce(
+      (max, entry) => Math.max(max, entry.durationMs),
+      0
+    )
+    return {
+      route,
+      interactions: events.length,
+      maxInteractionMs,
+      events: events.slice(0, 10),
+      caveat:
+        "Synthetic interaction (drawer open + Escape) after load at 4× CPU; a sanity check, NOT a measured INP and not field data.",
+    }
+  } finally {
+    await browser.close()
+  }
+}
+
 /** Median of the numeric values. */
 function median(values) {
   const sorted = values.filter((value) => Number.isFinite(value)).sort((a, b) => a - b)
@@ -214,6 +278,7 @@ const report = {
   },
   routes: {},
   failures: [],
+  warnings: [],
 }
 
 try {
@@ -269,9 +334,17 @@ try {
     const budgets = {
       lcp: medians.lcpMs < BUDGETS.lcpMs,
       cls: medians.cls < BUDGETS.cls,
-      tbtProxy: medians.tbtMs < BUDGETS.tbtMs,
     }
-    if (!budgets.lcp || !budgets.cls || !budgets.tbtProxy) {
+    const tbtProxyWithinTarget = medians.tbtMs < BUDGETS.tbtProxyMs
+    if (!tbtProxyWithinTarget) {
+      report.warnings.push({
+        route,
+        tbtProxyMs: round(medians.tbtMs, 1),
+        targetMs: BUDGETS.tbtProxyMs,
+        note: "TBT is a lab proxy warning, not a measured INP; field INP is not verifiable locally.",
+      })
+    }
+    if (!budgets.lcp || !budgets.cls) {
       report.failures.push({ route, medians, budgets })
     }
     report.routes[route] = {
@@ -297,20 +370,39 @@ try {
         tbtMs: round(spread.tbtMs, 1),
       },
       budgets,
-      passes: budgets.lcp && budgets.cls && budgets.tbtProxy,
+      tbtProxyWithinTarget,
+      passes: budgets.lcp && budgets.cls,
     }
     log(
       `${route} median: LCP ${Math.round(medians.lcpMs)} ms, CLS ${medians.cls.toFixed(3)}, ` +
-        `TBT ${Math.round(medians.tbtMs)} ms — ${report.routes[route].passes ? "PASS" : "FAIL"}`
+        `TBT ${Math.round(medians.tbtMs)} ms (proxy target ${BUDGETS.tbtProxyMs} ms: ` +
+        `${tbtProxyWithinTarget ? "within" : "above"}) — ${report.routes[route].passes ? "budget PASS" : "budget FAIL"}`
     )
   }
 
   report.pass = report.failures.length === 0
   const medianOf = (field) => median(Object.values(report.routes).map((entry) => entry.medians[field]))
+  log("measuring the synthetic Event-Timing proxy (not INP) on the homepage")
+  let eventTimingProxy = null
+  try {
+    eventTimingProxy = await measureEventTimingProxy("/")
+    log(
+      `event-timing proxy: max interaction ${eventTimingProxy.maxInteractionMs} ms ` +
+        `over ${eventTimingProxy.interactions} synthetic event(s) — sanity check only, not INP`
+    )
+  } catch (error) {
+    eventTimingProxy = { error: String(error) }
+    log(`event-timing proxy skipped: ${String(error)}`)
+  }
+  report.eventTimingProxy = eventTimingProxy
   report.summary = {
     routes: routes.length,
     runsPerRoute: runs,
     allRoutesPass: report.pass,
+    tbtProxyWithinTargetRoutes: Object.values(report.routes).filter(
+      (entry) => entry.tbtProxyWithinTarget
+    ).length,
+    tbtProxyRouteCount: routes.length,
     worstMedian: {
       lcpMs: round(Math.max(...Object.values(report.routes).map((entry) => entry.medians.lcpMs)), 1),
       cls: round(Math.max(...Object.values(report.routes).map((entry) => entry.medians.cls)), 4),
